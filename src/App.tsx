@@ -1,57 +1,145 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import './App.css';
+import * as React from "react";
+import * as ReactDOM from "react-dom/client";
+import "./App.css";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import "./index.css";
+import { jwtDecode } from "jwt-decode";
+import { ToastProvider } from "react-toast-notifications";
+import Home from "./pages/Home";
+import LoginPage from "./pages/LoginPage";
+import CartPage from "./pages/CartPage";
+import ProductDetailPage from "./pages/ProductDetailPage";
+import CheckOutPage from "./pages/CheckOutPage";
+import ProductFormPage from "./pages/ProductFormPage";
+import Products from "./features/ProductList/components/Products";
+import RegisterPage from "./pages/RegisterPage";
+import Verification from "./features/auth/Verification";
+import PasswordRecovery from "./features/auth/PasswordRecovery";
+import ChangePassword from "./features/auth/ChangePassword";
+import ProfilePage from "./pages/ProfilePage";
+import PaymentPage from "./pages/PaymentPage";
+import SuccessOrderPage from "./pages/SuccessOrderPage";
+import ProtectedRoute from "./features/auth/ProtectedRoute";
+import AdminPanel from "./pages/AdminPanel";
+import AdminProtectedRoute from "./features/auth/AdminProtectedRoute";
+import VerifyMsgPage from "./pages/VerifyMsgPage";
+import WishListPage from "./pages/WishListPage";
+import ProductReviewPage from "./pages/ProductReviewPage";
+import ProductReviewFormPage from "./pages/ProductReviewFormPage";
+import { useAppSelector } from "./app/hooks";
+import { selectUser } from "./features/auth/authSlice";
+import Logout from "./features/auth/Logout";
+import PageNotFound from "./pages/PageNotFound";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Home />,
+  },
+  {
+    path: "/login",
+    element: <LoginPage />,
+  },
+  {
+    path: "/logout",
+    element: <Logout />,
+  },
+  {
+    path: "/register",
+    element: <RegisterPage />,
+  },
+  {
+    path: "/verify/email",
+    element: <VerifyMsgPage />,
+  },
+  {
+    path: "/verify/email/:id",
+    element: <VerifyMsgPage />,
+  },
+  {
+    path: "/password/link",
+    element: <PasswordRecovery />,
+  },
+  {
+    path: "/password/change/:id",
+    element: <ChangePassword />,
+  },
+  {
+    path: "/cart",
+    element: <CartPage />,
+  },
+  {
+    path: "/wishlist",
+    element: <WishListPage />,
+  },
+  {
+    path: "*",
+    element: <PageNotFound />,
+  },
+  {
+    path: "/product/review/:id",
+    element: <ProductReviewPage />,
+  },
+  {
+    path: "/product/review/form/:id",
+    element: <ProtectedRoute child={<ProductReviewFormPage />} />,
+  },
+  {
+    path: "/product/details/:id",
+    element: <ProductDetailPage />,
+  },
+  {
+    path: "/product/create",
+    element: <AdminProtectedRoute child={<ProductFormPage />} />,
+  },
+  {
+    path: "/product/update/:id",
+    element: <AdminProtectedRoute child={<ProductFormPage />} />,
+  },
+  {
+    path: "/products",
+    element: (
+      <Products
+        isOpen={false}
+        togglePopup={function (): void {
+          throw new Error("Function not implemented.");
+        }}
+      />
+    ),
+  },
+  {
+    path: "/checkout/:id",
+    element: <ProtectedRoute child={<CheckOutPage />} />,
+  },
+  {
+    path: "/payment/:id",
+    element: <ProtectedRoute child={<PaymentPage />} />,
+  },
+  {
+    path: "/order/success/:id",
+    element: <ProtectedRoute child={<SuccessOrderPage />} />,
+  },
+  {
+    path: "/payment",
+    element: <ProtectedRoute child={<PaymentPage />} />,
+  },
+  {
+    path: "/profile/:id",
+    element: <ProtectedRoute child={<ProfilePage />} />,
+  },
+  {
+    path: "/admin/:id",
+    element: <AdminProtectedRoute child={<AdminPanel />} />,
+  },
+]);
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
-    </div>
+    <ToastProvider>
+      <div className="App">
+        <RouterProvider router={router} />
+      </div>
+    </ToastProvider>
   );
 }
 
