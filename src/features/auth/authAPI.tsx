@@ -1,5 +1,5 @@
 import axios from "axios";
-const API = "http://localhost:5050";
+const API = "https://ecommerce-backend-chji.onrender.com";
 
 export const signup = async (user: any) => {
   try {

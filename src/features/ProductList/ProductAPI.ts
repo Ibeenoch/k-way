@@ -2,7 +2,7 @@ import axios from "axios";
 import { useAppSelector } from "../../app/hooks";
 import { selectUser } from "../auth/authSlice";
 
-const API = "http://localhost:5050";
+const API = "https://ecommerce-backend-chji.onrender.com";
 
 export const createProduct = async (products: any) => {
   try {
