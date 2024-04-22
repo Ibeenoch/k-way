@@ -8,7 +8,8 @@ import {
 } from "@heroicons/react/24/outline";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { Link, useNavigate } from "react-router-dom";
-import { useToasts } from "react-toast-notifications";
+import { toast, ToastContainer, Bounce } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css";
 import { selectUser } from "../auth/authSlice";
 import { fetchAllUsersWishListAsync, selectAllWishList } from "./wishListSlice";
 import { addtocart, fetchAllUsersCartAsync } from "../cart/cartSlice";
@@ -18,7 +19,6 @@ const WishList = () => {
   const [open, setOpen] = useState(true);
   const { wishlist } = useAppSelector(selectAllWishList);
   const { user } = useAppSelector(selectUser);
-  const { addToast } = useToasts();
 
   const navigate = useNavigate();
 
@@ -41,7 +41,7 @@ const WishList = () => {
     dispatch(getAproduct(productId)).then((res) => {
       const receive = res.payload;
       const data = { ...receive, quantity };
-      const dataitem = { data, addToast };
+      const dataitem = { data, toast };
       dispatch(addtocart(dataitem));
     });
   };
@@ -115,6 +115,7 @@ const WishList = () => {
                           >
                             <ShoppingBagIcon width={30} height={20} />{" "}
                             <div>Add To Cart</div>
+                            <ToastContainer />
                           </div>
 
                           <div className="flex">

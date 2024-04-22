@@ -1,12 +1,8 @@
 import React from "react";
-import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { fetchAllUsersCartAsync, selectAllCart } from "../cart/cartSlice";
-import Cart from "../cart/Cart";
-import { useToasts } from "react-toast-notifications";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { MinusIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { createAddress, selectCheckout } from "../checkout/checkoutSlice";
 
 interface Chechkout {
@@ -25,7 +21,6 @@ const Payment = () => {
 
   const [open, setOpen] = useState(true);
   const { carts } = useAppSelector(selectAllCart);
-  const { addToast } = useToasts();
   const { checkoutInfo } = useAppSelector(selectCheckout);
   const products = [
     {

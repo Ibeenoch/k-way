@@ -11,32 +11,50 @@ export const fetchAllUsersWishList = async () => {
   }
 };
 
-export const addToWishList = async (data: any, addToast: any) => {
+export const addToWishList = async (data: any, toast: any) => {
   try {
     const checkItem = await JSON.parse(localStorage.getItem("wishlist") as any);
     if (checkItem === null || checkItem.length < 1) {
       let checkItem = [];
       checkItem.push(data);
       localStorage.setItem("wishlist", JSON.stringify(checkItem));
-      addToast("product successfully added to wishlist", {
-        appearance: "success",
-        autoDismiss: true,
-      });
+      toast.success("product successfully added to wishlist",
+      {
+       position: "top-center",
+       autoClose: 6000, //6 seconds
+       hideProgressBar: true,
+       closeOnClick: true,
+       pauseOnHover: true,
+       draggable: false,
+     });
+
     } else {
       //check if its the same product, if true don't add it
       const index = checkItem.find((item: any) => item.id === data.id);
       if (!index) {
         checkItem.push(data);
         localStorage.setItem("wishlist", JSON.stringify(checkItem));
-        addToast("product successfully added to wishlist", {
-          appearance: "success",
-          autoDismiss: true,
-        });
+        toast.success("product successfully added to wishlist",
+        {
+         position: "top-center",
+         autoClose: 6000, //6 seconds
+         hideProgressBar: true,
+         closeOnClick: true,
+         pauseOnHover: true,
+         draggable: false,
+       });
+       
       } else {
-        addToast("The product already exist in the wishlist", {
-          appearance: "error",
-          autoDismiss: true,
-        });
+        toast.error("The product already exist in the wishlist",
+        {
+         position: "top-center",
+         autoClose: 6000, //6 seconds
+         hideProgressBar: true,
+         closeOnClick: true,
+         pauseOnHover: true,
+         draggable: false,
+       });
+
         return;
       }
     }

@@ -10,10 +10,9 @@ import {
   updateproduct,
 } from "../ProductSlice";
 import { useNavigate, useParams } from "react-router-dom";
-import { useToasts } from "react-toast-notifications";
-import Loading from "../../../Loading";
 import { selectUser } from "../../auth/authSlice";
-import LoadingPage from "../../../pages/LoadingPage";
+import { Bounce, ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ProductForm = () => {
   const dispatch = useAppDispatch();
@@ -21,7 +20,6 @@ const ProductForm = () => {
   const { product, status } = useAppSelector(selectProduct);
   const { user } = useAppSelector(selectUser);
   const { id } = useParams();
-  const { addToast } = useToasts();
 
   type FormValues = {
     title: string;
@@ -87,13 +85,17 @@ const ProductForm = () => {
 
       if (images) {
         if (images.length < 4) {
-          addToast(
-            "To Update the Product images, Please Ensure to Add a Minimum of 4 photos of the Product!!!",
-            {
-              appearance: "error",
-              autoDismiss: true,
-            }
-          );
+          toast.error("To Update the Product images, Please Ensure to Add a Minimum of 4 photos of the Product!!!",
+           {
+            position: "top-center",
+            autoClose: 6000, //6 seconds
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: false,
+            transition: Bounce,
+          });
+          
           return;
         } else {
           const product = new FormData();
@@ -157,20 +159,29 @@ const ProductForm = () => {
         !category ||
         !keywords
       ) {
-        addToast("Please Ensure to add all fields", {
-          appearance: "error",
-          autoDismiss: true,
-        });
-
+        toast.error("Please Ensure to add all fields",
+        {
+         position: "top-center",
+         autoClose: 6000, //6 seconds
+         hideProgressBar: true,
+         closeOnClick: true,
+         pauseOnHover: true,
+         draggable: false,
+         transition: Bounce,
+       });
+       
         return;
       } else if (images.length < 4) {
-        addToast(
-          "Please Ensure to Add a Minimum of 4 photos of the Product!!!",
-          {
-            appearance: "error",
-            autoDismiss: true,
-          }
-        );
+        toast.error("Please Ensure to Add a Minimum of 4 photos of the Product!!!",
+        {
+         position: "top-center",
+         autoClose: 6000, //6 seconds
+         hideProgressBar: true,
+         closeOnClick: true,
+         pauseOnHover: true,
+         draggable: false,
+         transition: Bounce,
+       });
         return;
       } else {
         const product = new FormData();
@@ -201,16 +212,29 @@ const ProductForm = () => {
             res.payload.response.data &&
             res.payload.response.data.error
           ) {
-            addToast("Something went wrong", {
-              appearance: "error",
-              autoDismiss: true,
-            });
+            toast.error("Something went wrong",
+            {
+             position: "top-center",
+             autoClose: 6000, //6 seconds
+             hideProgressBar: true,
+             closeOnClick: true,
+             pauseOnHover: true,
+             draggable: false,
+             transition: Bounce,
+           });
+
             return;
           } else {
-            addToast("Product Successfully Added!!!", {
-              appearance: "success",
-              autoDismiss: true,
-            });
+            toast.success("Product Successfully Added!!!",
+            {
+             position: "top-center",
+             autoClose: 6000, //6 seconds
+             hideProgressBar: true,
+             closeOnClick: true,
+             pauseOnHover: true,
+             draggable: false,
+             transition: Bounce,
+           });
             dispatch(getAllproduct()).then(() => {
               navigate("/");
             });
@@ -486,6 +510,7 @@ const ProductForm = () => {
               className="rounded-md bg-red-800 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
               {id ? "Update" : "Save"}
+              <ToastContainer />
             </button>
           </div>
         </form>

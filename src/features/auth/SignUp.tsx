@@ -2,7 +2,8 @@ import React, { ChangeEvent, FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import companylogo from "../../images/images-9.png";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { useToasts } from "react-toast-notifications";
+import { toast, ToastContainer, Bounce } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css";
 import Switch from "react-switch";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/20/solid";
 import { registerUser, selectUser } from "./authSlice";
@@ -28,7 +29,6 @@ const SignUp: React.FC = () => {
   const [isClicked, setIsClicked] = useState(false);
   const [isShowPassword, setIsShowPassword] = useState(false);
   const [isShowConfirmPassword, setIsShowConfirmPassword] = useState(false);
-  const { addToast } = useToasts();
   const { status, user } = useAppSelector(selectUser);
 
   const handleSwitchElem = (checked: boolean) => {
@@ -39,8 +39,7 @@ const SignUp: React.FC = () => {
     setFormData({ ...formData, [name]: value });
   };
   const { fullname, email, password, confirmPassword } = formData;
-  const passwordRegex =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@_!#$%^&*(),.?":{}|<>]).{8,}$/;
+  const passwordRegex = /^(?=.*[a-zA-Z0-9]).{8,}$/;
 
   const handleRegister = (e: FormEvent) => {
     e.preventDefault();
@@ -49,19 +48,31 @@ const SignUp: React.FC = () => {
     if (passwordRegex.test(password)) {
       //continue
       if (confirmPassword !== password) {
-        addToast("password do not match!!!", {
-          appearance: "warning",
-          autoDismiss: true,
-        });
+        toast.error("password do not match!!!",
+        {
+         position: "top-center",
+         autoClose: 6000, //6 seconds
+         hideProgressBar: true,
+         closeOnClick: true,
+         pauseOnHover: true,
+         draggable: false,
+         transition: Bounce,
+       });
         setIsChecked(false);
       }
       const register = { ...formData, passcode };
       dispatch(registerUser(register)).then((res) => {
         if (res && res.payload && res.payload === "user already exist") {
-          addToast("user already exist", {
-            appearance: "warning",
-            autoDismiss: true,
-          });
+          toast.error("user already exist",
+          {
+           position: "top-center",
+           autoClose: 6000, //6 seconds
+           hideProgressBar: true,
+           closeOnClick: true,
+           pauseOnHover: true,
+           draggable: false,
+           transition: Bounce,
+         });
           setIsChecked(false);
         } else if (
           res &&
@@ -69,10 +80,17 @@ const SignUp: React.FC = () => {
           res.payload.role &&
           res.payload.role === "ADMIN"
         ) {
-          addToast("Registered As Admin Successful", {
-            appearance: "success",
-            autoDismiss: true,
-          });
+          toast.success("Registered as an Admin Successful",
+          {
+           position: "top-center",
+           autoClose: 6000, //6 seconds
+           hideProgressBar: true,
+           closeOnClick: true,
+           pauseOnHover: true,
+           draggable: false,
+           transition: Bounce,
+         });
+        
           navigate("/");
         } else if (
           res &&
@@ -80,28 +98,44 @@ const SignUp: React.FC = () => {
           res.payload.role &&
           res.payload.role === "USER"
         ) {
-          addToast("Registration Successful", {
-            appearance: "success",
-            autoDismiss: true,
-          });
+          toast.success("Registeration Successful",
+          {
+           position: "top-center",
+           autoClose: 6000, //6 seconds
+           hideProgressBar: true,
+           closeOnClick: true,
+           pauseOnHover: true,
+           draggable: false,
+           transition: Bounce,
+         });
           navigate("/verify/email");
         } else {
-          addToast("Registration Failed, Something went wrong", {
-            appearance: "error",
-            autoDismiss: true,
-          });
+          toast.error("Registration Failed, Something went wrong",
+          {
+           position: "top-center",
+           autoClose: 6000, //6 seconds
+           hideProgressBar: true,
+           closeOnClick: true,
+           pauseOnHover: true,
+           draggable: false,
+           transition: Bounce,
+         });         
           setIsChecked(false);
           return;
         }
       });
     } else {
-      addToast(
-        "Password must be eight characters including one uppercase letter, one special character and alphanumeric characters e.g Password1!",
-        {
-          appearance: "warning",
-          autoDismiss: true,
-        }
-      );
+      toast.error("Password must be eight characters including one uppercase letter, one special character and alphanumeric characters e.g Password1!",
+      {
+       position: "top-center",
+       autoClose: 8000, //8 seconds
+       hideProgressBar: true,
+       closeOnClick: true,
+       pauseOnHover: true,
+       draggable: false,
+       transition: Bounce,
+     });  
+     return;
     }
   };
 
@@ -304,6 +338,7 @@ const SignUp: React.FC = () => {
                   ) : (
                   "Sign Up"
                 )}
+                <ToastContainer />
               </button>
             </div>
           </form>

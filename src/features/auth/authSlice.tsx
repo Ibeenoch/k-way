@@ -4,15 +4,18 @@ import * as api from "./authAPI";
 import { act } from "@testing-library/react";
 
 const authUser = JSON.parse(localStorage.getItem("user") as any);
+const otherUser = JSON.parse(localStorage.getItem("otheruser") as any);
 const allUser = JSON.parse(localStorage.getItem("alluser") as any);
 export interface userState {
   user: any;
+  otherperson: any;
   users: any;
   status: "success" | "loading" | "failed" | "idle";
 }
 
 const initialState: userState = {
   user: authUser ? authUser : {},
+  otherperson: otherUser ? otherUser : {},
   users: allUser ? allUser : [],
   status: "idle",
 };
@@ -76,6 +79,18 @@ export const getAUser = createAsyncThunk(
   async (data: any) => {
     try {
       const res = await api.fetchAUser(data);
+      return res?.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
+export const getotherUser = createAsyncThunk(
+  "/user/getotherUser",
+  async (data: any) => {
+    try {
+      const res = await api.fetchOtherUser(data);
       return res?.data;
     } catch (error) {
       console.log(error);
@@ -214,6 +229,19 @@ export const authSlice = createSlice({
         }
       })
       .addCase(getAUser.rejected, (state, action) => {
+        state.status = "failed";
+      })
+      .addCase(getotherUser.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(getotherUser.fulfilled, (state, action) => {
+        state.status = "success";
+        if (action.payload !== undefined) {
+          localStorage.setItem("otheruser", JSON.stringify(action.payload));
+          state.otherperson = action.payload;
+        }
+      })
+      .addCase(getotherUser.rejected, (state, action) => {
         state.status = "failed";
       })
       .addCase(deleteUser.pending, (state, action) => {

@@ -99,7 +99,7 @@ const NavBar: React.FC<Child> = ({ children, isOpen }) => {
   const navigation = [
     { name: "Marven Store", href: "/", current: true },
     {
-      name: "Team",
+      name: "Admin",
       href: user && user.role === "ADMIN" ? `/admin/${user.id}` : "#",
       current: false,
     },

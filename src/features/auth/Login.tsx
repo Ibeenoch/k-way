@@ -2,7 +2,8 @@ import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import companylogo from "../../images/images-9.png";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { useToasts } from "react-toast-notifications";
+import { toast, ToastContainer, Bounce } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css";
 import Switch from "react-switch";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/20/solid";
 import { loginUser, selectUser } from "./authSlice";
@@ -24,7 +25,6 @@ const Login = () => {
   const [isClicked, setIsClicked] = useState(false);
   const [isShowPassword, setIsShowPassword] = useState(false);
   const [isShowConfirmPassword, setIsShowConfirmPassword] = useState(false);
-  const { addToast } = useToasts();
   const { status, user } = useAppSelector(selectUser);
 
   const handleSwitchElem = (checked: boolean) => {
@@ -53,10 +53,16 @@ const Login = () => {
           res.payload.role &&
           res.payload.role === "ADMIN"
         ) {
-          addToast("Successfully Login As Admin", {
-            appearance: "success",
-            autoDismiss: true,
-          });
+          toast.success("Successfully Login As Admin",
+          {
+           position: "top-center",
+           autoClose: 6000, //6 seconds
+           hideProgressBar: true,
+           closeOnClick: true,
+           pauseOnHover: true,
+           draggable: false,
+           transition: Bounce,
+         });
           setIsClicked(false);
           navigate(`/`);
         } else if (
@@ -72,10 +78,16 @@ const Login = () => {
           setIsClicked(false);
           console.log("data ", data);
           if (data) {
-            addToast("Successfully Login As User", {
-              appearance: "success",
-              autoDismiss: true,
-            });
+            toast.success("Successfully Login As User",
+            {
+             position: "top-center",
+             autoClose: 6000, //6 seconds
+             hideProgressBar: true,
+             closeOnClick: true,
+             pauseOnHover: true,
+             draggable: false,
+             transition: Bounce,
+           });
             setIsClicked(false);
             navigate("/");
           }
@@ -85,20 +97,33 @@ const Login = () => {
           res.payload === "user does not exist"
         ) {
           setIsClicked(false);
-          addToast("user does not exist", {
-            appearance: "error",
-            autoDismiss: true,
-          });
+          toast.error("user does not exist",
+          {
+           position: "top-center",
+           autoClose: 6000, //6 seconds
+           hideProgressBar: true,
+           closeOnClick: true,
+           pauseOnHover: true,
+           draggable: false,
+           transition: Bounce,
+         });
         } else if (
           res &&
           res.payload &&
           res.payload === "password does not match!"
         ) {
           setIsClicked(false);
-          addToast("password does not match!", {
-            appearance: "error",
-            autoDismiss: true,
-          });
+          toast.error("Password Incorrect",
+          {
+           position: "top-center",
+           autoClose: 6000, //6 seconds
+           hideProgressBar: true,
+           closeOnClick: true,
+           pauseOnHover: true,
+           draggable: false,
+           transition: Bounce,
+         });
+
         } else {
           setIsClicked(false);
           return;
@@ -119,10 +144,16 @@ const Login = () => {
   };
 
   useEffect(() => {
-    addToast("Please login to continue", {
-      appearance: "info",
-      autoDismiss: true,
-    });
+    toast.info("Please login to continue",
+    {
+     position: "top-center",
+     autoClose: 6000, //6 seconds
+     hideProgressBar: true,
+     closeOnClick: true,
+     pauseOnHover: true,
+     draggable: false,
+     transition: Bounce,
+   });
   }, []);
 
   return (
@@ -273,6 +304,7 @@ const Login = () => {
                 ) : (
                   "Sign in"
                 )}
+                <ToastContainer />
               </button>
             </div>
           </form>

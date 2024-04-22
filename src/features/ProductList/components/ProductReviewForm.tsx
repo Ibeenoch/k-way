@@ -14,12 +14,12 @@ import {
   updatetheProductRating,
 } from "../ProductSlice";
 import { StarIcon } from "@heroicons/react/24/outline";
-import { useToasts } from "react-toast-notifications";
+import { toast, ToastContainer, Bounce } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css";
 import { useNavigate, useParams } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
+
 
 const ProductReviewForm = () => {
-  const { addToast } = useToasts();
   const { id } = useParams();
   const navigate = useNavigate();
   const [remark, setRemark] = useState<string>("");
@@ -45,13 +45,17 @@ const ProductReviewForm = () => {
 
     const rating = parseInt(getRatingVal);
     if (!rating) {
-      addToast(
-        "Please click on the rating icon to rating the product, and add a review about this product",
-        {
-          appearance: "error",
-          autoDismiss: true,
-        }
-      );
+      toast.error("Please click on the rating icon to rating the product, and add a review about this product",
+      {
+       position: "top-center",
+       autoClose: 6000, //6 seconds
+       hideProgressBar: true,
+       closeOnClick: true,
+       pauseOnHover: true,
+       draggable: false,
+       transition: Bounce,
+     });
+     
       return;
     }
 
@@ -74,10 +78,16 @@ const ProductReviewForm = () => {
             dispatch(getaProductReviews(productId)).then((res: any) => {
               console.log("get rating ", res.payload);
               if (res && res.payload !== undefined) {
-                addToast("Thank You For Your Honest Feedback", {
-                  appearance: "info",
-                  autoDismiss: true,
-                });
+                toast.info("Thank You For Your Honest Feedback", {
+                 position: "top-center",
+                 autoClose: 6000, //6 seconds
+                 hideProgressBar: true,
+                 closeOnClick: true,
+                 pauseOnHover: true,
+                 draggable: false,
+                 transition: Bounce,
+               });
+              
                 navigate(`/product/review/${productId}`);
               }
             });

@@ -12,8 +12,8 @@ const UsersPagination: React.FC<ChildComponentProp> = ({ totalCount }) => {
   const iTemLimitPerPage = 1;
   const [page, setPage] = useState(1);
 
-  const { users, user } = useAppSelector(selectUser);
-  const token = user && users.token;
+  const user = JSON.parse(localStorage.getItem('user') as any)
+  const token = user && user.token;
 
   const totalItem = totalCount;
   const handlePages = (num: number) => {
@@ -29,7 +29,8 @@ const UsersPagination: React.FC<ChildComponentProp> = ({ totalCount }) => {
     setPage(num);
     const limit = iTemLimitPerPage;
     const currentPage = num;
-    const data = { limit, currentPage };
+    const item = { limit, currentPage };
+    const data = { item, token };
     dispatch(getUserPagination(data) as any);
   };
 
@@ -37,7 +38,8 @@ const UsersPagination: React.FC<ChildComponentProp> = ({ totalCount }) => {
     setPage(num);
     const limit = iTemLimitPerPage;
     const currentPage = num;
-    const data = { limit, currentPage };
+    const item = { limit, currentPage };
+    const data = { item, token };
     dispatch(getUserPagination(data) as any);
   };
   return (

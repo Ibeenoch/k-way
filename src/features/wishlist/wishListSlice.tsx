@@ -26,9 +26,9 @@ export const addToWishlist = createAsyncThunk(
   "wishlist/createwishlist",
   async (dataItem: any, thunkAPI) => {
     try {
-      const addToast = dataItem.addToast;
+      const toast = dataItem.toast;
       const data = dataItem.data;
-      const res = await api.addToWishList(data, addToast);
+      const res = await api.addToWishList(data, toast);
       return res;
     } catch (error) {
       const message = thunkAPI.rejectWithValue(error);

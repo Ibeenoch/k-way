@@ -2,12 +2,10 @@ import React, { ChangeEvent, FormEvent, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import companylogo from "../../images/images-9.png";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { useToasts } from "react-toast-notifications";
+import { toast, ToastContainer, Bounce } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/20/solid";
-import {
-  passwordChange,
-  selectUser,
-} from "./authSlice";
+import { passwordChange, selectUser } from "./authSlice";
 
 
 interface Login {
@@ -26,7 +24,6 @@ const ChangePassword: React.FC = () => {
   const [isShowPassword2, setIsShowPassword2] = useState(false);
   const [isShowPassword3, setIsShowPassword3] = useState(false);
   const [isShowConfirmPassword, setIsShowConfirmPassword] = useState(false);
-  const { addToast } = useToasts();
   const { id } = useParams();
   const { status, user } = useAppSelector(selectUser);
 
@@ -39,8 +36,7 @@ const ChangePassword: React.FC = () => {
   };
 
   const { newpassword1, newpassword2 } = formData;
-  const passwordRegex =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&^])[A-Za-z\d@.#$!%*?&]{8,15}$/;
+  const passwordRegex = /^(?=.*[a-zA-Z0-9]).{8,}$/;
   const handlePasswordRecovery = (e: FormEvent) => {
     e.preventDefault();
     if (passwordRegex.test(newpassword1)) {
@@ -48,24 +44,30 @@ const ChangePassword: React.FC = () => {
 
       dispatch(passwordChange(changePassword)).then((res: any) => {
         if (res && res.payload && res.payload.id) {
-          addToast(
-            "Password Changed Successfully, Please Login with the new password to continue",
-            {
-              appearance: "success",
-              autoDismiss: true,
-            }
-          );
+          toast.success( "Password Changed Successfully, Please Login with the new password to continue",
+          {
+           position: "top-center",
+           autoClose: 6000, //6 seconds
+           hideProgressBar: true,
+           closeOnClick: true,
+           pauseOnHover: true,
+           draggable: false,
+           transition: Bounce,
+         });
           navigate("/login");
         }
       });
     } else {
-      addToast(
-        "the password must be at least 8 character, the password should contain a upper case letter, the password should contain a lower case letter, the password should contain a number, the password should contain a special character e.g Password1!",
-        {
-          appearance: "warning",
-          autoDismiss: true,
-        }
-      );
+      toast.error( "the password must be at least 8 character, the password should contain a upper case letter, the password should contain a lower case letter, the password should contain a number, the password should contain a special character e.g Password1!",
+      {
+       position: "top-center",
+       autoClose: 6000, //6 seconds
+       hideProgressBar: true,
+       closeOnClick: true,
+       pauseOnHover: true,
+       draggable: false,
+       transition: Bounce,
+     });
     }
   };
 
@@ -189,6 +191,7 @@ const ChangePassword: React.FC = () => {
                 ) : (
                 "Change Password"
               )}
+              <ToastContainer />
             </button>
           </div>
         </form>

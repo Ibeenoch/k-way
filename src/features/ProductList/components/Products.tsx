@@ -35,7 +35,8 @@ import Pagination from "./Pagination";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import "./product.css";
 import { addtocart, fetchAllUsersCartAsync } from "../../cart/cartSlice";
-import { useToasts } from "react-toast-notifications";
+import { toast, ToastContainer, Bounce } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css";
 import ProductReview from "./ProductReview";
 import { selectUser } from "../../auth/authSlice";
 import Loading from "../../../Loading";
@@ -51,31 +52,29 @@ interface ItogglePopup {
 const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { addToast } = useToasts();
   const [getCategoryName, setGetCategoryName] = useState<string>("");
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState<boolean>(false);
   const [theAdmin, setTheAdmin] = useState<boolean>(false);
   const [wishlistUpdate, setWishlistUpdate] = useState<number>(0);
   const [totalCount, setTotalCount] = useState<number>(0);
-  const { status, products, product, categories, category, brands, brand } =
-    useAppSelector(selectProduct);
+  const { status, products, product, categories, category, brands, brand } =  useAppSelector(selectProduct);
   const { user } = useAppSelector(selectUser);
   const { wishlist } = useAppSelector(selectAllWishList);
 
   const token = user && user && user.token;
 
-  const imageProps = {
-    width: "100%",
-    height: "100%",
-    zoomWidth: 500,
-    img: products[0]?.thumbnail.url,
-  };
+  // const imageProps = {
+  //   width: "100%",
+  //   height: "100%",
+  //   zoomWidth: 500,
+  //   img: products[0]?.thumbnail.url,
+  // };
   const handleAddToCart = (productId: any) => {
     const quantity = 1;
     dispatch(getAproduct(productId)).then((res) => {
       const receive = res.payload;
       const data = { ...receive, quantity };
-      const dataitem = { data, addToast };
+      const dataitem = { data, toast };
       dispatch(addtocart(dataitem));
     });
   };
@@ -84,7 +83,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
     dispatch(getAproduct(productId)).then((res: any) => {
       const receive = res.payload;
       const data = { ...receive, quantity };
-      const dataitem = { data, addToast };
+      const dataitem = { data, toast };
       dispatch(addToWishlist(dataitem)).then((res: any) => {
         dispatch(getAllproduct()).then((res: any) => {});
       });
@@ -158,10 +157,17 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
             localStorage.setItem("cart", JSON.stringify(checkItem));
             dispatch(fetchAllUsersCartAsync()).then(() => {
               dispatch(getAllproduct()).then(() => {
-                addToast("Product Succesfully deleted", {
-                  appearance: "success",
-                  autoDismiss: true,
-                });
+                toast.success("Product Succesfully deleted",
+                {
+                 position: "top-center",
+                 autoClose: 6000, //6 seconds
+                 hideProgressBar: true,
+                 closeOnClick: true,
+                 pauseOnHover: true,
+                 draggable: false,
+                 transition: Bounce,
+               });
+               
               });
             });
           } else {
@@ -169,10 +175,16 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
             localStorage.setItem("cart", JSON.stringify(checkItem));
             dispatch(fetchAllUsersCartAsync()).then(() => {
               dispatch(getAllproduct()).then(() => {
-                addToast("Product Succesfully deleted", {
-                  appearance: "success",
-                  autoDismiss: true,
-                });
+                toast.success("Product Succesfully deleted",
+                {
+                 position: "top-center",
+                 autoClose: 6000, //6 seconds
+                 hideProgressBar: true,
+                 closeOnClick: true,
+                 pauseOnHover: true,
+                 draggable: false,
+                 transition: Bounce,
+               });
               });
             });
           }

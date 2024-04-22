@@ -33,9 +33,9 @@ export const addtocart = createAsyncThunk(
   "cart/createcart",
   async (dataItem: any, thunkAPI) => {
     try {
-      const addToast = dataItem.addToast;
+      const toast = dataItem.toast;
       const data = dataItem.data;
-      const res = await api.addToCart(data, addToast);
+      const res = await api.addToCart(data, toast);
       return res;
     } catch (error) {
       const message = thunkAPI.rejectWithValue(error);

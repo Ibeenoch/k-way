@@ -2,15 +2,10 @@ import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { useEffect, useState } from "react";
 import { fetchAllUsersCartAsync, selectAllCart } from "../cart/cartSlice";
-import Cart from "../cart/Cart";
-import { useToasts } from "react-toast-notifications";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import {
-  MinusIcon,
-  PlusIcon,
-  TrashIcon,
-  WalletIcon,
-} from "@heroicons/react/24/outline";
+import { toast, ToastContainer, Bounce } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css";
+import {  useParams } from "react-router-dom";
+import { WalletIcon, } from "@heroicons/react/24/outline";
 import { selectUser } from "../auth/authSlice";
 import { addDays, format } from "date-fns";
 import {
@@ -27,7 +22,6 @@ const OrderSuccessPage = () => {
   const dispatch = useAppDispatch();
   const { aUserTransactions, aUserOrderedProducts, aUserShippingAddress } =
     useAppSelector(selectCheckout);
-  const { addToast } = useToasts();
   const { id } = useParams();
   const userId = user && user.id;
   const token = user && user.token;
@@ -43,10 +37,16 @@ const OrderSuccessPage = () => {
         console.log("fetch the details ", res.payload);
       })
       .then((res: any) => {
-        addToast("Thank you for placing from us", {
-          appearance: "info",
-          autoDismiss: true,
-        });
+        toast.success("Thank you for placing from us",
+        {
+         position: "top-center",
+         autoClose: 6000, //6 seconds
+         hideProgressBar: true,
+         closeOnClick: true,
+         pauseOnHover: true,
+         draggable: false,
+         transition: Bounce,
+       });
       });
 
     console.log("data ", data);
@@ -236,6 +236,7 @@ const OrderSuccessPage = () => {
           </div>
         </div>
       </section>
+      <ToastContainer />
     </div>
   );
 };

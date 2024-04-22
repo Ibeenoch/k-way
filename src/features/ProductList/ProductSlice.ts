@@ -42,9 +42,7 @@ export const updateproduct = createAsyncThunk(
   }
 );
 
-export const deleteproduct = createAsyncThunk(
-  "product/delete",
-  async (id: any, thunkAPI) => {
+export const deleteproduct = createAsyncThunk(  "product/delete",  async (id: any, thunkAPI) => {
     try {
       const res = await api.deleteProduct(id);
       return res?.data;
@@ -333,9 +331,12 @@ export const productSlice = createSlice({
       })
       .addCase(deleteproduct.fulfilled, (state, action) => {
         state.status = "success";
-        state.products.filter(
+        if(action.payload !== undefined){
+          state.products.filter(
           (pro: { id: any }) => pro.id !== action.payload.id
         );
+        }
+        
       })
       .addCase(deleteproduct.rejected, (state, action) => {
         state.status = "failed";

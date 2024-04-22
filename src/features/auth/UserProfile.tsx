@@ -10,12 +10,13 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { getAUser, selectUser, uploadUserPhoto } from "./authSlice";
+import { getAUser, getotherUser, selectUser, uploadUserPhoto } from "./authSlice";
 import { getAUserTransaction, selectCheckout } from "../checkout/checkoutSlice";
 import { ChangeEvent, Fragment, useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import pics from "../../images/image.jpeg";
-import { useToasts } from "react-toast-notifications";
+import { toast, ToastContainer, Bounce } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css";
 import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
 import ShippingDetails from "./ShippingDetails";
 import { format } from "date-fns";
@@ -34,7 +35,17 @@ const UserProfile = () => {
   };
   const { aUserOrderedProducts } = useAppSelector(selectCheckout);
   const user = JSON.parse(localStorage.getItem("user") as any);
+  const otheruser = JSON.parse(localStorage.getItem("otheruser") as any);
+  const users = JSON.parse(localStorage.getItem("alluser") as any);
   const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  if(otheruser){
+    console.log('other user available ', otheruser, 'the user ', user, users)
+  }
+
+if(aUserOrderedProducts){
+  console.log('aUserOrderedProducts ', aUserOrderedProducts)
+}
 
   const togglePopup = () => {
     setIsOpen(!isOpen);
@@ -48,19 +59,37 @@ const UserProfile = () => {
   }
 
   useEffect(() => {
-    const data = {
-      id: user && user.id,
-      token: user && user.token,
-    };
-
-    dispatch(getAUser(data)).then((res: any) => {
-      if ((res && res.payload !== undefined) || res.payload !== null) {
-        console.log("data ", data);
-        dispatch(getAUserTransaction(data)).then((res: any) => {
-          console.log("all user transactions ", res.payload);
-        });
-      }
-    });
+    const findtheUser = users.find((person: any) => person.id.toString() ===  id);
+    if(id === user.id.toString()){
+      const data = {
+        id,
+        token: user && user.token,
+      };
+  
+      dispatch(getAUser(data)).then((res: any) => {
+        if ((res && res.payload !== undefined) || res.payload !== null) {
+          console.log("data ", data);
+          dispatch(getAUserTransaction(data)).then((res: any) => {
+            console.log("all user transactions ", res.payload);
+          });
+        }
+      });
+    }else{
+      const data = {
+        id,
+        token: user && user.token,
+      };
+  
+      dispatch(getotherUser(data)).then((res: any) => {
+        if ((res && res.payload !== undefined) || res.payload !== null) {
+          console.log("data ", data);
+          dispatch(getAUserTransaction(data)).then((res: any) => {
+            console.log("all user transactions ", res.payload);
+          });
+        }
+      });
+    }
+   
   }, []);
 
   const handlebtn1 = () => {
@@ -72,7 +101,6 @@ const UserProfile = () => {
     setSelected2(true);
   };
 
-  const { addToast } = useToasts();
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState<boolean>(false);
   const [totalCount, setTotalCount] = useState<number>(0);
 
@@ -86,6 +114,38 @@ const UserProfile = () => {
       console.log("");
     }
   };
+
+  const getUsername = (id: any) => {
+    const findName = users.find((person: any) => person.id.toString() === id )
+    console.log('other name ', findName)
+    let userName = findName.fullName;
+    // console.log('other name ', userName)
+    return userName;
+  }
+ 
+
+  const getUserImage = (id: any) => {
+    const findImage = users.find((person: any) => person.id.toString() === id )
+    let userPhoto = findImage && findImage.image && findImage.image.url ? findImage.image.url : pics;
+    console.log('other image ', userPhoto)
+    return userPhoto;
+  }
+
+ const getUserState = (id: any) => {
+    const findstate = users.find((person: any) => person.id.toString() === id )
+    let userstate = findstate.state;
+    console.log('other state ', userstate)
+    return userstate.toUpperCase();
+  }
+// id in useParams return a string not a number
+
+ const getUserCountry = (id: any) => {
+    const findcountry = users.find((person: any) => person.id.toString() === id )
+    let usercountry = findcountry.country;
+    console.log('other state ', usercountry)
+    return usercountry.toUpperCase();
+  }
+
 
   const filters = [
     {
@@ -119,10 +179,17 @@ const UserProfile = () => {
           const id = res.payload.id;
           const data = { token, id };
           console.log("uploading ");
-          addToast("photo uploaded successfully", {
-            appearance: "success",
-            autoDismiss: true,
-          });
+          toast.success("Profile photo uploaded Added!!!",
+          {
+           position: "top-center",
+           autoClose: 6000, //6 seconds
+           hideProgressBar: true,
+           closeOnClick: true,
+           pauseOnHover: true,
+           draggable: false,
+           transition: Bounce,
+         });
+         
           window.location.reload();
         }
       });
@@ -246,7 +313,7 @@ const UserProfile = () => {
                               height="30px"
                               color="brown"
                             />{" "}
-                            {user.fullName}
+                            { id === user.id ? user.fullName : getUsername(id)}
                           </h2>
 
                           <div className="">
@@ -257,11 +324,13 @@ const UserProfile = () => {
                                   <img
                                     className="h-45 w-45 rounded-full border-4 border-white dark:border-gray-800 mx-auto my-4"
                                     src={
-                                      user && user.image ? user.image.url : pics
+                                     user.id !== id ? getUserImage(id) :
+                                     user.id === id && user.image && user.image.url ? user.image.url : pics
                                     }
-                                    alt={`${user && user.fullName}'s Profile`}
+                                    alt=''
                                   />
-                                  <div className="">
+                               { id === user.id ? (
+                               <div className="">
                                     <button
                                       onClick={clickFile}
                                       className="flex-1 inline-flex rounded-full bg-red-800 text-white w-250 dark:text-white antialiased font-bold hover:bg-red-700 dark:hover:bg-blue-900 px-4 py-2"
@@ -279,7 +348,13 @@ const UserProfile = () => {
                                       />
                                     </button>
                                   </div>
-                                  <button
+                               ) : (
+                                <>
+                                </>
+                               ) }  
+
+                                { id === user.id ? (
+                               <button
                                     style={{
                                       width: "150px",
                                       cursor: "pointer",
@@ -292,17 +367,19 @@ const UserProfile = () => {
                                     onClick={submitBtn}
                                   >
                                     Submit
+                                    <ToastContainer />
                                   </button>
+                               ) : (
+                                <>
+                                </>
+                               ) }  
+                                  
+                                  
                                   <div className="py-2">
                                     <div></div>
                                     <div className="inline-flex text-gray-700 dark:text-gray-300 items-center">
-                                      {user &&
-                                        user.state &&
-                                        user.state.toUpperCase()}{" "}
-                                      ,
-                                      {user &&
-                                        user.country &&
-                                        user.country.toUpperCase()}
+                                      { user.id === id ? user.state.toUpperCase() : getUserState(id)},{" "}
+                                      { user.id === id ? user.country.toUpperCase() : getUserCountry(id)}
                                     </div>
                                   </div>
                                 </div>
@@ -311,8 +388,8 @@ const UserProfile = () => {
                                     onClick={handlebtn1}
                                     className={
                                       selected1
-                                        ? "flex-1 rounded-full bg-red-800 hover:bg-red-700 text-white font-bold hover:bg-red-700 px-4 py-2"
-                                        : "flex-1 rounded-full bg-white border border-red-800 hover:bg-red-700 dark:border-gray-700 font-semibold text-red-800 dark:text-white px-4 py-2"
+                                        ? "flex-1 rounded-full bg-red-800 hover:bg-red-700 text-white hover:text-white font-bold hover:bg-red-700 px-4 py-2"
+                                        : "flex-1 rounded-full bg-white border border-red-800 hover:bg-red-700 hover:text-white dark:border-gray-700 font-semibold text-red-800 dark:text-white px-4 py-2"
                                     }
                                   >
                                     Purchase History
@@ -322,7 +399,7 @@ const UserProfile = () => {
                                     className={
                                       selected2
                                         ? "flex-1 rounded-full bg-red-800 hover:bg-red-700 text-white font-bold hover:bg-red-700 px-4 py-2"
-                                        : "flex-1 rounded-full bg-white border border-red-800 hover:bg-red-700 dark:border-gray-700 font-semibold text-red-800 dark:text-white px-4 py-2"
+                                        : "flex-1 rounded-full bg-white border border-red-800 hover:bg-red-700 dark:border-gray-700 font-semibold text-red-800 hover:text-white px-4 py-2"
                                     }
                                   >
                                     Your Profile
@@ -421,7 +498,7 @@ const UserProfile = () => {
                                             fill="brown"
                                           />{" "}
                                         </strong>{" "}
-                                        {user.fullName.toUpperCase()}
+                                        {id === user.id.toString() ? user.fullName.toUpperCase() : otheruser.fullName.toUpperCase()}
                                       </div>
                                     </div>
 
@@ -435,7 +512,7 @@ const UserProfile = () => {
                                             fill="brown"
                                           />{" "}
                                         </strong>
-                                        {user.phone}
+                                        {id === user.id.toString() ?  user.phone : otheruser.phone }
                                       </div>
                                     </div>
 
@@ -449,7 +526,7 @@ const UserProfile = () => {
                                             fill="brown"
                                           />{" "}
                                         </strong>{" "}
-                                        {user.address}
+                                        {id === user.id.toString() ? user.address : otheruser.address}
                                       </div>
                                     </div>
 
@@ -463,7 +540,7 @@ const UserProfile = () => {
                                             fill="brown"
                                           />{" "}
                                         </strong>{" "}
-                                        {user.email}
+                                        {id === user.id.toString() ? user.email : otheruser.email}
                                       </div>
                                     </div>
 
@@ -477,8 +554,8 @@ const UserProfile = () => {
                                             fill="brown"
                                           />{" "}
                                         </strong>{" "}
-                                        {user.city}, {user.state},{" "}
-                                        {user.country}.
+                                        {id === user.id.toString() ? user.city : otheruser.city}, {id === user.id.toString() ? user.state : otheruser.state},{" "}
+                                        {id === user.id.toString() ? user.country : otheruser.country}.
                                       </div>
                                     </div>
 
@@ -492,7 +569,7 @@ const UserProfile = () => {
                                             fill="brown"
                                           />{" "}
                                         </strong>{" "}
-                                        {user.zipcode}
+                                        {id === user.id.toString() ? user.zipcode : otheruser.zipcode}
                                       </div>
                                     </div>
 
@@ -506,7 +583,7 @@ const UserProfile = () => {
                                             fill="brown"
                                           />{" "}
                                         </strong>{" "}
-                                        {user.role}
+                                        {id === user.id.toString() ? user.role : otheruser.role}
                                       </div>
                                     </div>
 
@@ -521,7 +598,7 @@ const UserProfile = () => {
                                           />{" "}
                                         </strong>{" "}
                                         Joined{" "}
-                                        {format(user.createdAt, "yyyy/ dd/ MM")}
+                                        { id === user.id.toString() ? format(user.createdAt, "yyyy/ dd/ MM") : format(otheruser.createdAt, "yyyy/ dd/ MM") }
                                       </div>
                                     </div>
                                   </div>

@@ -13,9 +13,7 @@ const initialState: userState = {
   status: "idle",
 };
 
-export const getAllOrders = createAsyncThunk(
-  "/order/all",
-  async (token: any) => {
+export const getAllOrders = createAsyncThunk(  "/order/all",  async (token: any) => {
     try {
       const res = await api.fetchAllOrder(token);
       return res?.data;
@@ -25,9 +23,7 @@ export const getAllOrders = createAsyncThunk(
   }
 );
 
-export const orderUpdate = createAsyncThunk(
-  "/order/update",
-  async (data: any) => {
+export const orderUpdate = createAsyncThunk( "/order/update", async (data: any) => {
     try {
       const res = await api.updateAnOrder(data);
       return res?.data;

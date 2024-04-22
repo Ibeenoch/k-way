@@ -3,24 +3,31 @@ import companylogo from "../../images/images-9.png";
 import { FormEvent, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { emailLink, selectUser, userVerification } from "./authSlice";
-import { useToasts } from "react-toast-notifications";
+import { toast, ToastContainer, Bounce } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css";
 
 const PasswordRecovery = () => {
   const [email, setEmail] = useState<string>("");
   const { id } = useParams();
   const dispatch = useAppDispatch();
-  const { addToast } = useToasts();
   const { status } = useAppSelector(selectUser);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    const data = { email, addToast };
+    const data = { email };
     dispatch(emailLink(data)).then((res: any) => {
       if (res && res.payload && res.payload.message) {
-        addToast("Password Recovery Mail Sent", {
-          appearance: "success",
-          autoDismiss: true,
-        });
+        toast.info("Password Recovery Mail Sent",
+        {
+         position: "top-center",
+         autoClose: 6000, //6 seconds
+         hideProgressBar: true,
+         closeOnClick: true,
+         pauseOnHover: true,
+         draggable: false,
+         transition: Bounce,
+       });
+      
       }
     });
   };
@@ -86,6 +93,7 @@ const PasswordRecovery = () => {
                 ) : (
                 "Continue"
               )}
+              <ToastContainer />
             </button>
           </div>
         </form>

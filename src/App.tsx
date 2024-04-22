@@ -4,7 +4,6 @@ import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import { jwtDecode } from "jwt-decode";
-import { ToastProvider } from "react-toast-notifications";
 import Home from "./pages/Home";
 import LoginPage from "./pages/LoginPage";
 import CartPage from "./pages/CartPage";
@@ -30,6 +29,8 @@ import { useAppSelector } from "./app/hooks";
 import { selectUser } from "./features/auth/authSlice";
 import Logout from "./features/auth/Logout";
 import PageNotFound from "./pages/PageNotFound";
+import { ToastContainer } from "react-toastify"
+
 
 const router = createBrowserRouter([
   {
@@ -135,11 +136,11 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <ToastProvider>
+    
       <div className="App">
         <RouterProvider router={router} />
+        <ToastContainer />
       </div>
-    </ToastProvider>
   );
 }
 

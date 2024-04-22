@@ -3,7 +3,8 @@ import { useAppSelector } from "../../app/hooks";
 import { selectUser } from "./authSlice";
 import LoginPage from "../../pages/LoginPage";
 import { useNavigate } from "react-router-dom";
-import { useToasts } from "react-toast-notifications";
+import { toast, ToastContainer, Bounce } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css";
 import { jwtDecode } from "jwt-decode";
 interface Children {
   child: ReactElement | any;
@@ -11,17 +12,23 @@ interface Children {
 const ProtectedRoute: React.FC<Children> = ({ child }) => {
   const user = JSON.parse(localStorage.getItem("user") as any);
   const navigate = useNavigate();
-  const { addToast } = useToasts();
   const gettoken = user && user.token;
   const token = gettoken ? JSON.stringify(gettoken) : "10";
 
   useEffect(() => {
     const isTokenExpired = (token: any) => {
       if (!token) {
-        addToast("Session expiry please login to continue", {
-          appearance: "info",
-          autoDismiss: true,
-        });
+        toast.info("Session expiry please login to continue", 
+        {
+         position: "top-center",
+         autoClose: 6000, //6 seconds
+         hideProgressBar: true,
+         closeOnClick: true,
+         pauseOnHover: true,
+         draggable: false,
+         transition: Bounce,
+       });
+      
         localStorage.removeItem("user");
         navigate("/login");
       } else {
@@ -31,11 +38,17 @@ const ProtectedRoute: React.FC<Children> = ({ child }) => {
         if (expiryTime) {
           console.log(currentTime > expiryTime);
           if (currentTime > expiryTime) {
-            addToast("Session expiry please login to continue", {
-              appearance: "info",
-              autoDismiss: true,
-            });
-
+            toast.info("Your Session has expired please login to continue", 
+            {
+             position: "top-center",
+             autoClose: 6000, //6 seconds
+             hideProgressBar: true,
+             closeOnClick: true,
+             pauseOnHover: true,
+             draggable: false,
+             transition: Bounce,
+           });
+          
             localStorage.removeItem("user");
             navigate("/login");
           } else {

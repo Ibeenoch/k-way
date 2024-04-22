@@ -12,7 +12,8 @@ import {
 } from "../ProductSlice";
 import pics from "../../../images/download-29.jpeg";
 import { addtocart, selectAllCart } from "../../cart/cartSlice";
-import { useToasts } from "react-toast-notifications";
+import { toast, ToastContainer, Bounce } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css";
 import ProductReview from "./ProductReview";
 import SimlilarProduct from "./SimlilarProduct";
 import { selectUser } from "../../auth/authSlice";
@@ -30,8 +31,6 @@ const ProductDetail = () => {
   function classNames(...classes: any) {
     return classes.filter(Boolean).join(" ");
   }
-
-  const { addToast } = useToasts();
 
   useEffect(() => {
     dispatch(getAproduct(id));
@@ -91,17 +90,6 @@ const ProductDetail = () => {
       'The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.',
   };
   const reviews = { href: "#", average: 4, totalCount: 117 };
-
-  const [selectedColor, setSelectedColor] = useState(products.colors[0]);
-  const [selectedSize, setSelectedSize] = useState(products.sizes[2]);
-
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    const quantity = 1;
-    const data = { ...product, quantity };
-    const dataItem = { data, addToast };
-    dispatch(addtocart(dataItem));
-  };
 
   // review functions
   const totalOneRatingArr = (arr: any) => {
@@ -194,7 +182,7 @@ const ProductDetail = () => {
     dispatch(getAproduct(productId)).then((res) => {
       const receive = res.payload;
       const data = { ...receive, quantity };
-      const dataitem = { data, addToast };
+      const dataitem = { data, toast };
       dispatch(addtocart(dataitem));
     });
   };
@@ -204,7 +192,7 @@ const ProductDetail = () => {
     dispatch(getAproduct(productId)).then((res: any) => {
       const receive = res.payload;
       const data = { ...receive, quantity };
-      const dataitem = { data, addToast };
+      const dataitem = { data, toast };
       dispatch(addToWishlist(dataitem)).then((res: any) => {
         dispatch(getAllproduct()).then((res: any) => {});
       });
@@ -388,6 +376,7 @@ const ProductDetail = () => {
                   className="flex cursor-pointer border border-white bg-red-800 dark:bg-blue-800 text-white dark:text-white antialiased font-bold hover:opacity-50 hover:text-white dark:hover:bg-red-700 px-4 py-2"
                 >
                   <HeartIcon width={30} height={20} /> <div></div>
+                  <ToastContainer />
                 </div>
 
                 <div
@@ -396,6 +385,7 @@ const ProductDetail = () => {
                 >
                   <ShoppingBagIcon width={30} height={20} />{" "}
                   <div>Add To Cart</div>
+                  <ToastContainer />
                 </div>
               </div>
 

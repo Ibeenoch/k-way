@@ -4,14 +4,12 @@ import { MinusIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { fetchAllUsersCartAsync, selectAllCart } from "./cartSlice";
 import { Link, useNavigate } from "react-router-dom";
-import { useToasts } from "react-toast-notifications";
 import { selectUser } from "../auth/authSlice";
 
 const Cart = () => {
   const [open, setOpen] = useState(true);
   const { carts } = useAppSelector(selectAllCart);
   const user = JSON.parse(localStorage.getItem("user") as any);
-  const { addToast } = useToasts();
 
   const navigate = useNavigate();
 

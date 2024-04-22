@@ -10,12 +10,13 @@ interface ChildComponentProp {
 }
 const OrdersPagination: React.FC<ChildComponentProp> = ({ totalCount }) => {
   const dispatch = useDispatch();
-  const { user } = useAppSelector(selectUser);
+  const user = JSON.parse(localStorage.getItem('user') as any)
   const token = user && user.token;
   const iTemLimitPerPage = 1;
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState<any>(1);
 
   const totalItem = totalCount;
+
   const handlePages = (num: number) => {
     setPage(num);
     const limit = iTemLimitPerPage;
@@ -29,19 +30,34 @@ const OrdersPagination: React.FC<ChildComponentProp> = ({ totalCount }) => {
   };
 
   const handlePrevious = (num: number) => {
+    console.log('num ', num)
     setPage(num);
     const limit = iTemLimitPerPage;
     const currentPage = num;
     const data = { limit, currentPage };
-    dispatch(getOrderPagination(data) as any);
+    const item = {
+      token,
+      data,
+    };
+    dispatch(getOrderPagination(item) as any).then((res: any) => {
+      console.log('all orders ', res.payload)
+    });
   };
+console.log('current page ', page, totalItem)
 
   const handleNext = (num: number) => {
+    console.log('num ', num)
     setPage(num);
     const limit = iTemLimitPerPage;
     const currentPage = num;
     const data = { limit, currentPage };
-    dispatch(getOrderPagination(data) as any);
+    const item = {
+      token,
+      data,
+    };
+    dispatch(getOrderPagination(item) as any).then((res: any) => {
+      console.log('all orders ', res.payload)
+    });
   };
   return (
     <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
@@ -103,7 +119,7 @@ const OrdersPagination: React.FC<ChildComponentProp> = ({ totalCount }) => {
 
             <div
               onClick={() =>
-                handleNext(page >= totalItem - 1 ? totalItem : page + 1)
+                handleNext(page >= totalItem - 1 ? totalItem - 1 : page + 1)
               }
               className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
             >

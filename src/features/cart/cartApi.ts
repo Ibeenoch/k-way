@@ -11,7 +11,7 @@ export const fetchAllUsersCart = async () => {
   }
 };
 
-export const addToCart = async (data: any, addToast: any) => {
+export const addToCart = async (data: any, toast: any) => {
   try {
     const checkItem = await JSON.parse(localStorage.getItem("cart") as any);
     if (
@@ -23,24 +23,40 @@ export const addToCart = async (data: any, addToast: any) => {
       let checkItem = [];
       checkItem.push(data);
       localStorage.setItem("cart", JSON.stringify(checkItem));
-      addToast("product successfully added to cart", {
-        appearance: "success",
-        autoDismiss: true,
-      });
+      toast.success("product successfully added to cart",
+      {
+       position: "top-center",
+       autoClose: 6000, //6 seconds
+       hideProgressBar: true,
+       closeOnClick: true,
+       pauseOnHover: true,
+       draggable: false,
+     });
     } else {
       const index = checkItem.find((item: any) => item.id === data.id);
       if (!index) {
         checkItem.push(data);
         localStorage.setItem("cart", JSON.stringify(checkItem));
-        addToast("product successfully added to cart", {
-          appearance: "success",
-          autoDismiss: true,
-        });
+        toast.success("product successfully added to cart",
+        {
+         position: "top-center",
+         autoClose: 6000, //6 seconds
+         hideProgressBar: true,
+         closeOnClick: true,
+         pauseOnHover: true,
+         draggable: false,
+       });
+       
       } else {
-        addToast("The product already exist in the cart", {
-          appearance: "error",
-          autoDismiss: true,
-        });
+        toast.error("The product already exist in the cart",
+        {
+         position: "top-center",
+         autoClose: 6000, //6 seconds
+         hideProgressBar: true,
+         closeOnClick: true,
+         pauseOnHover: true,
+         draggable: false,
+       });
         return;
       }
     }

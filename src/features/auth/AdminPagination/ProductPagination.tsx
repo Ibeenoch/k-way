@@ -22,6 +22,7 @@ const ProductPagination: React.FC<ChildComponentProp> = ({ totalCount }) => {
   };
 
   const handlePrevious = (num: number) => {
+    console.log('num ', num)
     setPage(num);
     const limit = iTemLimitPerPage;
     const currentPage = num;
@@ -30,6 +31,7 @@ const ProductPagination: React.FC<ChildComponentProp> = ({ totalCount }) => {
   };
 
   const handleNext = (num: number) => {
+    console.log('num ', num)
     setPage(num);
     const limit = iTemLimitPerPage;
     const currentPage = num;

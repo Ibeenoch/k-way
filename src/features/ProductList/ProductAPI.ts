@@ -124,11 +124,8 @@ export const deleteProduct = async (product: any) => {
           Authorization: `Bearer ${token}`,
         },
       };
-
-      const res = await axios.delete(
-        `${API}/product/delete/${productId}`,
-        option
-      );
+console.log("productId ", productId)
+      const res = await axios.delete( `${API}/product/delete/${productId}`, option );
       return res;
     }
   } catch (error) {

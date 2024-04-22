@@ -3,7 +3,8 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { fetchAllUsersCartAsync, selectAllCart } from "../cart/cartSlice";
 import pics from "../../images/Untitled.jpg";
-import { useToasts } from "react-toast-notifications";
+import { toast, ToastContainer, Bounce } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { MinusIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 import {
@@ -43,7 +44,6 @@ const CheckOut = () => {
   const [addressSelected, setAddressSelected] = useState<number>(0);
   const [selectedOption2, setSelectedOption2] = useState<string>("");
   const { carts } = useAppSelector(selectAllCart);
-  const { addToast } = useToasts();
   const { checkoutInfo } = useAppSelector(selectCheckout);
   const user = JSON.parse(localStorage.getItem("user") as any);
 
@@ -135,10 +135,16 @@ const CheckOut = () => {
     e.preventDefault();
     const add = { ...checkOutForm, id };
     if (user && !user.isVerified) {
-      addToast("Please Verify Your Email Address First to Continue", {
-        appearance: "success",
-        autoDismiss: true,
-      });
+      toast.info("Please Verify Your Email Address First to Continue",
+      {
+       position: "top-center",
+       autoClose: 6000, //6 seconds
+       hideProgressBar: true,
+       closeOnClick: true,
+       pauseOnHover: true,
+       draggable: false,
+       transition: Bounce,
+     });
       return;
     }
 
@@ -160,10 +166,16 @@ const CheckOut = () => {
                   res.payload !== undefined
                 ) {
                   console.log("ahjahshahjas");
-                  addToast("Profile Updated", {
-                    appearance: "info",
-                    autoDismiss: true,
-                  });
+                  toast.info("Profile Updated",
+                  {
+                   position: "top-center",
+                   autoClose: 6000, //6 seconds
+                   hideProgressBar: true,
+                   closeOnClick: true,
+                   pauseOnHover: true,
+                   draggable: false,
+                   transition: Bounce,
+                 });
                   navigate(`/profile/${res.payload.id}`);
                 }
               });
@@ -184,10 +196,16 @@ const CheckOut = () => {
                 console.log("hjhjaashahshahjas");
                 if (res && res.payload) {
                   console.log("ahjahshahjas");
-                  addToast("Address Updated", {
-                    appearance: "info",
-                    autoDismiss: true,
-                  });
+                  toast.info("Address Updated",
+                  {
+                   position: "top-center",
+                   autoClose: 6000, //6 seconds
+                   hideProgressBar: true,
+                   closeOnClick: true,
+                   pauseOnHover: true,
+                   draggable: false,
+                   transition: Bounce,
+                 });
                 }
               });
             }
@@ -223,13 +241,17 @@ const CheckOut = () => {
   const handleFlutterPayment = useFlutterwave(config);
 
   const informUser = () => {
-    addToast(
-      "Please Select an existing address and online payment method to pay online",
-      {
-        appearance: "error",
-        autoDismiss: true,
-      }
-    );
+    toast.info("Please Select an existing address and online payment method to pay online",
+    {
+     position: "top-center",
+     autoClose: 6000, //6 seconds
+     hideProgressBar: true,
+     closeOnClick: true,
+     pauseOnHover: true,
+     draggable: false,
+     transition: Bounce,
+   });
+   
   };
 
   if (user && Object.keys(user).length) {
@@ -441,6 +463,7 @@ const CheckOut = () => {
                 className="rounded-md bg-red-800 px-3 py-2 mb-3 text-sm font-semibold text-white shadow-sm hover:bg-red-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 {user && !user.address ? "Create Profile" : "Change Address"}
+                <ToastContainer />
               </button>
             </div>
 
@@ -677,10 +700,16 @@ const CheckOut = () => {
                                 })
                                 .then((res: any) => {
                                   localStorage.removeItem("cart");
-                                  addToast("Thank you for placing from us", {
-                                    appearance: "info",
-                                    autoDismiss: true,
-                                  });
+                                  toast.success("Thank you for making purchase from us",
+                                  {
+                                   position: "top-center",
+                                   autoClose: 6000, //6 seconds
+                                   hideProgressBar: true,
+                                   closeOnClick: true,
+                                   pauseOnHover: true,
+                                   draggable: false,
+                                   transition: Bounce,
+                                 });
                                   navigate(`/order/success/${navigateId}`);
                                 });
                             }
@@ -696,6 +725,7 @@ const CheckOut = () => {
                   <div className="flex items-center justify-center rounded-md border border-transparent rounded-md bg-red-800 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-red-700">
                     Pay Now
                   </div>
+                  <ToastContainer />
                 </div>
               ) : (
                 <div
@@ -705,6 +735,7 @@ const CheckOut = () => {
                   <div className="flex items-center justify-center rounded-md border rounded-md border-transparent bg-red-800 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-red-700">
                     Pay Now
                   </div>
+                  <ToastContainer />
                 </div>
               )}
 

@@ -13,7 +13,7 @@ const PaymentPagination: React.FC<ChildComponentProp> = ({ totalCount }) => {
   const dispatch = useDispatch();
   const iTemLimitPerPage = 1;
   const [page, setPage] = useState(1);
-  const { user } = useAppSelector(selectUser);
+  const user = JSON.parse(localStorage.getItem('user') as any)
   const token = user && user.token;
 
   const totalItem = totalCount;
@@ -30,7 +30,8 @@ const PaymentPagination: React.FC<ChildComponentProp> = ({ totalCount }) => {
     setPage(num);
     const limit = iTemLimitPerPage;
     const currentPage = num;
-    const data = { limit, currentPage };
+    const item = { limit, currentPage };
+    const data = { item, token };
     dispatch(getpaymentPagination(data) as any);
   };
 
@@ -38,7 +39,8 @@ const PaymentPagination: React.FC<ChildComponentProp> = ({ totalCount }) => {
     setPage(num);
     const limit = iTemLimitPerPage;
     const currentPage = num;
-    const data = { limit, currentPage };
+    const item = { limit, currentPage };
+    const data = { item, token };
     dispatch(getpaymentPagination(data) as any);
   };
 

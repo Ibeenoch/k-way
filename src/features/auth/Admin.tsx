@@ -31,7 +31,8 @@ import {
 import { ChangeEvent, Fragment, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import pics from "../../images/HP Newest Pavilion 15.6_ HD Touchscreen Anti-Glare Laptop__4.jpg";
-import { useToasts } from "react-toast-notifications";
+import { toast, ToastContainer, Bounce } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css";
 import { format } from "date-fns";
 import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
 import ShippingDetails from "./ShippingDetails";
@@ -98,6 +99,7 @@ const Admin = () => {
 
   useEffect(() => {
     dispatch(getAllOrders(token)).then((res: any) => {
+      console.log('total order ', res.payload.length )
       setTotalOrderCount(res.payload.length);
     });
   }, [dispatch, navigate]);
@@ -174,10 +176,17 @@ const Admin = () => {
             localStorage.setItem("cart", JSON.stringify(checkItem));
             dispatch(fetchAllUsersCartAsync()).then(() => {
               dispatch(getAllproduct()).then(() => {
-                addToast("Product Succesfully deleted", {
-                  appearance: "success",
-                  autoDismiss: true,
-                });
+                toast.success( "Product Succesfully deleted",
+                {
+                 position: "top-center",
+                 autoClose: 6000, //6 seconds
+                 hideProgressBar: true,
+                 closeOnClick: true,
+                 pauseOnHover: true,
+                 draggable: false,
+                 transition: Bounce,
+               });
+               
               });
             });
           } else {
@@ -185,10 +194,17 @@ const Admin = () => {
             localStorage.setItem("cart", JSON.stringify(checkItem));
             dispatch(fetchAllUsersCartAsync()).then(() => {
               dispatch(getAllproduct()).then(() => {
-                addToast("Product Succesfully deleted", {
-                  appearance: "success",
-                  autoDismiss: true,
-                });
+                toast.success( "Product Succesfully deleted",
+                {
+                 position: "top-center",
+                 autoClose: 6000, //6 seconds
+                 hideProgressBar: true,
+                 closeOnClick: true,
+                 pauseOnHover: true,
+                 draggable: false,
+                 transition: Bounce,
+               });
+                
               });
             });
           }
@@ -207,10 +223,17 @@ const Admin = () => {
         if (res && res.payload && res.payload.id) {
           dispatch(getAllOrders(token)).then((res: any) => {
             if (res && res.payload) {
-              addToast("Order successfully deleted", {
-                appearance: "success",
-                autoDismiss: true,
-              });
+              toast.success( "Order Succesfully deleted",
+              {
+               position: "top-center",
+               autoClose: 6000, //6 seconds
+               hideProgressBar: true,
+               closeOnClick: true,
+               pauseOnHover: true,
+               draggable: false,
+               transition: Bounce,
+             });
+
             }
           });
         }
@@ -226,10 +249,16 @@ const Admin = () => {
       const data = { id, token };
       dispatch(deleteATransaction(data)).then((res: any) => {
         if (res && res.payload && res.payload.id) {
-          addToast("Order successfully deleted", {
-            appearance: "success",
-            autoDismiss: true,
-          });
+          toast.success( "Order Succesfully deleted",
+          {
+           position: "top-center",
+           autoClose: 6000, //6 seconds
+           hideProgressBar: true,
+           closeOnClick: true,
+           pauseOnHover: true,
+           draggable: false,
+           transition: Bounce,
+         });
         }
       });
     }
@@ -248,10 +277,16 @@ const Admin = () => {
 
       dispatch(deleteUser(data)).then((res: any) => {
         if (res && res.payload && res.payload.id) {
-          addToast(`${name} account is successfully deleted`, {
-            appearance: "info",
-            autoDismiss: true,
-          });
+          toast.success( `${name} account is successfully deleted`,
+          {
+           position: "top-center",
+           autoClose: 6000, //6 seconds
+           hideProgressBar: true,
+           closeOnClick: true,
+           pauseOnHover: true,
+           draggable: false,
+           transition: Bounce,
+         });
         }
       });
     }
@@ -265,12 +300,10 @@ const Admin = () => {
     });
   };
 
-  const { addToast } = useToasts();
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState<boolean>(false);
   const [totalCount, setTotalCount] = useState<number>(0);
 
   const fetchCategories = (name: string) => {
-    //options is an array of objects
     if (name === "All Product") {
       setIsProduct(true);
       setIsUser(false);
@@ -334,7 +367,7 @@ const Admin = () => {
     }
   };
 
-  const sendUpdate = (id: any) => {
+  const sendUpdate = (id: any, index: number) => {
     const status = theStatus[theStatus.length - 1];
     const data = {
       id,
@@ -343,8 +376,15 @@ const Admin = () => {
     };
 
     dispatch(orderUpdate(data)).then((res: any) => {
-      if (res.payload.id) {
-        dispatch(getAllOrders(token));
+      if(res.payload.id) {
+        const limit = 1;
+        const currentPage = index;
+        const data = { limit, currentPage };
+        const item = { token, data };
+        console.log('order data ', item)
+        // dispatch(getOrderPagination(item) as any).then((res: any) => {
+        //   console.log('order res ', index, res.payload)
+        // });
       }
     });
   };
@@ -636,6 +676,7 @@ const Admin = () => {
                                           color="red"
                                           className="cursor-pointer"
                                         />{" "}
+                                        <ToastContainer />
                                       </div>
                                     </div>
                                   ))}
@@ -794,11 +835,7 @@ const Admin = () => {
                                                 </strong>
                                                 <select
                                                   className="w-1/8 lg:w-1/6 p-2 border border-red-800 rounded"
-                                                  value={
-                                                    theStatus
-                                                      ? theStatus[0]
-                                                      : item.status
-                                                  }
+                                                  value={item.status}
                                                   onChange={(e) =>
                                                     handleStatus(e, index)
                                                   }
@@ -818,7 +855,7 @@ const Admin = () => {
                                                 </select>
                                                 <button
                                                   onClick={() =>
-                                                    sendUpdate(item.id)
+                                                    sendUpdate(item.id, index)
                                                   }
                                                   className="rounded-md bg-red-800 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                                                 >
@@ -840,6 +877,7 @@ const Admin = () => {
                                           color="red"
                                           className="cursor-pointer"
                                         />{" "}
+                                        <ToastContainer />
                                       </div>
                                     </div>
                                   ))}
@@ -930,6 +968,7 @@ const Admin = () => {
                                               color="red"
                                               className="cursor-pointer"
                                             />{" "}
+                                            <ToastContainer />
                                           </div>
                                         </div>
                                       </li>
@@ -1089,6 +1128,7 @@ const Admin = () => {
                                             color="red"
                                             className="cursor-pointer"
                                           />{" "}
+                                          <ToastContainer />
                                         </div>
                                       </div>
                                     )

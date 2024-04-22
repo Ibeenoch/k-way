@@ -9,7 +9,7 @@ export const fetchAllOrder = async (token: any) => {
         Authorization: `Bearer ${token}`,
       },
     };
-
+console.log('send token ', token)
     const res = await axios.get(API + `/orders`, option);
     return res;
   } catch (error) {
@@ -28,9 +28,10 @@ export const updateAnOrder = async (data: any) => {
     const option = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        "Authorization": `Bearer ${token}`,
       },
     };
+    console.log('update data ', data)
 
     const res = await axios.put(API + `/order/${id}`, message, option);
     return res;
@@ -65,7 +66,7 @@ export const fetchOrderPagination = async (item: any) => {
     const option = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        "Authorization": `Bearer ${token}`,
       },
     };
 

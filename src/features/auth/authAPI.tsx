@@ -104,6 +104,26 @@ export const fetchAUser = async (data: any) => {
   }
 };
 
+export const fetchOtherUser = async (data: any) => {
+  try {
+    console.log("data ", data);
+    const id = data.id;
+    const token = data.token;
+    const option = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const res = await axios.get(API + `/other/${id}`, option);
+    console.log("agasshhbh ", res);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const fetchAllUser = async (token: any) => {
   try {
     const option = {
