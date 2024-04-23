@@ -516,7 +516,7 @@ const ProductDetail = () => {
         {!productReview.length ? (
           <>
             <div>
-              <h2 className="font-manrope font-bold text-3xl mt-10 sm:text-4xl leading-10 text-black mb-8 text-center">
+              <h2 className="ml-6 text-semibold whitespace-normal break-words font-poppins text-center">
                 No Customer Reviews &amp; Rating Available
               </h2>
             </div>
@@ -526,7 +526,7 @@ const ProductDetail = () => {
             <section className="py-24 relative mt-10">
               <div className="w-full max-w-7xl px-4 md:px-5 lg:px-6 mx-auto">
                 <div className="">
-                  <h2 className="font-manrope font-bold text-3xl sm:text-4xl leading-10 text-black mb-8 text-center">
+                  <h2 className="ml-6 text-semibold whitespace-normal break-words font-poppins text-center">
                     Customer reviews &amp; rating
                   </h2>
                   <div className="grid grid-cols-12 mb-11">

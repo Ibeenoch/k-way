@@ -18,7 +18,7 @@ const ShippingDetails = () => {
               <strong>Product Shipping Details</strong>{" "}
             </h3>
             <div className="flex items-center my-1">
-              <div className="ml-6 text-semibold whitespace-normal break-words font-poppins text-center">
+              <div className="ml-6 text-semibold whitespace-normal break-words font-poppins">
                 {" "}
                 <strong>Shipping Address:</strong>{" "}
                 {aUserTransactions &&
@@ -37,7 +37,7 @@ const ShippingDetails = () => {
               </div>
             </div>
             <div className="flex items-center my-1">
-              <div className="ml-6 text-semibold whitespace-normal break-words font-poppins text-center">
+              <div className="ml-6 text-semibold whitespace-normal break-words font-poppins">
                 {" "}
                 <strong>Status:</strong>{" "}
                 {aUserTransactions && aUserTransactions[0].order.status}
