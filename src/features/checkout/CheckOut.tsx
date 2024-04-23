@@ -134,7 +134,7 @@ const CheckOut = () => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     const add = { ...checkOutForm, id };
-    if (user && !user.isVerified) {
+    if (user && user.role !== 'ADMIN' && !user.isVerified) {
       toast.info("Please Verify Your Email Address First to Continue",
       {
        position: "top-center",
