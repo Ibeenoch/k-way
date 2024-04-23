@@ -764,7 +764,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                                           objectPosition: "center",
                                           cursor: "pointer",
                                         }}
-                                        className="object-containobject-center w-[70%] h-full"
+                                        className="object-contain object-center w-[70%] h-full"
                                       />
                                     </div>
 

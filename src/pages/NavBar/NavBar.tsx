@@ -149,6 +149,7 @@ const NavBar: React.FC<Child> = ({ children, isOpen }) => {
                         className="flex-shrink-0 cursor-pointer"
                       >
                         <img
+                          onClick={handleLogoClicked}
                           className="h-8 w-8"
                           src={icon}
                           alt="Your Company"
@@ -338,6 +339,7 @@ const NavBar: React.FC<Child> = ({ children, isOpen }) => {
                   <div className="flex items-center px-5">
                     <div onClick={handleProfile} className="flex-shrink-0">
                       <img
+                       onClick={handleProfile}
                         className="h-10 w-10 rounded-full"
                         src={(user && user?.image && user?.image?.url) || pics}
                         alt=""
