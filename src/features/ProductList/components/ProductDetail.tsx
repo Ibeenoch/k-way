@@ -183,7 +183,7 @@ const ProductDetail = () => {
       const receive = res.payload;
       const data = { ...receive, quantity };
       const dataitem = { data, toast };
-      dispatch(addtocart(dataitem))
+      dispatch(addtocart(dataitem));
     });
   };
 

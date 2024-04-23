@@ -407,18 +407,18 @@ if(aUserOrderedProducts){
                                     onClick={handlebtn1}
                                     className={
                                       selected1
-                                        ? "flex-1 rounded-full bg-red-800 hover:bg-red-700 text-white hover:text-white font-bold hover:bg-red-700 px-4 py-2"
-                                        : "flex-1 rounded-full bg-white border border-red-800 hover:bg-red-700 hover:text-white dark:border-gray-700 font-semibold text-red-800 dark:text-white px-4 py-2"
+                                        ? "flex-1 rounded-full bg-red-800 hover:bg-red-700 text-white hover:text-white font-semibold hover:bg-red-700 px-3 py-1"
+                                        : "flex-1 rounded-full bg-white border border-red-800 hover:bg-red-700 hover:text-white dark:border-gray-700 font-semibold text-red-800 dark:text-white px-3 py-1"
                                     }
                                   >
-                                    Purchase History
+                                    Order History
                                   </button>
                                   <button
                                     onClick={handlebtn2}
                                     className={
                                       selected2
-                                        ? "flex-1 rounded-full bg-red-800 hover:bg-red-700 text-white font-bold hover:bg-red-700 px-4 py-2"
-                                        : "flex-1 rounded-full bg-white border border-red-800 hover:bg-red-700 dark:border-gray-700 font-semibold text-red-800 hover:text-white px-4 py-2"
+                                        ? "flex-1 rounded-full bg-red-800 hover:bg-red-700 text-white font-semibold hover:bg-red-700 px-3 py-1"
+                                        : "flex-1 rounded-full bg-white border border-red-800 hover:bg-red-700 dark:border-gray-700 font-semibold text-red-800 hover:text-white px-3 py-1"
                                     }
                                   >
                                     Your Profile
@@ -436,7 +436,7 @@ if(aUserOrderedProducts){
                                     {!aUserOrderedProducts.length ? (
                                       <>
                                         <div className="flex items-center p-4 my-1">
-                                          <div className="ml-6 truncate p-2 text-lg font-poppins text-center">
+                                          <div className="ml-6 truncate p-2 text-md font-poppins text-center">
                                             No transaction history
                                           </div>
                                         </div>
@@ -444,13 +444,13 @@ if(aUserOrderedProducts){
                                     ) : (
                                       aUserOrderedProducts.map((item: any) => (
                                         <>
-                                          <h3 className="flex text-xl py-2 text-bold justify-center">
+                                          <h3 className="flex text-md py-2 text-semibold justify-center">
                                             <strong>
                                               Product Ordered Details
                                             </strong>{" "}
                                           </h3>
                                           <div className="flex items-center my-1">
-                                            <div className="ml-6 truncate text-lg font-poppins text-center">
+                                            <div className="ml-6 truncate text-md whitespace-normal break-words font-poppins text-center">
                                               {" "}
                                               <strong>
                                                 Product Name:
@@ -460,7 +460,7 @@ if(aUserOrderedProducts){
                                           </div>
 
                                           <div className="flex items-center my-1">
-                                            <div className="ml-6 truncate text-lg font-poppins text-center">
+                                            <div className="ml-6 truncate text-md whitespace-normal break-words font-poppins text-center">
                                               {" "}
                                               <strong>Price Per Item:</strong> $
                                               {item.price}
@@ -468,7 +468,7 @@ if(aUserOrderedProducts){
                                           </div>
 
                                           <div className="flex items-center my-1">
-                                            <div className="ml-6 truncate text-lg font-poppins text-center">
+                                            <div className="ml-6 truncate text-md whitespace-normal break-words font-poppins text-center">
                                               {" "}
                                               <strong>
                                                 Quantity Purchased:
@@ -478,7 +478,7 @@ if(aUserOrderedProducts){
                                           </div>
 
                                           <div className="flex items-center my-1">
-                                            <div className="ml-6 truncate text-lg font-poppins text-center">
+                                            <div className="ml-6 truncate text-md whitespace-normal break-words font-poppins text-center">
                                               {" "}
                                               <strong>
                                                 Product Brand:
@@ -488,7 +488,7 @@ if(aUserOrderedProducts){
                                           </div>
 
                                           <div className="flex items-center my-1">
-                                            <div className="ml-6 truncate text-lg font-poppins text-center">
+                                            <div className="ml-6 truncate text-md whitespace-normal break-words font-poppins text-center">
                                               {" "}
                                               <strong>
                                                 Product Category:
@@ -503,12 +503,12 @@ if(aUserOrderedProducts){
                                   </>
                                 ) : (
                                   <div className="profile info">
-                                    <h3 className="flex text-xl py-2 text-bold justify-center">
+                                    <h3 className="flex text-md whitespace-normal break-words py-2 text-semibold justify-center">
                                       <strong>Personal Details</strong>{" "}
                                     </h3>
 
                                     <div className="flex items-center my-1">
-                                      <div className="flex ml-6 gap-6 truncate text-lg font-poppins text-center">
+                                      <div className="flex ml-6 gap-6 truncate text-md whitespace-normal break-words font-poppins text-center">
                                         <strong className="flex  align-center">
                                           <UserIcon
                                             width={25}
@@ -522,7 +522,7 @@ if(aUserOrderedProducts){
                                     </div>
 
                                     <div className="flex items-center my-1">
-                                      <div className="flex ml-6 gap-6 truncate text-lg font-poppins text-center">
+                                      <div className="flex ml-6 gap-6 truncate text-md whitespace-normal break-words font-poppins text-center">
                                         <strong className="flex  align-center">
                                           <PhoneIcon
                                             width={25}
@@ -536,7 +536,7 @@ if(aUserOrderedProducts){
                                     </div>
 
                                     <div className="flex items-center my-1">
-                                      <div className="flex ml-6 gap-6 truncate text-lg font-poppins text-center">
+                                      <div className="flex ml-6 gap-6 truncate text-md whitespace-normal break-words font-poppins text-center">
                                         <strong className="flex  align-center">
                                           <HomeIcon
                                             width={25}
@@ -550,7 +550,7 @@ if(aUserOrderedProducts){
                                     </div>
 
                                     <div className="flex items-center my-1">
-                                      <div className="flex ml-6 gap-6 truncate text-lg font-poppins text-center">
+                                      <div className="flex ml-6 gap-6 truncate text-md whitespace-normal break-words font-poppins text-center">
                                         <strong className="flex  align-center">
                                           <EnvelopeIcon
                                             width={25}
@@ -564,7 +564,7 @@ if(aUserOrderedProducts){
                                     </div>
 
                                     <div className="flex items-center my-1">
-                                      <div className="flex ml-6 gap-6 truncate text-lg font-poppins text-center">
+                                      <div className="flex ml-6 gap-6 truncate text-md whitespace-normal break-words font-poppins text-center">
                                         <strong className="flex  align-center">
                                           <GlobeAltIcon
                                             width={25}
@@ -579,7 +579,7 @@ if(aUserOrderedProducts){
                                     </div>
 
                                     <div className="flex items-center my-1">
-                                      <div className="flex ml-6 gap-6 truncate text-lg font-poppins text-center">
+                                      <div className="flex ml-6 gap-6 truncate text-md whitespace-normal break-words font-poppins text-center">
                                         <strong className="flex  align-center">
                                           <ChevronDoubleRightIcon
                                             width={25}
@@ -593,7 +593,7 @@ if(aUserOrderedProducts){
                                     </div>
 
                                     <div className="flex items-center my-1">
-                                      <div className="flex ml-6 gap-6 truncate text-lg font-poppins text-center">
+                                      <div className="flex ml-6 gap-6 truncate text-md whitespace-normal break-words font-poppins text-center">
                                         <strong className="flex  align-center">
                                           <UserGroupIcon
                                             width={25}
@@ -607,7 +607,7 @@ if(aUserOrderedProducts){
                                     </div>
 
                                     <div className="flex items-center my-1">
-                                      <div className="flex ml-6 gap-6 truncate text-lg font-poppins text-center">
+                                      <div className="flex ml-6 gap-6 truncate text-md whitespace-normal break-words font-poppins text-center">
                                         <strong className="flex  align-center">
                                           <CalendarDaysIcon
                                             width={25}
