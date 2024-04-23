@@ -179,7 +179,7 @@ const Admin = () => {
                 toast.success( "Product Succesfully deleted",
                 {
                  position: "top-center",
-                 autoClose: 6000, //6 seconds
+                 autoClose: 3000, //6 seconds
                  hideProgressBar: true,
                  closeOnClick: true,
                  pauseOnHover: true,
@@ -197,7 +197,7 @@ const Admin = () => {
                 toast.success( "Product Succesfully deleted",
                 {
                  position: "top-center",
-                 autoClose: 6000, //6 seconds
+                 autoClose: 3000, //6 seconds
                  hideProgressBar: true,
                  closeOnClick: true,
                  pauseOnHover: true,
@@ -226,7 +226,7 @@ const Admin = () => {
               toast.success( "Order Succesfully deleted",
               {
                position: "top-center",
-               autoClose: 6000, //6 seconds
+               autoClose: 3000, //6 seconds
                hideProgressBar: true,
                closeOnClick: true,
                pauseOnHover: true,
@@ -252,7 +252,7 @@ const Admin = () => {
           toast.success( "Order Succesfully deleted",
           {
            position: "top-center",
-           autoClose: 6000, //6 seconds
+           autoClose: 3000, //6 seconds
            hideProgressBar: true,
            closeOnClick: true,
            pauseOnHover: true,
@@ -280,7 +280,7 @@ const Admin = () => {
           toast.success( `${name} account is successfully deleted`,
           {
            position: "top-center",
-           autoClose: 6000, //6 seconds
+           autoClose: 3000, //6 seconds
            hideProgressBar: true,
            closeOnClick: true,
            pauseOnHover: true,

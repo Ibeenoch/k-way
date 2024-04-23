@@ -47,7 +47,7 @@ const ChangePassword: React.FC = () => {
           toast.success( "Password Changed Successfully, Please Login with the new password to continue",
           {
            position: "top-center",
-           autoClose: 6000, //6 seconds
+           autoClose: 3000, //6 seconds
            hideProgressBar: true,
            closeOnClick: true,
            pauseOnHover: true,
@@ -61,7 +61,7 @@ const ChangePassword: React.FC = () => {
       toast.error( "the password must be at least 8 character, the password should contain a upper case letter, the password should contain a lower case letter, the password should contain a number, the password should contain a special character e.g Password1!",
       {
        position: "top-center",
-       autoClose: 6000, //6 seconds
+       autoClose: 3000, //6 seconds
        hideProgressBar: true,
        closeOnClick: true,
        pauseOnHover: true,

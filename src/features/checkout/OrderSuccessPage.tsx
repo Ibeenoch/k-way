@@ -40,7 +40,7 @@ const OrderSuccessPage = () => {
         toast.success("Thank you for your purchase",
         {
          position: "top-center",
-         autoClose: 6000, //6 seconds
+         autoClose: 3000, //6 seconds
          hideProgressBar: true,
          closeOnClick: true,
          pauseOnHover: true,

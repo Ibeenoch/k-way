@@ -160,7 +160,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                 toast.success("Product Succesfully deleted",
                 {
                  position: "top-center",
-                 autoClose: 6000, //6 seconds
+                 autoClose: 3000, //6 seconds
                  hideProgressBar: true,
                  closeOnClick: true,
                  pauseOnHover: true,
@@ -178,7 +178,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                 toast.success("Product Succesfully deleted",
                 {
                  position: "top-center",
-                 autoClose: 6000, //6 seconds
+                 autoClose: 3000, //6 seconds
                  hideProgressBar: true,
                  closeOnClick: true,
                  pauseOnHover: true,

@@ -173,7 +173,7 @@ if(aUserOrderedProducts){
     toast.info("Uploading image please wait...",
     {
      position: "top-center",
-     autoClose: 7000, //7 seconds
+     autoClose: 6000, //7 seconds
      hideProgressBar: true,
      closeOnClick: true,
      pauseOnHover: true,
@@ -201,7 +201,7 @@ if(aUserOrderedProducts){
           toast.success("Profile photo uploaded Added!!!",
           {
            position: "top-center",
-           autoClose: 6000, //6 seconds
+           autoClose: 3000, //6 seconds
            hideProgressBar: true,
            closeOnClick: true,
            pauseOnHover: true,

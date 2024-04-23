@@ -90,7 +90,7 @@ const ProductForm = () => {
           toast.error("To Update the Product images, Please Ensure to Add a Minimum of 4 photos of the Product!!!",
            {
             position: "top-center",
-            autoClose: 6000, //6 seconds
+            autoClose: 3000, //6 seconds
             hideProgressBar: true,
             closeOnClick: true,
             pauseOnHover: true,
@@ -167,7 +167,7 @@ const ProductForm = () => {
         toast.error("Please Ensure to add all fields",
         {
          position: "top-center",
-         autoClose: 6000, //6 seconds
+         autoClose: 3000, //6 seconds
          hideProgressBar: true,
          closeOnClick: true,
          pauseOnHover: true,
@@ -181,7 +181,7 @@ const ProductForm = () => {
         toast.error("Please Ensure to Add a Minimum of 4 photos of the Product!!!",
         {
          position: "top-center",
-         autoClose: 6000, //6 seconds
+         autoClose: 3000, //6 seconds
          hideProgressBar: true,
          closeOnClick: true,
          pauseOnHover: true,
@@ -222,7 +222,7 @@ const ProductForm = () => {
             toast.error("Something went wrong",
             {
              position: "top-center",
-             autoClose: 6000, //6 seconds
+             autoClose: 3000, //6 seconds
              hideProgressBar: true,
              closeOnClick: true,
              pauseOnHover: true,
@@ -236,7 +236,7 @@ const ProductForm = () => {
             toast.success("Product Successfully Added!!!",
             {
              position: "top-center",
-             autoClose: 6000, //6 seconds
+             autoClose: 3000, //6 seconds
              hideProgressBar: true,
              closeOnClick: true,
              pauseOnHover: true,
