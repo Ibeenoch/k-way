@@ -135,7 +135,7 @@ if(aUserOrderedProducts){
     const findstate = users.find((person: any) => person.id.toString() === id )
     let userstate = findstate.state;
     console.log('other state ', userstate)
-    return userstate.toUpperCase();
+    return userstate;
   }
 // id in useParams return a string not a number
 
@@ -143,7 +143,7 @@ if(aUserOrderedProducts){
     const findcountry = users.find((person: any) => person.id.toString() === id )
     let usercountry = findcountry.country;
     console.log('other state ', usercountry)
-    return usercountry.toUpperCase();
+    return usercountry;
   }
 
 
@@ -378,8 +378,8 @@ if(aUserOrderedProducts){
                                   <div className="py-2">
                                     <div></div>
                                     <div className="inline-flex text-gray-700 dark:text-gray-300 items-center">
-                                      { user.id === id ? user.state.toUpperCase() : getUserState(id)},{" "}
-                                      { user.id === id ? user.country.toUpperCase() : getUserCountry(id)}
+                                      { user.id === id ? user.state : getUserState(id)},{" "}
+                                      { user.id === id ? user.country : getUserCountry(id)}
                                     </div>
                                   </div>
                                 </div>
@@ -498,7 +498,7 @@ if(aUserOrderedProducts){
                                             fill="brown"
                                           />{" "}
                                         </strong>{" "}
-                                        {id === user.id.toString() ? user.fullName.toUpperCase() : otheruser.fullName.toUpperCase()}
+                                        {id === user.id.toString() ? user.fullName : otheruser.fullName}
                                       </div>
                                     </div>
 
