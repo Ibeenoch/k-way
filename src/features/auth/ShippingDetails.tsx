@@ -7,18 +7,18 @@ const ShippingDetails = () => {
 
   return (
     <>
-      {!aUserTransactions.length ? (
+      {aUserTransactions && !aUserTransactions.length ? (
         <div className="pl-5">No transaction record available</div>
       ) : (
         <div>
           <div className="orders" style={{ borderBottom: "2px gray solid" }}>
             {/* <h3>Shipping Details</h3> */}
-            <h3 className="flex text-xl py-2 text-bold justify-center">
+            <h3 className="flex text-semibold text-md py-2 text-semibold justify-center">
               {" "}
               <strong>Product Shipping Details</strong>{" "}
             </h3>
             <div className="flex items-center my-1">
-              <div className="ml-6 truncate text-lg font-poppins text-center">
+              <div className="ml-6 text-semibold whitespace-normal break-words font-poppins text-center">
                 {" "}
                 <strong>Shipping Address:</strong>{" "}
                 {aUserTransactions &&
@@ -37,7 +37,7 @@ const ShippingDetails = () => {
               </div>
             </div>
             <div className="flex items-center my-1">
-              <div className="ml-6 truncate text-lg  font-poppins text-center">
+              <div className="ml-6 text-semibold whitespace-normal break-words font-poppins text-center">
                 {" "}
                 <strong>Status:</strong>{" "}
                 {aUserTransactions && aUserTransactions[0].order.status}

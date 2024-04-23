@@ -150,7 +150,7 @@ const NavBar: React.FC<Child> = ({ children, isOpen }) => {
                       >
                         <img
                           onClick={handleLogoClicked}
-                          className="h-8 w-8"
+                          className="h-8 w-8 z-40"
                           src={icon}
                           alt="Your Company"
                         />

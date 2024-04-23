@@ -742,13 +742,8 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                                     )}
 
                                     <div
-                                      className="py-1"
-                                      style={{
-                                        width: "300px",
-                                        height: "200px",
-                                        overflow: "hidden",
-                                        cursor: "pointer",
-                                      }}
+                                      className="py-1 flex justify-center items-center h-full cursor-pointer"
+                                      
                                       onClick={() =>
                                         handleProductDetails(product.id)
                                       }
@@ -760,11 +755,8 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                                             : pics
                                         }
                                         alt=""
-                                        style={{
-                                          objectPosition: "center",
-                                          cursor: "pointer",
-                                        }}
-                                        className="object-contain object-center w-[70%] h-full"
+                                      
+                                        className="max-w-full max-h-full"
                                       />
                                     </div>
 
