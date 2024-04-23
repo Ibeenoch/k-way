@@ -336,14 +336,14 @@ const NavBar: React.FC<Child> = ({ children, isOpen }) => {
                 </div>
                 <div className="border-t border-gray-700 pb-3 pt-4">
                   <div className="flex items-center px-5">
-                    <div className="flex-shrink-0">
+                    <div onClick={handleProfile} className="flex-shrink-0">
                       <img
                         className="h-10 w-10 rounded-full"
                         src={(user && user?.image && user?.image?.url) || pics}
                         alt=""
                       />
                     </div>
-                    <div className="ml-3">
+                    <div className="ml-3" onClick={handleProfile}>
                       <div className="text-base font-medium leading-none text-gray-900">
                         {user?.fullName || "name"}
                       </div>

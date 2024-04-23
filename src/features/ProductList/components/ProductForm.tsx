@@ -20,6 +20,7 @@ const ProductForm = () => {
   const { product, status } = useAppSelector(selectProduct);
   const { user } = useAppSelector(selectUser);
   const { id } = useParams();
+  const [isPosting, setIsPosting] = useState<boolean>(false);
 
   type FormValues = {
     title: string;
@@ -79,12 +80,13 @@ const ProductForm = () => {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-
+    setIsPosting(true);
     if (id) {
       const token = user && user && user.token;
 
       if (images) {
         if (images.length < 4) {
+          setIsPosting(false);
           toast.error("To Update the Product images, Please Ensure to Add a Minimum of 4 photos of the Product!!!",
            {
             position: "top-center",
@@ -122,6 +124,7 @@ const ProductForm = () => {
           dispatch(updateproduct(products)).then((res: any) => {
             if (res && res.payload && res.payload.id) {
               dispatch(getAllproduct()).then(() => {
+                setIsPosting(false);
                 navigate("/");
               });
             }
@@ -144,6 +147,7 @@ const ProductForm = () => {
 
         dispatch(updateproduct(products)).then(() => {
           dispatch(getAllproduct()).then(() => {
+            setIsPosting(false);
             navigate("/");
           });
         });
@@ -159,6 +163,7 @@ const ProductForm = () => {
         !category ||
         !keywords
       ) {
+        setIsPosting(false);
         toast.error("Please Ensure to add all fields",
         {
          position: "top-center",
@@ -172,6 +177,7 @@ const ProductForm = () => {
        
         return;
       } else if (images.length < 4) {
+        setIsPosting(false);
         toast.error("Please Ensure to Add a Minimum of 4 photos of the Product!!!",
         {
          position: "top-center",
@@ -212,6 +218,7 @@ const ProductForm = () => {
             res.payload.response.data &&
             res.payload.response.data.error
           ) {
+            setIsPosting(false);
             toast.error("Something went wrong",
             {
              position: "top-center",
@@ -225,6 +232,7 @@ const ProductForm = () => {
 
             return;
           } else {
+            setIsPosting(false);
             toast.success("Product Successfully Added!!!",
             {
              position: "top-center",
@@ -501,15 +509,18 @@ const ProductForm = () => {
           <div className="mt-6 flex items-center justify-end gap-x-6">
             <button
               type="button"
-              className="text-sm font-semibold leading-6 text-gray-900"
+              className="text-sm font-semibold px-5 leading-6 text-gray-900"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="rounded-md bg-red-800 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              className="rounded-md bg-red-800 px-5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
-              {id ? "Update" : "Save"}
+              {id && isPosting ? "Loading..." :
+              id && !isPosting ? "Update" : 
+              !id && isPosting ? "Loading..." : 
+              "Create"}
               <ToastContainer />
             </button>
           </div>

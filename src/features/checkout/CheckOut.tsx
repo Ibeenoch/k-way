@@ -134,19 +134,6 @@ const CheckOut = () => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     const add = { ...checkOutForm, id };
-    if (user && user.role !== 'ADMIN' && !user.isVerified) {
-      toast.info("Please Verify Your Email Address First to Continue",
-      {
-       position: "top-center",
-       autoClose: 6000, //6 seconds
-       hideProgressBar: true,
-       closeOnClick: true,
-       pauseOnHover: true,
-       draggable: false,
-       transition: Bounce,
-     });
-      return;
-    }
 
     if (add) {
       if (user && !user.address) {
@@ -669,6 +656,16 @@ const CheckOut = () => {
                     handleFlutterPayment({
                       callback: (response: any) => {
                         if (response.status === "successful") {
+                          toast.info("please hold on while we process your order...",
+                          {
+                           position: "top-center",
+                           autoClose: 6000, //6 seconds
+                           hideProgressBar: true,
+                           closeOnClick: true,
+                           pauseOnHover: true,
+                           draggable: false,
+                           transition: Bounce,
+                         });
                           const shippingDetails = checkoutInfo[addressSelected];
                           const details = {
                             user,

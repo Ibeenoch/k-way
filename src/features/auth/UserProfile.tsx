@@ -27,6 +27,7 @@ const UserProfile = () => {
   const navigate = useNavigate();
   const [selected1, setSelected1] = useState(true);
   const [selected2, setSelected2] = useState(false);
+  const [isUpLoading, setIsUploading] = useState(false);
   const [image, setImage] = useState<any>([]);
   const { id } = useParams();
   const hiddleFileInput = useRef<HTMLInputElement>(null);
@@ -59,7 +60,8 @@ if(aUserOrderedProducts){
   }
 
   useEffect(() => {
-    const findtheUser = users.find((person: any) => person.id.toString() ===  id);
+    if(users){
+       const findtheUser = users.find((person: any) => person.id.toString() ===  id);
     if(id === user.id.toString()){
       const data = {
         id,
@@ -89,6 +91,9 @@ if(aUserOrderedProducts){
         }
       });
     }
+
+    };
+   
    
   }, []);
 
@@ -164,6 +169,17 @@ if(aUserOrderedProducts){
   };
 
   const submitBtn = () => {
+    setIsUploading(true);
+    toast.info("Uploading image please wait...",
+    {
+     position: "top-center",
+     autoClose: 7000, //7 seconds
+     hideProgressBar: true,
+     closeOnClick: true,
+     pauseOnHover: true,
+     draggable: false,
+     transition: Bounce,
+   });
     if (image) {
       const imageForm = new FormData();
       imageForm.append("fileupload", image);
@@ -174,11 +190,14 @@ if(aUserOrderedProducts){
         imageForm,
       };
       dispatch(uploadUserPhoto(data)).then((res: any) => {
+        console.log('image... ', res.payload)
         if (res && res.payload && res.payload.image && res.payload.image.url) {
           const token = res.payload.token;
           const id = res.payload.id;
           const data = { token, id };
-          console.log("uploading ");
+          console.log("uploading ", data);
+          setIsUploading(false);
+          
           toast.success("Profile photo uploaded Added!!!",
           {
            position: "top-center",
@@ -189,8 +208,8 @@ if(aUserOrderedProducts){
            draggable: false,
            transition: Bounce,
          });
-         
-          window.location.reload();
+         window.location.reload();
+          
         }
       });
     }
@@ -366,7 +385,7 @@ if(aUserOrderedProducts){
                                     }}
                                     onClick={submitBtn}
                                   >
-                                    Submit
+                                  { isUpLoading ? 'Uploading...' : 'Submit'} 
                                     <ToastContainer />
                                   </button>
                                ) : (

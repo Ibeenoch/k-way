@@ -74,8 +74,8 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
     dispatch(getAproduct(productId)).then((res) => {
       const receive = res.payload;
       const data = { ...receive, quantity };
-      const dataitem = { data, toast };
-      dispatch(addtocart(dataitem));
+      const dataItem = { data, toast };
+      dispatch(addtocart(dataItem))
     });
   };
   const handleAddToWishlist = (productId: any) => {
@@ -736,6 +736,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                                                 : "gray"
                                             }
                                           />
+                                          <ToastContainer />
                                         </div>
                                       </div>
                                     )}
@@ -806,6 +807,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                                           className="h-5 w-5 text-red-800"
                                           aria-hidden="true"
                                         />
+                                        <ToastContainer />
                                       </div>
                                     </div>
                                   </div>

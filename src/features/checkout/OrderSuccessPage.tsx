@@ -37,7 +37,7 @@ const OrderSuccessPage = () => {
         console.log("fetch the details ", res.payload);
       })
       .then((res: any) => {
-        toast.success("Thank you for placing from us",
+        toast.success("Thank you for your purchase",
         {
          position: "top-center",
          autoClose: 6000, //6 seconds
