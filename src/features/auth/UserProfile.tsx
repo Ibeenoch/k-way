@@ -313,7 +313,7 @@ if(aUserOrderedProducts){
                               height="30px"
                               color="brown"
                             />{" "}
-                            { id === user.id ? user.fullName : getUsername(id)}
+                            { id === user.id.toString() ? user.fullName : getUsername(id)}
                           </h2>
 
                           <div className="">
@@ -324,12 +324,12 @@ if(aUserOrderedProducts){
                                   <img
                                     className="h-45 w-45 rounded-full border-4 border-white dark:border-gray-800 mx-auto my-4"
                                     src={
-                                     user.id !== id ? getUserImage(id) :
-                                     user.id === id && user.image && user.image.url ? user.image.url : pics
+                                     user.id.toString() !== id ? getUserImage(id) :
+                                     user.id.toString() === id && user.image && user.image.url ? user.image.url : pics
                                     }
                                     alt=''
                                   />
-                               { id === user.id ? (
+                               { id === user.id.toString() ? (
                                <div className="">
                                     <button
                                       onClick={clickFile}
@@ -353,7 +353,7 @@ if(aUserOrderedProducts){
                                 </>
                                ) }  
 
-                                { id === user.id ? (
+                                { id === user.id.toString() ? (
                                <button
                                     style={{
                                       width: "150px",
@@ -378,8 +378,8 @@ if(aUserOrderedProducts){
                                   <div className="py-2">
                                     <div></div>
                                     <div className="inline-flex text-gray-700 dark:text-gray-300 items-center">
-                                      { user.id === id ? user.state : getUserState(id)},{" "}
-                                      { user.id === id ? user.country : getUserCountry(id)}
+                                      { user.id.toString() === id ? user.state : getUserState(id)},{" "}
+                                      { user.id.toString() === id ? user.country : getUserCountry(id)}
                                     </div>
                                   </div>
                                 </div>
