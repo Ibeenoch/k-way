@@ -8,6 +8,7 @@ import {
   getACategory,
   getAllproduct,
   getAproduct,
+  getPagination,
   getaProductReviews,
   selectProduct,
   similarproduct,
@@ -104,6 +105,12 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
   useEffect(() => {
     dispatch(getAllproduct()).then((res: any) => {
       setTotalCount(res.payload.length);
+      const limit = 15;
+      const currentPage = 1;
+          const data = { limit, currentPage };
+          dispatch(getPagination(data) as any).then((res: any) => {
+            window.scrollTo(0, 0)
+          });
     });
   }, [dispatch, navigate]);
 
