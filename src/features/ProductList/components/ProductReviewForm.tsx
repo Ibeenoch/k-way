@@ -51,7 +51,7 @@ const ProductReviewForm = () => {
        autoClose: 1500, //6 seconds
        hideProgressBar: true,
        closeOnClick: true,
-       pauseOnHover: true,
+       pauseOnHover: false,
        draggable: false,
        transition: Bounce,
      });
@@ -83,7 +83,7 @@ const ProductReviewForm = () => {
                  autoClose: 1500, //6 seconds
                  hideProgressBar: true,
                  closeOnClick: true,
-                 pauseOnHover: true,
+                 pauseOnHover: false,
                  draggable: false,
                  transition: Bounce,
                });

@@ -29,7 +29,7 @@ export const addToCart = async (data: any, toast: any) => {
        autoClose: 1500, //6 seconds
        hideProgressBar: true,
        closeOnClick: true,
-       pauseOnHover: true,
+       pauseOnHover: false,
        draggable: false,
      });
     } else {
@@ -43,7 +43,7 @@ export const addToCart = async (data: any, toast: any) => {
          autoClose: 1500, //6 seconds
          hideProgressBar: true,
          closeOnClick: true,
-         pauseOnHover: true,
+         pauseOnHover: false,
          draggable: false,
        });
        
@@ -54,7 +54,7 @@ export const addToCart = async (data: any, toast: any) => {
          autoClose: 1500, //6 seconds
          hideProgressBar: true,
          closeOnClick: true,
-         pauseOnHover: true,
+         pauseOnHover: false,
          draggable: false,
        });
         return;

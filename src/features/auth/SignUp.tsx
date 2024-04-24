@@ -54,7 +54,7 @@ const SignUp: React.FC = () => {
          autoClose: 1500, //6 seconds
          hideProgressBar: true,
          closeOnClick: true,
-         pauseOnHover: true,
+         pauseOnHover: false,
          draggable: false,
          transition: Bounce,
        });
@@ -69,7 +69,7 @@ const SignUp: React.FC = () => {
            autoClose: 1500, //6 seconds
            hideProgressBar: true,
            closeOnClick: true,
-           pauseOnHover: true,
+           pauseOnHover: false,
            draggable: false,
            transition: Bounce,
          });
@@ -86,7 +86,7 @@ const SignUp: React.FC = () => {
            autoClose: 1500, //6 seconds
            hideProgressBar: true,
            closeOnClick: true,
-           pauseOnHover: true,
+           pauseOnHover: false,
            draggable: false,
            transition: Bounce,
          });
@@ -104,7 +104,7 @@ const SignUp: React.FC = () => {
            autoClose: 1500, //6 seconds
            hideProgressBar: true,
            closeOnClick: true,
-           pauseOnHover: true,
+           pauseOnHover: false,
            draggable: false,
            transition: Bounce,
          });
@@ -116,7 +116,7 @@ const SignUp: React.FC = () => {
            autoClose: 1500, //6 seconds
            hideProgressBar: true,
            closeOnClick: true,
-           pauseOnHover: true,
+           pauseOnHover: false,
            draggable: false,
            transition: Bounce,
          });         
@@ -131,7 +131,7 @@ const SignUp: React.FC = () => {
        autoClose: 8000, //8 seconds
        hideProgressBar: true,
        closeOnClick: true,
-       pauseOnHover: true,
+       pauseOnHover: false,
        draggable: false,
        transition: Bounce,
      });  

@@ -182,7 +182,7 @@ const Admin = () => {
                  autoClose: 1500, //6 seconds
                  hideProgressBar: true,
                  closeOnClick: true,
-                 pauseOnHover: true,
+                 pauseOnHover: false,
                  draggable: false,
                  transition: Bounce,
                });
@@ -200,7 +200,7 @@ const Admin = () => {
                  autoClose: 1500, //6 seconds
                  hideProgressBar: true,
                  closeOnClick: true,
-                 pauseOnHover: true,
+                 pauseOnHover: false,
                  draggable: false,
                  transition: Bounce,
                });
@@ -229,7 +229,7 @@ const Admin = () => {
                autoClose: 1500, //6 seconds
                hideProgressBar: true,
                closeOnClick: true,
-               pauseOnHover: true,
+               pauseOnHover: false,
                draggable: false,
                transition: Bounce,
              });
@@ -255,7 +255,7 @@ const Admin = () => {
            autoClose: 1500, //6 seconds
            hideProgressBar: true,
            closeOnClick: true,
-           pauseOnHover: true,
+           pauseOnHover: false,
            draggable: false,
            transition: Bounce,
          });
@@ -283,7 +283,7 @@ const Admin = () => {
            autoClose: 1500, //6 seconds
            hideProgressBar: true,
            closeOnClick: true,
-           pauseOnHover: true,
+           pauseOnHover: false,
            draggable: false,
            transition: Bounce,
          });
@@ -569,7 +569,7 @@ const Admin = () => {
                                   </h2>
                                   <div
                                     onClick={handleCreateProduct}
-                                    className="text-sm text-center text-bold text-white cursor-pointer bg-red-800 hover:bg-red-700 hover:text-white px-3 pb-0 pt-1.5 mt-2 ml-2 rounded-full border border-blue-300"
+                                    className="text-sm text-center ml-4 text-bold text-white cursor-pointer bg-red-800 hover:bg-red-700 hover:text-white px-3 pb-0 pt-1.5 mt-2 ml-2 rounded-full border border-red-300"
                                   >
                                     <strong>Add Product </strong>
                                   </div>

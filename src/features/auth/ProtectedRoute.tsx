@@ -24,7 +24,7 @@ const ProtectedRoute: React.FC<Children> = ({ child }) => {
          autoClose: 6000, //6 seconds
          hideProgressBar: true,
          closeOnClick: true,
-         pauseOnHover: true,
+         pauseOnHover: false,
          draggable: false,
          transition: Bounce,
        });
@@ -44,7 +44,7 @@ const ProtectedRoute: React.FC<Children> = ({ child }) => {
              autoClose: 6000, //6 seconds
              hideProgressBar: true,
              closeOnClick: true,
-             pauseOnHover: true,
+             pauseOnHover: false,
              draggable: false,
              transition: Bounce,
            });

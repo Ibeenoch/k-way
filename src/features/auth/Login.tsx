@@ -59,7 +59,7 @@ const Login = () => {
            autoClose: 1500, //6 seconds
            hideProgressBar: true,
            closeOnClick: true,
-           pauseOnHover: true,
+           pauseOnHover: false,
            draggable: false,
            transition: Bounce,
          });
@@ -84,7 +84,7 @@ const Login = () => {
              autoClose: 1500, //6 seconds
              hideProgressBar: true,
              closeOnClick: true,
-             pauseOnHover: true,
+             pauseOnHover: false,
              draggable: false,
              transition: Bounce,
            });
@@ -103,7 +103,7 @@ const Login = () => {
            autoClose: 1500, //6 seconds
            hideProgressBar: true,
            closeOnClick: true,
-           pauseOnHover: true,
+           pauseOnHover: false,
            draggable: false,
            transition: Bounce,
          });
@@ -119,7 +119,7 @@ const Login = () => {
            autoClose: 1500, //6 seconds
            hideProgressBar: true,
            closeOnClick: true,
-           pauseOnHover: true,
+           pauseOnHover: false,
            draggable: false,
            transition: Bounce,
          });
@@ -150,7 +150,7 @@ const Login = () => {
      autoClose: 1500, //6 seconds
      hideProgressBar: true,
      closeOnClick: true,
-     pauseOnHover: true,
+     pauseOnHover: false,
      draggable: false,
      transition: Bounce,
    });

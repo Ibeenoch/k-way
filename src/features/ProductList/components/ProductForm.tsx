@@ -93,7 +93,7 @@ const ProductForm = () => {
             autoClose: 1500, //6 seconds
             hideProgressBar: true,
             closeOnClick: true,
-            pauseOnHover: true,
+            pauseOnHover: false,
             draggable: false,
             transition: Bounce,
           });
@@ -170,7 +170,7 @@ const ProductForm = () => {
          autoClose: 1500, //6 seconds
          hideProgressBar: true,
          closeOnClick: true,
-         pauseOnHover: true,
+         pauseOnHover: false,
          draggable: false,
          transition: Bounce,
        });
@@ -184,7 +184,7 @@ const ProductForm = () => {
          autoClose: 1500, //6 seconds
          hideProgressBar: true,
          closeOnClick: true,
-         pauseOnHover: true,
+         pauseOnHover: false,
          draggable: false,
          transition: Bounce,
        });
@@ -225,7 +225,7 @@ const ProductForm = () => {
              autoClose: 1500, //6 seconds
              hideProgressBar: true,
              closeOnClick: true,
-             pauseOnHover: true,
+             pauseOnHover: false,
              draggable: false,
              transition: Bounce,
            });
@@ -239,7 +239,7 @@ const ProductForm = () => {
              autoClose: 1500, //6 seconds
              hideProgressBar: true,
              closeOnClick: true,
-             pauseOnHover: true,
+             pauseOnHover: false,
              draggable: false,
              transition: Bounce,
            });
@@ -443,7 +443,7 @@ const ProductForm = () => {
                   </p>
                 </div>
 
-                <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                <div className="mt-1 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                   <div className="col-span-full bg-white">
                     <label
                       htmlFor="cover-image"
@@ -457,7 +457,7 @@ const ProductForm = () => {
                           className="mx-auto h-12 w-12 text-gray-300"
                           aria-hidden="true"
                         />
-                        <div className="mt-4 flex text-sm leading-6 text-gray-600">
+                        <div className="mt-4 flex flex-col md:flex-row text-sm leading-6 text-gray-600">
                           <label
                             htmlFor="fileupload"
                             className="relative bg-none cursor-pointer rounded-md bg-white font-semibold text-gray-800 focus-within:outline-none focus-within:ring-2 focus-within:ring-red-600 focus-within:ring-offset-2 hover:text-red-700"
@@ -489,7 +489,7 @@ const ProductForm = () => {
             </div>
           </div>
 
-          <div className="mt-6 flex items-center justify-end gap-x-6">
+          <div className="mt-0 flex items-center justify-end gap-x-6">
             <button
               type="button"
               className="text-sm font-semibold px-5 leading-6 text-gray-900"

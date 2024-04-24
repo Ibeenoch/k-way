@@ -159,7 +159,7 @@ const CheckOut = () => {
                    autoClose: 1500, //6 seconds
                    hideProgressBar: true,
                    closeOnClick: true,
-                   pauseOnHover: true,
+                   pauseOnHover: false,
                    draggable: false,
                    transition: Bounce,
                  });
@@ -189,7 +189,7 @@ const CheckOut = () => {
                    autoClose: 1500, //6 seconds
                    hideProgressBar: true,
                    closeOnClick: true,
-                   pauseOnHover: true,
+                   pauseOnHover: false,
                    draggable: false,
                    transition: Bounce,
                  });
@@ -234,7 +234,7 @@ const CheckOut = () => {
      autoClose: 1500, //6 seconds
      hideProgressBar: true,
      closeOnClick: true,
-     pauseOnHover: true,
+     pauseOnHover: false,
      draggable: false,
      transition: Bounce,
    });
@@ -662,7 +662,7 @@ const CheckOut = () => {
                            autoClose: 1500, //6 seconds
                            hideProgressBar: true,
                            closeOnClick: true,
-                           pauseOnHover: true,
+                           pauseOnHover: false,
                            draggable: false,
                            transition: Bounce,
                          });
@@ -703,7 +703,7 @@ const CheckOut = () => {
                                    autoClose: 1500, //6 seconds
                                    hideProgressBar: true,
                                    closeOnClick: true,
-                                   pauseOnHover: true,
+                                   pauseOnHover: false,
                                    draggable: false,
                                    transition: Bounce,
                                  });

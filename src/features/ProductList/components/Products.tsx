@@ -163,7 +163,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                  autoClose: 1500, //6 seconds
                  hideProgressBar: true,
                  closeOnClick: true,
-                 pauseOnHover: true,
+                 pauseOnHover: false,
                  draggable: false,
                  transition: Bounce,
                });
@@ -181,7 +181,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                  autoClose: 1500, //6 seconds
                  hideProgressBar: true,
                  closeOnClick: true,
-                 pauseOnHover: true,
+                 pauseOnHover: false,
                  draggable: false,
                  transition: Bounce,
                });
