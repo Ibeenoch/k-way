@@ -303,7 +303,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                         </div>
 
                         {/* Filters */}
-                        <form className="mt-4 border-t border-gray-200">
+                        <form className="mt-0 border-t border-gray-200">
                           {filters.map((section) => (
                             <Disclosure
                               as="div"
