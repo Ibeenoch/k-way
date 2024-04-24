@@ -48,18 +48,18 @@ const SimlilarProduct = () => {
 
   return (
     <div className="" style={{ background: hexcode }}>
-      <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+      <div className="mx-auto max-w-2xl px-4 py-4 sm:px-6 sm:py-8 lg:max-w-7xl lg:px-8">
         <h2 className="text-xl font-bold tracking-tight text-gray-900">
           Customers also purchased
         </h2>
 
-        <div className="mt-6 grid grid-cols-4 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+        <div className="mt-6 grid grid-cols-4 gap-x-2 gap-y-2 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-4">
           {similarProduct &&
             similarProduct.map((product: any) => (
               <div key={product.id} className="group relative">
                 <div
                   onClick={() => handleProductDetails(product.id)}
-                  className="aspect-h-1 aspect-w-1 w-full cursor-pointer overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80"
+                  className="aspect-h-1 aspect-w-1 w-full cursor-pointer overflow-hidden rounded-md lg:aspect-none group-hover:opacity-75 lg:h-80"
                 >
                   <img
                     src={product && product.thumbnail && product.thumbnail.url}
@@ -68,23 +68,25 @@ const SimlilarProduct = () => {
                     className="h-full w-full object-cover cursor-pointer object-center lg:h-full lg:w-full"
                   />
                 </div>
-                <div className="mt-4 flex justify-between">
+                <div
+                  onClick={() => handleProductDetails(product.id)}
+                  className="flex justify-between"
+                >
                   <div>
-                    <h3 className="text-sm text-gray-700">
-                      <div onClick={() => handleProductDetails(product.id)}>
-                        <span
-                          aria-hidden="true"
-                          className="absolute inset-0 cursor-pointer"
-                        />
-                        <p className="text-gray-900 text-sm">
-                          {product.title }
+                    <h3 className="text-sm text-gray-900">
+                      <div className="flex flex-col overflow-hidden">
+                        <p className="text-xs" style={{ fontSize: "10px" }}>
+                          {product && product.title}
+                        </p>
+                        <p
+                          style={{ fontSize: "12px" }}
+                          className="text-sm font-medium text-gray-900"
+                        >
+                          <strong>${product && product.price}</strong>
                         </p>
                       </div>
                     </h3>
                   </div>
-                  
-                    <strong className="text-sm text-gray-900"> ${product.price}</strong>
-                  
                 </div>
               </div>
             ))}

@@ -149,7 +149,6 @@ const NavBar: React.FC<Child> = ({ children, isOpen }) => {
                         className="flex-shrink-0 cursor-pointer"
                       >
                         <img
-                          onClick={handleLogoClicked}
                           className="h-8 w-8 z-40"
                           src={icon}
                           alt="Your Company"

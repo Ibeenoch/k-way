@@ -49,7 +49,7 @@ const Carousel: React.FC = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prevSlide) => (prevSlide + 1) % images.length);
-    }, 3000); // Change slide every 3 seconds
+    }, 4000); // Change slide every 4 seconds
 
     return () => clearInterval(interval);
   }, [images.length]);
@@ -65,7 +65,7 @@ const Carousel: React.FC = () => {
     <div className="carousel">
       <button onClick={handlePrevious} className="carousel-button p-4">
         <ChevronLeftIcon
-          className="bg-red-400"
+          className="bg-red-400 opacity-50"
           width={30}
           height={35}
           fill="white"
@@ -85,7 +85,7 @@ const Carousel: React.FC = () => {
 
       <button onClick={handleNext} className="carousel-button p-4">
         <ChevronRightIcon
-          className="bg-red-400"
+          className="bg-red-400 opacity-50"
           width={30}
           height={35}
           fill="white"

@@ -549,19 +549,19 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                           </h2>
 
                           {/* <div className="mt-1 grid grid-cols-1 gap-x-1 gap-y-3 sm:grid-cols-3 px-1  py-2 lg:grid-cols-3 xl:gap-x-4"> */}
-                            <div className="mt-4 grid grid-cols-3 gap-x-2 gap-y-5 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+                            <div className="mt-4 grid grid-cols-3 gap-x-2 gap-y-2 sm:grid-cols-3 lg:grid-cols-4 xl:gap-x-8">
                             {products && Array.isArray(products) ? (
                               products.map((product: any, index: number) => (
                                 <div
                                   key={product && product.id}
-                                  className="group relative shadow-2xl rounded-lg"
+                                  className="group relative shadow-2xl max-h-40 rounded-lg"
                                   style={{
                                     border: "1px white solid",
                                     padding: "5px",
                                     background: "white",
                                   }}
                                 >
-                                  <div className="w-full md:w-64 h-64 contain">
+                                  <div className="w-full md:w-64 contain">
                                     {user &&
                                     user &&
                                     user.role &&
@@ -744,7 +744,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                                     )}
 
                                     <div
-                                      className="py-1 flex justify-center items-center cursor-pointer"
+                                      className="py-1 flex justify-center items-center h-1/2 cursor-pointer"
                                       
                                       onClick={() =>
                                         handleProductDetails(product && product.id)
@@ -763,7 +763,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                                     </div>
 
                                     <div
-                                      className="mt-4 flex justify-between elem"
+                                      className="flex justify-between h-1/8"
                                       style={{
                                         borderTop: "0.5px brown solid",
                                       }}
@@ -775,18 +775,14 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                                       >
                                         <div>
                                           <h3 className="text-sm text-gray-900">
-                                            <div>
-                                              <span
-                                                aria-hidden="true"
-                                                className="absolute inset-0"
-                                              />
-                                              <p>{product && product.title}</p>
-                                              <p className="text-sm font-medium text-gray-900">
-                                                <strong>
-                                                  ${product && product.price}
-                                                </strong>
-                                              </p>
-                                            </div>
+                                          <div className="flex flex-col overflow-hidden">
+                                          <p className="text-xs" style={{ fontSize: '10px' }}>
+                                            {product && product.title}
+                                          </p>
+                                          <p  style={{ fontSize: '12px' }} className="text-sm font-medium text-gray-900">
+                                            <strong>${product && product.price}</strong>
+                                          </p>
+                                        </div>
                                           </h3>
                                         </div>
                                       </div>
