@@ -26,6 +26,9 @@ const Pagination: React.FC<ChildComponentProp> = ({ totalCount }) => {
   };
 
   const handlePrevious = (num: number) => {
+    if(page < 1){
+      return;
+    }
     setPage(num);
     const limit = iTemLimitPerPage;
     const currentPage = num;
@@ -36,6 +39,9 @@ const Pagination: React.FC<ChildComponentProp> = ({ totalCount }) => {
   };
 
   const handleNext = (num: number) => {
+    if(page > paginatePage){
+      return;
+    }
     setPage(num);
     const limit = iTemLimitPerPage;
     const currentPage = num;
