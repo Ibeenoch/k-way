@@ -1008,12 +1008,12 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                                       overflow: "hidden",
                                     }}
                                     onClick={() =>
-                                      handleProductDetails(product.id)
+                                      handleProductDetails(product && product.id)
                                     }
                                   >
                                     <img
                                       src={
-                                        product.thumbnail.url
+                                      product && product.thumbnail && product.thumbnail.url
                                           ? product.thumbnail.url
                                           : pics
                                       }
@@ -1041,9 +1041,9 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                                               aria-hidden="true"
                                               className="absolute inset-0"
                                             />
-                                            <strong>{product.title}</strong>
+                                            <strong>{product && product.title}</strong>
                                             <p className="text-sm font-medium text-gray-900">
-                                              <strong>${product.price}</strong>
+                                              <strong>${product && product.price}</strong>
                                             </p>
                                           </div>
                                         </h3>
@@ -1052,7 +1052,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
 
                                     <div
                                       onClick={() =>
-                                        handleAddToCart(product.id)
+                                        handleAddToCart(product && product.id)
                                       }
                                       className="relative cursor-pointer rounded-full bg-white-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                                     >
