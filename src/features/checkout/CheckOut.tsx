@@ -156,7 +156,7 @@ const CheckOut = () => {
                   toast.info("Profile Updated",
                   {
                    position: "top-center",
-                   autoClose: 3000, //6 seconds
+                   autoClose: 1500, //6 seconds
                    hideProgressBar: true,
                    closeOnClick: true,
                    pauseOnHover: true,
@@ -186,7 +186,7 @@ const CheckOut = () => {
                   toast.info("Address Updated",
                   {
                    position: "top-center",
-                   autoClose: 3000, //6 seconds
+                   autoClose: 1500, //6 seconds
                    hideProgressBar: true,
                    closeOnClick: true,
                    pauseOnHover: true,
@@ -231,7 +231,7 @@ const CheckOut = () => {
     toast.info("Please Select an existing address and online payment method to pay online",
     {
      position: "top-center",
-     autoClose: 3000, //6 seconds
+     autoClose: 1500, //6 seconds
      hideProgressBar: true,
      closeOnClick: true,
      pauseOnHover: true,
@@ -659,7 +659,7 @@ const CheckOut = () => {
                           toast.info("please hold on while we process your order...",
                           {
                            position: "top-center",
-                           autoClose: 3000, //6 seconds
+                           autoClose: 1500, //6 seconds
                            hideProgressBar: true,
                            closeOnClick: true,
                            pauseOnHover: true,
@@ -700,7 +700,7 @@ const CheckOut = () => {
                                   toast.success("Thank you for making purchase from us",
                                   {
                                    position: "top-center",
-                                   autoClose: 3000, //6 seconds
+                                   autoClose: 1500, //6 seconds
                                    hideProgressBar: true,
                                    closeOnClick: true,
                                    pauseOnHover: true,

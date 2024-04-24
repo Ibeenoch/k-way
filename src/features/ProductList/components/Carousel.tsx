@@ -46,6 +46,14 @@ const Carousel: React.FC = () => {
     );
   };
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prevSlide) => (prevSlide + 1) % images.length);
+    }, 3000); // Change slide every 3 seconds
+
+    return () => clearInterval(interval);
+  }, [images.length]);
+
   const handlePrevious = () => {
     setCurrentIndex(
       (prevIndex) =>

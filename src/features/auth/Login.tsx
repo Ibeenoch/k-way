@@ -56,7 +56,7 @@ const Login = () => {
           toast.success("Successfully Login As Admin",
           {
            position: "top-center",
-           autoClose: 3000, //6 seconds
+           autoClose: 1500, //6 seconds
            hideProgressBar: true,
            closeOnClick: true,
            pauseOnHover: true,
@@ -81,7 +81,7 @@ const Login = () => {
             toast.success("Successfully Login As User",
             {
              position: "top-center",
-             autoClose: 3000, //6 seconds
+             autoClose: 1500, //6 seconds
              hideProgressBar: true,
              closeOnClick: true,
              pauseOnHover: true,
@@ -100,7 +100,7 @@ const Login = () => {
           toast.error("user does not exist",
           {
            position: "top-center",
-           autoClose: 3000, //6 seconds
+           autoClose: 1500, //6 seconds
            hideProgressBar: true,
            closeOnClick: true,
            pauseOnHover: true,
@@ -116,7 +116,7 @@ const Login = () => {
           toast.error("Password Incorrect",
           {
            position: "top-center",
-           autoClose: 3000, //6 seconds
+           autoClose: 1500, //6 seconds
            hideProgressBar: true,
            closeOnClick: true,
            pauseOnHover: true,
@@ -147,7 +147,7 @@ const Login = () => {
     toast.info("Please login to continue",
     {
      position: "top-center",
-     autoClose: 3000, //6 seconds
+     autoClose: 1500, //6 seconds
      hideProgressBar: true,
      closeOnClick: true,
      pauseOnHover: true,

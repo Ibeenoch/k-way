@@ -3,7 +3,7 @@ import React from "react";
 const PageWriteUp = () => {
   return (
     <div>
-      <h1 className="text-center text-2xl">
+      <h1 className="text-center text-xl">
         <strong>HOT DEALS</strong>{" "}
       </h1>
       <p className="text-center text-gray-800 text-lg">

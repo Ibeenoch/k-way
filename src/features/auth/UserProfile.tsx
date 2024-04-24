@@ -60,8 +60,8 @@ if(aUserOrderedProducts){
   }
 
   useEffect(() => {
-    if(users){
-       const findtheUser = users.find((person: any) => person.id.toString() ===  id);
+    if(user && user.role.toString() === 'ADMIN'){
+      //check if its his id and return his profile
     if(id === user.id.toString()){
       const data = {
         id,
@@ -77,6 +77,7 @@ if(aUserOrderedProducts){
         }
       });
     }else{
+
       const data = {
         id,
         token: user && user.token,
@@ -92,7 +93,21 @@ if(aUserOrderedProducts){
       });
     }
 
-    };
+    }else{
+      const data = {
+        id,
+        token: user && user.token,
+      };
+  
+      dispatch(getAUser(data)).then((res: any) => {
+        if ((res && res.payload !== undefined) || res.payload !== null) {
+          console.log("data ", data);
+          dispatch(getAUserTransaction(data)).then((res: any) => {
+            console.log("all user transactions ", res.payload);
+          });
+        }
+      });
+    }
    
    
   }, []);
@@ -201,7 +216,7 @@ if(aUserOrderedProducts){
           toast.success("Profile photo uploaded Added!!!",
           {
            position: "top-center",
-           autoClose: 3000, //6 seconds
+           autoClose: 1500, //6 seconds
            hideProgressBar: true,
            closeOnClick: true,
            pauseOnHover: true,
@@ -326,7 +341,7 @@ if(aUserOrderedProducts){
                       {/* this is product list Content */}
                       <div className="">
                         <div className="">
-                          <h2 className="text-2xl font-bold text-center text-gray-900 tracking-tight text-gray-900 flex justify-center item-center">
+                          <h2 className="text-xl font-bold text-center text-gray-900 tracking-tight text-gray-900 flex justify-center item-center">
                             <CheckBadgeIcon
                               width="30px"
                               height="30px"
@@ -354,8 +369,12 @@ if(aUserOrderedProducts){
                                       onClick={clickFile}
                                       className="flex-1 inline-flex rounded-full bg-red-800 text-white w-250 dark:text-white antialiased font-bold hover:bg-red-700 dark:hover:bg-blue-900 px-4 py-2"
                                     >
-                                      <CameraIcon width="16px" height="16px" />
-                                      Add Photo
+                                      <div className="flex gap-1 align-center justify-center">
+                                         <CameraIcon width="16px" height="16px" />
+                                         <p>Add Photo</p>
+                                      </div>
+                                     
+                                       
                                       <input
                                         id="fileupload"
                                         name="fileupload"
@@ -450,8 +469,7 @@ if(aUserOrderedProducts){
                                             </strong>{" "}
                                           </h3>
                                           <div className="flex items-center my-1">
-                                            <div className="ml-6 text-semibold whitespace-normal break-words font-poppins text-center">
-                                              {" "}
+                                            <div className="text-sm px-4 text-semibold whitespace-normal break-words font-poppins">
                                               <strong>
                                                 Product Name:
                                               </strong>{" "}
@@ -460,15 +478,14 @@ if(aUserOrderedProducts){
                                           </div>
 
                                           <div className="flex items-center my-1">
-                                            <div className="ml-6 truncate text-sm whitespace-normal break-words font-poppins text-center">
-                                              {" "}
+                                            <div className="text-sm px-4 text-semibold whitespace-normal break-words font-poppins">
                                               <strong>Price Per Item:</strong> $
                                               {item.price}
                                             </div>
                                           </div>
 
                                           <div className="flex items-center my-1">
-                                            <div className="ml-6 truncate text-sm whitespace-normal break-words font-poppins text-center">
+                                            <div className="text-sm px-4 text-semibold whitespace-normal break-words font-poppins">
                                               {" "}
                                               <strong>
                                                 Quantity Purchased:
@@ -478,7 +495,7 @@ if(aUserOrderedProducts){
                                           </div>
 
                                           <div className="flex items-center my-1">
-                                            <div className="ml-6 truncate text-sm whitespace-normal break-words font-poppins text-center">
+                                            <div className="text-sm px-4 text-semibold whitespace-normal break-words font-poppins">
                                               {" "}
                                               <strong>
                                                 Product Brand:
@@ -488,7 +505,7 @@ if(aUserOrderedProducts){
                                           </div>
 
                                           <div className="flex items-center my-1">
-                                            <div className="ml-6 truncate text-sm whitespace-normal break-words font-poppins text-center">
+                                            <div className="text-sm px-4 text-semibold whitespace-normal break-words font-poppins">
                                               {" "}
                                               <strong>
                                                 Product Category:

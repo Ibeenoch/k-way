@@ -21,7 +21,7 @@ export const addToWishList = async (data: any, toast: any) => {
       toast.success("product successfully added to wishlist",
       {
        position: "top-center",
-       autoClose: 3000, //6 seconds
+       autoClose: 1500, //6 seconds
        hideProgressBar: true,
        closeOnClick: true,
        pauseOnHover: true,
@@ -37,7 +37,7 @@ export const addToWishList = async (data: any, toast: any) => {
         toast.success("product successfully added to wishlist",
         {
          position: "top-center",
-         autoClose: 3000, //6 seconds
+         autoClose: 1500, //6 seconds
          hideProgressBar: true,
          closeOnClick: true,
          pauseOnHover: true,
@@ -48,7 +48,7 @@ export const addToWishList = async (data: any, toast: any) => {
         toast.error("The product already exist in the wishlist",
         {
          position: "top-center",
-         autoClose: 3000, //6 seconds
+         autoClose: 1500, //6 seconds
          hideProgressBar: true,
          closeOnClick: true,
          pauseOnHover: true,

@@ -48,7 +48,7 @@ const ProductReviewForm = () => {
       toast.error("Please click on the rating icon to rating the product, and add a review about this product",
       {
        position: "top-center",
-       autoClose: 3000, //6 seconds
+       autoClose: 1500, //6 seconds
        hideProgressBar: true,
        closeOnClick: true,
        pauseOnHover: true,
@@ -80,7 +80,7 @@ const ProductReviewForm = () => {
               if (res && res.payload !== undefined) {
                 toast.info("Thank You For Your Honest Feedback", {
                  position: "top-center",
-                 autoClose: 3000, //6 seconds
+                 autoClose: 1500, //6 seconds
                  hideProgressBar: true,
                  closeOnClick: true,
                  pauseOnHover: true,

@@ -160,7 +160,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                 toast.success("Product Succesfully deleted",
                 {
                  position: "top-center",
-                 autoClose: 3000, //6 seconds
+                 autoClose: 1500, //6 seconds
                  hideProgressBar: true,
                  closeOnClick: true,
                  pauseOnHover: true,
@@ -178,7 +178,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                 toast.success("Product Succesfully deleted",
                 {
                  position: "top-center",
-                 autoClose: 3000, //6 seconds
+                 autoClose: 1500, //6 seconds
                  hideProgressBar: true,
                  closeOnClick: true,
                  pauseOnHover: true,
@@ -384,7 +384,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
 
               <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
-                  <h1 className="text-4xl font-bold tracking-tight text-gray-900">
+                  <h1 className="text-2xl font-bold tracking-tight text-gray-900">
                     Filter
                   </h1>
 
@@ -544,11 +544,12 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                       {/* this is product list Content class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8"*/}
                       <div className="">
                         <div>
-                          <h2 className="text-2xl font-bold tracking-tight p-4 text-gray-900">
+                          <h2 className="text-xl font-bold tracking-tight p-4 text-gray-900">
                             Top Selling
                           </h2>
 
-                          <div className="mt-1 grid grid-cols-1 gap-x-1 gap-y-3 sm:grid-cols-3 px-1  py-2 lg:grid-cols-3 xl:gap-x-4">
+                          {/* <div className="mt-1 grid grid-cols-1 gap-x-1 gap-y-3 sm:grid-cols-3 px-1  py-2 lg:grid-cols-3 xl:gap-x-4"> */}
+                            <div className="mt-4 grid grid-cols-2 gap-x-2 gap-y-5 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
                             {products && Array.isArray(products) ? (
                               products.map((product: any, index: number) => (
                                 <div
@@ -742,7 +743,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                                     )}
 
                                     <div
-                                      className="py-1 flex justify-center items-center h-full cursor-pointer"
+                                      className="py-1 flex justify-center items-center cursor-pointer"
                                       
                                       onClick={() =>
                                         handleProductDetails(product.id)
@@ -763,7 +764,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                                     <div
                                       className="mt-4 flex justify-between elem"
                                       style={{
-                                        borderTop: "0.5px gray solid",
+                                        borderTop: "0.5px brown solid",
                                       }}
                                     >
                                       <div

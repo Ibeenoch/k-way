@@ -49,7 +49,7 @@ const SimlilarProduct = () => {
   return (
     <div className="" style={{ background: hexcode }}>
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-        <h2 className="text-2xl font-bold tracking-tight text-gray-900">
+        <h2 className="text-xl font-bold tracking-tight text-gray-900">
           Customers also purchased
         </h2>
 
@@ -76,15 +76,15 @@ const SimlilarProduct = () => {
                           aria-hidden="true"
                           className="absolute inset-0 cursor-pointer"
                         />
-                        <strong className="text-gray-900">
-                          {product.title}
-                        </strong>
+                        <p className="text-gray-900 text-sm">
+                          {product.title }
+                        </p>
                       </div>
                     </h3>
                   </div>
-                  <p className="text-sm font-medium text-gray-900">
-                    <strong> ${product.price}</strong>
-                  </p>
+                  
+                    <strong className="text-sm text-gray-900"> ${product.price}</strong>
+                  
                 </div>
               </div>
             ))}

@@ -51,7 +51,7 @@ const SignUp: React.FC = () => {
         toast.error("password do not match!!!",
         {
          position: "top-center",
-         autoClose: 3000, //6 seconds
+         autoClose: 1500, //6 seconds
          hideProgressBar: true,
          closeOnClick: true,
          pauseOnHover: true,
@@ -66,7 +66,7 @@ const SignUp: React.FC = () => {
           toast.error("user already exist",
           {
            position: "top-center",
-           autoClose: 3000, //6 seconds
+           autoClose: 1500, //6 seconds
            hideProgressBar: true,
            closeOnClick: true,
            pauseOnHover: true,
@@ -83,7 +83,7 @@ const SignUp: React.FC = () => {
           toast.success("Registered as an Admin Successful",
           {
            position: "top-center",
-           autoClose: 3000, //6 seconds
+           autoClose: 1500, //6 seconds
            hideProgressBar: true,
            closeOnClick: true,
            pauseOnHover: true,
@@ -101,7 +101,7 @@ const SignUp: React.FC = () => {
           toast.success("Registeration Successful",
           {
            position: "top-center",
-           autoClose: 3000, //6 seconds
+           autoClose: 1500, //6 seconds
            hideProgressBar: true,
            closeOnClick: true,
            pauseOnHover: true,
@@ -113,7 +113,7 @@ const SignUp: React.FC = () => {
           toast.error("Registration Failed, Something went wrong",
           {
            position: "top-center",
-           autoClose: 3000, //6 seconds
+           autoClose: 1500, //6 seconds
            hideProgressBar: true,
            closeOnClick: true,
            pauseOnHover: true,

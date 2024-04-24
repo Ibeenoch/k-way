@@ -363,7 +363,7 @@ const ProductDetail = () => {
           {/* Product info */}
           <div className="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
             <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
-              <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
+              <h1 className="text-xl font-bold tracking-tight text-gray-900 sm:text-xl">
                 {product.title}
               </h1>
             </div>
@@ -390,7 +390,7 @@ const ProductDetail = () => {
               </div>
 
               <h2 className="sr-only">Product information</h2>
-              <p className="text-2xl tracking-tight text-gray-900">
+              <p className="text-1xl tracking-tight text-gray-900">
                 <strong> ${product.price}</strong>
               </p>
               <p className="">{product.discountPercentage}% off</p>
@@ -495,6 +495,10 @@ const ProductDetail = () => {
                 </div>
               </div>
             </div>
+            <div className="flex flex-col">
+              <strong>keywords</strong>
+             <p>{product.keywords}</p> 
+            </div>
 
             <div className="py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6">
               {/* Description and details */}
@@ -515,10 +519,21 @@ const ProductDetail = () => {
       <>
         {!productReview.length ? (
           <>
-            <div>
-              <h2 className="ml-6 text-semibold whitespace-normal break-words font-poppins text-center">
-                No Customer Reviews &amp; Rating Available
+            <div className="flex justify-between mx-4">
+              <h2 className="text-semibold whitespace-normal break-words font-poppins text-center">
+                No Customer Reviews &amp; Rating 
               </h2>
+              {user && user.id ? (
+                 <button
+                 onClick={() => handleReviewForm(product.id)}
+                 className="rounded-full px-4 py-2 bg-red-800 text-sm text-white whitespace-nowrap mb-6 w-auto text-center shadow-sm shadow-transparent transition-all duration-500 hover:bg-red-700 hover:shadow-red-400"
+               >
+                 Write A Review
+               </button>
+              ) : (
+                <></>
+              )}
+             
             </div>
           </>
         ) : (
@@ -705,7 +720,7 @@ const ProductDetail = () => {
                         <div className="col-span-12 md:col-span-8 flex items-center">
                           <div className="flex flex-col sm:flex-row items-center max-lg:justify-center w-full h-full">
                             <div className="sm:pr-3 sm:border-r border-gray-200 flex items-center justify-center flex-col">
-                              <h2 className="font-manrope font-bold text-5xl text-black text-center mb-4">
+                              <h2 className="font-manrope font-bold text-2xl text-black text-center mb-4">
                                 {theProductRating}
                               </h2>
                               <div className="flex items-center gap-3 mb-4">
@@ -800,19 +815,19 @@ const ProductDetail = () => {
                                   }
                                 />
                               </div>
-                              <p className="font-normal text-lg leading-8 text-gray-400">
+                              <p className="text-sm text-gray-400">
                                 {productReview ? productReview.length : 0}{" "}
                                 Reviews
                               </p>
                             </div>
                           </div>
                         </div>
-                        <div className="col-span-12 md:col-span-4 max-lg:mt-8 md:pl-8">
-                          <div className="flex items-center flex-col justify-center w-full h-full ">
+                        <div className="col-span-12 md:col-span-4 max-lg:mt-6 md:pl-8">
+                          <div className="flex items-center flex-col justify-center w-auto h-full ">
                             {user && user.id ? (
                               <button
                                 onClick={() => handleReviewForm(product.id)}
-                                className="rounded-full px-6 py-4 bg-red-800 font-semibold text-lg text-white whitespace-nowrap mb-6 w-full text-center shadow-sm shadow-transparent transition-all duration-500 hover:bg-red-700 hover:shadow-indigo-400"
+                                className="rounded-full px-4 py-2 bg-red-800 font-semibold text-lg text-white whitespace-nowrap mb-6 w-full text-center shadow-sm shadow-transparent transition-all duration-500 hover:bg-red-700 hover:shadow-indigo-400"
                               >
                                 Write A Review
                               </button>
