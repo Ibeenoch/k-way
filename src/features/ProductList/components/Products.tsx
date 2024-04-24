@@ -988,7 +988,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                                               : "gray"
                                           }
                                           fill={
-                                            getwishlist.find(
+                                            getwishlist && getwishlist.find(
                                               (it: any) => it.id === product.id
                                             )
                                               ? "brown"
