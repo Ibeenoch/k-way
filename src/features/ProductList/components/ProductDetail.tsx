@@ -483,14 +483,14 @@ const ProductDetail = () => {
                       }
                     />
                   </div>
-                  <p className="sr-only">
+                  <p className="sr-only text-gray-900">
                     {theProductRating ? theProductRating : 0} out of 5 stars
                   </p>
                   <a
                     href={reviews.href}
-                    className="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500"
+                    className="ml-3 text-sm font-medium text-gray-600 hover:text-gray-500"
                   >
-                    {totalRatingGiven ? totalRatingGiven : 0} reviews
+                    {productReview ? productReview.length : 0} reviews
                   </a>
                 </div>
               </div>
