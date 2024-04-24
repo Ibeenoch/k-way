@@ -403,7 +403,7 @@ const NavBar: React.FC<Child> = ({ children, isOpen }) => {
           </div>
         </header> */}
         <main style={{ background: hexcode }}>
-          <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl py-1 sm:px-6 lg:px-8">
             {children}
           </div>
         </main>
