@@ -599,12 +599,13 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                                         style={{
                                           display: "flex",
                                           justifyContent: "space-between",
+                                          alignContent: 'center',
                                           borderRadius: "0.7px",
                                         }}
                                       >
                                         <button
                                           type="button"
-                                          className="relative border-none rounded-full bg-white-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                                          className="relative border-none rounded-full bg-white-800 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                                         >
                                           <button
                                             id="popup-trigger"
@@ -722,7 +723,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                                           style={{
                                             opacity: isOpen ? "0.2" : "1",
                                           }}
-                                          className={`relative border-none rounded-full z-30 cursor-pointer bg-white-800 p-1 text-gray-400 hover:text-cyan focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800`}
+                                          className={`relative border-none rounded-full z-30 pt-1.5 cursor-pointer bg-white-800 text-gray-400 hover:text-cyan focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800`}
                                         >
                                           <HeartIcon
                                             className="h-3 w-3 border-none"
