@@ -22,7 +22,7 @@ const ShippingDetails = () => {
             </h3>
             <div className="flex items-center my-1">
               <div className="text-sm px-4 text-semibold whitespace-normal break-words font-poppins">
-                <strong>Shipping Address:</strong> <br />
+                <strong>Shipping Address:</strong> 
                 {aUserTransactions &&
                   aUserTransactions[0].order.shippingDetails.address},
                 {aUserTransactions &&
