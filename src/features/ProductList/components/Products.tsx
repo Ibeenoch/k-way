@@ -725,7 +725,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                                           className={`relative border-none rounded-full z-30 cursor-pointer bg-white-800 p-1 text-gray-400 hover:text-cyan focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800`}
                                         >
                                           <HeartIcon
-                                            className="h-4 w-4 border-none"
+                                            className="h-3 w-3 border-none"
                                             aria-hidden="true"
                                             color={
                                               getwishlist &&
@@ -779,7 +779,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                                                 aria-hidden="true"
                                                 className="absolute inset-0"
                                               />
-                                              <strong>{product.title}</strong>
+                                              <p>{product.title}</p>
                                               <p className="text-sm font-medium text-gray-900">
                                                 <strong>
                                                   ${product.price}
@@ -797,7 +797,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                                         className="relative cursor-pointer rounded-full bg-white-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                                       >
                                         <ShoppingBagIcon
-                                          className="h-5 w-5 text-red-800"
+                                          className="h-4 w-5 text-red-800"
                                           aria-hidden="true"
                                         />
                                         <ToastContainer />
