@@ -553,7 +553,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                             {products && Array.isArray(products) ? (
                               products.map((product: any, index: number) => (
                                 <div
-                                  key={product.id}
+                                  key={product && product.id}
                                   className="group relative shadow-2xl rounded-lg"
                                   style={{
                                     border: "1px white solid",
@@ -569,7 +569,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                                       // edit product
                                       <div className="flex justify-between">
                                         <div
-                                          onClick={() => handleEdit(product.id)}
+                                          onClick={() => handleEdit(product && product.id)}
                                           className="icon1 z-30 cursor-pointer"
                                         >
                                           <PencilIcon
@@ -582,7 +582,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
 
                                         <div
                                           onClick={() =>
-                                            handleDelete(product.id)
+                                            handleDelete(product && product.id)
                                           }
                                           className="icon2 z-30 cursor-pointer"
                                         >
@@ -613,7 +613,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                                           >
                                             <div
                                               onClick={() =>
-                                                handleProductReview(product.id)
+                                                handleProductReview(product && product.id)
                                               }
                                               className="flex border-none cursor-pointer"
                                               style={{
@@ -718,7 +718,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
 
                                         <div
                                           onClick={() =>
-                                            handleAddToWishlist(product.id)
+                                            handleAddToWishlist(product && product.id)
                                           }
                                           style={{
                                             opacity: isOpen ? "0.2" : "1",
@@ -747,12 +747,12 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                                       className="py-1 flex justify-center items-center cursor-pointer"
                                       
                                       onClick={() =>
-                                        handleProductDetails(product.id)
+                                        handleProductDetails(product && product.id)
                                       }
                                     >
                                       <img
                                         src={
-                                          product.thumbnail.url
+                                         product && product.thumbnail && product.thumbnail.url
                                             ? product.thumbnail.url
                                             : pics
                                         }
@@ -770,7 +770,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                                     >
                                       <div
                                         onClick={() =>
-                                          handleProductDetails(product.id)
+                                          handleProductDetails(product && product.id)
                                         }
                                       >
                                         <div>
@@ -780,10 +780,10 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                                                 aria-hidden="true"
                                                 className="absolute inset-0"
                                               />
-                                              <p>{product.title}</p>
+                                              <p>{product && product.title}</p>
                                               <p className="text-sm font-medium text-gray-900">
                                                 <strong>
-                                                  ${product.price}
+                                                  ${product && product.price}
                                                 </strong>
                                               </p>
                                             </div>
@@ -793,7 +793,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
 
                                       <div
                                         onClick={() =>
-                                          handleAddToCart(product.id)
+                                          handleAddToCart(product && product.id)
                                         }
                                         className="relative cursor-pointer rounded-full bg-white-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                                       >
@@ -809,7 +809,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                               ))
                             ) : (
                               <div
-                                key={product.id}
+                                key={product && product.id}
                                 className="group relative shadow-xl"
                                 style={{
                                   border: "1px white solid",
@@ -825,7 +825,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                                     // edit product
                                     <div className="flex justify-between">
                                       <div
-                                        onClick={() => handleEdit(product.id)}
+                                        onClick={() => handleEdit(product && product.id)}
                                         className="icon1 z-30 cursor-pointer"
                                       >
                                         <PencilIcon
@@ -837,7 +837,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                                       {/* update product */}
 
                                       <div
-                                        onClick={() => handleDelete(product.id)}
+                                        onClick={() => handleDelete(product && product.id)}
                                         className="icon2 z-30 cursor-pointer"
                                       >
                                         <TrashIcon
@@ -866,7 +866,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                                         >
                                           <div
                                             onClick={() =>
-                                              handleProductReview(product.id)
+                                              handleProductReview(product && product.id)
                                             }
                                             className="flex border-none cursor-pointer"
                                             style={{
@@ -971,7 +971,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
 
                                       <div
                                         onClick={() =>
-                                          handleAddToWishlist(product.id)
+                                          handleAddToWishlist(product && product.id)
                                         }
                                         style={{
                                           opacity: isOpen ? "0.2" : "1",
@@ -1031,7 +1031,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                                   >
                                     <div
                                       onClick={() =>
-                                        handleProductDetails(product.id)
+                                        handleProductDetails(product && product.id)
                                       }
                                     >
                                       <div>
