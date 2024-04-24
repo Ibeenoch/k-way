@@ -9,7 +9,7 @@ interface ChildComponentProp {
 }
 const Pagination: React.FC<ChildComponentProp> = ({ totalCount }) => {
   const dispatch = useDispatch();
-  const iTemLimitPerPage = 15;
+  const iTemLimitPerPage = 16;
   const [page, setPage] = useState(1);
 
   const { products } = useAppSelector(selectProduct);
@@ -20,7 +20,9 @@ const Pagination: React.FC<ChildComponentProp> = ({ totalCount }) => {
     const limit = iTemLimitPerPage;
     const currentPage = num;
     const data = { limit, currentPage };
-    dispatch(getPagination(data) as any);
+    dispatch(getPagination(data) as any).then((res: any) => {
+      window.scrollTo(0, 0)
+    });
   };
 
   const handlePrevious = (num: number) => {
@@ -28,7 +30,9 @@ const Pagination: React.FC<ChildComponentProp> = ({ totalCount }) => {
     const limit = iTemLimitPerPage;
     const currentPage = num;
     const data = { limit, currentPage };
-    dispatch(getPagination(data) as any);
+    dispatch(getPagination(data) as any).then((res: any) => {
+      window.scrollTo(0, 0)
+    });
   };
 
   const handleNext = (num: number) => {
@@ -36,7 +40,9 @@ const Pagination: React.FC<ChildComponentProp> = ({ totalCount }) => {
     const limit = iTemLimitPerPage;
     const currentPage = num;
     const data = { limit, currentPage };
-    dispatch(getPagination(data) as any);
+    dispatch(getPagination(data) as any).then((res: any) => {
+      window.scrollTo(0, 0)
+    });
   };
   const paginatePage = Math.ceil(totalItem / iTemLimitPerPage)
   console.log('pagin ', paginatePage, page)

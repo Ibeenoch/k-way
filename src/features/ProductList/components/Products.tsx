@@ -289,7 +289,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                     >
                       <Dialog.Panel className="relative ml-auto flex h-full w-full max-w-xs flex-col overflow-y-auto bg-white py-4 pb-12 shadow-xl">
                         <div className="flex items-center justify-between px-4">
-                          <h2 className="text-lg font-medium text-gray-900">
+                          <h2 className="text-md font-medium text-gray-900">
                             Filters
                           </h2>
                           <button
@@ -308,7 +308,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                             <Disclosure
                               as="div"
                               key={section.id}
-                              className="border-t border-gray-200 px-4 py-6"
+                              className="border-t border-gray-200 px-4 py-3"
                             >
                               {({ open }) => (
                                 <>
@@ -340,7 +340,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                                       </span>
                                     </Disclosure.Button>
                                   </h3>
-                                  <Disclosure.Panel className="pt-6">
+                                  <Disclosure.Panel className="pt-2">
                                     <div className="space-y-6">
                                       {section.options.map(
                                         (option: any, optionIdx: any) => (
@@ -383,7 +383,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
               </Transition.Root>
 
               <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
+                <div className="flex items-baseline justify-between border-b border-gray-200 pb-2 pt-4">
                   <h1 className="text-2xl font-bold tracking-tight text-gray-900">
                     Filter
                   </h1>
@@ -409,7 +409,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                         leaveFrom="transform opacity-100 scale-100"
                         leaveTo="transform opacity-0 scale-95"
                       >
-                        <Menu.Items className="absolute right-0 z-50 mt-2 w-40 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <Menu.Items className="absolute right-0 z-50 mt-1 w-40 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none">
                           <div className="py-1">
                             {sortOptions.map((option) => (
                               <Menu.Item key={option.name}>
@@ -437,14 +437,14 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
 
                     <button
                       type="button"
-                      className="-m-2 ml-5 p-2 text-white hover:text-gray-300 sm:ml-7"
+                      className="ml-5 p-2 text-white hover:text-gray-300 sm:ml-7"
                     >
                       <span className="sr-only">View grid</span>
                       <Squares2X2Icon className="h-6 w-6" aria-hidden="true" />
                     </button>
                     <button
                       type="button"
-                      className="-m-2 ml-4 p-2 text-white hover:text-gray-300 sm:ml-6 lg:hidden"
+                      className="ml-4 p-2 text-white hover:text-gray-300 sm:ml-6 lg:hidden"
                       onClick={() => setMobileFiltersOpen(true)}
                     >
                       <span className="sr-only">Filters By</span>
@@ -455,7 +455,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
 
                 <section
                   aria-labelledby="products-heading"
-                  className="pb-24 pt-6"
+                  className="pb-1 pt-1"
                 >
                   <h2 id="products-heading" className="sr-only">
                     Products
@@ -500,7 +500,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                                   </span>
                                 </Disclosure.Button>
                               </h3>
-                              <Disclosure.Panel className="pt-6 hover:bg-indigo-300">
+                              <Disclosure.Panel className="pt-3 hover:bg-indigo-300">
                                 <div className="space-y-4">
                                   {section.options.map(
                                     (option: any, optionIdx: any) => (
@@ -544,12 +544,12 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                       {/* this is product list Content class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8"*/}
                       <div className="">
                         <div>
-                          <h2 className="text-xl font-bold tracking-tight p-4 text-gray-900">
+                          <h2 className="text-xl font-bold tracking-tight p-1 text-gray-900">
                             Top Selling
                           </h2>
 
                           {/* <div className="mt-1 grid grid-cols-1 gap-x-1 gap-y-3 sm:grid-cols-3 px-1  py-2 lg:grid-cols-3 xl:gap-x-4"> */}
-                            <div className="mt-4 grid grid-cols-3 gap-x-2 gap-y-2 sm:grid-cols-3 lg:grid-cols-4 xl:gap-x-8">
+                            <div className="mt-1 grid grid-cols-3 gap-x-2 gap-y-2 sm:grid-cols-3 lg:grid-cols-4 xl:gap-x-8">
                             {products && Array.isArray(products) ? (
                               products.map((product: any, index: number) => (
                                 <div
