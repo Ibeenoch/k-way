@@ -549,7 +549,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                           </h2>
 
                           {/* <div className="mt-1 grid grid-cols-1 gap-x-1 gap-y-3 sm:grid-cols-3 px-1  py-2 lg:grid-cols-3 xl:gap-x-4"> */}
-                            <div className="mt-4 grid grid-cols-2 gap-x-2 gap-y-5 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+                            <div className="mt-4 grid grid-cols-3 gap-x-2 gap-y-5 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
                             {products && Array.isArray(products) ? (
                               products.map((product: any, index: number) => (
                                 <div
