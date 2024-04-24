@@ -9,7 +9,7 @@ interface ChildComponentProp {
 }
 const Pagination: React.FC<ChildComponentProp> = ({ totalCount }) => {
   const dispatch = useDispatch();
-  const iTemLimitPerPage = 16;
+  const iTemLimitPerPage = 15;
   const [page, setPage] = useState(1);
 
   const { products } = useAppSelector(selectProduct);
