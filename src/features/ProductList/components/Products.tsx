@@ -621,7 +621,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                                               }}
                                             >
                                               <StarIcon
-                                                className="h-4 w-4 z-30 cursor-pointer"
+                                                className="h-3 w-3 z-30 cursor-pointer"
                                                 aria-hidden="true"
                                                 color={
                                                   product &&
@@ -639,7 +639,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                                                 }
                                               />
                                               <StarIcon
-                                                className="h-4 w-4 z-30 cursor-pointer"
+                                                className="h-3 w-3 z-30 cursor-pointer"
                                                 aria-hidden="true"
                                                 color={
                                                   product &&
@@ -657,7 +657,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                                                 }
                                               />
                                               <StarIcon
-                                                className="h-4 w-4 z-30 cursor-pointer"
+                                                className="h-3 w-3 z-30 cursor-pointer"
                                                 aria-hidden="true"
                                                 color={
                                                   product &&
@@ -675,7 +675,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                                                 }
                                               />
                                               <StarIcon
-                                                className="h-4 w-4 z-30 cursor-pointer"
+                                                className="h-3 w-3 z-30 cursor-pointer"
                                                 aria-hidden="true"
                                                 color={
                                                   product &&
@@ -693,7 +693,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                                                 }
                                               />
                                               <StarIcon
-                                                className="h-4 w-4 z-30 cursor-pointer"
+                                                className="h-3 w-3 z-30 cursor-pointer"
                                                 aria-hidden="true"
                                                 color={
                                                   product &&
