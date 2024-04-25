@@ -2,8 +2,7 @@ import React, { ChangeEvent, FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import companylogo from "../../images/images-9.png";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { toast, ToastContainer, Bounce } from "react-toastify"
-import "react-toastify/dist/ReactToastify.css";
+import toast, { Toaster } from "react-hot-toast"
 import Switch from "react-switch";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/20/solid";
 import { registerUser, selectUser } from "./authSlice";
@@ -51,12 +50,7 @@ const SignUp: React.FC = () => {
         toast.error("password do not match!!!",
         {
          position: "top-center",
-         autoClose: 1500, //6 seconds
-         hideProgressBar: true,
-         closeOnClick: true,
-         pauseOnHover: false,
-         draggable: false,
-         transition: Bounce,
+         duration: 1500,
        });
         setIsChecked(false);
       }
@@ -66,12 +60,7 @@ const SignUp: React.FC = () => {
           toast.error("user already exist",
           {
            position: "top-center",
-           autoClose: 1500, //6 seconds
-           hideProgressBar: true,
-           closeOnClick: true,
-           pauseOnHover: false,
-           draggable: false,
-           transition: Bounce,
+           duration: 1500,
          });
           setIsChecked(false);
         } else if (
@@ -83,12 +72,7 @@ const SignUp: React.FC = () => {
           toast.success("Registered as an Admin Successful",
           {
            position: "top-center",
-           autoClose: 1500, //6 seconds
-           hideProgressBar: true,
-           closeOnClick: true,
-           pauseOnHover: false,
-           draggable: false,
-           transition: Bounce,
+           duration: 1500, 
          });
         
           navigate("/");
@@ -101,24 +85,14 @@ const SignUp: React.FC = () => {
           toast.success("Registeration Successful",
           {
            position: "top-center",
-           autoClose: 1500, //6 seconds
-           hideProgressBar: true,
-           closeOnClick: true,
-           pauseOnHover: false,
-           draggable: false,
-           transition: Bounce,
+           duration: 1500,
          });
           navigate("/verify/email");
         } else {
           toast.error("Registration Failed, Something went wrong",
           {
            position: "top-center",
-           autoClose: 1500, //6 seconds
-           hideProgressBar: true,
-           closeOnClick: true,
-           pauseOnHover: false,
-           draggable: false,
-           transition: Bounce,
+           duration: 1500,
          });         
           setIsChecked(false);
           return;
@@ -128,12 +102,7 @@ const SignUp: React.FC = () => {
       toast.error("Password must be eight characters including one uppercase letter, one special character and alphanumeric characters e.g Password1!",
       {
        position: "top-center",
-       autoClose: 8000, //8 seconds
-       hideProgressBar: true,
-       closeOnClick: true,
-       pauseOnHover: false,
-       draggable: false,
-       transition: Bounce,
+       duration: 8000,
      });  
      return;
     }
@@ -338,7 +307,7 @@ const SignUp: React.FC = () => {
                   ) : (
                   "Sign Up"
                 )}
-                <ToastContainer />
+                {/* <ToastContainer /> */}
               </button>
             </div>
           </form>

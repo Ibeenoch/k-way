@@ -11,8 +11,7 @@ import {
 } from "../ProductSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import { selectUser } from "../../auth/authSlice";
-import { Bounce, ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import toast, { Toaster } from "react-hot-toast";
 
 const ProductForm = () => {
   const dispatch = useAppDispatch();
@@ -90,12 +89,7 @@ const ProductForm = () => {
           toast.error("To Update the Product images, Please Ensure to Add a Minimum of 4 photos of the Product!!!",
            {
             position: "top-center",
-            autoClose: 1500, //6 seconds
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: false,
-            draggable: false,
-            transition: Bounce,
+            duration: 1500,
           });
           
           return;
@@ -127,6 +121,12 @@ const ProductForm = () => {
                 setIsPosting(false);
                 navigate("/");
               });
+            }else{
+              toast.error("Poor Network Connection please try again later",
+              {
+               position: "top-center",
+               duration: 1500,
+             });
             }
           });
         }
@@ -146,9 +146,12 @@ const ProductForm = () => {
         };
 
         dispatch(updateproduct(products)).then(() => {
-          dispatch(getAllproduct()).then(() => {
-            setIsPosting(false);
+          dispatch(getAllproduct()).then((res: any) => {
+            if(res && res.payload !== undefined){
+               setIsPosting(false);
             navigate("/");
+            }
+           
           });
         });
       }
@@ -167,12 +170,7 @@ const ProductForm = () => {
         toast.error("Please Ensure to add all fields",
         {
          position: "top-center",
-         autoClose: 1500, //6 seconds
-         hideProgressBar: true,
-         closeOnClick: true,
-         pauseOnHover: false,
-         draggable: false,
-         transition: Bounce,
+         duration: 1500, 
        });
        
         return;
@@ -181,12 +179,7 @@ const ProductForm = () => {
         toast.error("Please Ensure to Add a Minimum of 4 photos of the Product!!!",
         {
          position: "top-center",
-         autoClose: 1500, //6 seconds
-         hideProgressBar: true,
-         closeOnClick: true,
-         pauseOnHover: false,
-         draggable: false,
-         transition: Bounce,
+         duration: 1500,
        });
         return;
       } else {
@@ -211,7 +204,7 @@ const ProductForm = () => {
           token,
         };
 
-        dispatch(createproduct(products)).then((res) => {
+        dispatch(createproduct(products)).then((res: any) => {
           if (
             res.payload &&
             res.payload.response &&
@@ -222,12 +215,7 @@ const ProductForm = () => {
             toast.error("Something went wrong",
             {
              position: "top-center",
-             autoClose: 1500, //6 seconds
-             hideProgressBar: true,
-             closeOnClick: true,
-             pauseOnHover: false,
-             draggable: false,
-             transition: Bounce,
+             duration: 1500, 
            });
 
             return;
@@ -236,15 +224,18 @@ const ProductForm = () => {
             toast.success("Product Successfully Added!!!",
             {
              position: "top-center",
-             autoClose: 1500, //6 seconds
-             hideProgressBar: true,
-             closeOnClick: true,
-             pauseOnHover: false,
-             draggable: false,
-             transition: Bounce,
+             duration: 1500,
            });
-            dispatch(getAllproduct()).then(() => {
+            dispatch(getAllproduct()).then((res: any) => {
+             if(res && res.payload !== undefined){
               navigate("/");
+             }else{
+              toast.error("Poor Network Connection please try again later",
+              {
+               position: "top-center",
+               duration: 1500, 
+             });
+             }
             });
           }
         });
@@ -504,7 +495,7 @@ const ProductForm = () => {
               id && !isPosting ? "Update" : 
               !id && isPosting ? "Loading..." : 
               "Create"}
-              <ToastContainer />
+              {/* <ToastContainer /> */}
             </button>
           </div>
         </form>

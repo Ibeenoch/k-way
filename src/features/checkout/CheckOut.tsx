@@ -3,8 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { fetchAllUsersCartAsync, selectAllCart } from "../cart/cartSlice";
 import pics from "../../images/Untitled.jpg";
-import { toast, ToastContainer, Bounce } from "react-toastify"
-import "react-toastify/dist/ReactToastify.css";
+import toast, { Toaster} from "react-hot-toast"
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { MinusIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 import {
@@ -153,20 +152,21 @@ const CheckOut = () => {
                   res.payload !== undefined
                 ) {
                   console.log("ahjahshahjas");
-                  toast.info("Profile Updated",
+                  toast("Profile Updated",
                   {
                    position: "top-center",
-                   autoClose: 1500, //6 seconds
-                   hideProgressBar: true,
-                   closeOnClick: true,
-                   pauseOnHover: false,
-                   draggable: false,
-                   transition: Bounce,
+                   duration: 1500, 
                  });
                   navigate(`/profile/${res.payload.id}`);
                 }
               });
             }
+          }else{
+            toast.error("Poor Network Connection please try again later",
+          {
+            duration: 1500, 
+            position: 'top-center'
+         });
           }
         });
       } else {
@@ -181,21 +181,28 @@ const CheckOut = () => {
               console.log("asgh");
               dispatch(getAUser(data)).then((res: any) => {
                 console.log("hjhjaashahshahjas");
-                if (res && res.payload) {
+                if (res && res.payload !== undefined) {
                   console.log("ahjahshahjas");
-                  toast.info("Address Updated",
+                  toast("Address Updated",
                   {
                    position: "top-center",
-                   autoClose: 1500, //6 seconds
-                   hideProgressBar: true,
-                   closeOnClick: true,
-                   pauseOnHover: false,
-                   draggable: false,
-                   transition: Bounce,
+                   duration: 1500, 
                  });
+                }else{
+                  toast.error("Poor Network Connection please try again later",
+                    {
+                      duration: 1500, 
+                      position: 'top-center'
+                  });
                 }
               });
             }
+          }else{
+            toast.error("Poor Network Connection please try again later",
+          {
+            duration: 1500, 
+            position: 'top-center'
+         });
           }
         });
       }
@@ -228,15 +235,10 @@ const CheckOut = () => {
   const handleFlutterPayment = useFlutterwave(config);
 
   const informUser = () => {
-    toast.info("Please Select an existing address and online payment method to pay online",
+    toast("Please Select an existing address and online payment method to pay online",
     {
      position: "top-center",
-     autoClose: 1500, //6 seconds
-     hideProgressBar: true,
-     closeOnClick: true,
-     pauseOnHover: false,
-     draggable: false,
-     transition: Bounce,
+     duration: 1500, 
    });
    
   };
@@ -450,7 +452,7 @@ const CheckOut = () => {
                 className="rounded-md bg-red-800 px-3 py-2 mb-3 text-sm font-semibold text-white shadow-sm hover:bg-red-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 {user && !user.address ? "Create Profile" : "Change Address"}
-                <ToastContainer />
+                {/* <ToastContainer /> */}
               </button>
             </div>
 
@@ -656,15 +658,10 @@ const CheckOut = () => {
                     handleFlutterPayment({
                       callback: (response: any) => {
                         if (response.status === "successful") {
-                          toast.info("please hold on while we process your order...",
+                          toast("please hold on while we process your order...",
                           {
                            position: "top-center",
-                           autoClose: 1500, //6 seconds
-                           hideProgressBar: true,
-                           closeOnClick: true,
-                           pauseOnHover: false,
-                           draggable: false,
-                           transition: Bounce,
+                           duration: 1500, 
                          });
                           const shippingDetails = checkoutInfo[addressSelected];
                           const details = {
@@ -700,15 +697,16 @@ const CheckOut = () => {
                                   toast.success("Thank you for making purchase from us",
                                   {
                                    position: "top-center",
-                                   autoClose: 1500, //6 seconds
-                                   hideProgressBar: true,
-                                   closeOnClick: true,
-                                   pauseOnHover: false,
-                                   draggable: false,
-                                   transition: Bounce,
+                                   duration: 1500, 
                                  });
                                   navigate(`/order/success/${navigateId}`);
                                 });
+                            }else{
+                              toast.error("Poor Network Connection please try again later",
+                              {
+                               position: "top-center",
+                               duration: 1500,
+                             });
                             }
                           });
                           closePaymentModal();
@@ -722,7 +720,7 @@ const CheckOut = () => {
                   <div className="flex items-center justify-center rounded-md border border-transparent rounded-md bg-red-800 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-red-700">
                     Pay Now
                   </div>
-                  <ToastContainer />
+                  {/* <ToastContainer /> */}
                 </div>
               ) : (
                 <div
@@ -732,7 +730,7 @@ const CheckOut = () => {
                   <div className="flex items-center justify-center rounded-md border rounded-md border-transparent bg-red-800 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-red-700">
                     Pay Now
                   </div>
-                  <ToastContainer />
+                  {/* <ToastContainer /> */}
                 </div>
               )}
 

@@ -2,8 +2,7 @@ import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { useEffect, useState } from "react";
 import { fetchAllUsersCartAsync, selectAllCart } from "../cart/cartSlice";
-import { toast, ToastContainer, Bounce } from "react-toastify"
-import "react-toastify/dist/ReactToastify.css";
+import toast, { Toaster } from "react-hot-toast"
 import {  useParams } from "react-router-dom";
 import { WalletIcon, } from "@heroicons/react/24/outline";
 import { selectUser } from "../auth/authSlice";
@@ -20,8 +19,7 @@ const OrderSuccessPage = () => {
   const { carts } = useAppSelector(selectAllCart);
   const { user } = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
-  const { aUserTransactions, aUserOrderedProducts, aUserShippingAddress } =
-    useAppSelector(selectCheckout);
+  const { aUserTransactions, aUserOrderedProducts, aUserShippingAddress } = useAppSelector(selectCheckout);
   const { id } = useParams();
   const userId = user && user.id;
   const token = user && user.token;
@@ -32,21 +30,21 @@ const OrderSuccessPage = () => {
       token,
     };
 
-    dispatch(atransactionOfAUser(data))
-      .then((res: any) => {
-        console.log("fetch the details ", res.payload);
-      })
-      .then((res: any) => {
-        toast.success("Thank you for your purchase",
-        {
-         position: "top-center",
-         autoClose: 1500, //6 seconds
-         hideProgressBar: true,
-         closeOnClick: true,
-         pauseOnHover: false,
-         draggable: false,
-         transition: Bounce,
-       });
+    dispatch(atransactionOfAUser(data)).then((res: any) => {
+        if(res && res.payload !== undefined){
+           console.log("fetch the details ", res.payload);
+           toast.success("Thank you for your purchase",
+           {
+            position: "top-center",
+            duration: 1500, 
+          });
+        }else{
+          toast.error("Poor Network Connection please try again later",
+          {
+            duration: 1500, 
+            position: 'top-center'
+         });
+        }
       });
 
     console.log("data ", data);
@@ -236,7 +234,7 @@ const OrderSuccessPage = () => {
           </div>
         </div>
       </section>
-      <ToastContainer />
+      {/* <ToastContainer /> */}
     </div>
   );
 };

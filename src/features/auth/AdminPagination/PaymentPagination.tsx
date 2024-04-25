@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { selectUser } from "../authSlice";
 import { getPagination } from "../../ProductList/ProductSlice";
 import { getpaymentPagination } from "../../checkout/checkoutSlice";
+import toast, { Toaster } from "react-hot-toast"
 
 interface ChildComponentProp {
   totalCount: number;
@@ -23,7 +24,15 @@ const PaymentPagination: React.FC<ChildComponentProp> = ({ totalCount }) => {
     const currentPage = num;
     const item = { limit, currentPage };
     const data = { item, token };
-    dispatch(getpaymentPagination(data) as any);
+    dispatch(getpaymentPagination(data) as any).then((res: any) => {
+      if(res && res.payload === undefined){
+        toast.error("Poor Network Connection please try again later",
+        {
+         position: "top-center",
+         duration: 1500,
+       });
+      }
+    });
   };
 
   const handlePrevious = (num: number) => {
@@ -32,7 +41,15 @@ const PaymentPagination: React.FC<ChildComponentProp> = ({ totalCount }) => {
     const currentPage = num;
     const item = { limit, currentPage };
     const data = { item, token };
-    dispatch(getpaymentPagination(data) as any);
+    dispatch(getpaymentPagination(data) as any).then((res: any) => {
+      if(res && res.payload === undefined){
+        toast.error("Poor Network Connection please try again later",
+        {
+         position: "top-center",
+         duration: 1500, 
+       });
+      }
+    });
   };
 
   const handleNext = (num: number) => {
@@ -41,7 +58,15 @@ const PaymentPagination: React.FC<ChildComponentProp> = ({ totalCount }) => {
     const currentPage = num;
     const item = { limit, currentPage };
     const data = { item, token };
-    dispatch(getpaymentPagination(data) as any);
+    dispatch(getpaymentPagination(data) as any).then((res: any) => {
+      if(res && res.payload === undefined){
+        toast.error("Poor Network Connection please try again later",
+        {
+         position: "top-center",
+         duration: 1500,
+       });
+      }
+    });
   };
 
   return (
@@ -52,6 +77,7 @@ const PaymentPagination: React.FC<ChildComponentProp> = ({ totalCount }) => {
           className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
         >
           Previous
+          {/* <ToastContainer /> */}
         </div>
         <div
           onClick={() =>
@@ -60,6 +86,7 @@ const PaymentPagination: React.FC<ChildComponentProp> = ({ totalCount }) => {
           className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
         >
           Next
+          {/* <ToastContainer /> */}
         </div>
       </div>
       <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
@@ -84,6 +111,7 @@ const PaymentPagination: React.FC<ChildComponentProp> = ({ totalCount }) => {
             >
               <span className="sr-only">Previous</span>
               <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
+              {/* <ToastContainer/> */}
             </div>
 
             {Array.from({
@@ -110,6 +138,7 @@ const PaymentPagination: React.FC<ChildComponentProp> = ({ totalCount }) => {
             >
               <span className="sr-only">Next</span>
               <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
+              {/* <ToastContainer /> */}
             </div>
           </nav>
         </div>

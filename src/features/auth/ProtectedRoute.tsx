@@ -3,8 +3,7 @@ import { useAppSelector } from "../../app/hooks";
 import { selectUser } from "./authSlice";
 import LoginPage from "../../pages/LoginPage";
 import { useNavigate } from "react-router-dom";
-import { toast, ToastContainer, Bounce } from "react-toastify"
-import "react-toastify/dist/ReactToastify.css";
+import toast, { Toaster } from "react-hot-toast"
 import { jwtDecode } from "jwt-decode";
 interface Children {
   child: ReactElement | any;
@@ -18,15 +17,10 @@ const ProtectedRoute: React.FC<Children> = ({ child }) => {
   useEffect(() => {
     const isTokenExpired = (token: any) => {
       if (!token) {
-        toast.info("Session expiry please login to continue", 
+        toast("Session expiry please login to continue", 
         {
          position: "top-center",
-         autoClose: 6000, //6 seconds
-         hideProgressBar: true,
-         closeOnClick: true,
-         pauseOnHover: false,
-         draggable: false,
-         transition: Bounce,
+         duration: 6000,
        });
       
         localStorage.removeItem("user");
@@ -38,15 +32,10 @@ const ProtectedRoute: React.FC<Children> = ({ child }) => {
         if (expiryTime) {
           console.log(currentTime > expiryTime);
           if (currentTime > expiryTime) {
-            toast.info("Your Session has expired please login to continue", 
+            toast("Your Session has expired please login to continue", 
             {
              position: "top-center",
-             autoClose: 6000, //6 seconds
-             hideProgressBar: true,
-             closeOnClick: true,
-             pauseOnHover: false,
-             draggable: false,
-             transition: Bounce,
+             duration: 6000,
            });
           
             localStorage.removeItem("user");

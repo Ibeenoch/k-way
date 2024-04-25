@@ -14,8 +14,7 @@ import {
   updatetheProductRating,
 } from "../ProductSlice";
 import { StarIcon } from "@heroicons/react/24/outline";
-import { toast, ToastContainer, Bounce } from "react-toastify"
-import "react-toastify/dist/ReactToastify.css";
+import toast, { Toaster } from "react-hot-toast"
 import { useNavigate, useParams } from "react-router-dom";
 
 
@@ -23,6 +22,7 @@ const ProductReviewForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [remark, setRemark] = useState<string>("");
+  const [postRemark, setPostRemark] = useState<boolean>(false);
   const ratingRef1 = useRef<HTMLDivElement>(null);
   const ratingRef2 = useRef<HTMLDivElement>(null);
   const ratingRef3 = useRef<HTMLDivElement>(null);
@@ -42,18 +42,14 @@ const ProductReviewForm = () => {
 
   const handleReviewremark = (e: FormEvent) => {
     e.preventDefault();
-
+    setPostRemark(true);
     const rating = parseInt(getRatingVal);
     if (!rating) {
+      setPostRemark(false);
       toast.error("Please click on the rating icon to rating the product, and add a review about this product",
       {
-       position: "top-center",
-       autoClose: 1500, //6 seconds
-       hideProgressBar: true,
-       closeOnClick: true,
-       pauseOnHover: false,
-       draggable: false,
-       transition: Bounce,
+       duration: 1500, //6 seconds
+       position: 'top-center',
      });
      
       return;
@@ -67,32 +63,33 @@ const ProductReviewForm = () => {
     };
     dispatch(createAProductReview(data)).then((res: any) => {
       if (res && res.payload !== undefined) {
-        const data = {
-          id,
-          updatedRating: rating,
-        };
-
-        dispatch(updatetheProductRating(data)).then((res: any) => {
-          if (res && res.payload !== undefined) {
-            console.log("update rating ", res.payload);
-            dispatch(getaProductReviews(productId)).then((res: any) => {
+ dispatch(getaProductReviews(productId)).then((res: any) => {
               console.log("get rating ", res.payload);
               if (res && res.payload !== undefined) {
-                toast.info("Thank You For Your Honest Feedback", {
+                setPostRemark(false)
+                toast("Thank You For Your Honest Feedback", {
                  position: "top-center",
-                 autoClose: 1500, //6 seconds
-                 hideProgressBar: true,
-                 closeOnClick: true,
-                 pauseOnHover: false,
-                 draggable: false,
-                 transition: Bounce,
+                 duration: 1500, //6 seconds
                });
               
                 navigate(`/product/review/${productId}`);
+              }else{
+                setPostRemark(false);
+                toast.error("Poor Network Connection please try again later",
+                {
+                  duration: 1500, //6 seconds
+                  position: 'top-center'
+               });
               }
             });
-          }
-        });
+       
+      }else{
+        setPostRemark(false);
+        toast.error("Poor Network Connection please try again later",
+                {
+                  duration: 1500, //6 seconds
+                  position: 'top-center'
+               });
       }
     });
   };
@@ -217,7 +214,7 @@ const ProductReviewForm = () => {
               id="remark"
               rows={6}
               onChange={handleChange}
-              className="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
+              className="px-2 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
               placeholder="what is do you think about this product..."
               required
               defaultValue={""}
@@ -225,9 +222,9 @@ const ProductReviewForm = () => {
           </div>
           <button
             type="submit"
-            className="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-red-800 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-red-700"
+            className="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-red-800 rounded-lg focus:ring-4 focus:ring-red-200 dark:focus:ring-red-900 hover:bg-red-700"
           >
-            Post remark
+           { postRemark ? "Loading..." : "Post Review"} 
           </button>
         </form>
       </div>

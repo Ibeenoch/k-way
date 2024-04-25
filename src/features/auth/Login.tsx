@@ -2,8 +2,7 @@ import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import companylogo from "../../images/images-9.png";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { toast, ToastContainer, Bounce } from "react-toastify"
-import "react-toastify/dist/ReactToastify.css";
+import toast, { Toaster } from "react-hot-toast"
 import Switch from "react-switch";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/20/solid";
 import { loginUser, selectUser } from "./authSlice";
@@ -45,6 +44,11 @@ const Login = () => {
       const login = { ...formData, passcode };
       dispatch(loginUser(login)).then((res: any) => {
         if (res && res.payload && res.payload === undefined) {
+          toast.error("Poor Network Connection please try again later",
+          {
+           position: "top-center",
+           duration: 1500,
+         });
           setIsClicked(false);
           return;
         } else if (
@@ -56,12 +60,7 @@ const Login = () => {
           toast.success("Successfully Login As Admin",
           {
            position: "top-center",
-           autoClose: 1500, //6 seconds
-           hideProgressBar: true,
-           closeOnClick: true,
-           pauseOnHover: false,
-           draggable: false,
-           transition: Bounce,
+           duration: 1500,
          });
           setIsClicked(false);
           navigate(`/`);
@@ -81,12 +80,7 @@ const Login = () => {
             toast.success("Successfully Login As User",
             {
              position: "top-center",
-             autoClose: 1500, //6 seconds
-             hideProgressBar: true,
-             closeOnClick: true,
-             pauseOnHover: false,
-             draggable: false,
-             transition: Bounce,
+             duration: 1500, 
            });
             setIsClicked(false);
             navigate("/");
@@ -100,12 +94,7 @@ const Login = () => {
           toast.error("user does not exist",
           {
            position: "top-center",
-           autoClose: 1500, //6 seconds
-           hideProgressBar: true,
-           closeOnClick: true,
-           pauseOnHover: false,
-           draggable: false,
-           transition: Bounce,
+           duration: 1500,
          });
         } else if (
           res &&
@@ -113,15 +102,10 @@ const Login = () => {
           res.payload === "password does not match!"
         ) {
           setIsClicked(false);
-          toast.error("Password Incorrect",
+          toast.error("Password Is Incorrect",
           {
            position: "top-center",
-           autoClose: 1500, //6 seconds
-           hideProgressBar: true,
-           closeOnClick: true,
-           pauseOnHover: false,
-           draggable: false,
-           transition: Bounce,
+           duration: 1500,
          });
 
         } else {
@@ -144,15 +128,10 @@ const Login = () => {
   };
 
   useEffect(() => {
-    toast.info("Please login to continue",
+    toast("Please login to continue",
     {
      position: "top-center",
-     autoClose: 1500, //6 seconds
-     hideProgressBar: true,
-     closeOnClick: true,
-     pauseOnHover: false,
-     draggable: false,
-     transition: Bounce,
+     duration: 1500,
    });
   }, []);
 
@@ -304,7 +283,7 @@ const Login = () => {
                 ) : (
                   "Sign in"
                 )}
-                <ToastContainer />
+                {/* <ToastContainer /> */}
               </button>
             </div>
           </form>

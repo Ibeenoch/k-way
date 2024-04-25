@@ -12,8 +12,7 @@ import {
 } from "../ProductSlice";
 import pics from "../../../images/download-29.jpeg";
 import { addtocart, selectAllCart } from "../../cart/cartSlice";
-import { toast, ToastContainer, Bounce } from "react-toastify"
-import "react-toastify/dist/ReactToastify.css";
+import toast, { Toaster } from "react-hot-toast"
 import ProductReview from "./ProductReview";
 import SimlilarProduct from "./SimlilarProduct";
 import { selectUser } from "../../auth/authSlice";
@@ -141,7 +140,12 @@ const ProductDetail = () => {
     dispatch(getAproduct(id)).then((res: any) => {
       if (res && res.payload && res.payload.id) {
         navigate(`/product/review/form/${id}`);
-      }
+      }else{
+        toast.error("Poor Network Connection please try again later",
+       {
+         duration: 3000, //6 seconds
+      });
+       }
     });
   };
 
@@ -171,9 +175,21 @@ const ProductDetail = () => {
             productId: id,
             updatedRating: parseInt(theProductRating ? theProductRating : "0"),
           };
-          dispatch(updatetheProductRating(data)).then((res: any) => {});
+          dispatch(updatetheProductRating(data)).then((res: any) => {
+            if(res && res.payload === undefined){
+              toast.error("Poor Network Connection please try again later",
+                {
+                  duration: 3000, //6 seconds
+                });
+            }
+          });
         }
-      }
+      }else{
+        toast.error("Poor Network Connection please try again later",
+       {
+         duration: 3000, //6 seconds
+      });
+       }
     });
   }, [id]);
 
@@ -204,6 +220,7 @@ const ProductDetail = () => {
   const thirdBar = Math.round((totalThreestar / totalRatingGiven) * 10) * 10;
   const secondBar = Math.round((totalTwostar / totalRatingGiven) * 10) * 10;
   const firstBar = Math.round((totalOnestar / totalRatingGiven) * 10) * 10;
+  console.log('fourthBar no details ', fourthBar)
 
   const handlelogin = () => {
     navigate("/login");
@@ -373,19 +390,19 @@ const ProductDetail = () => {
               <div className="flex text-sm">
                 <div
                   onClick={() => handleAddToWishlist(product.id)}
-                  className="flex cursor-pointer border border-white bg-red-800 dark:bg-blue-800 text-white dark:text-white antialiased font-bold hover:opacity-50 hover:text-white dark:hover:bg-red-700 px-4 py-2"
+                  className="flex cursor-pointer border border-white bg-red-800 dark:bg-blue-800 text-white dark:text-white antialiased font-bold hover:bg-red-700 hover:text-white dark:hover:bg-red-700 px-4 py-2"
                 >
                   <HeartIcon width={30} height={20} /> <div></div>
-                  <ToastContainer />
+                  {/* <ToastContainer /> */}
                 </div>
 
                 <div
                   onClick={() => handleAddCart(product.id)}
-                  className="flex cursor-pointer border border-white bg-red-800 dark:bg-blue-800 text-white dark:text-white antialiased font-bold hover:opacity-50 hover:text-white dark:hover:bg-red-700 px-4 py-2"
+                  className="flex cursor-pointer border border-white bg-red-800 dark:bg-blue-800 text-white dark:text-white antialiased font-bold hover:bg-red-700 hover:text-white dark:hover:bg-red-700 px-4 py-2"
                 >
                   <ShoppingBagIcon width={30} height={20} />{" "}
                   <div>Add To Cart</div>
-                  <ToastContainer />
+                  {/* <ToastContainer /> */}
                 </div>
               </div>
 
@@ -494,6 +511,10 @@ const ProductDetail = () => {
                   </a>
                 </div>
               </div>
+
+              <div className="text-red-500">
+                {product && product.stock} stock left
+              </div>
             </div>
             <div className="flex flex-col">
               <strong>keywords</strong>
@@ -573,7 +594,7 @@ const ProductDetail = () => {
 
                           <p className="h-2 w-full sm:min-w-[278px] rounded-[30px]  bg-gray-200 ml-5 mr-3">
                             <span
-                              style={{ width: `${fifthBar}%` }}
+                              style={{ width: fifthBar > 0 ? `${fifthBar}%` : '0%' }}
                               className={`h-full bg-red-800 rounded-[30px] flex`}
                             />
                           </p>
@@ -606,7 +627,7 @@ const ProductDetail = () => {
                           </svg>
                           <p className="h-2 w-full sm:min-w-[278px] rounded-[30px]  bg-gray-200 ml-5 mr-3">
                             <span
-                              style={{ width: `${fourthBar}%` }}
+                              style={{ width: fourthBar > 0 ? `${fourthBar}%` : '0%' }}
                               className={`h-full bg-red-800 rounded-[30px] flex`}
                             />
                           </p>
@@ -639,7 +660,7 @@ const ProductDetail = () => {
                           </svg>
                           <p className="h-2 w-full sm:min-w-[278px] rounded-[30px]  bg-gray-200 ml-5 mr-3">
                             <span
-                              style={{ width: `${thirdBar}%` }}
+                              style={{ width: thirdBar > 0 ? `${thirdBar}%` : '0%' }}
                               className={`h-full bg-red-800 rounded-[30px] flex`}
                             />
                           </p>
@@ -672,7 +693,7 @@ const ProductDetail = () => {
                           </svg>
                           <p className="h-2 w-full sm:min-w-[278px] rounded-[30px] bg-gray-200 ml-5 mr-3">
                             <span
-                              style={{ width: `${secondBar}%` }}
+                             style={{ width: secondBar > 0 ? `${secondBar}%` : '0%' }}
                               className={`h-full bg-red-800 rounded-[30px] flex`}
                             />
                           </p>
@@ -705,7 +726,7 @@ const ProductDetail = () => {
                           </svg>
                           <p className="h-2 w-full sm:min-w-[278px] rounded-[30px]  bg-gray-200 ml-5 mr-3">
                             <span
-                              style={{ width: `${firstBar}%` }}
+                              style={{ width: firstBar > 0 ? `${firstBar}%` : '0%' }}
                               className={`h-full bg-red-800 rounded-[30px] flex`}
                             />
                           </p>

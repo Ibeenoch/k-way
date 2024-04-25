@@ -29,7 +29,7 @@ import { useAppSelector } from "./app/hooks";
 import { selectUser } from "./features/auth/authSlice";
 import Logout from "./features/auth/Logout";
 import PageNotFound from "./pages/PageNotFound";
-import { ToastContainer } from "react-toastify"
+import { Toaster } from "react-hot-toast"
 
 
 const router = createBrowserRouter([
@@ -139,7 +139,7 @@ function App() {
     
       <div className="App">
         <RouterProvider router={router} />
-        <ToastContainer />
+        <Toaster position="top-center"  />
       </div>
   );
 }

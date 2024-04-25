@@ -31,8 +31,7 @@ import {
 import { ChangeEvent, Fragment, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import pics from "../../images/HP Newest Pavilion 15.6_ HD Touchscreen Anti-Glare Laptop__4.jpg";
-import { toast, ToastContainer, Bounce } from "react-toastify"
-import "react-toastify/dist/ReactToastify.css";
+import toast, { Toaster } from "react-hot-toast"
 import { format } from "date-fns";
 import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
 import ShippingDetails from "./ShippingDetails";
@@ -78,41 +77,79 @@ const Admin = () => {
   const { products } = useAppSelector(selectProduct);
   const { orders } = useAppSelector(selectOrder);
 
-  const togglePopup = () => {
-    setIsOpen(!isOpen);
-  };
-
   useEffect(() => {
     dispatch(getAllproduct()).then((res: any) => {
-      setTotalProductCount(res.payload.length);
-
-      const handlePages = () => {
-        const limit = 3;
-        const currentPage = 1;
-        const data = { limit, currentPage };
-        dispatch(getPagination(data) as any).then(() => {});
-      };
-
-      handlePages();
+      if(res && res.payload !== undefined){
+        setTotalProductCount(res.payload.length);
+  
+        const handlePages = () => {
+          const limit = 3;
+          const currentPage = 1;
+          const data = { limit, currentPage };
+          dispatch(getPagination(data) as any).then((res: any) => {
+            if(res && res.payload === undefined){
+              toast.error("Poor Network Connection please try again later",
+              {
+               position: "top-center",
+               duration: 1500, 
+             });
+            }
+          });
+        };
+  
+        handlePages();
+      }else{
+        toast.error("Poor Network Connection please try again later",
+        {
+         position: "top-center",
+         duration: 1500, 
+       });
+      }
     });
   }, [dispatch, navigate]);
 
   useEffect(() => {
     dispatch(getAllOrders(token)).then((res: any) => {
-      console.log('total order ', res.payload.length )
+      if(res && res.payload !== undefined){
+         console.log('total order ', res.payload.length )
       setTotalOrderCount(res.payload.length);
+      }else{
+        toast.error("Poor Network Connection please try again later",
+        {
+         position: "top-center",
+         duration: 1500, 
+       });
+      }
+     
     });
   }, [dispatch, navigate]);
 
   useEffect(() => {
     dispatch(getAllUser(token)).then((res: any) => {
-      setTotalUserCount(res.payload.length);
+      if(res && res.payload !== undefined){
+
+        setTotalUserCount(res.payload.length);
+      }else{
+        toast.error("Poor Network Connection please try again later",
+        {
+         position: "top-center",
+         duration: 1500,
+       });
+      }
     });
   }, [dispatch, navigate]);
 
   useEffect(() => {
     dispatch(alltransactions(token)).then((res: any) => {
-      setTotalPaymentCount(res.payload.length);
+      if(res && res.payload !== undefined){
+        setTotalPaymentCount(res.payload.length);
+      }else{
+        toast.error("Poor Network Connection please try again later",
+        {
+         position: "top-center",
+         duration: 1500, 
+       });
+      }
     });
   }, [dispatch, navigate]);
 
@@ -123,6 +160,12 @@ const Admin = () => {
     };
     dispatch(getAUser(data)).then((res: any) => {
       if (res && res.payload && res.payload.id) {
+      }else{
+        toast.error("Poor Network Connection please try again later",
+        {
+         position: "top-center",
+         duration: 1500, 
+       });
       }
     });
   }, [dispatch]);
@@ -132,6 +175,12 @@ const Admin = () => {
       dispatch(
         getAllOrders((res: any) => {
           if (res && res.payload && Array.isArray(res.payload)) {
+          }else{
+            toast.error("Poor Network Connection please try again later",
+            {
+             position: "top-center",
+             duration: 1500, 
+           });
           }
         })
       );
@@ -139,9 +188,15 @@ const Admin = () => {
   }, []);
 
   const handleEdit = (productId: any) => {
-    dispatch(getAproduct(productId)).then((res) => {
+    dispatch(getAproduct(productId)).then((res: any) => {
       if (res && res.payload) {
         navigate(`/product/update/${productId}`);
+      }else{
+        toast.error("Poor Network Connection please try again later",
+        {
+         position: "top-center",
+         duration: 1500,
+       });
       }
     });
   };
@@ -179,12 +234,7 @@ const Admin = () => {
                 toast.success( "Product Succesfully deleted",
                 {
                  position: "top-center",
-                 autoClose: 1500, //6 seconds
-                 hideProgressBar: true,
-                 closeOnClick: true,
-                 pauseOnHover: false,
-                 draggable: false,
-                 transition: Bounce,
+                 duration: 1500, 
                });
                
               });
@@ -197,17 +247,18 @@ const Admin = () => {
                 toast.success( "Product Succesfully deleted",
                 {
                  position: "top-center",
-                 autoClose: 1500, //6 seconds
-                 hideProgressBar: true,
-                 closeOnClick: true,
-                 pauseOnHover: false,
-                 draggable: false,
-                 transition: Bounce,
+                 duration: 1500,
                });
                 
               });
             });
           }
+        }else{
+          toast.error("Poor Network Connection please try again later",
+          {
+           position: "top-center",
+           duration: 1500,
+         });
         }
       });
     }
@@ -226,12 +277,7 @@ const Admin = () => {
               toast.success( "Order Succesfully deleted",
               {
                position: "top-center",
-               autoClose: 1500, //6 seconds
-               hideProgressBar: true,
-               closeOnClick: true,
-               pauseOnHover: false,
-               draggable: false,
-               transition: Bounce,
+               duration: 1500, 
              });
 
             }
@@ -252,12 +298,7 @@ const Admin = () => {
           toast.success( "Order Succesfully deleted",
           {
            position: "top-center",
-           autoClose: 1500, //6 seconds
-           hideProgressBar: true,
-           closeOnClick: true,
-           pauseOnHover: false,
-           draggable: false,
-           transition: Bounce,
+           duration: 1500, 
          });
         }
       });
@@ -280,12 +321,7 @@ const Admin = () => {
           toast.success( `${name} account is successfully deleted`,
           {
            position: "top-center",
-           autoClose: 1500, //6 seconds
-           hideProgressBar: true,
-           closeOnClick: true,
-           pauseOnHover: false,
-           draggable: false,
-           transition: Bounce,
+           duration: 1500,
          });
         }
       });
@@ -382,9 +418,6 @@ const Admin = () => {
         const data = { limit, currentPage };
         const item = { token, data };
         console.log('order data ', item)
-        // dispatch(getOrderPagination(item) as any).then((res: any) => {
-        //   console.log('order res ', index, res.payload)
-        // });
       }
     });
   };
@@ -676,7 +709,7 @@ const Admin = () => {
                                           color="red"
                                           className="cursor-pointer"
                                         />{" "}
-                                        <ToastContainer />
+                                        {/* <ToastContainer /> */}
                                       </div>
                                     </div>
                                   ))}
@@ -877,7 +910,7 @@ const Admin = () => {
                                           color="red"
                                           className="cursor-pointer"
                                         />{" "}
-                                        <ToastContainer />
+                                        {/* <ToastContainer /> */}
                                       </div>
                                     </div>
                                   ))}
@@ -968,7 +1001,7 @@ const Admin = () => {
                                               color="red"
                                               className="cursor-pointer"
                                             />{" "}
-                                            <ToastContainer />
+                                            {/* <ToastContainer /> */}
                                           </div>
                                         </div>
                                       </li>
@@ -1128,7 +1161,7 @@ const Admin = () => {
                                             color="red"
                                             className="cursor-pointer"
                                           />{" "}
-                                          <ToastContainer />
+                                          {/* <ToastContainer /> */}
                                         </div>
                                       </div>
                                     )

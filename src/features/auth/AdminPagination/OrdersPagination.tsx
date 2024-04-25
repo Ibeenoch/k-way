@@ -4,6 +4,7 @@ import { useAppSelector } from "../../../app/hooks";
 import { useDispatch } from "react-redux";
 import { getOrderPagination } from "../../order/orderSlice";
 import { selectUser } from "../authSlice";
+import toast, { Toaster } from "react-hot-toast"
 
 interface ChildComponentProp {
   totalCount: number;
@@ -26,7 +27,15 @@ const OrdersPagination: React.FC<ChildComponentProp> = ({ totalCount }) => {
       token,
       data,
     };
-    dispatch(getOrderPagination(item) as any);
+    dispatch(getOrderPagination(item) as any).then((res: any) => {
+      if(res && res.payload === undefined){
+        toast.error("Poor Network Connection please try again later",
+        {
+         position: "top-center",
+         duration: 1500,
+       });
+      }
+    });
   };
 
   const handlePrevious = (num: number) => {
@@ -40,7 +49,13 @@ const OrdersPagination: React.FC<ChildComponentProp> = ({ totalCount }) => {
       data,
     };
     dispatch(getOrderPagination(item) as any).then((res: any) => {
-      console.log('all orders ', res.payload)
+      if(res && res.payload === undefined){
+        toast.error("Poor Network Connection please try again later",
+        {
+         position: "top-center",
+         duration: 1500, 
+       });
+      }
     });
   };
 console.log('current page ', page, totalItem)
@@ -56,7 +71,13 @@ console.log('current page ', page, totalItem)
       data,
     };
     dispatch(getOrderPagination(item) as any).then((res: any) => {
-      console.log('all orders ', res.payload)
+      if(res && res.payload === undefined){
+        toast.error("Poor Network Connection please try again later",
+        {
+         position: "top-center",
+         duration: 1500,
+       });
+      }
     });
   };
   return (
@@ -67,6 +88,7 @@ console.log('current page ', page, totalItem)
           className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
         >
           Previous
+          {/* <ToastContainer /> */}
         </div>
         <div
           onClick={() =>
@@ -75,6 +97,7 @@ console.log('current page ', page, totalItem)
           className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
         >
           Next
+          {/* <ToastContainer /> */}
         </div>
       </div>
       <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
@@ -97,7 +120,8 @@ console.log('current page ', page, totalItem)
               onClick={() => handlePrevious(page <= 1 ? 1 : page - 1)}
               className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
             >
-              <span className="sr-only">Previous</span>
+              <span className="sr-only">Previous</span> 
+              {/* <ToastContainer /> */}
               <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
             </div>
 
@@ -125,6 +149,7 @@ console.log('current page ', page, totalItem)
             >
               <span className="sr-only">Next</span>
               <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
+              {/* <ToastContainer /> */}
             </div>
           </nav>
         </div>

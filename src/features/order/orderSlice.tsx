@@ -69,8 +69,10 @@ export const orderSlice = createSlice({
         state.status = "loading";
       })
       .addCase(getAllOrders.fulfilled, (state, action) => {
-        state.status = "success";
-        state.orders = action.payload;
+        if(action.payload !== undefined){
+          state.status = "success";
+          state.orders = action.payload;
+        }
       })
       .addCase(getAllOrders.rejected, (state, action) => {
         state.status = "failed";
@@ -79,11 +81,13 @@ export const orderSlice = createSlice({
         state.status = "loading";
       })
       .addCase(orderUpdate.fulfilled, (state, action) => {
-        state.status = "success";
-        const findIndex = state.orders.findIndex(
-          (item: any) => item.id === action.payload.id
-        );
-        state.orders[findIndex] = action.payload;
+        if(action.payload !== undefined){
+          state.status = "success";
+          const findIndex = state.orders.findIndex(
+            (item: any) => item.id === action.payload.id
+          );
+          state.orders[findIndex] = action.payload;
+        }
       })
       .addCase(orderUpdate.rejected, (state, action) => {
         state.status = "failed";
@@ -92,11 +96,13 @@ export const orderSlice = createSlice({
         state.status = "loading";
       })
       .addCase(deleteOrder.fulfilled, (state, action) => {
-        state.status = "success";
-        const findIndex = state.orders.findIndex(
-          (item: any) => item.id === action.payload.id
-        );
-        state.orders.splice(findIndex, 1);
+        if(action.payload !== undefined){
+          state.status = "success";
+          const findIndex = state.orders.findIndex(
+            (item: any) => item.id === action.payload.id
+          );
+          state.orders.splice(findIndex, 1);
+        }
       })
       .addCase(deleteOrder.rejected, (state, action) => {
         state.status = "failed";
@@ -105,8 +111,8 @@ export const orderSlice = createSlice({
         state.status = "loading";
       })
       .addCase(getOrderPagination.fulfilled, (state, action) => {
-        state.status = "success";
         if (action.payload !== undefined) {
+          state.status = "success";
           state.orders = action.payload;
           console.log("ordrers ", state.orders);
         }

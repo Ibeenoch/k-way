@@ -21,11 +21,7 @@ export const addToWishList = async (data: any, toast: any) => {
       toast.success("product successfully added to wishlist",
       {
        position: "top-center",
-       autoClose: 1500, //6 seconds
-       hideProgressBar: true,
-       closeOnClick: true,
-       pauseOnHover: false,
-       draggable: false,
+       duration: 1500,
      });
 
     } else {
@@ -37,22 +33,14 @@ export const addToWishList = async (data: any, toast: any) => {
         toast.success("product successfully added to wishlist",
         {
          position: "top-center",
-         autoClose: 1500, //6 seconds
-         hideProgressBar: true,
-         closeOnClick: true,
-         pauseOnHover: false,
-         draggable: false,
+         duration: 1500, 
        });
        
       } else {
         toast.error("The product already exist in the wishlist",
         {
          position: "top-center",
-         autoClose: 1500, //6 seconds
-         hideProgressBar: true,
-         closeOnClick: true,
-         pauseOnHover: false,
-         draggable: false,
+         duration: 1500, 
        });
 
         return;

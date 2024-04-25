@@ -36,8 +36,7 @@ import Pagination from "./Pagination";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import "./product.css";
 import { addtocart, fetchAllUsersCartAsync } from "../../cart/cartSlice";
-import { toast, ToastContainer, Bounce } from "react-toastify"
-import "react-toastify/dist/ReactToastify.css";
+import  toast, { Toaster } from "react-hot-toast"
 import ProductReview from "./ProductReview";
 import { selectUser } from "../../auth/authSlice";
 import Loading from "../../../Loading";
@@ -64,12 +63,6 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
 
   const token = user && user && user.token;
 
-  // const imageProps = {
-  //   width: "100%",
-  //   height: "100%",
-  //   zoomWidth: 500,
-  //   img: products[0]?.thumbnail.url,
-  // };
   const handleAddToCart = (productId: any) => {
     const quantity = 1;
     dispatch(getAproduct(productId)).then((res) => {
@@ -93,24 +86,73 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
 
   const handleSort = (option: any) => {
     if (option === "Price: Low to High") {
-      dispatch(sortproductAsc());
+      dispatch(sortproductAsc()).then((res: any) => {
+        if(res && res.payload === undefined){
+          toast.error("Poor Network Connection please try again later",
+          {
+            duration: 1500, 
+            position: 'top-center'
+         });
+        }
+      });
     } else if (option === "Price: High to Low") {
-      dispatch(sortproductDesc());
+      dispatch(sortproductDesc()).then((res: any) => {
+        if(res && res.payload === undefined){
+          toast.error("Poor Network Connection please try again later",
+          {
+            duration: 1500, 
+            position: 'top-center'
+         });
+        }
+      });
     } else if (option === "Newest") {
-      dispatch(sortproductNewest());
+      dispatch(sortproductNewest()).then((res: any) => {
+        if(res && res.payload === undefined){
+          toast.error("Poor Network Connection please try again later",
+          {
+            duration: 1500, 
+            position: 'top-center'
+         });
+        }
+      });
     } else if (option === "Best Rating") {
-      dispatch(sortproductRated());
+      dispatch(sortproductRated()).then((res: any) => {
+        if(res && res.payload === undefined){
+          toast.error("Poor Network Connection please try again later",
+          {
+            duration: 1500, 
+            position: 'top-center'
+         });
+        }
+      });
     }
   };
   useEffect(() => {
     dispatch(getAllproduct()).then((res: any) => {
-      setTotalCount(res.payload.length);
+      if(res && res.payload !== undefined){
+        setTotalCount(res.payload.length);
       const limit = 15;
       const currentPage = 1;
           const data = { limit, currentPage };
           dispatch(getPagination(data) as any).then((res: any) => {
-            window.scrollTo(0, 0)
-          });
+            if(res && res.payload !== undefined){
+              window.scrollTo(0, 0);
+            } else{
+              toast.error("Poor Network Connection please try again later",
+                {
+                  duration: 1500, 
+                  position: 'top-center'
+              });
+            }
+          })
+      }else{
+        toast.error("Poor Network Connection please try again later",
+        {
+          duration: 1500, 
+          position: 'top-center'
+       });
+      }
+      
     });
   }, [dispatch, navigate]);
 
@@ -129,20 +171,47 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
         dispatch(similarproduct(data)).then((res: any) => {
           if (res && res.payload && res.payload !== undefined) {
             dispatch(getaProductReviews(productId)).then((res: any) => {
-              console.log("products review ", res.payload);
-              navigate(`/product/details/${productId}`);
+              if(res && res.payload !== undefined){
+                navigate(`/product/details/${productId}`);
               window.scrollTo(0, 0);
+              }else{
+                toast.error("Poor Network Connection please try again later",
+                  {
+                    duration: 1500, 
+                    position: 'top-center'
+                });
+              }
+              
             });
+          }else{
+            toast.error("Poor Network Connection please try again later",
+            {
+              duration: 1500, 
+              position: 'top-center'
+           });
+
           }
         });
+      }else{
+        toast.error("Poor Network Connection please try again later",
+          {
+            duration: 1500, 
+            position: 'top-center'
+         });
       }
     });
   };
 
   const handleEdit = (productId: any) => {
     dispatch(getAproduct(productId)).then((res) => {
-      if (res && res.payload) {
+      if (res && res.payload !== undefined) {
         navigate(`/product/update/${productId}`);
+      }else{
+        toast.error("Poor Network Connection please try again later",
+          {
+            duration: 1500, 
+            position: 'top-center'
+         });
       }
     });
   };
@@ -167,12 +236,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                 toast.success("Product Succesfully deleted",
                 {
                  position: "top-center",
-                 autoClose: 1500, //6 seconds
-                 hideProgressBar: true,
-                 closeOnClick: true,
-                 pauseOnHover: false,
-                 draggable: false,
-                 transition: Bounce,
+                 duration: 1500, //6 seconds
                });
                
               });
@@ -185,16 +249,17 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                 toast.success("Product Succesfully deleted",
                 {
                  position: "top-center",
-                 autoClose: 1500, //6 seconds
-                 hideProgressBar: true,
-                 closeOnClick: true,
-                 pauseOnHover: false,
-                 draggable: false,
-                 transition: Bounce,
+                 duration: 1500, 
                });
               });
             });
           }
+        }else{
+          toast.error("Poor Network Connection please try again later",
+          {
+            duration: 1500, 
+            position: 'top-center'
+         });
         }
       });
     }
@@ -202,11 +267,27 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
 
   const handleCategoryOrBrand = (filter: string, name: string) => {
     if (filter === "Category") {
-      dispatch(getACategory(name));
+      dispatch(getACategory(name)).then((res: any) => {
+        if(res && res.payload === undefined){
+          toast.error("Poor Network Connection please try again later",
+          {
+            duration: 1500, 
+            position: 'top-center'
+         });
+        }
+      })
     }
 
     if (filter === "Brand") {
-      dispatch(fetchABrand(name));
+      dispatch(fetchABrand(name)).then((res: any) => {
+        if(res && res.payload === undefined){
+          toast.error("Poor Network Connection please try again later",
+          {
+            duration: 1500, 
+            position: 'top-center'
+         });
+        }
+      })
     }
   };
 
@@ -222,9 +303,25 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
     //options is an array of objects
     if (name === "Product") {
     } else if (name === "Category") {
-      dispatch(fetchAllCategories()).then((res) => {});
+      dispatch(fetchAllCategories()).then((res: any) => {
+        if(res && res.payload === undefined){
+          toast.error("Poor Network Connection please try again later",
+          {
+            duration: 1500, 
+            position: 'top-center'
+         });
+        }
+      })
     } else {
-      dispatch(fetchAllBrands()).then((res) => {});
+      dispatch(fetchAllBrands()).then((res: any) => {
+        if(res && res.payload === undefined){
+          toast.error("Poor Network Connection please try again later",
+          {
+            duration: 1500, 
+            position: 'top-center'
+         });
+        }
+      })
     }
   };
 
@@ -235,6 +332,12 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
       if (res && res.payload && res.payload.id) {
         navigate(`/product/review/${id}`);
         window.scrollTo(0, 0);
+      }else{
+        toast.error("Poor Network Connection please try again later",
+          {
+            duration: 1500, 
+            position: 'top-center'
+         });
       }
     });
   };
@@ -745,7 +848,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                                                 : "gray"
                                             }
                                           />
-                                          <ToastContainer />
+                                          <Toaster position="top-center" />
                                         </div>
                                       </div>
                                     )}
@@ -804,7 +907,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                                           className="h-4 w-5 text-red-800"
                                           aria-hidden="true"
                                         />
-                                        <ToastContainer />
+                                        {/* <ToastContainer /> */}
                                       </div>
                                     </div>
                                   </div>

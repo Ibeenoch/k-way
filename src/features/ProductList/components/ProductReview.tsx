@@ -10,6 +10,7 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { selectUser } from "../../auth/authSlice";
 import { format } from "date-fns";
+import  toast, { Toaster } from "react-hot-toast"
 
 const ProductReview = () => {
   const { product, productReview } = useAppSelector(selectProduct);
@@ -18,6 +19,19 @@ const ProductReview = () => {
   const dispatch = useAppDispatch();
   const totalRating = 0;
   const { id } = useParams();
+
+  useEffect(() => {
+    if(id){
+      dispatch(getaProductReviews(id)).then((res: any) => {
+        if(res && res.payload === undefined){
+          toast.error("Poor Network Connection please try again later",
+          {
+            duration: 1500, //6 seconds
+          });
+        }
+      })
+    }
+  }, [])
 
   const totalOneRatingArr = (arr: any) => {
     const totalOneRating = arr
@@ -65,9 +79,16 @@ const ProductReview = () => {
   const totalFivestar = productReview ? totalFiveRatingArr(productReview) : 0;
 
   const handleReviewForm = (id: any) => {
+    console.log( 'review id ', id)
     dispatch(getAproduct(id)).then((res: any) => {
+      console.log( 'review page ', res)
       if (res && res.payload && res.payload.id) {
         navigate(`/product/review/form/${id}`);
+      }else{
+        toast.error("Poor Network Connection please try again later",
+        {
+          duration: 1500, //6 seconds
+       });
       }
     });
   };
@@ -78,10 +99,9 @@ const ProductReview = () => {
     totalThreestar +
     totalFourstar +
     totalFivestar;
-  const calculateRating = productReview
-    ? (totalRatingGiven / productReview.length).toFixed(1)
-    : 0;
-  const theProductRating = calculateRating ? calculateRating : 0;
+  const calculateRating = totalRatingGiven === 0 && productReview.length === 0 ? 0 : ( totalRatingGiven / productReview.length).toFixed(1);
+    
+  const theProductRating = calculateRating;
 
   const fifthBar = Math.round((totalFivestar / totalRatingGiven) * 10) * 10;
   const fourthBar = Math.round((totalFourstar / totalRatingGiven) * 10) * 10;
@@ -99,12 +119,32 @@ const ProductReview = () => {
     Math.round(0.7)
   );
 
+  useEffect(() => {
+    if(theProductRating !== 0){
+      console.log('review can be updated now as ', theProductRating)
+      const data = {
+        id,
+        updatedRating: theProductRating,
+      };
+  
+      dispatch(updatetheProductRating(data)).then((res: any) => {
+        if (res && res.payload !== undefined) {
+          console.log("update rating ", res.payload);
+          const productId = product && product.id;
+          dispatch(getaProductReviews(productId)).then((res: any) => {
+            console.log("get rating ", res.payload);
+          });
+        }
+      });
+  
+    }
+    
+  }, [])
+
   const handleLogin = () => {
     navigate("/login");
   };
 
-  const fiveRate =
-    "h-full bg-red-500 w-[" + fifthBar + "%] rounded-[30px] flex";
 
   return (
     <>
@@ -153,7 +193,7 @@ const ProductReview = () => {
 
                         <p className="h-2 w-full sm:min-w-[278px] rounded-[30px]  bg-gray-200 ml-5 mr-3">
                           <span
-                            style={{ width: `${fifthBar}%` }}
+                            style={{ width: fifthBar > 0 ? `${fifthBar}%` : '0%' }}
                             className={`h-full bg-red-500 rounded-[30px] flex`}
                           />
                         </p>
@@ -186,7 +226,7 @@ const ProductReview = () => {
                         </svg>
                         <p className="h-2 w-full sm:min-w-[278px] rounded-[30px]  bg-gray-200 ml-5 mr-3">
                           <span
-                            style={{ width: `${fourthBar}%` }}
+                           style={{ width: fourthBar > 0 ? `${fourthBar}%` : '0%' }}
                             className={`h-full bg-red-500 rounded-[30px] flex`}
                           />
                         </p>
@@ -219,7 +259,7 @@ const ProductReview = () => {
                         </svg>
                         <p className="h-2 w-full sm:min-w-[278px] rounded-[30px]  bg-gray-200 ml-5 mr-3">
                           <span
-                            style={{ width: `${thirdBar}%` }}
+                            style={{ width: thirdBar > 0 ? `${thirdBar}%` : '0%' }}
                             className={`h-full bg-red-500 rounded-[30px] flex`}
                           />
                         </p>
@@ -252,7 +292,7 @@ const ProductReview = () => {
                         </svg>
                         <p className="h-2 w-full sm:min-w-[278px] rounded-[30px]  bg-gray-200 ml-5 mr-3">
                           <span
-                            style={{ width: `${secondBar}%` }}
+                            style={{ width: secondBar > 0 ? `${secondBar}%` : '0%' }}
                             className={`h-full bg-red-500 rounded-[30px] flex`}
                           />
                         </p>
@@ -285,7 +325,7 @@ const ProductReview = () => {
                         </svg>
                         <p className="h-2 w-full sm:min-w-[278px] rounded-[30px]  bg-gray-200 ml-5 mr-3">
                           <span
-                            style={{ width: `${firstBar}%` }}
+                            style={{ width: firstBar > 0 ? `${firstBar}%` : '0%' }}
                             className={`h-full bg-red-500 rounded-[30px] flex`}
                           />
                         </p>
@@ -300,8 +340,8 @@ const ProductReview = () => {
                       <div className="col-span-12 md:col-span-8 flex items-center">
                         <div className="flex flex-col sm:flex-row items-center max-lg:justify-center w-full h-full">
                           <div className="sm:pr-3 sm:border-r border-gray-200 flex items-center justify-center flex-col">
-                            <h2 className="font-manrope font-bold text-5xl text-black text-center mb-4">
-                              {theProductRating}
+                            <h2 className="font-manrope font-bold text-xl text-black text-center mb-2">
+                              {theProductRating} Rating
                             </h2>
                             <div className="flex items-center gap-3 mb-4">
                               <StarIcon
@@ -401,19 +441,19 @@ const ProductReview = () => {
                           </div>
                         </div>
                       </div>
-                      <div className="col-span-12 md:col-span-4 max-lg:mt-8 md:pl-8">
+                      <div className="col-span-12 md:col-span-4 max-lg:mt-4 md:pl-8">
                         <div className="flex items-center flex-col justify-center w-full h-full ">
                           {user && user.id ? (
                             <button
                               onClick={() => handleReviewForm(product.id)}
-                              className="rounded-full px-6 py-4 bg-red-800 font-semibold text-lg text-white whitespace-nowrap mb-6 w-full text-center shadow-sm shadow-transparent transition-all duration-500 hover:bg-red-700 hover:shadow-red-400"
+                              className="rounded-full px-4 py-2 bg-red-800 font-semibold text-lg text-white whitespace-nowrap mb-6 w-full text-center shadow-sm shadow-transparent transition-all duration-500 hover:bg-red-700 hover:shadow-red-400"
                             >
                               Write A Review
                             </button>
                           ) : (
                             <button
                               onClick={handleLogin}
-                              className="rounded-full px-6 py-4 bg-red-800 font-semibold text-lg text-white whitespace-nowrap mb-6 w-full text-center shadow-sm shadow-transparent transition-all duration-500 hover:bg-red-700 hover:shadow-red-400"
+                              className="rounded-full px-4 py-2 bg-red-800 font-semibold text-lg text-white whitespace-nowrap mb-6 w-full text-center shadow-sm shadow-transparent transition-all duration-500 hover:bg-red-700 hover:shadow-red-400"
                             >
                               Write A Review
                             </button>

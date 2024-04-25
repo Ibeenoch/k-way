@@ -1,6 +1,3 @@
-import axios from "axios";
-
-const API = "http://localhost:5050/cart";
 
 export const fetchAllUsersCart = async () => {
   try {
@@ -26,11 +23,7 @@ export const addToCart = async (data: any, toast: any) => {
       toast.success("product successfully added to cart",
       {
        position: "top-center",
-       autoClose: 1500, //6 seconds
-       hideProgressBar: true,
-       closeOnClick: true,
-       pauseOnHover: false,
-       draggable: false,
+       duration: 1500,
      });
     } else {
       const index = checkItem.find((item: any) => item.id === data.id);
@@ -40,22 +33,14 @@ export const addToCart = async (data: any, toast: any) => {
         toast.success("product successfully added to cart",
         {
          position: "top-center",
-         autoClose: 1500, //6 seconds
-         hideProgressBar: true,
-         closeOnClick: true,
-         pauseOnHover: false,
-         draggable: false,
+         duration: 1500, 
        });
        
       } else {
         toast.error("The product already exist in the cart",
         {
          position: "top-center",
-         autoClose: 1500, //6 seconds
-         hideProgressBar: true,
-         closeOnClick: true,
-         pauseOnHover: false,
-         draggable: false,
+         duration: 1500,
        });
         return;
       }

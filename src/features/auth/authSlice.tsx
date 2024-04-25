@@ -160,8 +160,8 @@ export const authSlice = createSlice({
         state.status = "loading";
       })
       .addCase(registerUser.fulfilled, (state, action) => {
-        state.status = "success";
         if (action.payload !== undefined) {
+          state.status = "success";
           localStorage.setItem("user", JSON.stringify(action.payload));
           state.user = action.payload;
         }
@@ -173,8 +173,8 @@ export const authSlice = createSlice({
         state.status = "loading";
       })
       .addCase(loginUser.fulfilled, (state, action) => {
-        state.status = "success";
         if (action.payload !== undefined) {
+          state.status = "success";
           localStorage.setItem("user", JSON.stringify(action.payload));
           state.user = action.payload;
         }
@@ -186,8 +186,8 @@ export const authSlice = createSlice({
         state.status = "loading";
       })
       .addCase(userVerification.fulfilled, (state, action) => {
-        state.status = "success";
         if (action.payload !== undefined) {
+          state.status = "success";
           localStorage.setItem("user", JSON.stringify(action.payload));
           state.user = action.payload;
           console.log("verified user ", state.user);
@@ -209,8 +209,8 @@ export const authSlice = createSlice({
         state.status = "loading";
       })
       .addCase(passwordChange.fulfilled, (state, action) => {
-        state.status = "success";
         if (action.payload !== undefined) {
+          state.status = "success";
           localStorage.setItem("user", JSON.stringify(action.payload));
           state.user = action.payload;
         }
@@ -222,8 +222,8 @@ export const authSlice = createSlice({
         state.status = "loading";
       })
       .addCase(getAUser.fulfilled, (state, action) => {
-        state.status = "success";
         if (action.payload !== undefined) {
+          state.status = "success";
           localStorage.setItem("user", JSON.stringify(action.payload));
           state.user = action.payload;
         }
@@ -235,8 +235,8 @@ export const authSlice = createSlice({
         state.status = "loading";
       })
       .addCase(getotherUser.fulfilled, (state, action) => {
-        state.status = "success";
         if (action.payload !== undefined) {
+          state.status = "success";
           localStorage.setItem("otheruser", JSON.stringify(action.payload));
           state.otherperson = action.payload;
         }
@@ -248,8 +248,8 @@ export const authSlice = createSlice({
         state.status = "loading";
       })
       .addCase(deleteUser.fulfilled, (state, action) => {
-        state.status = "success";
-        if (action.payload !== undefined) {
+        if(action.payload !== undefined) {
+          state.status = "success";
           const findAllUser = JSON.parse(
             localStorage.getItem("alluser") as any
           );
@@ -270,8 +270,8 @@ export const authSlice = createSlice({
         state.status = "loading";
       })
       .addCase(getAllUser.fulfilled, (state, action) => {
-        state.status = "success";
         if (action.payload !== undefined) {
+          state.status = "success";
           localStorage.setItem("alluser", JSON.stringify(action.payload));
           state.users = action.payload;
         }
@@ -283,9 +283,9 @@ export const authSlice = createSlice({
         state.status = "loading";
       })
       .addCase(getUserPagination.fulfilled, (state, action) => {
-        state.status = "success";
-
+        
         if (action.payload !== undefined) {
+          state.status = "success";
           localStorage.setItem("alluser", JSON.stringify(action.payload));
           state.users = action.payload;
         }
@@ -297,8 +297,8 @@ export const authSlice = createSlice({
         state.status = "loading";
       })
       .addCase(uploadUserPhoto.fulfilled, (state, action) => {
-        state.status = "success";
         if (action.payload !== undefined) {
+          state.status = "success";
           localStorage.setItem("user", JSON.stringify(action.payload));
           state.user = action.payload;
         }

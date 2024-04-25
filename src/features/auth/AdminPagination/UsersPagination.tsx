@@ -3,6 +3,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 import { useAppSelector } from "../../../app/hooks";
 import { useDispatch } from "react-redux";
 import { getUserPagination, selectUser } from "../authSlice";
+import toast, { Toaster } from "react-hot-toast"
 
 interface ChildComponentProp {
   totalCount: number;
@@ -22,7 +23,15 @@ const UsersPagination: React.FC<ChildComponentProp> = ({ totalCount }) => {
     const currentPage = num;
     const item = { limit, currentPage };
     const data = { item, token };
-    dispatch(getUserPagination(data) as any);
+    dispatch(getUserPagination(data) as any).then((res: any) => {
+      if(res && res.payload === undefined){
+        toast.error("Poor Network Connection please try again later",
+        {
+         position: "top-center",
+         duration: 1500, 
+       });
+      }
+    });
   };
 
   const handlePrevious = (num: number) => {
@@ -31,7 +40,15 @@ const UsersPagination: React.FC<ChildComponentProp> = ({ totalCount }) => {
     const currentPage = num;
     const item = { limit, currentPage };
     const data = { item, token };
-    dispatch(getUserPagination(data) as any);
+    dispatch(getUserPagination(data) as any).then((res: any) => {
+      if(res && res.payload === undefined){
+        toast.error("Poor Network Connection please try again later",
+        {
+         position: "top-center",
+         duration: 1500, 
+       });
+      }
+    });
   };
 
   const handleNext = (num: number) => {
@@ -40,8 +57,18 @@ const UsersPagination: React.FC<ChildComponentProp> = ({ totalCount }) => {
     const currentPage = num;
     const item = { limit, currentPage };
     const data = { item, token };
-    dispatch(getUserPagination(data) as any);
+    dispatch(getUserPagination(data) as any).then((res: any) => {
+      if(res && res.payload === undefined){
+        toast.error("Poor Network Connection please try again later",
+        {
+         position: "top-center",
+         duration: 1500,
+       });
+      }
+    });
+
   };
+
   return (
     <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
       <div className="flex flex-1 justify-between sm:hidden">
@@ -50,6 +77,7 @@ const UsersPagination: React.FC<ChildComponentProp> = ({ totalCount }) => {
           className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
         >
           Previous
+          {/* <ToastContainer /> */}
         </div>
         <div
           onClick={() =>
@@ -58,6 +86,7 @@ const UsersPagination: React.FC<ChildComponentProp> = ({ totalCount }) => {
           className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
         >
           Next
+          {/* <ToastContainer /> */}
         </div>
       </div>
       <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
@@ -82,6 +111,7 @@ const UsersPagination: React.FC<ChildComponentProp> = ({ totalCount }) => {
             >
               <span className="sr-only">Previous</span>
               <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
+              {/* <ToastContainer /> */}
             </div>
 
             {Array.from({
@@ -108,6 +138,7 @@ const UsersPagination: React.FC<ChildComponentProp> = ({ totalCount }) => {
             >
               <span className="sr-only">Next</span>
               <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
+              {/* <ToastContainer /> */}
             </div>
           </nav>
         </div>

@@ -17,6 +17,7 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import toast, {  Toaster } from "react-hot-toast"
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
   fetchAllUsersCartAsync,
@@ -52,10 +53,6 @@ const NavBar: React.FC<Child> = ({ children, isOpen }) => {
     dispatch(fetchAllUsersCartAsync());
   }, [dispatch, navigate]);
   const checkCart = JSON.parse(localStorage.getItem("cart") as any);
-
-  const handleSearchInput = (e: ChangeEvent<HTMLInputElement>) => {
-    setInputText(e.target.value);
-  };
 
   const handleMouseEnter = () => {
     setShowSearch(true);
@@ -121,8 +118,15 @@ const NavBar: React.FC<Child> = ({ children, isOpen }) => {
 
   const handleLogoClicked = () => {
     dispatch(getAllproduct()).then((res: any) => {
-      navigate("/");
-      window.scrollTo(0, 0);
+      if(res && res.payload !== undefined){
+       navigate("/");
+      window.scrollTo(0, 0); 
+      }else{
+        toast.error("Poor Network Connection please try again later",
+      {
+       duration: 1500, // 1 and half seconds
+     });
+      }
     });
   };
 
@@ -143,16 +147,16 @@ const NavBar: React.FC<Child> = ({ children, isOpen }) => {
               <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="flex h-16 items-center justify-between">
                   <div className="flex items-center">
-                    <div>
+                    <div onClick={handleLogoClicked}>
                       <div
-                        onClick={handleLogoClicked}
                         className="flex-shrink-0 cursor-pointer"
                       >
                         <img
                           className="h-8 w-8 z-40"
                           src={icon}
                           alt="Your Company"
-                        />
+                        /> 
+                        {/* <ToastContainer /> */}
                       </div>
                     </div>
                     <div className="hidden md:block">
@@ -395,13 +399,6 @@ const NavBar: React.FC<Child> = ({ children, isOpen }) => {
           )}
         </Disclosure>
 
-        {/* <header className="bg-white shadow">
-          <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-            <h1 className="text-3xl font-bold tracking-tight text-gray-900">
-              ShoppinPlug
-            </h1>
-          </div>
-        </header> */}
         <main style={{ background: hexcode }}>
           <div className="mx-auto max-w-7xl py-1 sm:px-6 lg:px-8">
             {children}

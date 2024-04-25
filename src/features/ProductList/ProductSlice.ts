@@ -283,7 +283,10 @@ export const productSlice = createSlice({
       })
       .addCase(createproduct.fulfilled, (state, action) => {
         state.status = "success";
-        state.products.push(action.payload);
+        if(action.payload !== undefined){
+          state.products.push(action.payload);
+        }
+        
       })
       .addCase(createproduct.rejected, (state, action) => {
         state.status = "failed";
@@ -294,7 +297,9 @@ export const productSlice = createSlice({
       })
       .addCase(getAllproduct.fulfilled, (state, action) => {
         state.status = "success";
-        state.products = action.payload;
+        if(action.payload !== undefined){
+          state.products = action.payload;
+        }
       })
       .addCase(getAllproduct.rejected, (state, action) => {
         state.status = "failed";
@@ -305,7 +310,9 @@ export const productSlice = createSlice({
       })
       .addCase(getAproduct.fulfilled, (state, action) => {
         state.status = "success";
-        state.product = action.payload;
+        if(action.payload !== undefined){
+          state.product = action.payload;
+        }
       })
       .addCase(getAproduct.rejected, (state, action) => {
         state.status = "failed";
@@ -316,11 +323,12 @@ export const productSlice = createSlice({
       })
       .addCase(updateproduct.fulfilled, (state, action) => {
         state.status = "success";
-        // const index = state.products.findIndex((pro: { id: any; }) => pro.id === action.payload.id );
-        const index = state.products.findIndex(
-          (pro: any) => pro.id === action.payload.id
-        );
-        state.products[index] = action.payload;
+        if(action.payload !== undefined){
+          const index = state.products.findIndex(
+            (pro: any) => pro.id === action.payload.id
+          );
+          state.products[index] = action.payload;
+        }    
       })
       .addCase(updateproduct.rejected, (state, action) => {
         state.status = "failed";
@@ -347,7 +355,9 @@ export const productSlice = createSlice({
       })
       .addCase(sortproductAsc.fulfilled, (state, action) => {
         state.status = "success";
-        state.products = action.payload;
+        if(action.payload !== undefined){
+          state.products = action.payload;
+        } 
       })
       .addCase(sortproductAsc.rejected, (state, action) => {
         state.status = "failed";
@@ -358,7 +368,9 @@ export const productSlice = createSlice({
       })
       .addCase(sortproductDesc.fulfilled, (state, action) => {
         state.status = "success";
-        state.products = action.payload;
+        if(action.payload !== undefined){
+          state.products = action.payload;
+        } 
       })
       .addCase(sortproductDesc.rejected, (state, action) => {
         state.status = "failed";
@@ -369,7 +381,9 @@ export const productSlice = createSlice({
       })
       .addCase(updatetheProductRating.fulfilled, (state, action) => {
         state.status = "success";
-        state.products = action.payload;
+        if(action.payload !== undefined){
+          state.products = action.payload;
+        } 
       })
       .addCase(updatetheProductRating.rejected, (state, action) => {
         state.status = "failed";
@@ -380,7 +394,9 @@ export const productSlice = createSlice({
       })
       .addCase(sortproductNewest.fulfilled, (state, action) => {
         state.status = "success";
-        state.products = action.payload;
+        if(action.payload !== undefined){
+          state.products = action.payload;
+        } 
       })
       .addCase(sortproductNewest.rejected, (state, action) => {
         state.status = "failed";
@@ -391,7 +407,9 @@ export const productSlice = createSlice({
       })
       .addCase(sortproductRated.fulfilled, (state, action) => {
         state.status = "success";
-        state.products = action.payload;
+        if(action.payload !== undefined){
+          state.products = action.payload;
+        } 
       })
       .addCase(sortproductRated.rejected, (state, action) => {
         state.status = "failed";
@@ -402,7 +420,9 @@ export const productSlice = createSlice({
       })
       .addCase(fetchAllCategories.fulfilled, (state, action) => {
         state.status = "success";
-        state.categories = action.payload;
+        if(action.payload !== undefined){
+          state.categories = action.payload;
+        } 
       })
       .addCase(fetchAllCategories.rejected, (state, action) => {
         state.status = "failed";
@@ -439,8 +459,10 @@ export const productSlice = createSlice({
       })
       .addCase(getACategory.fulfilled, (state, action) => {
         state.status = "success";
-        state.category = action.payload;
-        state.products = action.payload.products;
+        if(action.payload !== undefined){
+          state.category = action.payload;
+          state.products = action.payload.products;
+        } 
       })
       .addCase(getACategory.rejected, (state, action) => {
         state.status = "failed";
@@ -451,7 +473,9 @@ export const productSlice = createSlice({
       })
       .addCase(fetchAllBrands.fulfilled, (state, action) => {
         state.status = "success";
-        state.brands = action.payload;
+        if(action.payload !== undefined){
+          state.brands = action.payload;
+        } 
       })
       .addCase(fetchAllBrands.rejected, (state, action) => {
         state.status = "failed";
@@ -462,8 +486,10 @@ export const productSlice = createSlice({
       })
       .addCase(fetchABrand.fulfilled, (state, action) => {
         state.status = "success";
-        state.brand = action.payload;
-        state.products = action.payload.products;
+        if(action.payload !== undefined){
+          state.brand = action.payload;
+          state.products = action.payload.products;
+        } 
       })
       .addCase(fetchABrand.rejected, (state, action) => {
         state.status = "failed";
@@ -474,7 +500,9 @@ export const productSlice = createSlice({
       })
       .addCase(getPagination.fulfilled, (state, action) => {
         state.status = "success";
-        state.products = action.payload;
+        if(action.payload !== undefined){
+          state.products = action.payload;
+        } 
       })
       .addCase(getPagination.rejected, (state, action) => {
         state.status = "failed";

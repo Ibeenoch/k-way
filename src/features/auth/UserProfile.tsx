@@ -15,8 +15,7 @@ import { getAUserTransaction, selectCheckout } from "../checkout/checkoutSlice";
 import { ChangeEvent, Fragment, useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import pics from "../../images/image.jpeg";
-import { toast, ToastContainer, Bounce } from "react-toastify"
-import "react-toastify/dist/ReactToastify.css";
+import toast, { Toaster } from "react-hot-toast"
 import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
 import ShippingDetails from "./ShippingDetails";
 import { format } from "date-fns";
@@ -69,11 +68,17 @@ if(aUserOrderedProducts){
       };
   
       dispatch(getAUser(data)).then((res: any) => {
-        if ((res && res.payload !== undefined) || res.payload !== null) {
+        if((res && res.payload !== undefined) || res.payload !== null){
           console.log("data ", data);
           dispatch(getAUserTransaction(data)).then((res: any) => {
             console.log("all user transactions ", res.payload);
           });
+        }else{
+          toast.error("Poor Network Connection please try again later",
+          {
+            duration: 1500, 
+            position: 'top-center'
+         });
         }
       });
     }else{
@@ -89,6 +94,12 @@ if(aUserOrderedProducts){
           dispatch(getAUserTransaction(data)).then((res: any) => {
             console.log("all user transactions ", res.payload);
           });
+        }else{
+          toast.error("Poor Network Connection please try again later",
+          {
+            duration: 1500, 
+            position: 'top-center'
+         });
         }
       });
     }
@@ -100,11 +111,24 @@ if(aUserOrderedProducts){
       };
   
       dispatch(getAUser(data)).then((res: any) => {
-        if ((res && res.payload !== undefined) || res.payload !== null) {
+        if ((res && res.payload !== undefined) || res.payload !== null){
           console.log("data ", data);
           dispatch(getAUserTransaction(data)).then((res: any) => {
             console.log("all user transactions ", res.payload);
+            if(res && res.payload === undefined){
+              toast.error("Poor Network Connection please try again later",
+              {
+                duration: 1500, 
+                position: 'top-center'
+             });
+            }
           });
+        }else{
+          toast.error("Poor Network Connection please try again later",
+          {
+            duration: 1500, 
+            position: 'top-center'
+         });
         }
       });
     }
@@ -139,7 +163,6 @@ if(aUserOrderedProducts){
     const findName = users.find((person: any) => person.id.toString() === id )
     console.log('other name ', findName)
     let userName = findName.fullName;
-    // console.log('other name ', userName)
     return userName;
   }
  
@@ -185,15 +208,10 @@ if(aUserOrderedProducts){
 
   const submitBtn = () => {
     setIsUploading(true);
-    toast.info("Uploading image please wait...",
+    toast("Uploading image please wait...",
     {
      position: "top-center",
-     autoClose: 6000, //7 seconds
-     hideProgressBar: true,
-     closeOnClick: true,
-     pauseOnHover: false,
-     draggable: false,
-     transition: Bounce,
+     duration: 6000, 
    });
     if (image) {
       const imageForm = new FormData();
@@ -216,15 +234,16 @@ if(aUserOrderedProducts){
           toast.success("Profile photo uploaded Added!!!",
           {
            position: "top-center",
-           autoClose: 1500, //6 seconds
-           hideProgressBar: true,
-           closeOnClick: true,
-           pauseOnHover: false,
-           draggable: false,
-           transition: Bounce,
+           duration: 1500,
          });
          window.location.reload();
           
+        }else{
+          toast.error("Something went wrong please try again",
+          {
+           position: "top-center",
+           duration: 1500, 
+         });
         }
       });
     }
@@ -405,7 +424,7 @@ if(aUserOrderedProducts){
                                     onClick={submitBtn}
                                   >
                                   { isUpLoading ? 'Uploading...' : 'Submit'} 
-                                    <ToastContainer />
+                                    {/* <ToastContainer /> */}
                                   </button>
                                ) : (
                                 <>

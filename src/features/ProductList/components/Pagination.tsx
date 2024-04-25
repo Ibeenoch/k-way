@@ -3,10 +3,11 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 import { useAppSelector } from "../../../app/hooks";
 import { getPagination, selectProduct } from "../ProductSlice";
 import { useDispatch } from "react-redux";
-
+import toast, { Toaster  } from "react-hot-toast"
 interface ChildComponentProp {
   totalCount: number;
 }
+
 const Pagination: React.FC<ChildComponentProp> = ({ totalCount }) => {
   const dispatch = useDispatch();
   const iTemLimitPerPage = 15;
@@ -21,37 +22,65 @@ const Pagination: React.FC<ChildComponentProp> = ({ totalCount }) => {
     const currentPage = num;
     const data = { limit, currentPage };
     dispatch(getPagination(data) as any).then((res: any) => {
-      window.scrollTo(0, 0)
+      if(res && res.payload !== undefined){
+       window.scrollTo(0, 0) ;
+      }else{
+        toast.error("Poor Network Connection please try again later",
+       {
+        duration: 1500, 
+      });
+      }
+      
     });
   };
 
   const handlePrevious = (num: number) => {
-    if(page < 1){
+    if(num < 1){
       return;
-    }
+    }else{
     setPage(num);
     const limit = iTemLimitPerPage;
     const currentPage = num;
     const data = { limit, currentPage };
     dispatch(getPagination(data) as any).then((res: any) => {
-      window.scrollTo(0, 0)
+      if(res && res.payload !== undefined){
+       window.scrollTo(0, 0) ;
+      }else{
+        toast.error("Poor Network Connection please try again later",
+       {
+         duration: 1500, //6 seconds
+      });
+      }
+      
     });
+
+    }
   };
 
   const handleNext = (num: number) => {
-    if(page > paginatePage){
+    if(num > paginatePage){
       return;
+    }else{
+      setPage(num);
+      const limit = iTemLimitPerPage;
+      const currentPage = num;
+      const data = { limit, currentPage };
+      dispatch(getPagination(data) as any).then((res: any) => {
+        if(res && res.payload !== undefined){
+         window.scrollTo(0, 0) ;
+        }else{
+          toast.error("Poor Network Connection please try again later",
+            {
+              duration: 1500, //6 seconds
+            });
+        }
+        
+      });
     }
-    setPage(num);
-    const limit = iTemLimitPerPage;
-    const currentPage = num;
-    const data = { limit, currentPage };
-    dispatch(getPagination(data) as any).then((res: any) => {
-      window.scrollTo(0, 0)
-    });
+  
   };
-  const paginatePage = Math.floor(totalItem / iTemLimitPerPage)
-  console.log('pagin ', paginatePage, page, totalItem, iTemLimitPerPage)
+  const paginatePage = Math.ceil(totalItem / iTemLimitPerPage)
+  console.log('pagin ', paginatePage, page)
   return (
     <div className="flex items-center justify-between border-t border-gray-200 px-4 py-1 sm:px-6">
       <div className="flex flex-1 justify-between sm:hidden">

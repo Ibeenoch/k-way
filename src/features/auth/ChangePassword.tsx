@@ -2,8 +2,7 @@ import React, { ChangeEvent, FormEvent, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import companylogo from "../../images/images-9.png";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { toast, ToastContainer, Bounce } from "react-toastify"
-import "react-toastify/dist/ReactToastify.css";
+import  toast, { Toaster } from "react-hot-toast"
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/20/solid";
 import { passwordChange, selectUser } from "./authSlice";
 
@@ -47,12 +46,7 @@ const ChangePassword: React.FC = () => {
           toast.success( "Password Changed Successfully, Please Login with the new password to continue",
           {
            position: "top-center",
-           autoClose: 1500, //6 seconds
-           hideProgressBar: true,
-           closeOnClick: true,
-           pauseOnHover: false,
-           draggable: false,
-           transition: Bounce,
+           duration: 1500,
          });
           navigate("/login");
         }
@@ -61,12 +55,7 @@ const ChangePassword: React.FC = () => {
       toast.error( "the password must be at least 8 character, the password should contain a upper case letter, the password should contain a lower case letter, the password should contain a number, the password should contain a special character e.g Password1!",
       {
        position: "top-center",
-       autoClose: 1500, //6 seconds
-       hideProgressBar: true,
-       closeOnClick: true,
-       pauseOnHover: false,
-       draggable: false,
-       transition: Bounce,
+       duration: 1500,
      });
     }
   };
@@ -191,7 +180,7 @@ const ChangePassword: React.FC = () => {
                 ) : (
                 "Change Password"
               )}
-              <ToastContainer />
+              {/* <ToastContainer /> */}
             </button>
           </div>
         </form>
