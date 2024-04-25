@@ -87,7 +87,11 @@ const NavBar: React.FC<Child> = ({ children, isOpen }) => {
 
   const handleProfile = () => {
     if (user && user.id) {
-      navigate(`/profile/${user && user.id}`);
+      navigate(user === undefined || user === null
+        ? "/login"
+        : user.address === null
+        ? `/checkout/${user.id}`
+        : `/profile/${user && user && user.id}`);
     } else {
       return;
     }
@@ -147,7 +151,7 @@ const NavBar: React.FC<Child> = ({ children, isOpen }) => {
               <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="flex h-16 items-center justify-between">
                   <div className="flex items-center">
-                    <div onClick={handleLogoClicked}>
+                    <a href='/'>
                       <div
                         className="flex-shrink-0 cursor-pointer"
                       >
@@ -158,7 +162,7 @@ const NavBar: React.FC<Child> = ({ children, isOpen }) => {
                         /> 
                         {/* <ToastContainer /> */}
                       </div>
-                    </div>
+                    </a>
                     <div className="hidden md:block">
                       <div className="ml-10 flex items-baseline space-x-4">
                         {navigation.map((item) => (

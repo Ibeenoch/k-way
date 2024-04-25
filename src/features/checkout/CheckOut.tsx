@@ -81,8 +81,18 @@ const CheckOut = () => {
 
   const dispatch = useAppDispatch();
   useEffect(() => {
-    dispatch(fetchAllUsersCartAsync());
+    dispatch(fetchAllUsersCartAsync()).then(() => {
+      if(user && user.address === null){
+        toast("Please Update Your Profile Information First",
+        {
+         position: "top-center",
+         duration: 5000, 
+       });
+      }
+    })
   }, []);
+
+ 
 
   const handleAdd = (id: number): void => {
     const checkItem = JSON.parse(localStorage.getItem("cart") as any);
@@ -259,7 +269,7 @@ const CheckOut = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 gap-x-8 gap-y-10 mt-6 lg:grid-cols-5 px-4 py-3">
+    <div className="grid grid-cols-1 gap-x-8 gap-y-10 mt-8 lg:grid-cols-5 px-4 py-3">
       <div className="lg:col-span-3">
         <form onSubmit={handleSubmit}>
           <div className="space-y-12 bg-white px-6">

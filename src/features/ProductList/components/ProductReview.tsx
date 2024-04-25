@@ -103,6 +103,9 @@ const ProductReview = () => {
     
   const theProductRating = calculateRating;
 
+  const handleProfile = (id: any) => {
+    navigate(`/checkout/${user.id}`)
+  }
   const fifthBar = Math.round((totalFivestar / totalRatingGiven) * 10) * 10;
   const fourthBar = Math.round((totalFourstar / totalRatingGiven) * 10) * 10;
   const thirdBar = Math.round((totalThreestar / totalRatingGiven) * 10) * 10;
@@ -151,7 +154,7 @@ const ProductReview = () => {
       {!productReview ? (
         <>
           <div>
-            <h2 className="ml-6 text-semibold whitespace-normal break-words font-poppins text-center">
+            <h2 className="ml-6 text-bold text-xl whitespace-normal break-words font-poppins text-center">
               No Customer Reviews &amp; Rating Available
             </h2>
           </div>
@@ -161,8 +164,8 @@ const ProductReview = () => {
           <section className="py-24 relative mt-10">
             <div className="w-full max-w-7xl px-4 md:px-5 lg:px-6 mx-auto">
               <div className="">
-                <h2 className="ml-6 text-semibold whitespace-normal break-words font-poppins text-center">
-                  Customer reviews &amp; rating
+                <h2 className="ml-6 text-bold whitespace-normal text-xl break-words font-poppins text-center">
+                No Customer Reviews &amp; Rating Available
                 </h2>
                 <div className="grid grid-cols-12 mb-11">
                   <div className="col-span-12 xl:col-span-4 flex items-center">
@@ -443,7 +446,15 @@ const ProductReview = () => {
                       </div>
                       <div className="col-span-12 md:col-span-4 max-lg:mt-4 md:pl-8">
                         <div className="flex items-center flex-col justify-center w-full h-full ">
-                          {user && user.id ? (
+                          {user && user.address === null ? (
+                            <button
+                            onClick={() => handleProfile(product.id)}
+                            className="rounded-full px-4 py-2 bg-red-800 font-semibold text-lg text-white whitespace-nowrap mb-6 w-full text-center shadow-sm shadow-transparent transition-all duration-500 hover:bg-red-700 hover:shadow-red-400"
+                          >
+                            Write A Review
+                          </button>
+                          ) 
+                          :  user && user.address ? (
                             <button
                               onClick={() => handleReviewForm(product.id)}
                               className="rounded-full px-4 py-2 bg-red-800 font-semibold text-lg text-white whitespace-nowrap mb-6 w-full text-center shadow-sm shadow-transparent transition-all duration-500 hover:bg-red-700 hover:shadow-red-400"

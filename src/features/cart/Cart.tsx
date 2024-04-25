@@ -89,7 +89,7 @@ const Cart = () => {
     <>
       <div>
         <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 lg:px-8">
-          <div className="mt-8">
+          <div className="mt-10">
             <div className="flow-root">
               <ul role="list" className="-my-6 divide-y divide-gray-200">
                 { !carts.length ? (
@@ -176,7 +176,7 @@ const Cart = () => {
               Shipping and taxes calculated at checkout.
             </p>
             <div className="mt-6">
-              { user && !Object.keys(user).length ? (
+              { user ? (
                 <Link to={`/checkout/${user.id}`}>
                   <div className="flex items-center justify-center rounded-md border border-transparent bg-red-800 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-red-700">
                     Checkout
