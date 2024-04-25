@@ -28,10 +28,12 @@ interface Chechkout {
 }
 
 const CheckOut = () => {
+  const user = JSON.parse(localStorage.getItem("user") as any);
+
   const [checkOutForm, setCheckOutForm] = useState<Chechkout>({
-    fullName: "",
+    fullName: user && user.fullName ? user.fullName : "",
     phone: "",
-    email: "",
+    email: user && user.email ? user.email : "",
     country: "",
     state: "",
     city: "",
@@ -44,7 +46,6 @@ const CheckOut = () => {
   const [selectedOption2, setSelectedOption2] = useState<string>("");
   const { carts } = useAppSelector(selectAllCart);
   const { checkoutInfo } = useAppSelector(selectCheckout);
-  const user = JSON.parse(localStorage.getItem("user") as any);
 
   const token = user && user.token;
   const handleSelectedAddress = (
