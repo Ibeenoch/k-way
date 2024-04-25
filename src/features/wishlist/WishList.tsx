@@ -21,14 +21,6 @@ const WishList = () => {
 
   const navigate = useNavigate();
 
-  const subTotal = () => {
-    const subtotal = wishlist.reduce(
-      (accumulatedSubtotal: any, item: any) =>
-        accumulatedSubtotal + item.price * item.quantity,
-      0
-    );
-    return subtotal.toFixed(2);
-  };
 
   const dispatch = useAppDispatch();
   useEffect(() => {
@@ -145,11 +137,7 @@ const WishList = () => {
           </div>
 
           <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
-            <div className="flex justify-between text-base font-medium text-gray-900">
-              <p>Subtotal</p>
-              <p>${wishlist && subTotal && subTotal()} </p>
-            </div>
-
+           
             <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
               <p>
                 <Link to="/">

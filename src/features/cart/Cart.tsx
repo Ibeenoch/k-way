@@ -14,12 +14,12 @@ const Cart = () => {
   const navigate = useNavigate();
 
   const subTotal = () => {
-    const subtotal = carts.reduce(
+    const subtotal = Array.isArray(carts) ? carts.reduce(
       (accumulatedSubtotal: any, item: any) =>
         accumulatedSubtotal + item.price * item.quantity,
       0
-    );
-    return subtotal.toFixed(2);
+    ) : 0;
+    return subtotal === 0 ? 0 : subtotal.toFixed(2);
   };
 
   const dispatch = useAppDispatch();
@@ -176,7 +176,7 @@ const Cart = () => {
               Shipping and taxes calculated at checkout.
             </p>
             <div className="mt-6">
-              {user ? (
+              { user && !Object.keys(user).length ? (
                 <Link to={`/checkout/${user.id}`}>
                   <div className="flex items-center justify-center rounded-md border border-transparent bg-red-800 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-red-700">
                     Checkout
