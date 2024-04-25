@@ -86,7 +86,15 @@ const WishList = () => {
           <div className="mt-8">
             <div className="flow-root">
               <ul role="list" className="-my-6 divide-y divide-gray-200">
-                {wishlist &&
+                {
+                  !wishlist.length ? (
+                    <div>
+                      <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                        Nothing on wishlist
+                      </div>
+                    </div>
+                  ) : (
+                    wishlist &&
                   wishlist.map((wish: any) => (
                     <li key={wish.id} className="flex py-6">
                       <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
@@ -129,7 +137,9 @@ const WishList = () => {
                         </div>
                       </div>
                     </li>
-                  ))}
+                  ))
+                  )
+                }
               </ul>
             </div>
           </div>

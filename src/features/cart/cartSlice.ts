@@ -8,7 +8,7 @@ import { act } from "@testing-library/react";
 const checkItem = JSON.parse(localStorage.getItem("cart") as any);
 
 const initialState: CartInterface = {
-  carts: checkItem !== null ? checkItem : [],
+  carts: checkItem === undefined || checkItem === null || !checkItem.length || !Object.keys(checkItem).length ? [] : checkItem,
   status: "",
 };
 

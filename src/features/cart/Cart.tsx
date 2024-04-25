@@ -92,7 +92,14 @@ const Cart = () => {
           <div className="mt-8">
             <div className="flow-root">
               <ul role="list" className="-my-6 divide-y divide-gray-200">
-                {carts &&
+                { !carts.length ? (
+                  <div>
+                      <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                     Nothing on Cart 
+                     </div>
+                  </div>
+                ) : (
+                  carts &&
                   carts.map((cart: any) => (
                     <li key={cart.id} className="flex py-6">
                       <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
@@ -153,7 +160,9 @@ const Cart = () => {
                         </div>
                       </div>
                     </li>
-                  ))}
+                  ))
+                )
+               }
               </ul>
             </div>
           </div>

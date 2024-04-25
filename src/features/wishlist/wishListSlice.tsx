@@ -6,7 +6,7 @@ import { act } from "@testing-library/react";
 const checkItem = JSON.parse(localStorage.getItem("wishlist") as any);
 
 const initialState = {
-  wishlist: checkItem !== null ? checkItem : [],
+  wishlist: checkItem === undefined || checkItem === null || !checkItem.length || !Object.keys(checkItem).length ? [] : checkItem,
   status: "",
 };
 
