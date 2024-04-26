@@ -273,7 +273,7 @@ const ProductDetail = () => {
 
           <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
             {/* 1st img div */}
-            <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
+            <div className="aspect-h-4 aspect-w-3 overflow-hidden rounded-lg lg:block">
               {product &&
                 product.images &&
                 product.images.set &&
@@ -360,14 +360,14 @@ const ProductDetail = () => {
                 {product &&
                   product.images &&
                   product.images.set &&
-                  product.images.set[0] && (
+                  product.images.set[3] && (
                     <img
                       alt="product image"
                       src={
                         product &&
                         product.images &&
                         product.images.set &&
-                        product.images.set[0].url
+                        product.images.set[3].url
                       }
                       className="h-full w-full object-contain lg:h-full lg:w-full"
                       style={{ zIndex: 30 }}
@@ -376,6 +376,72 @@ const ProductDetail = () => {
               </div>
             )}
           </div>
+
+          <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
+  {/* Container for images */}
+  <div className="lg:flex lg:flex-row lg:overflow-x-auto">
+    {/* 1st img div */}
+    <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
+      {product &&
+        product.images &&
+        product.images.set &&
+        product.images.set[0] && (
+          <img
+            alt="product image"
+            src={product.images.set[0].url}
+            className="h-full w-full object-contain lg:h-full lg:w-full"
+            style={{ zIndex: 30 }}
+          />
+        )}
+    </div>
+
+    {/* 2nd img div */}
+    <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
+      {product &&
+        product.images &&
+        product.images.set &&
+        product.images.set[1] && (
+          <img
+            alt="product image"
+            src={product.images.set[1].url}
+            className="h-full w-full object-contain lg:h-full lg:w-full"
+            style={{ zIndex: 30 }}
+          />
+        )}
+    </div>
+
+    {/* 3rd img div */}
+    <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
+      {product &&
+        product.images &&
+        product.images.set &&
+        product.images.set[2] && (
+          <img
+            alt="product image"
+            src={product.images.set[2].url}
+            className="h-full w-full object-contain lg:h-full lg:w-full"
+            style={{ zIndex: 30 }}
+          />
+        )}
+    </div>
+
+    {/* 4th img div */}
+    {product &&
+    product.images &&
+    product.images.set &&
+    product.images.set[3] && (
+      <div className="aspect-h-5 aspect-w-4 sm:overflow-hidden sm:rounded-lg">
+        <img
+          alt="product image"
+          src={product.images.set[3].url}
+          className="h-full w-full object-contain lg:h-full lg:w-full"
+          style={{ zIndex: 30 }}
+        />
+      </div>
+    )}
+  </div>
+</div>
+
 
           {/* Product info */}
           <div className="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
