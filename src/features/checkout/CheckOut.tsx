@@ -32,15 +32,16 @@ const CheckOut = () => {
 
   const [checkOutForm, setCheckOutForm] = useState<Chechkout>({
     fullName: user && user.fullName ? user.fullName : "",
-    phone: "",
+    phone: user && user.phone ? user.phone : "",
     email: user && user.email ? user.email : "",
-    country: "",
-    state: "",
-    city: "",
-    address: "",
-    zipcode: 0,
+    country: user && user.country ? user.country :  "",
+    state: user && user.state ? user.state :  "",
+    city: user && user.city ? user.city : "",
+    address: user && user.address ? user.address : "",
+    zipcode: user && user.zipcode ? user.zipcode : 0,
   });
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState<boolean>(true);
+  const [isUpdated, setIsUpdated] = useState<boolean>(false);
   const [selectedOption, setSelectedOption] = useState<string>("");
   const [addressSelected, setAddressSelected] = useState<number>(0);
   const [selectedOption2, setSelectedOption2] = useState<string>("");
@@ -143,6 +144,13 @@ const CheckOut = () => {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+    setIsUpdated(true)
+    toast("please hold on while we update your profile",
+    {
+      duration: 5000, 
+      position: 'top-center'
+   });
+
     const add = { ...checkOutForm, id };
 
     if (add) {
@@ -162,6 +170,7 @@ const CheckOut = () => {
                   (res && res.payload !== null) ||
                   res.payload !== undefined
                 ) {
+                  setIsUpdated(false);
                   console.log("ahjahshahjas");
                   toast("Profile Updated",
                   {
@@ -173,6 +182,7 @@ const CheckOut = () => {
               });
             }
           }else{
+            setIsUpdated(false);
             toast.error("Poor Network Connection please try again later",
           {
             duration: 1500, 
@@ -194,12 +204,14 @@ const CheckOut = () => {
                 console.log("hjhjaashahshahjas");
                 if (res && res.payload !== undefined) {
                   console.log("ahjahshahjas");
+                  setIsUpdated(false);
                   toast("Address Updated",
                   {
                    position: "top-center",
                    duration: 1500, 
                  });
                 }else{
+                  setIsUpdated(false);
                   toast.error("Poor Network Connection please try again later",
                     {
                       duration: 1500, 
@@ -209,6 +221,7 @@ const CheckOut = () => {
               });
             }
           }else{
+            setIsUpdated(false);
             toast.error("Poor Network Connection please try again later",
           {
             duration: 1500, 
