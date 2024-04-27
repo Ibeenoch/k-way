@@ -62,11 +62,11 @@ export const getATransactionforAUser = async (data: any) => {
     const option = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        "Authorization": `Bearer ${token}`,
       },
     };
 
-    const res = await axios.get(API + `/transaction/${userId}/${id}`, token);
+    const res = await axios.get(API + `/transaction/${userId}/${id}`, option);
     console.log('fetched profile user product trans ', res.data)
     return res;
   } catch (error) {

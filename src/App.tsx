@@ -91,10 +91,6 @@ const router = createBrowserRouter([
     element: <ProductDetailPage />,
   },
   {
-    path: "/loading",
-    element: <Loading />,
-  },
-  {
     path: "/product/create",
     element: <AdminProtectedRoute child={<ProductFormPage />} />,
   },

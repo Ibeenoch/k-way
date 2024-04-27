@@ -698,7 +698,10 @@ const CheckOut = () => {
                   onClick={() => {
                     handleFlutterPayment({
                       callback: (response: any) => {
+                        console.log('payment response ', response)
                         if (response.status === "successful") {
+                          window.scrollTo(0, 0)
+                          
                           toast("please hold on while we process your order...",
                           {
                            position: "top-center",
@@ -711,6 +714,9 @@ const CheckOut = () => {
                             carts,
                             response,
                           };
+
+                          console.log('shipping ', details)
+                          setLoadpage(true);
                           dispatch(transactionmade(details)).then((res) => {
                             if (
                               res &&
@@ -718,6 +724,7 @@ const CheckOut = () => {
                               res.payload.status &&
                               res.payload.status === "SUCCESSFUL"
                             ) {
+                              console.log('tranactAll ', res)
                               var navigateId = res.payload.id;
 
                               const data = {
@@ -725,25 +732,28 @@ const CheckOut = () => {
                                 userId: user && user.id,
                                 token: user && user.token,
                               };
+                              console.log('get me ', navigateId, data)
 
                               dispatch(atransactionOfAUser(data))
                                 .then((res: any) => {
                                   console.log(
-                                    "fetch the details ",
+                                    "fetch the details ", res, 
                                     res.payload
                                   );
-                                })
-                                .then((res: any) => {
                                   localStorage.removeItem("cart");
+                                  
                                   toast.success("Thank you for making purchase from us",
                                   {
                                    position: "top-center",
                                    duration: 1500, 
                                  });
+                                 setLoadpage(false);
                                   navigate(`/order/success/${navigateId}`);
-                                });
+                               
+                                })
+                                
                             }else{
-                              setLoadpage(false);
+                              // setLoadpage(false);
                               toast.error("Poor Network Connection please try again later",
                               {
                                position: "top-center",

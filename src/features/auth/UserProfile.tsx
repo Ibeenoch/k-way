@@ -449,7 +449,7 @@ if(aUserOrderedProducts){
                                         : "flex-1 rounded-full bg-white border border-red-800 hover:bg-red-700 hover:text-white dark:border-gray-700 font-semibold text-red-800 dark:text-white px-3 py-1"
                                     }
                                   >
-                                    Order History
+                                   Recent Order 
                                   </button>
                                   <button
                                     onClick={handlebtn2}
