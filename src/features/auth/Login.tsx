@@ -6,6 +6,7 @@ import toast, { Toaster } from "react-hot-toast"
 import Switch from "react-switch";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/20/solid";
 import { loginUser, selectUser } from "./authSlice";
+import Loading from "../../Loading";
 
 interface Login {
   email: string;
@@ -119,6 +120,8 @@ const Login = () => {
     }
   };
 
+ 
+
   const changeVisibilty = () => {
     setIsShowPassword(!isShowPassword);
   };
@@ -136,8 +139,13 @@ const Login = () => {
   }, []);
 
   return (
-    <div className="flex min-h-full flex-1 flex-col justify-center mt-12 px-6 py-1 lg:px-8">
-      <div className="shadow-lg">
+    <div className="flex min-h-full flex-1 flex-col justify-center mt-20 px-6 py-1 lg:px-8">
+      { isClicked ? (
+        <>
+        <Loading /> 
+        </>
+      ) : (
+        <div className="shadow-lg">
         <div className="sm:mx-auto sm:w-1/2 px-4 sm:max-w-sm">
           <Link to="/">
             <div
@@ -287,6 +295,7 @@ const Login = () => {
               </button>
             </div>
           </form>
+          
 
           <Link to="/register">
             <p className="mt-10 text-center text-sm text-gray-900">
@@ -298,6 +307,8 @@ const Login = () => {
           </Link>
         </div>
       </div>
+      )}
+      
     </div>
   );
 };

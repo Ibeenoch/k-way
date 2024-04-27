@@ -99,7 +99,11 @@ export const getAUserTransaction = createAsyncThunk(
 export const checkoutSlice = createSlice({
   name: "checkOut",
   initialState,
-  reducers: {},
+  reducers: {
+    logoutTransactions : (state) => {
+      return initialState;
+    },
+  },
   extraReducers(builder) {
     builder
       .addCase(createAddress.pending, (state, action) => {
@@ -177,6 +181,7 @@ export const checkoutSlice = createSlice({
           action.payload &&
             Array.isArray(action.payload) &&
             action.payload.forEach((elem) => {
+              console.log('user trans', elem);
               state.aUserOrderedProducts =
                 elem && elem.order && elem.order.productDetails;
               state.aUserShippingAddress =
@@ -197,6 +202,7 @@ export const checkoutSlice = createSlice({
           action.payload &&
             Array.isArray(action.payload) &&
             action.payload.forEach((elem) => {
+              console.log('user trans 2', elem)
               state.aUserOrderedProducts =
                 elem && elem.order && elem.order.productDetails;
               state.aUserShippingAddress =
@@ -210,6 +216,8 @@ export const checkoutSlice = createSlice({
       });
   },
 });
+
+export const { logoutTransactions } = checkoutSlice.actions;
 
 export const selectCheckout = (state: RootState) => state.checkout;
 export default checkoutSlice.reducer;

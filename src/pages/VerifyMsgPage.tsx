@@ -11,7 +11,7 @@ const VerifyMsgPage = () => {
       <NavBar isOpen={isOpen}>
         <Verification />
       </NavBar>
-      <Footer />
+     
     </>
   );
 };

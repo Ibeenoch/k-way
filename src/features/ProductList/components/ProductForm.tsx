@@ -12,6 +12,7 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { selectUser } from "../../auth/authSlice";
 import toast, { Toaster } from "react-hot-toast";
+import Loading from "../../../Loading";
 
 const ProductForm = () => {
   const dispatch = useAppDispatch();
@@ -247,7 +248,12 @@ const ProductForm = () => {
 
   return (
     <div style={{ background: hexcode }}>
-      <div
+      { isPosting ? (
+        <>
+        <Loading />
+        </>
+      ) : (
+         <div
         style={{ background: hexcode }}
         className="mx-auto z-12 max-w-7xl px-4 sm:px-6 mt-6 lg:px-8"
       >
@@ -500,6 +506,8 @@ const ProductForm = () => {
           </div>
         </form>
       </div>
+      )}
+     
     </div>
   );
 };

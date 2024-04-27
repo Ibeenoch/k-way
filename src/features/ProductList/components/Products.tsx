@@ -55,6 +55,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
   const [getCategoryName, setGetCategoryName] = useState<string>("");
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState<boolean>(false);
   const [theAdmin, setTheAdmin] = useState<boolean>(false);
+  const [loadProduct, setLoadProduct] = useState<boolean>(false);
   const [wishlistUpdate, setWishlistUpdate] = useState<number>(0);
   const [totalCount, setTotalCount] = useState<number>(0);
   const { status, products, product, categories, category, brands, brand } =  useAppSelector(selectProduct);
@@ -85,8 +86,10 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
   };
 
   const handleSort = (option: any) => {
+    setLoadProduct(true);
     if (option === "Price: Low to High") {
       dispatch(sortproductAsc()).then((res: any) => {
+        setLoadProduct(false);
         if(res && res.payload === undefined){
           toast.error("Poor Network Connection please try again later",
           {
@@ -97,6 +100,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
       });
     } else if (option === "Price: High to Low") {
       dispatch(sortproductDesc()).then((res: any) => {
+        setLoadProduct(false);
         if(res && res.payload === undefined){
           toast.error("Poor Network Connection please try again later",
           {
@@ -107,6 +111,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
       });
     } else if (option === "Newest") {
       dispatch(sortproductNewest()).then((res: any) => {
+        setLoadProduct(false);
         if(res && res.payload === undefined){
           toast.error("Poor Network Connection please try again later",
           {
@@ -117,6 +122,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
       });
     } else if (option === "Best Rating") {
       dispatch(sortproductRated()).then((res: any) => {
+        setLoadProduct(false);
         if(res && res.payload === undefined){
           toast.error("Poor Network Connection please try again later",
           {
@@ -127,7 +133,9 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
       });
     }
   };
+  
   useEffect(() => {
+    setLoadProduct(true);
     dispatch(getAllproduct()).then((res: any) => {
       if(res && res.payload !== undefined){
         setTotalCount(res.payload.length);
@@ -136,6 +144,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
           const data = { limit, currentPage };
           dispatch(getPagination(data) as any).then((res: any) => {
             if(res && res.payload !== undefined){
+              setLoadProduct(false);
               window.scrollTo(0, 0);
             } else{
               toast.error("Poor Network Connection please try again later",
@@ -146,6 +155,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
             }
           })
       }else{
+        setLoadProduct(false);
         toast.error("Poor Network Connection please try again later",
         {
           duration: 1500, 
@@ -157,6 +167,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
   }, [dispatch, navigate]);
 
   const handleProductDetails = (productId: any) => {
+    setLoadProduct(true);
     dispatch(getAproduct(productId)).then((res) => {
       if (res && res.payload && res.payload.category) {
         const data = {
@@ -172,9 +183,11 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
           if (res && res.payload && res.payload !== undefined) {
             dispatch(getaProductReviews(productId)).then((res: any) => {
               if(res && res.payload !== undefined){
+                setLoadProduct(false);
                 navigate(`/product/details/${productId}`);
               window.scrollTo(0, 0);
               }else{
+                setLoadProduct(false);
                 toast.error("Poor Network Connection please try again later",
                   {
                     duration: 1500, 
@@ -184,6 +197,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
               
             });
           }else{
+            setLoadProduct(false);
             toast.error("Poor Network Connection please try again later",
             {
               duration: 1500, 
@@ -359,8 +373,15 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
     return classes.filter(Boolean).join(" ");
   }
 
+ 
   return (
     <>
+    {
+      loadProduct ? (
+        <>
+        <Loading />
+        </>) : (
+<>
       <Carousel />
       <PageWriteUp />
 
@@ -1182,9 +1203,13 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
             </div>
           </div>
 
-          <Pagination totalCount={totalCount} />
+          <Pagination totalCount={totalCount} loadProduct={loadProduct} setLoadProduct={setLoadProduct} />
         </div>
       </div>
+    </>
+      )
+    }
+    
     </>
   );
 };

@@ -446,9 +446,9 @@ const Admin = () => {
   }
 
   return (
-    <div>
-      <div>
-        <div className="mt-14">
+    <div className="mt-20">
+      <div >
+        <div >
           <div>
             {/* Mobile filter dialog */}
             <Transition.Root show={mobileFiltersOpen} as={Fragment}>
@@ -596,7 +596,7 @@ const Admin = () => {
                             {/* product list  */}
                             {isproduct ? (
                               <>
-                                <div className="flex justify-between pb-4">
+                                <div className="flex justify-between px-4 pb-4">
                                   <h2 className="text-base px-2 py-2 font-semibold leading-7 text-gray-900">
                                     Lists of All Product
                                   </h2>

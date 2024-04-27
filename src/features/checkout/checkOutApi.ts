@@ -2,14 +2,17 @@ import axios from "axios";
 
 const API = "https://ecommerce-backend-chji.onrender.com";
 
-export const addAddress = async (data: any) => {
+export const addAddress = async (item: any) => {
   try {
+    const data = item.form;
+    const token = item.token;
     const option = {
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
       },
     };
-    const response = await axios.post(API + "/checkout/info", data);
+    const response = await axios.post(API + "/checkout/info", data, option);
     console.log("ressffdgf ", response);
     return response;
   } catch (error) {
@@ -43,7 +46,8 @@ export const fetchAUserTransactions = async (data: any) => {
       },
     };
 
-    const res = await axios.get(API + `/transactions/${id}`);
+    const res = await axios.get(API + `/transactions/${id}`, option);
+    console.log('fetched profile user product order ', res.data)
     return res;
   } catch (error) {
     console.log(error);
@@ -62,7 +66,8 @@ export const getATransactionforAUser = async (data: any) => {
       },
     };
 
-    const res = await axios.get(API + `/transaction/${userId}/${id}`);
+    const res = await axios.get(API + `/transaction/${userId}/${id}`, token);
+    console.log('fetched profile user product trans ', res.data)
     return res;
   } catch (error) {
     console.log(error);
@@ -79,6 +84,7 @@ export const fetchTransactions = async (token: any) => {
     };
 
     const res = await axios.get(API + `/transactions`, option);
+    console.log('fetched profile user product trans', res.data)
     return res;
   } catch (error) {
     console.log(error);

@@ -6,6 +6,7 @@ import toast, { Toaster } from "react-hot-toast"
 import Switch from "react-switch";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/20/solid";
 import { registerUser, selectUser } from "./authSlice";
+import Loading from "../../Loading";
 
 interface Register {
   fullname: string;
@@ -116,8 +117,13 @@ const SignUp: React.FC = () => {
     setIsShowConfirmPassword(!isShowConfirmPassword);
   };
   return (
-    <div className="flex min-h-full flex-1 flex-col mt-12 justify-center px-6 py-1 lg:px-8">
-      <div className="shadow-lg">
+    <div className="flex min-h-full flex-1 flex-col mt-20 justify-center px-6 py-1 lg:px-8">
+      { isClicked ? (
+        <>
+        <Loading />
+        </>
+      ) : (
+         <div className="shadow-lg">
         <div className="sm:mx-auto sm:w-1/2 px-4 sm:max-w-sm">
           <Link to="/">
             <div
@@ -322,6 +328,8 @@ const SignUp: React.FC = () => {
           </Link>
         </div>
       </div>
+      )}
+     
     </div>
   );
 };

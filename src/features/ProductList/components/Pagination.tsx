@@ -6,9 +6,11 @@ import { useDispatch } from "react-redux";
 import toast, { Toaster  } from "react-hot-toast"
 interface ChildComponentProp {
   totalCount: number;
+  setLoadProduct: React.Dispatch<boolean>;
+  loadProduct: boolean;
 }
 
-const Pagination: React.FC<ChildComponentProp> = ({ totalCount }) => {
+const Pagination: React.FC<ChildComponentProp> = ({ totalCount, loadProduct, setLoadProduct }) => {
   const dispatch = useDispatch();
   const iTemLimitPerPage = 15;
   const [page, setPage] = useState(1);

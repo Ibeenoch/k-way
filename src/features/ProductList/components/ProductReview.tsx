@@ -155,7 +155,7 @@ const ProductReview = () => {
         <>
           <div>
             <h2 className="ml-6 text-bold text-xl whitespace-normal break-words font-poppins text-center">
-              No Customer Reviews &amp; Rating Available
+              No Customer Reviews 
             </h2>
           </div>
         </>
@@ -165,7 +165,7 @@ const ProductReview = () => {
             <div className="w-full max-w-7xl px-4 md:px-5 lg:px-6 mx-auto">
               <div className="">
                 <h2 className="ml-6 text-bold whitespace-normal text-xl break-words font-poppins text-center">
-                No Customer Reviews &amp; Rating Available
+                Customer Reviews
                 </h2>
                 <div className="grid grid-cols-12 mb-11">
                   <div className="col-span-12 xl:col-span-4 flex items-center">

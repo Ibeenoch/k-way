@@ -15,6 +15,7 @@ import {
 import {  useFlutterwave,  closePaymentModal,  FlutterWaveButton } from "flutterwave-react-v3";
 import { getAUser, selectUser } from "../auth/authSlice";
 import { jwtDecode } from "jwt-decode";
+import Loading from "../../Loading";
 
 interface Chechkout {
   fullName: string;
@@ -28,6 +29,7 @@ interface Chechkout {
 }
 
 const CheckOut = () => {
+  const [loadPage, setLoadpage] = useState<boolean>(false)
   const user = JSON.parse(localStorage.getItem("user") as any);
 
   const [checkOutForm, setCheckOutForm] = useState<Chechkout>({
@@ -84,6 +86,7 @@ const CheckOut = () => {
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(fetchAllUsersCartAsync()).then(() => {
+      window.scrollTo(0,0);
       if(user && user.address === null){
         toast("Please Update Your Profile Information First",
         {
@@ -144,18 +147,21 @@ const CheckOut = () => {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    setIsUpdated(true)
+    setLoadpage(true);
+    setIsUpdated(true);
     toast("please hold on while we update your profile",
     {
       duration: 5000, 
       position: 'top-center'
    });
 
-    const add = { ...checkOutForm, id };
+    const form = { ...checkOutForm, id };
+    const add = { form, token };
 
     if (add) {
       if (user && !user.address) {
         dispatch(createAddress(add)).then((res: any) => {
+          console.log('created address result ', res.payload);
           if (res && res.payload && res.payload.address) {
             const data = {
               token: res && res.payload && res.payload.token,
@@ -165,11 +171,12 @@ const CheckOut = () => {
             if (data) {
               console.log("asgh");
               dispatch(getAUser(data)).then((res: any) => {
-                console.log("hjhjaashahshahjas");
+                console.log("got a user ", res.payload);
                 if (
                   (res && res.payload !== null) ||
                   res.payload !== undefined
                 ) {
+                  setLoadpage(false);
                   setIsUpdated(false);
                   console.log("ahjahshahjas");
                   toast("Profile Updated",
@@ -183,6 +190,7 @@ const CheckOut = () => {
             }
           }else{
             setIsUpdated(false);
+            setLoadpage(false);
             toast.error("Poor Network Connection please try again later",
           {
             duration: 1500, 
@@ -204,6 +212,7 @@ const CheckOut = () => {
                 console.log("hjhjaashahshahjas");
                 if (res && res.payload !== undefined) {
                   console.log("ahjahshahjas");
+                  setLoadpage(false);
                   setIsUpdated(false);
                   toast("Address Updated",
                   {
@@ -212,6 +221,7 @@ const CheckOut = () => {
                  });
                 }else{
                   setIsUpdated(false);
+                  setLoadpage(false);
                   toast.error("Poor Network Connection please try again later",
                     {
                       duration: 1500, 
@@ -221,6 +231,7 @@ const CheckOut = () => {
               });
             }
           }else{
+            setLoadpage(false);
             setIsUpdated(false);
             toast.error("Poor Network Connection please try again later",
           {
@@ -259,7 +270,7 @@ const CheckOut = () => {
   const handleFlutterPayment = useFlutterwave(config);
 
   const informUser = () => {
-    toast("Please Select an existing address and online payment method to pay online",
+    toast("Please Select an existing address and Choose online payment method to pay online",
     {
      position: "top-center",
      duration: 1500, 
@@ -284,6 +295,12 @@ const CheckOut = () => {
 
   return (
     <div className="grid grid-cols-1 gap-x-8 gap-y-10 mt-8 lg:grid-cols-5 px-4 py-3">
+     { loadPage ? (
+      <>
+      <Loading />
+      </>
+     ) : (
+      <>
       <div className="lg:col-span-3">
         <form onSubmit={handleSubmit}>
           <div className="space-y-12 bg-white px-6">
@@ -726,6 +743,7 @@ const CheckOut = () => {
                                   navigate(`/order/success/${navigateId}`);
                                 });
                             }else{
+                              setLoadpage(false);
                               toast.error("Poor Network Connection please try again later",
                               {
                                position: "top-center",
@@ -794,6 +812,9 @@ const CheckOut = () => {
           </div>
         </div>
       )}
+      </>
+     )}
+      
     </div>
   );
 };

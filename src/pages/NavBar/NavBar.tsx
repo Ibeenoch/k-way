@@ -41,7 +41,7 @@ interface Child {
 const NavBar: React.FC<Child> = ({ children, isOpen }) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [showSearch, setShowSearch] = useState(false);
+  const [showSearch, setShowSearch] = useState<boolean>(false);
   const [inputText, setInputText] = useState("");
   const location = useLocation();
   const { carts } = useAppSelector(selectAllCart);
@@ -71,6 +71,7 @@ const NavBar: React.FC<Child> = ({ children, isOpen }) => {
         return;
       } else {
         navigate("/cart");
+        window.scrollTo(0,0);
       }
     });
   };
@@ -81,6 +82,7 @@ const NavBar: React.FC<Child> = ({ children, isOpen }) => {
         return;
       } else {
         navigate("/wishlist");
+        window.scrollTo(0,0);
       }
     });
   };

@@ -19,11 +19,13 @@ import { selectUser } from "../../auth/authSlice";
 import { format } from "date-fns";
 import { HeartIcon, ShoppingBagIcon } from "@heroicons/react/24/outline";
 import { addToWishlist } from "../../wishlist/wishListSlice";
+import Loading from "../../../Loading";
 
 const ProductDetail = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
+  const [loadPage, setLoadPage] = useState<boolean>(false);
   const { status, product, productReview } = useAppSelector(selectProduct);
   const user = JSON.parse(localStorage.getItem("user") as any);
   const { carts } = useAppSelector(selectAllCart);
@@ -137,10 +139,14 @@ const ProductDetail = () => {
   const totalFivestar = productReview ? totalFiveRatingArr(productReview) : 0;
 
   const handleReviewForm = (id: any) => {
+    setLoadPage(true);
     dispatch(getAproduct(id)).then((res: any) => {
       if (res && res.payload && res.payload.id) {
+        setLoadPage(false);
         navigate(`/product/review/form/${id}`);
+        window.scrollTo(0,0);
       }else{
+        setLoadPage(false);
         toast.error("Poor Network Connection please try again later",
        {
          duration: 3000, //6 seconds
@@ -228,7 +234,13 @@ const ProductDetail = () => {
 
   return (
     <>
-      <div className="bg-white mt-8">
+    { loadPage ? (
+      <>
+        <Loading />
+      </>
+    ) : (
+      <>
+      <div className="bg-white mt-12">
         <div className="pt-6">
           <nav aria-label="Breadcrumb">
             <ol
@@ -602,13 +614,13 @@ const ProductDetail = () => {
           </div>
         </div>
       </div>
-      <SimlilarProduct />
+      <SimlilarProduct loadPage={loadPage} setLoadPage={setLoadPage} />
       <>
         {!productReview.length ? (
           <>
             <div className="flex justify-between mx-4">
               <h2 className="text-semibold whitespace-normal break-words font-poppins text-center">
-                No Customer Reviews &amp; Rating 
+                No Customer Reviews
               </h2>
               {user && user.id ? (
                  <button
@@ -629,7 +641,7 @@ const ProductDetail = () => {
               <div className="w-full max-w-7xl px-4 md:px-5 lg:px-6 mx-auto">
                 <div className="">
                   <h2 className="ml-6 text-semibold whitespace-normal break-words font-poppins text-center">
-                    Customer reviews &amp; rating
+                    Customer reviews 
                   </h2>
                   <div className="grid grid-cols-12 mb-11">
                     <div className="col-span-12 xl:col-span-4 flex items-center">
@@ -1100,6 +1112,9 @@ const ProductDetail = () => {
           </>
         )}
       </>
+      </>
+    )}
+      
     </>
   );
 };

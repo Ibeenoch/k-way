@@ -76,7 +76,7 @@ const ChangePassword: React.FC = () => {
   return (
     <div
       style={{ background: hexcode, height: "100vh" }}
-      className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8"
+      className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 mt-20 lg:px-8"
     >
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <Link to="/">

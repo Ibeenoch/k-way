@@ -16,6 +16,7 @@ import {
 import { StarIcon } from "@heroicons/react/24/outline";
 import toast, { Toaster } from "react-hot-toast"
 import { useNavigate, useParams } from "react-router-dom";
+import Loading from "../../../Loading";
 
 
 const ProductReviewForm = () => {
@@ -120,6 +121,11 @@ const ProductReviewForm = () => {
 
   return (
     <section className="bg-white mt-10 dark:bg-gray-900 py-8 lg:py-16 antialiased">
+     { postRemark ? (
+      <>
+      <Loading />
+      </>
+     ) : (
       <div className="max-w-2xl mx-auto px-4">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">
@@ -228,6 +234,8 @@ const ProductReviewForm = () => {
           </button>
         </form>
       </div>
+     )}
+      
     </section>
   );
 };

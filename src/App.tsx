@@ -30,6 +30,7 @@ import { selectUser } from "./features/auth/authSlice";
 import Logout from "./features/auth/Logout";
 import PageNotFound from "./pages/PageNotFound";
 import { Toaster } from "react-hot-toast"
+import Loading from "./Loading";
 
 
 const router = createBrowserRouter([
@@ -88,6 +89,10 @@ const router = createBrowserRouter([
   {
     path: "/product/details/:id",
     element: <ProductDetailPage />,
+  },
+  {
+    path: "/loading",
+    element: <Loading />,
   },
   {
     path: "/product/create",

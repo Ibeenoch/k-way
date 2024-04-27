@@ -10,12 +10,18 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Loading from "../../../Loading";
 
-const SimlilarProduct = () => {
+interface Similar {
+  loadPage: boolean;
+  setLoadPage: React.Dispatch<boolean>;
+}
+
+const SimlilarProduct: React.FC<Similar> = ({ loadPage, setLoadPage }) => {
   const { similarProduct } = useAppSelector(selectProduct);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleProductDetails = (id: any) => {
+    setLoadPage(true);
     dispatch(getAproduct(id) as any).then((res: any) => {
       if (res && res.payload && res.payload.category) {
         const data = {
@@ -33,6 +39,7 @@ const SimlilarProduct = () => {
             const getNextProductPage = () => {
               dispatch(getaProductReviews(id) as any).then((res: any) => {
                 console.log("review res ", res.payload);
+                setLoadPage(false);
                 navigate(`/product/details/${id}`);
                 window.scrollTo(0, 0);
               });
