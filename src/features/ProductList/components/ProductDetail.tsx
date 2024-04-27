@@ -468,7 +468,7 @@ const ProductDetail = () => {
               <div className="flex text-sm">
                 <div
                   onClick={() => handleAddToWishlist(product.id)}
-                  className="flex cursor-pointer border border-white bg-red-800 dark:bg-blue-800 text-white dark:text-white antialiased font-bold hover:bg-red-700 hover:text-white dark:hover:bg-red-700 px-4 py-2"
+                  className="flex cursor-pointer border border-white bg-red-800 dark:bg-red-800 text-white dark:text-white antialiased font-bold hover:bg-red-700 hover:text-white dark:hover:bg-red-700 px-4 py-2"
                 >
                   <HeartIcon width={30} height={20} /> <div></div>
                   {/* <ToastContainer /> */}
@@ -476,7 +476,7 @@ const ProductDetail = () => {
 
                 <div
                   onClick={() => handleAddCart(product.id)}
-                  className="flex cursor-pointer border border-white bg-red-800 dark:bg-blue-800 text-white dark:text-white antialiased font-bold hover:bg-red-700 hover:text-white dark:hover:bg-red-700 px-4 py-2"
+                  className="flex cursor-pointer border border-white bg-red-800 dark:bg-red-800 text-white dark:text-white antialiased font-bold hover:bg-red-700 hover:text-white dark:hover:bg-red-700 px-4 py-2"
                 >
                   <ShoppingBagIcon width={30} height={20} />{" "}
                   <div>Add To Cart</div>

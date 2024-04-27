@@ -133,7 +133,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
       });
     }
   };
-  
+
   useEffect(() => {
     setLoadProduct(true);
     dispatch(getAllproduct()).then((res: any) => {
@@ -167,6 +167,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
   }, [dispatch, navigate]);
 
   const handleProductDetails = (productId: any) => {
+    window.scrollTo(0, 0);
     setLoadProduct(true);
     dispatch(getAproduct(productId)).then((res) => {
       if (res && res.payload && res.payload.category) {

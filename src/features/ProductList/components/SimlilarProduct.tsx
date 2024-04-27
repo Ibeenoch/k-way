@@ -22,6 +22,7 @@ const SimlilarProduct: React.FC<Similar> = ({ loadPage, setLoadPage }) => {
 
   const handleProductDetails = (id: any) => {
     setLoadPage(true);
+    window.scrollTo(0, 0);
     dispatch(getAproduct(id) as any).then((res: any) => {
       if (res && res.payload && res.payload.category) {
         const data = {
@@ -34,6 +35,7 @@ const SimlilarProduct: React.FC<Similar> = ({ loadPage, setLoadPage }) => {
             res && res.payload && res.payload.brand && res.payload.brand.name,
         };
         dispatch(similarproduct(data) as any).then((res: any) => {
+          window.scrollTo(0, 0);
           if (res && res.payload && res.payload !== undefined) {
             console.log("similar product: ", res.pay);
             const getNextProductPage = () => {
