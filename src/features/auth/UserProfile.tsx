@@ -222,6 +222,7 @@ if(aUserOrderedProducts){
         token,
         imageForm,
       };
+      console.log('image data ', data)
       dispatch(uploadUserPhoto(data)).then((res: any) => {
         console.log('image... ', res.payload)
         if (res && res.payload && res.payload.image && res.payload.image.url) {
@@ -229,7 +230,6 @@ if(aUserOrderedProducts){
           const id = res.payload.id;
           const data = { token, id };
           console.log("uploading ", data);
-          setIsUploading(false);
           
           toast.success("Profile photo uploaded Added!!!",
           {
