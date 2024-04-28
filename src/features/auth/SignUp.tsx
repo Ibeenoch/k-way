@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useState } from "react";
+import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import companylogo from "../../images/images-9.png";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
@@ -108,6 +108,16 @@ const SignUp: React.FC = () => {
      return;
     }
   };
+
+  useEffect(() => {
+    if(ischecked){
+      toast("If you're not the admin, please ignore putting a passcode, continue with the registration by clicking the 'Sign Up' button to register an account with Maven Store",
+      {
+       position: "top-center",
+       duration: 5000,
+     });
+    }
+   }, [ischecked])
 
   const changeVisibilty = () => {
     setIsShowPassword(!isShowPassword);
@@ -319,7 +329,7 @@ const SignUp: React.FC = () => {
           </form>
 
           <Link to="/login">
-            <p className="mt-10 text-center text-sm text-gray-900">
+            <p className="mt-5 text-center text-sm text-gray-900">
               Already a member?{" "}
               <div className="font-semibold leading-6 text-gray-900 hover:text-gray-500">
                 Please Login in

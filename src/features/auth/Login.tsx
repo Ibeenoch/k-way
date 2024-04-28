@@ -120,7 +120,15 @@ const Login = () => {
     }
   };
 
- 
+ useEffect(() => {
+  if(ischecked){
+    toast("If you're not the admin, please ignore putting a passcode, continue by clicking the 'Sign In' button to Login to Maven Store",
+    {
+     position: "top-center",
+     duration: 5000,
+   });
+  }
+ }, [ischecked])
 
   const changeVisibilty = () => {
     setIsShowPassword(!isShowPassword);
@@ -298,7 +306,7 @@ const Login = () => {
           
 
           <Link to="/register">
-            <p className="mt-10 text-center text-sm text-gray-900">
+            <p className="mt-5 text-center text-sm text-gray-900">
               Not a member?{" "}
               <div className="font-semibold leading-6 text-gray-900 hover:text-gray-700">
                 Start a 14 day free trial
