@@ -17,6 +17,7 @@ const Home = () => {
   };
 
 
+
   return (
     <>
       <NavBar isOpen={isOpen}>
