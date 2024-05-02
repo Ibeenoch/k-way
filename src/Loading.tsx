@@ -25,7 +25,7 @@ const Loading: React.FC = () => {
     console.log('loading content in: ', count)
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100vh', opacity: 0.3}}>
+    <div style={{ display: 'flex', color: 'black', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100vh', opacity: 0.3}}>
 <p>Please be patience, this may take a while...</p>
  {products.length > 0 ? (
   <></>
