@@ -32,6 +32,7 @@ export const getProducts = async () => {
       },
     };
     const res = await axios.get(API + "/products");
+    console.log('all product fetch: ', res.data)
     return res;
   } catch (error) {
     console.log(error);

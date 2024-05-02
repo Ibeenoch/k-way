@@ -46,7 +46,8 @@ const Pagination: React.FC<ChildComponentProp> = ({ totalCount, loadProduct, set
     const data = { limit, currentPage };
     dispatch(getPagination(data) as any).then((res: any) => {
       if(res && res.payload !== undefined){
-       window.scrollTo(0, 0) ;
+        console.log('prev pagination ', res.payload)
+      //  window.scrollTo(0, 0) ;
       }else{
         toast.error("Poor Network Connection please try again later",
        {

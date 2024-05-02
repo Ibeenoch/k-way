@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import NavBar from "./NavBar/NavBar";
 import Products from "../features/ProductList/components/Products";
 import { useAppDispatch } from "../app/hooks";
-import { getAllproduct } from "../features/ProductList/ProductSlice";
+import { fetchAllBrands, getAllproduct } from "../features/ProductList/ProductSlice";
 import Footer from "./Footer";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
@@ -15,6 +15,16 @@ const Home = () => {
   const togglePopup = () => {
     setIsOpen(!isOpen);
   };
+
+  useEffect(() => {
+    const getProductInterval = setInterval(async() => {
+     await dispatch(fetchAllBrands()).then((res: any) => {
+        console.log('time interval fetch: ', (new Date()).toDateString(),  res.payload)
+      })
+    }, 9000);
+
+    return () => clearInterval(getProductInterval);
+  }, [])
 
   return (
     <>
