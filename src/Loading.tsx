@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 
 
 const Loading: React.FC = () => {
-  const [count, setCount] = useState<number>(15);
+  const [count, setCount] = useState<number>(5);
 
   useEffect(() => {
     const timer = setInterval( () => {
