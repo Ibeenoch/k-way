@@ -16,15 +16,6 @@ const Home = () => {
     setIsOpen(!isOpen);
   };
 
-  useEffect(() => {
-    const getProductInterval = setInterval(async() => {
-     await dispatch(fetchAllBrands()).then((res: any) => {
-        console.log('time interval fetch: ', (new Date()).toDateString(),  res.payload)
-      })
-    }, 9000);
-
-    return () => clearInterval(getProductInterval);
-  }, [])
 
   return (
     <>
