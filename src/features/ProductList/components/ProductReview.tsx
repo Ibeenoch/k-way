@@ -476,13 +476,13 @@ const ProductReview = () => {
                 </div>
 
                 {!productReview.length ? (
-                  <div className="p-6 text-base rounded-lg dark:bg-gray-900">
+                  <div className="p-6 text-base dark:bg-gray-900">
                     <p>No product review </p>
                   </div>
                 ) : (
                   productReview.map((review: any) => (
                     <>
-                      <article className="p-6 text-base bg-white border-b border-gray-200 dark:bg-gray-900">
+                      <article className="p-6 text-base bg-white border-b border-gray-300 dark:bg-gray-900">
                         <footer className="flex justify-between items-center mb-2">
                           <div className="flex items-center">
                             <p className="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white font-semibold">
