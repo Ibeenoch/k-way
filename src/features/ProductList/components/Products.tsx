@@ -911,7 +911,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                                           <p className="text-xs" style={{ fontSize: '10px' }}>
                                             {product && product.title}
                                           </p>
-                                          <p  style={{ fontSize: '12px' }} className="text-sm font-medium text-gray-900">
+                                          <p  style={{ fontSize: '12px', color: 'red' }} className="text-sm font-medium">
                                             <strong>${product && product.price}</strong>
                                           </p>
                                         </div>
@@ -1170,7 +1170,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
                                               className="absolute inset-0"
                                             />
                                             <strong>{product && product.title}</strong>
-                                            <p className="text-sm font-medium text-gray-900">
+                                            <p style={{ color: 'red' }} className="text-sm font-medium">
                                               <strong>${product && product.price}</strong>
                                             </p>
                                           </div>
