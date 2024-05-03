@@ -139,7 +139,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
     dispatch(getAllproduct()).then((res: any) => {
       if(res && res.payload !== undefined){
         setTotalCount(res.payload.length);
-      const limit = 15;
+      const limit = 30;
       const currentPage = 1;
           const data = { limit, currentPage };
           dispatch(getPagination(data) as any).then((res: any) => {
