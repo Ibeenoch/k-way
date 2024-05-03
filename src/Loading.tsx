@@ -18,6 +18,7 @@ const Loading: React.FC = () => {
         })
       }else{
         console.log('okay')
+        dispatch(getAllproduct())
       }
     }, 1000 );
 
