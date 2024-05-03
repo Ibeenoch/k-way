@@ -1,19 +1,21 @@
 import { useEffect, useState } from "react"
-import { useAppSelector } from "./app/hooks";
-import { selectProduct } from "./features/ProductList/ProductSlice";
+import { useAppDispatch, useAppSelector } from "./app/hooks";
+import { getAllproduct, selectProduct } from "./features/ProductList/ProductSlice";
 
 
 const Loading: React.FC = () => {
   const [count, setCount] = useState<number>(5);
+  const dispatch = useAppDispatch();
   const { products } = useAppSelector(selectProduct)
 
   useEffect(() => {
     const timer = setInterval( () => {
       setCount((prev) => prev - 1)
       console.log('product length: ' ,products.length)
-      if(count === 0 && products.length < 1){
-        window.location.reload();
-        setCount(15);
+      if(count === 0 && products.length < 1){        
+        dispatch(getAllproduct()).then(() => {
+          setCount(15);
+        })
       }else{
         console.log('okay')
       }
