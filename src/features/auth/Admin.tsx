@@ -592,12 +592,12 @@ const Admin = () => {
 
                         <div className="h-screen dark:bg-white-700 bg-white-200 pt-0">
                           {/* <div className="max-w-sm mx-auto bg-white dark:bg-gray-900 rounded-lg overflow-hidden shadow-lg"> */}
-                          <div className="bg-white dark:bg-gray-900 rounded-lg overflow-hidden shadow-lg">
+                          <div className="bg-white dark:bg-gray-900 dark:text-white rounded-lg overflow-hidden shadow-lg">
                             {/* product list  */}
                             {isproduct ? (
                               <>
                                 <div className="flex justify-between px-4 pb-4">
-                                  <h2 className="text-base px-2 py-2 font-semibold leading-7 text-gray-900">
+                                  <h2 className="text-base px-2 py-2 dark:bg-gray-900 dark:text-white font-semibold leading-7 text-gray-900">
                                     Lists of All Product
                                   </h2>
                                   <div
@@ -610,7 +610,7 @@ const Admin = () => {
 
                                 {products &&
                                   products.map((item: any) => (
-                                    <div className="border border-gray-300 flex flex-col">
+                                    <div className="border border-gray-300 dark:bg-gray-900 dark:text-white flex flex-col">
                                       <div
                                         onClick={() =>
                                           handleProductDetails(item.id)
@@ -720,15 +720,15 @@ const Admin = () => {
                               </>
                             ) : isOrder ? (
                               <>
-                                <div className="flex justify-between pb-4">
-                                  <h2 className="text-base text-center font-bold leading-7 px-2 pt-2 text-gray-900">
+                                <div className="flex justify-between dark:bg-gray-900 dark:text-white pb-4">
+                                  <h2 className="text-base text-center dark:bg-gray-900 dark:text-white font-bold leading-7 px-2 pt-2 text-gray-900">
                                     Lists of Orders
                                   </h2>
                                 </div>
 
                                 {orders &&
                                   orders.map((item: any, index: number) => (
-                                    <div className="border border-gray-300 flex flex-col">
+                                    <div className="border dark:bg-gray-900 dark:text-white border-gray-300 flex flex-col">
                                       <div className="flex flex-col justify-between px-4 py-2 w-full cursor-pointer">
                                         {item.productDetails.map(
                                           (it: any, index: number) => (
@@ -923,7 +923,7 @@ const Admin = () => {
                               <>
                                 <ul
                                   role="list"
-                                  className="divide-y divide-gray-100 px-4"
+                                  className="divide-y divide-gray-100 dark:bg-gray-900 dark:text-white px-4"
                                 >
                                   {users &&
                                     users.map((person: any) => (
@@ -1021,7 +1021,7 @@ const Admin = () => {
                                 {allTransactions &&
                                   allTransactions.map(
                                     (item: any, index: number) => (
-                                      <div className="border border-gray-300 flex flex-col">
+                                      <div className="border border-gray-300 flex flex-col dark:bg-gray-900 dark:text-white">
                                         <div className="flex flex-col justify-between px-4 py-2 w-full cursor-pointer">
                                           <>
                                             <h2 className="text-base border border-bottom-gray-400 font-semibold text-center leading-7 text-gray-900">
