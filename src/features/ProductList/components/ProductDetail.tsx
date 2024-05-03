@@ -389,7 +389,7 @@ const ProductDetail = () => {
             )}
           </div>
 
-<div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
+<div className="mx-auto flex flex-row overflow-x-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
   {/* Container for images */}
   <div className="lg:flex flex flex-row overflow-x-auto lg:flex-row lg:overflow-x-auto">
     {/* 1st img div */}
