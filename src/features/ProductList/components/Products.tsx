@@ -569,7 +569,7 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
 
                     <button
                       type="button"
-                      className="ml-5 p-2 text-white hover:text-gray-300 sm:ml-7"
+                      className="-m-2 ml-5 p-2 text-gray-900 hover:text-gray-700 sm:ml-7"
                     >
                       <span className="sr-only">View grid</span>
                       <Squares2X2Icon className="h-6 w-6" aria-hidden="true" />
