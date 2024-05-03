@@ -88,7 +88,7 @@ const Pagination: React.FC<ChildComponentProp> = ({ totalCount, loadProduct, set
     <div className="flex items-center justify-between border-t border-gray-200 px-4 py-1 sm:px-6">
       <div className="flex flex-1 justify-between sm:hidden">
         <div
-          onClick={() => handlePrevious(paginatePage <= 1 ? 1 : paginatePage - 1)}
+          onClick={() => handlePrevious(paginatePage < 1 ? 1 : paginatePage - 1)}
           className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-1 text-sm font-medium text-gray-700 hover:bg-gray-50"
         >
           Previous
@@ -119,7 +119,7 @@ const Pagination: React.FC<ChildComponentProp> = ({ totalCount, loadProduct, set
             aria-label="Pagination"
           >
             <div
-              onClick={() => handlePrevious(paginatePage <= 1 ? 1 : paginatePage - 1)}
+              onClick={() => handlePrevious(paginatePage < 1 ? 1 : paginatePage - 1)}
               className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 bg-white ring-1 ring-inset ring-gray-300 hover:bg-red-50 focus:z-20 focus:outline-offset-0"
             >
               <span className="sr-only">Previous</span>
