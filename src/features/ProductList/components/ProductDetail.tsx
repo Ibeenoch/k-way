@@ -950,7 +950,7 @@ const ProductDetail = () => {
                   {productReview &&
                     productReview.map((review: any) => (
                       <>
-                        <article className="p-6 text-base bg-white rounded-lg dark:bg-gray-900">
+                        <article className="p-6 text-base border-gray-300 border-b bg-white dark:bg-gray-900">
                           <footer className="flex justify-between items-center mb-2">
                             <div className="flex items-center">
                               <p className="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white font-semibold">
