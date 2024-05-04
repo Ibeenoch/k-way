@@ -282,119 +282,12 @@ const ProductDetail = () => {
           </nav>
 
           {/* Image gallery */}
-
-          <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
-            {/* 1st img div */}
-            <div className="aspect-h-4 aspect-w-3 overflow-hidden rounded-lg lg:block">
-              {product &&
-                product.images &&
-                product.images.set &&
-                product.images.set[0] && (
-                  <img
-                    alt="product image"
-                    src={
-                      product &&
-                      product.images &&
-                      product.images.set &&
-                      product.images.set[0].url
-                    }
-                    className="h-full w-full object-contain lg:h-full lg:w-full"
-                    style={{ zIndex: 30 }}
-                  />
-                )}
-            </div>
-
-            <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
-              {/* 2nd img div */}
-              <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
-                {product &&
-                  product.images &&
-                  product.images.set &&
-                  product.images.set[1] && (
-                    <img
-                      alt="product image"
-                      src={
-                        product &&
-                        product.images &&
-                        product.images.set &&
-                        product.images.set[1].url
-                      }
-                      className="h-full w-full object-contain lg:h-full lg:w-full"
-                      style={{ zIndex: 30 }}
-                    />
-                  )}
-              </div>
-              {/* 3rd img div */}
-              <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
-                {product &&
-                  product.images &&
-                  product.images.set &&
-                  product.images.set[2] && (
-                    <img
-                      alt="product image"
-                      src={
-                        product &&
-                        product.images &&
-                        product.images.set &&
-                        product.images.set[2].url
-                      }
-                      className="h-full w-full object-contain lg:h-full lg:w-full"
-                      style={{ zIndex: 30 }}
-                    />
-                  )}
-              </div>
-            </div>
-            {/* 4th img div */}
-            {product &&
-            product.images &&
-            product.images.set &&
-            product.images.set[3] ? (
-              <div className="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
-                {product &&
-                  product.images &&
-                  product.images.set &&
-                  product.images.set[3] && (
-                    <img
-                      alt="product image"
-                      src={
-                        product &&
-                        product.images &&
-                        product.images.set &&
-                        product.images.set[3].url
-                      }
-                      className="h-full w-full object-contain lg:h-full lg:w-full"
-                      style={{ zIndex: 30 }}
-                    />
-                  )}
-              </div>
-            ) : (
-              <div className="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
-                {product &&
-                  product.images &&
-                  product.images.set &&
-                  product.images.set[3] && (
-                    <img
-                      alt="product image"
-                      src={
-                        product &&
-                        product.images &&
-                        product.images.set &&
-                        product.images.set[3].url
-                      }
-                      className="h-full w-full object-contain lg:h-full lg:w-full"
-                      style={{ zIndex: 30 }}
-                    />
-                  )}
-              </div>
-            )}
-          </div>
-
-          <div className="flex flex-row overflow-x-auto lg:overflow-hidden">
+        <div className="flex flex-row overflow-x-auto lg:overflow-hidden">
           {/* Map over each image */}
           { product &&
                 product.images &&
                 product.images.set && product.images.set.map((image: any, index: number) => (
-            <div key={index} className={`px-1 flex-shrink-0 w-full sm:w-1/2 md:w-1/2 lg:w-1/4 ${index > 0 ? 'ml-4 sm:ml-0 md:ml-0 lg:ml-0' : ''}`}>
+            <div key={index} className={`border border-gray-300 flex-shrink-0 w-full sm:w-1/2 md:w-1/2 lg:w-1/4 ${index > 0 ? 'ml-4 sm:ml-0 md:ml-0 lg:ml-0' : ''}`}>
               <img
                 alt="product image"
                 src={image.url}

@@ -28,18 +28,12 @@ import ProductReviewFormPage from "./pages/ProductReviewFormPage";
 import Logout from "./features/auth/Logout";
 import PageNotFound from "./pages/PageNotFound";
 import { Toaster } from "react-hot-toast"
-import Test from "./features/payment/Test";
-
 
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
-  },
-  {
-    path: "/test",
-    element: <Test />,
   },
   {
     path: "/login",
