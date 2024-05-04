@@ -12,8 +12,8 @@ const Loading: React.FC = () => {
     const timer = setInterval( () => {
       setCount((prev) => prev - 1)
       console.log('product length: ' ,products.length)
-      if(count === 0 && products.length < 1){        
-        toast('Server is taking too long to response, wait while we refresh the page once again.', {
+      if(count === 0){        
+        toast('Server is taking too long to response, wait while we refresh the page once again...', {
           duration: 5000,
           position: 'top-center',
           className: 'text-red-800'
