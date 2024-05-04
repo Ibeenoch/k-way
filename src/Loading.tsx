@@ -13,12 +13,11 @@ const Loading: React.FC = () => {
       setCount((prev) => prev - 1)
       console.log('product length: ' ,products.length)
       if(count === 0){        
-        toast('Server is taking too long to response, wait while we refresh the page once again...', {
+        toast('Server is taking too long to response, kindly refresh the page once again. or check your network connection', {
           duration: 5000,
           position: 'top-center',
           className: 'text-red-800'
         })
-        window.location.reload()
       }
 
     }, 1000 );
