@@ -389,69 +389,25 @@ const ProductDetail = () => {
             )}
           </div>
 
-<div className="mx-auto flex flex-row overflow-x-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
+<div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
   {/* Container for images */}
-  <div className="lg:flex flex flex-row overflow-x-auto lg:flex-row lg:overflow-x-auto">
-    {/* 1st img div */}
-    <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
-      {product &&
-        product.images &&
-        product.images.set &&
-        product.images.set[0] && (
-          <img
-            alt="product image"
-            src={product.images.set[0].url}
-            className="h-full w-full object-contain lg:h-full lg:w-full"
-            style={{ zIndex: 30 }}
-          />
-        )}
-    </div>
-
-    {/* 2nd img div */}
-    <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
-      {product &&
-        product.images &&
-        product.images.set &&
-        product.images.set[1] && (
-          <img
-            alt="product image"
-            src={product.images.set[1].url}
-            className="h-full w-full object-contain lg:h-full lg:w-full"
-            style={{ zIndex: 30 }}
-          />
-        )}
-    </div>
-
-    {/* 3rd img div */}
-    <div className="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
-      {product &&
-        product.images &&
-        product.images.set &&
-        product.images.set[2] && (
-          <img
-            alt="product image"
-            src={product.images.set[2].url}
-            className="h-full w-full object-contain lg:h-full lg:w-full"
-            style={{ zIndex: 30 }}
-          />
-        )}
-    </div>
-
-    {/* 4th img div */}
-    {product &&
-    product.images &&
-    product.images.set &&
-    product.images.set[3] && (
-      <div className="aspect-h-5 aspect-w-4 sm:overflow-hidden sm:rounded-lg">
+  <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:max-w-7xl lg:flex lg:gap-x-8 lg:px-8">
+  {/* Container for images */}
+  <div className="flex flex-row overflow-x-auto lg:overflow-hidden">
+    {/* Map over each image */}
+    {product && product.images && product.images.set && product.images.set.map((image: any, index: any) => (
+      <div key={index} className="aspect-h-4 aspect-w-3 overflow-hidden rounded-lg lg:block lg:flex-shrink-0 lg:w-full">
         <img
           alt="product image"
-          src={product.images.set[3].url}
+          src={image.url}
           className="h-full w-full object-contain lg:h-full lg:w-full"
           style={{ zIndex: 30 }}
         />
       </div>
-    )}
+    ))}
   </div>
+</div>
+
 </div>
 
 
