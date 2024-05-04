@@ -28,7 +28,7 @@ const Loading: React.FC = () => {
 
   return (
     <div style={{ display: 'flex', color: 'black', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100vh', opacity: 0.3}}>
-{ count === 0 ? (
+{ count <= 0 ? (
   <>
   <p style={{ color: 'red'}}> Server taking too long to respond, kindly click the Maven logo to try again </p>
   <p style={{ color: 'red'}}> NB: it may take 5-6 times of trial to load the content on first visit to the site</p>
