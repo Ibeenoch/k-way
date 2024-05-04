@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState, AppThunk } from "../../app/store";
+import { RootState,  } from "../../app/store";
 import * as api from "./ProductAPI";
-import { act } from "@testing-library/react";
 
 export interface ProductState {
   status: "success" | "loading" | "failed" | "idle";

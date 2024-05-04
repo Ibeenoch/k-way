@@ -1,6 +1,3 @@
-import axios from "axios";
-
-// const API = 'http://localhost:5050/cart'
 
 export const fetchAllUsersWishList = async () => {
   try {
@@ -25,7 +22,6 @@ export const addToWishList = async (data: any, toast: any) => {
      });
 
     } else {
-      //check if its the same product, if true don't add it
       const index = checkItem.find((item: any) => item.id === data.id);
       if (!index) {
         checkItem.push(data);

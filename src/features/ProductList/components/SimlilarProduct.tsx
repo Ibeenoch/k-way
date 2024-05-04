@@ -8,7 +8,6 @@ import {
 } from "../ProductSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import Loading from "../../../Loading";
 
 interface Similar {
   loadPage: boolean;

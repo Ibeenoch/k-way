@@ -1,23 +1,19 @@
-import { Fragment, useEffect, useState } from "react";
-import { Dialog, Transition } from "@headlessui/react";
+import { useEffect, useState } from "react";
 import {
-  MinusIcon,
-  PlusIcon,
   ShoppingBagIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { Link, useNavigate } from "react-router-dom";
-import toast, { Toaster } from "react-hot-toast"
+import toast from "react-hot-toast"
 import { selectUser } from "../auth/authSlice";
 import { fetchAllUsersWishListAsync, selectAllWishList } from "./wishListSlice";
-import { addtocart, fetchAllUsersCartAsync } from "../cart/cartSlice";
+import { addtocart } from "../cart/cartSlice";
 import { getAproduct } from "../ProductList/ProductSlice";
 
 const WishList = () => {
   const [open, setOpen] = useState(true);
   const { wishlist } = useAppSelector(selectAllWishList);
-  const { user } = useAppSelector(selectUser);
 
   const navigate = useNavigate();
 
@@ -37,23 +33,7 @@ const WishList = () => {
     });
   };
 
-  const handleMinus = (id: number): void => {
-    const checkItem = JSON.parse(localStorage.getItem("wishlist") as any);
 
-    if (checkItem.length === 1) {
-      return;
-    } else {
-      if (checkItem && Array.isArray(checkItem)) {
-        const index = checkItem.findIndex((item: any) => item.id === id);
-        if (checkItem[index].quantity === 1) {
-          return;
-        }
-        checkItem[index].quantity--;
-        localStorage.setItem("wishlist", JSON.stringify(checkItem));
-        dispatch(fetchAllUsersWishListAsync());
-      }
-    }
-  };
 
   const handleRemove = (id: any) => {
     var checkItem = JSON.parse(localStorage.getItem("wishlist") as any);

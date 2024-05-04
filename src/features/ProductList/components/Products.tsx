@@ -1,4 +1,4 @@
-import React, { useState, Fragment, useEffect, ChangeEvent } from "react";
+import React, { useState, Fragment, useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "../../../app/hooks";
 import {
   deleteproduct,
@@ -33,14 +33,12 @@ import {
   TrashIcon,
 } from "@heroicons/react/20/solid";
 import Pagination from "./Pagination";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./product.css";
 import { addtocart, fetchAllUsersCartAsync } from "../../cart/cartSlice";
 import  toast, { Toaster } from "react-hot-toast"
-import ProductReview from "./ProductReview";
 import { selectUser } from "../../auth/authSlice";
 import Loading from "../../../Loading";
-import LoadingPage from "../../../pages/LoadingPage";
 import { addToWishlist, selectAllWishList } from "../../wishlist/wishListSlice";
 import Carousel from "./Carousel";
 import PageWriteUp from "./PageWriteUp";
@@ -52,15 +50,11 @@ interface ItogglePopup {
 const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [getCategoryName, setGetCategoryName] = useState<string>("");
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState<boolean>(false);
-  const [theAdmin, setTheAdmin] = useState<boolean>(false);
   const [loadProduct, setLoadProduct] = useState<boolean>(false);
-  const [wishlistUpdate, setWishlistUpdate] = useState<number>(0);
   const [totalCount, setTotalCount] = useState<number>(0);
-  const { status, products, product, categories, category, brands, brand } =  useAppSelector(selectProduct);
+  const { products, product, categories, brands } =  useAppSelector(selectProduct);
   const { user } = useAppSelector(selectUser);
-  const { wishlist } = useAppSelector(selectAllWishList);
 
   const token = user && user && user.token;
 
@@ -307,7 +301,6 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
   };
 
   const sortOptions = [
-    //  { name: "Most Popular", current: true },
     { name: "Best Rating", current: false },
     { name: "Newest", current: false },
     { name: "Price: Low to High", current: false },
@@ -315,7 +308,6 @@ const Products: React.FC<ItogglePopup> = ({ isOpen, togglePopup }) => {
   ];
 
   const fetchCategories = (name: string) => {
-    //options is an array of objects
     if (name === "Product") {
     } else if (name === "Category") {
       dispatch(fetchAllCategories()).then((res: any) => {

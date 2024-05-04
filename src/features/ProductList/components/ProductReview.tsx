@@ -1,5 +1,5 @@
 import { StarIcon } from "@heroicons/react/24/outline";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import {
   getAproduct,
@@ -8,7 +8,6 @@ import {
   updatetheProductRating,
 } from "../ProductSlice";
 import { useNavigate, useParams } from "react-router-dom";
-import { selectUser } from "../../auth/authSlice";
 import { format } from "date-fns";
 import  toast, { Toaster } from "react-hot-toast"
 

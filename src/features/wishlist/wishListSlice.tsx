@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState, AppThunk } from "../../app/store";
 import * as api from "./wishListApi";
-import { act } from "@testing-library/react";
 
 const checkItem = JSON.parse(localStorage.getItem("wishlist") as any);
 

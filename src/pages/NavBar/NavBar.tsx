@@ -1,5 +1,4 @@
 import {
-  ChangeEvent,
   Fragment,
   ReactElement,
   useEffect,
@@ -11,19 +10,17 @@ import pics from "../../images/image.jpeg";
 import {
   Bars3Icon,
   HeartIcon,
-  MagnifyingGlassCircleIcon,
   MagnifyingGlassIcon,
   ShoppingCartIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import toast, {  Toaster } from "react-hot-toast"
+import { useLocation, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast"
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
   fetchAllUsersCartAsync,
   selectAllCart,
 } from "../../features/cart/cartSlice";
-import { selectUser } from "../../features/auth/authSlice";
 import {
   getAllproduct,
   getProductSearchResult,
@@ -43,8 +40,6 @@ const NavBar: React.FC<Child> = ({ children, isOpen }) => {
   const navigate = useNavigate();
   const [showSearch, setShowSearch] = useState<boolean>(false);
   const [inputText, setInputText] = useState("");
-  const location = useLocation();
-  const { carts } = useAppSelector(selectAllCart);
   const { wishlist } = useAppSelector(selectAllWishList);
   const user = JSON.parse(localStorage.getItem("user") as any);
 
@@ -122,19 +117,6 @@ const NavBar: React.FC<Child> = ({ children, isOpen }) => {
     { name: "Sign out", href: "/logout" },
   ];
 
-  const handleLogoClicked = () => {
-    dispatch(getAllproduct()).then((res: any) => {
-      if(res && res.payload !== undefined){
-       navigate("/");
-      window.scrollTo(0, 0); 
-      }else{
-        toast.error("Poor Network Connection please try again later",
-      {
-       duration: 1500, // 1 and half seconds
-     });
-      }
-    });
-  };
 
   const hexcode = "#DEB887";
 

@@ -3,15 +3,12 @@ import React, {
   FormEvent,
   useState,
   useRef,
-  useEffect,
 } from "react";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
-import { selectUser } from "../../auth/authSlice";
 import {
   createAProductReview,
   getaProductReviews,
   selectProduct,
-  updatetheProductRating,
 } from "../ProductSlice";
 import { StarIcon } from "@heroicons/react/24/outline";
 import toast, { Toaster } from "react-hot-toast"
