@@ -2,10 +2,12 @@ import { useEffect, useState } from "react"
 import { useAppDispatch, useAppSelector } from "./app/hooks";
 import { getAllproduct, selectProduct } from "./features/ProductList/ProductSlice";
 import { Toaster, toast } from 'react-hot-toast'
+import { useNavigate } from "react-router-dom";
 
 const Loading: React.FC = () => {
   const [count, setCount] = useState<number>(15);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate()
   const { products } = useAppSelector(selectProduct);
 
   useEffect(() => {
@@ -15,11 +17,13 @@ const Loading: React.FC = () => {
       setCount((prev) => prev - 1)
       console.log('product length: ' ,products.length)
       if(count === 0){        
-        toast('Server is taking too long to response, kindly refresh the page once again. or check your network connection', {
+        toast.error('Server is taking too long to response, kindly hold on while we try once again.', {
           duration: 5000,
           position: 'top-center',
           className: 'text-red-800'
         })
+        navigate('/');
+        setCount(15)
       }
 
     }, 1000 );
