@@ -389,27 +389,21 @@ const ProductDetail = () => {
             )}
           </div>
 
-<div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
-  {/* Container for images */}
-  <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:max-w-7xl lg:flex lg:gap-x-8 lg:px-8">
-  {/* Container for images */}
-  <div className="flex flex-row overflow-x-auto lg:overflow-hidden">
-    {/* Map over each image */}
-    {product && product.images && product.images.set && product.images.set.map((image: any, index: any) => (
-      <div key={index} className="aspect-h-4 aspect-w-3 overflow-hidden rounded-lg lg:block lg:flex-shrink-0 lg:w-full">
-        <img
-          alt="product image"
-          src={image.url}
-          className="h-full w-full object-contain lg:h-full lg:w-full"
-          style={{ zIndex: 30 }}
-        />
-      </div>
-    ))}
-  </div>
-</div>
-
-</div>
-
+          <div className="flex flex-row overflow-x-auto lg:overflow-hidden">
+          {/* Map over each image */}
+          { product &&
+                product.images &&
+                product.images.set && product.images.set.map((image: any, index: number) => (
+            <div key={index} className={`px-1 flex-shrink-0 w-full sm:w-1/2 md:w-1/2 lg:w-1/4 ${index > 0 ? 'ml-4 sm:ml-0 md:ml-0 lg:ml-0' : ''}`}>
+              <img
+                alt="product image"
+                src={image.url}
+                className="h-full w-full object-cover"
+                style={{ zIndex: 30 }}
+              />
+            </div>
+          ))}
+        </div>
 
           {/* Product info */}
           <div className="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
