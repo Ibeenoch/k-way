@@ -28,11 +28,36 @@ import ProductReviewFormPage from "./pages/ProductReviewFormPage";
 import Logout from "./features/auth/Logout";
 import PageNotFound from "./pages/PageNotFound";
 import { Toaster } from "react-hot-toast"
+import Starter from "./features/doc/Starter";
+import StarterOne from "./features/doc/StarterOne";
+import StarterTwo from "./features/doc/StarterTwo";
+import StarterThree from "./features/doc/StarterThree";
+import StarterFour from "./features/doc/StarterFour";
 
 
 const router = createBrowserRouter([
   {
     path: "/",
+    element: <Starter />,
+  },
+  {
+    path: "/starterone",
+    element: <StarterOne />,
+  },
+  {
+    path: "/startertwo",
+    element: <StarterTwo />,
+  },
+  {
+    path: "/starterthree",
+    element: <StarterThree />,
+  },
+  {
+    path: "/starterfour",
+    element: <StarterFour />,
+  },
+  {
+    path: "/product",
     element: <Home />,
   },
   {
