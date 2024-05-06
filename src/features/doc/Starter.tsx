@@ -31,7 +31,7 @@ const handleNewsLetter = (e: FormEvent) => {
     <div className="h-full">
     {/*Nav*/}
     <div className="w-full container mx-auto">
-      <div className="w-full flex items-center p-6 justify-between">
+      <div className="w-full flex items-center pt-6 px-6 justify-between">
         <a
           className="flex items-center text-indigo-400 no-underline hover:no-underline font-bold text-2xl lg:text-4xl"
           href="#"
@@ -94,7 +94,7 @@ const handleNewsLetter = (e: FormEvent) => {
         </p>
 
         
-        <form onSubmit={handleNewsLetter} className="bg-gray-900 opacity-75 w-full shadow-lg rounded-lg px-8 pt-6">
+        <form onSubmit={handleNewsLetter} className="bg-gray-900 opacity-75 w-full shadow-lg rounded-lg px-8 pb-6 pt-6">
           <div className="mb-4">
             <label
               className="block text-blue-300 py-2 font-bold mb-2"
@@ -114,7 +114,7 @@ const handleNewsLetter = (e: FormEvent) => {
           </div>
           <div className="flex items-center justify-between pt-4">
             <button
-              className="bg-gradient-to-r from-purple-800 to-green-500 hover:from-pink-500 hover:to-green-500 text-white font-bold py-2 px-4 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
+              className="bg-gradient-to-r from-purple-800 to-green-500 hover:from-pink-500 p-4 hover:to-green-500 text-white font-bold py-2 px-4 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
               type="submit"
             >
               Sign Up
