@@ -18,6 +18,14 @@ const handleNextPage = () => {
     })
 }
 
+const handlePrevPage = () => {
+    dispatch(getAllproduct()).then((res: any) => {
+        if(res){
+            navigate('/starterthree')
+        }
+    })
+}
+
 
   return (
     <div className="h-full">
@@ -85,6 +93,15 @@ We hope this guide helps you make the most of your time on our website. Happy sh
          
           </div>
         </form>
+        <div className='flex justify-between p-2'>
+
+        <button
+        onClick={handlePrevPage}
+            className="bg-gradient-to-r from-purple-800 to-green-500 hover:from-pink-500 hover:to-green-500 text-white font-bold py-2 px-4 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
+            type="button"
+        >
+            Go Back
+        </button>
 
         <button
         onClick={handleNextPage}
@@ -93,6 +110,7 @@ We hope this guide helps you make the most of your time on our website. Happy sh
         >
             Continue
         </button>
+        </div>
       </div>
       {/*Right Col*/}
       
