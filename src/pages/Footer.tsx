@@ -8,7 +8,7 @@ const Footer = () => {
       <div className="mx-auto w-full max-w-screen-xl p-4 py-2 lg:py-2">
         <div className="md:flex md:justify-between">
           <div className="mb-6 md:mb-0">
-            <Link to="/" className="flex items-center">
+            <Link to="/product" className="flex items-center">
               <img src={logo} className="h-8 me-3" alt="Company Logo" />
               <span className="self-center text=white text-xl font-semibold whitespace-nowrap dark:text-white">
                 Maven Store
@@ -79,7 +79,7 @@ const Footer = () => {
         <div className="sm:flex sm:items-center sm:justify-between">
           <span className="text-sm text=white sm:text-center dark:text-gray-400">
             © 2024{" "}
-            <a href="/" className="hover:underline">
+            <a href="/product" className="hover:underline">
               Marven
             </a>
             . All Rights Reserved.

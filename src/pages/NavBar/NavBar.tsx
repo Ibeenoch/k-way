@@ -95,7 +95,7 @@ const NavBar: React.FC<Child> = ({ children, isOpen }) => {
   };
 
   const navigation = [
-    { name: "Marven Store", href: "/", current: true },
+    { name: "Marven Store", href: "/product", current: true },
     {
       name: "Admin",
       href: user && user.role === "ADMIN" ? `/admin/${user.id}` : "#",
@@ -135,7 +135,7 @@ const NavBar: React.FC<Child> = ({ children, isOpen }) => {
               <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="flex h-16 items-center justify-between">
                   <div className="flex items-center">
-                    <a href='/'>
+                    <a href='/product'>
                       <div
                         className="flex-shrink-0 cursor-pointer"
                       >

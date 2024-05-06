@@ -135,7 +135,7 @@ const SignUp: React.FC = () => {
       ) : (
          <div className="shadow-lg">
         <div className="sm:mx-auto sm:w-1/2 px-4 sm:max-w-sm">
-          <Link to="/">
+          <Link to="/product">
             <div
               style={{
                 width: "40px",

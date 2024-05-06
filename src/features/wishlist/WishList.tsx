@@ -120,7 +120,7 @@ const WishList = () => {
            
             <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
               <p>
-                <Link to="/">
+                <Link to="/product">
                   <button
                     type="button"
                     className="flex cursor-pointer rounded-full bg-red-800 dark:bg-blue-800 text-white dark:text-white antialiased font-bold hover:opacity-50 hover:text-white dark:hover:bg-red-700 px-4 py-2"
