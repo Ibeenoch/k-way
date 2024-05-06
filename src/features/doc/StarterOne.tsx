@@ -2,22 +2,26 @@ import './Starter.css'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch } from '../../app/hooks'
 import { getAllproduct } from '../ProductList/ProductSlice'
+import { useEffect } from 'react'
 
 const StarterOne = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch()
 
 const handleNextPage = () => {
+  navigate('/startertwo');
     dispatch(getAllproduct()).then(() => {
-            navigate('/startertwo')
     })
 }
 const handlePrevPage = () => {
+  navigate('/');
     dispatch(getAllproduct()).then(() => {
-            navigate('/')
     })
 }
 
+useEffect(() => {
+  dispatch(getAllproduct())
+}, [])
 
   return (
     <div className="h-full">

@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 import './Starter.css'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch } from '../../app/hooks'
@@ -8,11 +8,15 @@ import toast from 'react-hot-toast'
 const Starter = () => {
     const [news, setNews] = useState<string>('')
     const navigate = useNavigate();
-    const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        dispatch(getAllproduct())
+    }, [])
 
 const handleNextPage = () => {
+    navigate('/starterone')
     dispatch(getAllproduct()).then(() => {
-            navigate('/starterone')
     })
 }
 

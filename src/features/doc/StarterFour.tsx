@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './Starter.css'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch } from '../../app/hooks'
@@ -10,14 +10,18 @@ const StarterFour = () => {
     const dispatch = useAppDispatch()
 
 const handleNextPage = () => {
+  navigate('/product');
     dispatch(getAllproduct()).then(() => {
-            navigate('/product')
     })
 }
 
+useEffect(() => {
+  dispatch(getAllproduct())
+}, [])
+
 const handlePrevPage = () => {
+  navigate('/starterthree');
     dispatch(getAllproduct()).then(() => {
-            navigate('/starterthree')
     })
 }
 
@@ -103,7 +107,7 @@ We hope this guide helps you make the most of your time on our website. Happy sh
             className="bg-gradient-to-r from-purple-800 to-green-500 hover:from-pink-500 hover:to-green-500 text-white font-bold py-2 px-4 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
             type="button"
         >
-            Continue 
+            Start 
         </button>
         </div>
       </div>

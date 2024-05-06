@@ -2,20 +2,25 @@ import './Starter.css'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch } from '../../app/hooks'
 import { getAllproduct } from '../ProductList/ProductSlice'
+import { useEffect } from 'react'
 
 const StarterTwo = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch()
 
 const handleNextPage = () => {
+  navigate('/starterthree');
     dispatch(getAllproduct()).then(() => {
-            navigate('/starterthree')
     })
 }
 
+useEffect(() => {
+  dispatch(getAllproduct())
+}, [])
+
 const handlePrevPage = () => {
+  navigate('/starterone');
   dispatch(getAllproduct()).then(() => {
-          navigate('/starterone')
   })
 }
 

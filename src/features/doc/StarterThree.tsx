@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './Starter.css'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch } from '../../app/hooks'
@@ -11,14 +11,18 @@ const StarterThree = () => {
     const dispatch = useAppDispatch()
 
 const handleNextPage = () => {
+  navigate('/starterfour');
     dispatch(getAllproduct()).then(() => {
-            navigate('/starterfour')
     })
 }
 
+useEffect(() => {
+  dispatch(getAllproduct())
+}, [])
+
 const handlePrevPage = () => {
+  navigate('/startertwo');
     dispatch(getAllproduct()).then(() => {
-            navigate('/startertwo')
     })
 }
 
