@@ -76,7 +76,7 @@ const SignUp: React.FC = () => {
            duration: 1500, 
          });
         
-          navigate("/");
+          navigate("/product");
         } else if (
           res &&
           res.payload &&

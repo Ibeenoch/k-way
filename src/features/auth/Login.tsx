@@ -64,7 +64,7 @@ const Login = () => {
            duration: 1500,
          });
           setIsClicked(false);
-          navigate(`/`);
+          navigate(`/product`);
         } else if (
           res &&
           res.payload &&
@@ -84,7 +84,7 @@ const Login = () => {
              duration: 1500, 
            });
             setIsClicked(false);
-            navigate("/");
+            navigate("/product");
           }
         } else if (
           res &&

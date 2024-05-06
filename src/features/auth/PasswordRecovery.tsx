@@ -15,7 +15,7 @@ const PasswordRecovery = () => {
     const data = { email };
     dispatch(emailLink(data)).then((res: any) => {
       if (res && res.payload && res.payload.message) {
-        toast("Password Recovery Mail Sent",
+        toast("Password Recovery email sent, kindly check your email to change your password",
         {
          position: "top-center",
          duration: 6000, 
