@@ -6,23 +6,18 @@ import { getAllproduct } from '../ProductList/ProductSlice'
 import toast from 'react-hot-toast'
 
 const StarterFour = () => {
-    const [news, setNews] = useState<string>('')
     const navigate = useNavigate();
     const dispatch = useAppDispatch()
 
 const handleNextPage = () => {
-    dispatch(getAllproduct()).then((res: any) => {
-        if(res){
+    dispatch(getAllproduct()).then(() => {
             navigate('/product')
-        }
     })
 }
 
 const handlePrevPage = () => {
-    dispatch(getAllproduct()).then((res: any) => {
-        if(res){
+    dispatch(getAllproduct()).then(() => {
             navigate('/starterthree')
-        }
     })
 }
 
@@ -108,7 +103,7 @@ We hope this guide helps you make the most of your time on our website. Happy sh
             className="bg-gradient-to-r from-purple-800 to-green-500 hover:from-pink-500 hover:to-green-500 text-white font-bold py-2 px-4 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out"
             type="button"
         >
-            Continue
+            Continue 
         </button>
         </div>
       </div>

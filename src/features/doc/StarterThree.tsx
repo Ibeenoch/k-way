@@ -11,18 +11,14 @@ const StarterThree = () => {
     const dispatch = useAppDispatch()
 
 const handleNextPage = () => {
-    dispatch(getAllproduct()).then((res: any) => {
-        if(res){
+    dispatch(getAllproduct()).then(() => {
             navigate('/starterfour')
-        }
     })
 }
 
 const handlePrevPage = () => {
-    dispatch(getAllproduct()).then((res: any) => {
-        if(res){
+    dispatch(getAllproduct()).then(() => {
             navigate('/startertwo')
-        }
     })
 }
 

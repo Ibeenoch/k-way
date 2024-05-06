@@ -1,28 +1,21 @@
-import { useState } from 'react'
 import './Starter.css'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch } from '../../app/hooks'
 import { getAllproduct } from '../ProductList/ProductSlice'
-import toast from 'react-hot-toast'
 
 const StarterTwo = () => {
-    const [news, setNews] = useState<string>('')
     const navigate = useNavigate();
     const dispatch = useAppDispatch()
 
 const handleNextPage = () => {
-    dispatch(getAllproduct()).then((res: any) => {
-        if(res){
+    dispatch(getAllproduct()).then(() => {
             navigate('/starterthree')
-        }
     })
 }
 
 const handlePrevPage = () => {
-  dispatch(getAllproduct()).then((res: any) => {
-      if(res){
+  dispatch(getAllproduct()).then(() => {
           navigate('/starterone')
-      }
   })
 }
 

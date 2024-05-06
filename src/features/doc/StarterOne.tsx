@@ -1,27 +1,20 @@
-import { useState } from 'react'
 import './Starter.css'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch } from '../../app/hooks'
 import { getAllproduct } from '../ProductList/ProductSlice'
-import toast from 'react-hot-toast'
 
 const StarterOne = () => {
-    const [news, setNews] = useState<string>('')
     const navigate = useNavigate();
     const dispatch = useAppDispatch()
 
 const handleNextPage = () => {
-    dispatch(getAllproduct()).then((res: any) => {
-        if(res){
+    dispatch(getAllproduct()).then(() => {
             navigate('/startertwo')
-        }
     })
 }
 const handlePrevPage = () => {
-    dispatch(getAllproduct()).then((res: any) => {
-        if(res){
+    dispatch(getAllproduct()).then(() => {
             navigate('/')
-        }
     })
 }
 
@@ -102,7 +95,6 @@ const handlePrevPage = () => {
           </div>
         </form>
       <div className='flex justify-between p-2'>
-
       
         <button
         onClick={handlePrevPage}

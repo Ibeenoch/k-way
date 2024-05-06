@@ -11,10 +11,8 @@ const Starter = () => {
     const dispatch = useAppDispatch()
 
 const handleNextPage = () => {
-    dispatch(getAllproduct()).then((res: any) => {
-        if(res){
+    dispatch(getAllproduct()).then(() => {
             navigate('/starterone')
-        }
     })
 }
 
