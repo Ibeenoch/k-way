@@ -14,7 +14,7 @@ const [count, setCount] = useState<number>(45)
   console.log(count)
   return (
     <div className="h-full w-full" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100vh', opacity: 0.3}}>
-  { count !== 0 ? (
+  { count === 0 ? (
     <>
     <p style={{ color: 'black', textAlign: 'center'}}> <strong>Server taking too long to response</strong> </p> 
     <p className="flex items-center" style={{ color: 'black' }}>
