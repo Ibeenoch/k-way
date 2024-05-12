@@ -24,7 +24,7 @@ useEffect(() => {
 }, [])
 
   return (
-    <div className="h-full">
+    <div className="h-full mx-auto w-full">
     {/*Nav*/}
     <div className="w-full container mx-auto p-4">
       <div className="w-full flex items-center justify-between">
@@ -98,7 +98,7 @@ useEffect(() => {
          
           </div>
         </form>
-      <div className='flex justify-between p-2'>
+      <div className='flex justify-between p-2 w-full'>
       
         <button
         onClick={handlePrevPage}

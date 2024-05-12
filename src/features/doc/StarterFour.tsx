@@ -92,7 +92,7 @@ We hope this guide helps you make the most of your time on our website. Happy sh
          
           </div>
         </form>
-        <div className='flex justify-between p-2'>
+        <div className='flex justify-between p-2 w-full'>
 
         <button
         onClick={handlePrevPage}

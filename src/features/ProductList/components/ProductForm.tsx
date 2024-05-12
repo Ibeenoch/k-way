@@ -150,7 +150,7 @@ const ProductForm = () => {
           dispatch(getAllproduct()).then((res: any) => {
             if(res && res.payload !== undefined){
                setIsPosting(false);
-            navigate("/");
+            navigate("/product");
             }
            
           });
@@ -229,7 +229,7 @@ const ProductForm = () => {
            });
             dispatch(getAllproduct()).then((res: any) => {
              if(res && res.payload !== undefined){
-              navigate("/");
+              navigate("/product");
              }else{
               toast.error("Poor Network Connection please try again later",
               {
