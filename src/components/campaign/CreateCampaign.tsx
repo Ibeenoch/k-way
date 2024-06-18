@@ -2,13 +2,13 @@ import React, { FormEvent, MutableRefObject, useEffect, useRef, useState } from 
 import Header from '../header/Header'
 import Switch from 'react-switch'
 import axios from 'axios';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import moment from 'moment';
 import { Keyword } from './KeyWords';
 
 const CreateCampaign = () => {
     const { id } = useParams();
-   
+   const navigate = useNavigate();
     const [isCreatedCampaign, setIsCreatedCampaign] = useState(false);
     const [ isErr, setIsErr ] = useState(false);
     const [campaignName, setCampaignName] = useState<any>('');
@@ -188,6 +188,12 @@ const CreateCampaign = () => {
         };
 
     }
+
+    const goBack = () => {
+        navigate(-1);
+    };
+
+
   return (
     <div>
     <div className='pb-16 pl-16 pr-16'>
@@ -202,7 +208,7 @@ const CreateCampaign = () => {
             htmlFor="campName"
             className="block text-xs  leading-6 text-gray-600 flex"
           >
-           <p>Campaign Name </p> <p className='text-red-600'>*</p>
+           <p>Campaign Name </p> <p className='text-red-600'> &nbsp;*</p>
           </label>
           <div className="mt-2">
             <input
@@ -221,7 +227,7 @@ const CreateCampaign = () => {
         <div>
           <label
             htmlFor="campDesc"
-            className="block text-xs  leading-6 text-gray-600 flex"
+            className="block text-[11px]  leading-6 text-gray-500 flex"
           >
            Campaign Description
           </label>
@@ -243,7 +249,7 @@ const CreateCampaign = () => {
                   htmlFor="start"
                   className="block text-xs leading-2 flex text-gray-600"
                 >
-                  <p>  Start Date </p> <p className='text-red-600'>*</p>
+                  <p>  Start Date </p> <p className='text-red-600'>&nbsp;*</p>
 
                 </label>
                 <div className="mt-1">
@@ -296,7 +302,7 @@ const CreateCampaign = () => {
             htmlFor="keywords"
             className="block text-xs  leading-6 text-gray-600 flex"
           >
-            <p>Linked Keywords </p> <p className='text-red-600'>*</p>
+            <p>Linked Keywords </p> <p className='text-red-600'>&nbsp;*</p>
                      
           </label>
          
@@ -345,15 +351,16 @@ const CreateCampaign = () => {
 
 
         <div className='flex gap-6 pt-8'>
-        <button
-            type='button'
-            className="rounded-sm border border-[#237b7c] px-14 py-1.5 text-sm font-semibold leading-6 text-[#237b7c] shadow-sm hover:bg-[#237b7c] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-          >
-            Cancel
-          </button>
+          <button
+             onClick={goBack}
+              type='button'
+              className="rounded-sm border border-[#237b7c] px-14 py-1.5 text-sm font-semibold leading-6 text-[#237b7c] shadow-sm hover:bg-[#237b7c] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            >
+              Cancel
+            </button>
           <button
             type='submit'
-            className="rounded-sm border border-[#237b7c] text-[#237b7c] hover:text-white px-7 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-[#237b7c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            className="rounded-sm border border-[#237b7c] text-[#237b7c] hover:text-white px-7 py-1.5 text-sm font-semibold leading-6 shadow-sm hover:bg-[#237b7c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
             { id ? 'Edit Campaign' : 'Create Campaign'}
           </button>

@@ -398,14 +398,14 @@ const Campaign = () => {
               <button
                 onClick={confirmDeleteCampaign}
                 type='button'
-                className="rounded-md bg-red-800 px-7 py-1.5 text-xs font-semibold leading-6 text-white shadow-sm hover:bg-red-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                className="rounded-md text-[#237b7c] border border-[#237b7c] hover:border-[#990100] hover:bg-[#990100] px-12 py-1.5 text-xs font-semibold leading-6 hover:text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
               >
                 Stop Campaign
               </button>
               <a href={`/edit/campaign/${id}`}>
               <button
                 type='button'
-                className="rounded-md border border-[#237b7c] hover:bg-[#237b7c] hover:text-white px-7 py-1.5 text-xs font-semibold leading-6 text-[#237b7c] shadow-sm hover:bg-red-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                className="rounded-md border border-[#237b7c] hover:bg-[#237b7c] hover:text-white px-12 py-1.5 text-xs font-semibold leading-6 text-[#237b7c] shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
               >
                 Edit Information
               </button>

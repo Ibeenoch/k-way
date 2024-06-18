@@ -10,120 +10,116 @@ const OverView = () => {
         <div className='flex gap-6'>
         <div className='flex items-center border border-gray-200 rounded-md px-3'>
             {/* date icon  */}
-            <svg 
-            className='w-4 h-6'
+            <svg
+            className='w-5 h-5'
             viewBox="0 0 210 297"
             version="1.1"
             id="svg1"
             xmlns="http://www.w3.org/2000/svg"
             >
-                <defs id="defs1" />
-                <g id="layer1">
-                    <g
-                    id="g10"
-                    transform="matrix(1.3775293,0,0,1.2835694,-20.569711,12.607366)"
-                    >
-                    <path
-                        style={{
-                        fill: "none",
-                        fillRule: "evenodd",
-                        stroke: "#237b7c",
-                        strokeWidth: "10",
-                        strokeLinecap: "round",
-                        strokeLinejoin: "round",
-                        strokeDasharray: "none",
-                        strokeOpacity: 1
-                        }}
-                        d="M 19.8389,77.605106 163.37917,77.02161"
-                        id="path2"
-                    />
-                    <path
-                        id="rect1"
-                        style={{
-                        fill: "none",
-                        fillRule: "evenodd",
-                        stroke: "#237b7c",
-                        strokeWidth: 14,
-                        strokeLinecap: "round",
-                        strokeLinejoin: "round"
-                        }}
-                        d="M 28.591355,44.345776 H 153.45972 c 5.49537,0 9.91945,4.424074 9.91945,9.919449 V 170.38114 c 0,5.49538 -4.42408,9.91945 -9.91945,9.91945 H 28.591355 c -5.495375,0 -9.919449,-4.42407 -9.919449,-9.91945 V 54.265225 c 0,-5.495375 4.424074,-9.919449 9.919449,-9.919449 z"
-                    />
-                    <path
-                        style={{
-                        fill: "none",
-                        fillRule: "evenodd",
-                        stroke: "#237b7c",
-                        strokeWidth: "10",
-                        strokeLinecap: "round",
-                        strokeLinejoin: "round",
-                        strokeDasharray: "none",
-                        strokeOpacity: 1
-                        }}
-                        d="M 45.51277,28.591356 V 44.345775"
-                        id="path1"
-                    />
-                    <path
-                        style={{
-                        fill: "none",
-                        fillRule: "evenodd",
-                        stroke: "#237b7c",
-                        strokeWidth: "10",
-                        strokeLinecap: "round",
-                        strokeLinejoin: "round",
-                        strokeDasharray: "none",
-                        strokeOpacity: 1
-                        }}
-                        d="M 136.53831,27.424362 V 43.178781"
-                        id="path4"
-                    />
-                    <path
-                        style={{
-                        fill: "#237b7c",
-                        fillOpacity: 1,
-                        fillRule: "evenodd",
-                        stroke: "#237b7c",
-                        strokeWidth: "27",
-                        strokeLinecap: "round",
-                        strokeLinejoin: "round",
-                        strokeDasharray: "none",
-                        strokeOpacity: 1
-                        }}
-                        d="m 47.444976,112.22075 0.01609,2.93279"
-                        id="path8"
-                    />
-                    <path
-                        style={{
-                        fill: "#237b7c",
-                        fillOpacity: 1,
-                        fillRule: "evenodd",
-                        stroke: "#237b7c",
-                        strokeWidth: "27",
-                        strokeLinecap: "round",
-                        strokeLinejoin: "round",
-                        strokeDasharray: "none",
-                        strokeOpacity: 1
-                        }}
-                        d="m 84.567311,112.22075 0.01609,2.93279"
-                        id="path9"
-                    />
-                    <path
-                        style={{
-                        fill: "#237b7c",
-                        fillOpacity: 1,
-                        fillRule: "evenodd",
-                        stroke: "#237b7c",
-                        strokeWidth: "27",
-                        strokeLinecap: "round",
-                        strokeLinejoin: "round",
-                        strokeDasharray: "none",
-                        strokeOpacity: 1
-                        }}
-                        d="m 120.07633,112.22075 0.0161,2.93279"
-                        id="path10"
-                    />
-                    </g>
-                </g>
+            <defs id="defs1" />
+            <g id="g1">
+                <path
+                style={{
+                    fill: "none",
+                    fillRule: "evenodd",
+                    stroke: "#237b7c",
+                    strokeWidth: 18,
+                    strokeLinecap: "round",
+                    strokeLinejoin: "round",
+                    strokeDasharray: "none",
+                    strokeOpacity: 1
+                }}
+                d="M 6.1345387,113.96941 203.86546,113.22045"
+                id="path2"
+                />
+                <path
+                id="rect1"
+                style={{
+                    fill: "none",
+                    fillRule: "evenodd",
+                    stroke: "#237b7c",
+                    strokeWidth: 18,
+                    strokeLinecap: "round",
+                    strokeLinejoin: "round",
+                    strokeDasharray: "none"
+                }}
+                d="M 18.815718,69.528247 H 190.82555 c 7.57003,0 13.66433,5.678606 13.66433,12.732301 V 231.30338 c 0,7.05371 -6.0943,12.73231 -13.66433,12.73231 H 18.815718 c -7.57004,0 -13.6643314,-5.6786 -13.6643314,-12.73231 V 82.260548 c 0,-7.053695 6.0942914,-12.732301 13.6643314,-12.732301 z"
+                />
+                <path
+                style={{
+                    fill: "none",
+                    fillRule: "evenodd",
+                    stroke: "#237b7c",
+                    strokeWidth: 18,
+                    strokeLinecap: "round",
+                    strokeLinejoin: "round",
+                    strokeDasharray: "none",
+                    strokeOpacity: 1
+                }}
+                d="m 42.125463,49.306356 v 20.22189"
+                id="path1"
+                />
+                <path
+                style={{
+                    fill: "none",
+                    fillRule: "evenodd",
+                    stroke: "#237b7c",
+                    strokeWidth: 18,
+                    strokeLinecap: "round",
+                    strokeLinejoin: "round",
+                    strokeDasharray: "none",
+                    strokeOpacity: 1
+                }}
+                d="m 167.51581,47.808438 v 20.22189"
+                id="path4"
+                />
+                <path
+                style={{
+                    fill: "#237b7c",
+                    fillOpacity: 1,
+                    fillRule: "evenodd",
+                    stroke: "#237b7c",
+                    strokeWidth: 25,
+                    strokeLinecap: "round",
+                    strokeLinejoin: "round",
+                    strokeDasharray: "none",
+                    strokeOpacity: 1
+                }}
+                d="m 52.535483,161.16161 0.01514,2.57274"
+                id="path8"
+                />
+                <path
+                style={{
+                    fill: "#237b7c",
+                    fillOpacity: 1,
+                    fillRule: "evenodd",
+                    stroke: "#237b7c",
+                    strokeWidth: 25,
+                    strokeLinecap: "round",
+                    strokeLinejoin: "round",
+                    strokeDasharray: "none",
+                    strokeOpacity: 1
+                }}
+                d="m 104.81308,161.16161 0.0151,2.57274"
+                id="path9"
+                />
+                <path
+                style={{
+                    fill: "#237b7c",
+                    fillOpacity: 1,
+                    fillRule: "evenodd",
+                    stroke: "#237b7c",
+                    strokeWidth: 25,
+                    strokeLinecap: "round",
+                    strokeLinejoin: "round",
+                    strokeDasharray: "none",
+                    strokeOpacity: 1
+                }}
+                d="m 157.09064,161.16161 0.0152,2.57274"
+                id="path10"
+                />
+            </g>
             </svg>
 
             <div className='text-black text-[10px] py-1 px-2'>Date Range</div>
@@ -131,49 +127,35 @@ const OverView = () => {
             <p className='text-black text-[10px] py-1 px-3'>Nov 1, 2022 - Nov 7, 2022.</p>
             {/* arrow down icon  */}
             <svg
-                className='w-2 h-2 stroke-2'
-                xmlns="http://www.w3.org/2000/svg"
-                version="1.1"
-                viewBox="0 0 256 256"
-                >
-                <defs></defs>
-                <g
-                style={{
-                stroke: "none",
-                strokeDasharray: "none",
-                strokeLinecap: "butt",
-                strokeLinejoin: "miter",
-                strokeMiterlimit: 10,
-                fill: "none",
-                fillRule: "nonzero",
-                opacity: 1
-                }}
-                transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)"
+            className='w-3 h-3'
+            version="1.1"
+            viewBox="0 0 256 256"
+            xmlSpace="preserve"
+            id="svg1"
+            xmlns="http://www.w3.org/2000/svg"
             >
-                <path
-                d="M 90 24.25 c 0 -0.896 -0.342 -1.792 -1.025 -2.475 c -1.366 -1.367 -3.583 -1.367 -4.949 0 L 45 60.8 L 5.975 21.775 c -1.367 -1.367 -3.583 -1.367 -4.95 0 c -1.366 1.367 -1.366 3.583 0 4.95 l 41.5 41.5 c 1.366 1.367 3.583 1.367 4.949 0 l 41.5 -41.5 C 89.658 26.042 90 25.146 90 24.25 z"
+            <defs id="defs1"></defs>
+            <path
+                id="rect1"
                 style={{
-                    stroke: "none",
-                    strokeDasharray: "none",
-                    strokeLinecap: "butt",
-                    strokeLinejoin: "miter",
-                    strokeMiterlimit: 10,
-                    fill: "#237b7c",
-                    fillRule: "nonzero",
-                    opacity: 1
+                fill: "none",
+                stroke: "#237b7c",
+                strokeWidth: "46.4278",
+                strokeLinecap: "round",
+                strokeLinejoin: "round",
+                strokeDasharray: "none"
                 }}
-                transform=" matrix(1 0 0 1 0 0) "
-                strokeLinecap="round"
-                />
-            </g>
+                d="M 232.7861,90.531359 117.33567,194.34022 23.2139,89.663243"
+            />
             </svg>
+
         </div>
 
-        <div className='flex items-center gap-2 bg-gray-300 px-4 cursor-pointer rounded-lg'>
+        <div className='flex items-center gap-1 bg-[#f0f4f5] px-4 cursor-pointer rounded-lg'>
                 {/* upload icon  */}
-                <svg
+            <svg
                 fill="#000000"
-                className='w-4 h-4'
+                className='w-3 h-3'
                 version="1.1"
                 id="Capa_1"
                 viewBox="0 0 374.116 374.116"
@@ -181,6 +163,29 @@ const OverView = () => {
                 xmlns="http://www.w3.org/2000/svg"
                 >
                 <defs id="defs2">
+                    <marker
+                    style={{ overflow: "visible" }}
+                    id="marker5"
+                    refX={0}
+                    refY={0}
+                    orient="auto-start-reverse"
+                    markerWidth={1}
+                    markerHeight={1}
+                    viewBox="0 0 1 1"
+                    preserveAspectRatio="xMidYMid"
+                    >
+                    <path
+                        style={{
+                        fill: "none",
+                        stroke: "context-stroke",
+                        strokeWidth: 1,
+                        strokeLinecap: "round"
+                        }}
+                        d="M 3,-3 0,0 3,3"
+                        transform="rotate(180,0.125,0)"
+                        id="path5"
+                    />
+                    </marker>
                     <marker
                     style={{ overflow: "visible" }}
                     id="ArrowWideRounded"
@@ -205,45 +210,46 @@ const OverView = () => {
                     />
                     </marker>
                 </defs>
-                <g id="g2" transform="matrix(0.78382295,0,0,0.87622748,0.01253827,46.305155)">
+                <g id="g5">
                     <path
                     id="rect2"
                     style={{
                         fill: "none",
                         fillRule: "evenodd",
                         stroke: "#237b7c",
-                        strokeWidth: "22.5714",
+                        strokeWidth: "32.7351",
                         strokeLinecap: "round",
                         strokeLinejoin: "round",
                         strokeDasharray: "none"
                     }}
-                    d="M 409.14241,237.54377 V 342.59015 H 53.451349 V 237.54377"
+                    d="m 321.44275,262.53255 v 92.04453 H 42.643934 v -92.04453"
                     />
                     <path
                     style={{
                         fill: "#237b7c",
                         fillRule: "evenodd",
                         stroke: "#237b7c",
-                        strokeWidth: "25.4446",
+                        strokeWidth: "35.9089",
                         strokeLinecap: "round",
                         strokeLinejoin: "round",
                         strokeDasharray: "none",
-                        markerStart: "url(#ArrowWideRounded)"
+                        markerStart: "url(#marker5)"
                     }}
-                    d="M 231.29688,32.861743 V 266.18111"
+                    d="M 182.04334,38.382033 V 284.3876"
                     id="path2"
                     />
                 </g>
-                </svg>
+            </svg>
 
-                <p className='text-[10px] text-[#237b7c] font-semibold'>Export</p>
+
+            <p className='text-xs text-[#237b7c] px-2 font-semibold'>Export</p>
                 
-                
-            </div>
+            
+        </div>
         </div>
       </div>
         {/* body  */}
-      <div className='flex flex-col gap-4 justify-center items-center mt-5'>
+      <div className='flex flex-col gap-4 justify-center items-center'>
         {/* not found icon  */}
       <svg
             version="1.1"
@@ -375,7 +381,7 @@ const OverView = () => {
             />
         </svg>
 
-            <p className='text-black font-bold text-sm py-2'>No activity yet, Create a new campaign to get started</p>
+            <p className='text-black font-bold text-xs py-1'>No activity yet, Create a new campaign to get started</p>
             <Link to="/create/campaign">
             <div className='bg-[#237b7c] flex gap-1 rounded-md px-6 py-2 cursor-pointer items-center'>
                     {/* add icon  */}
@@ -383,7 +389,7 @@ const OverView = () => {
                     <metadata> Svg Vector Icons : http://www.onlinewebfonts.com/icon </metadata>
                     <g><g><g><path fill="white" stroke='white' d="M124.1,10.8c-1,0.6-2.6,1.9-3.4,3l-1.5,2L119,67.4l-0.1,51.6H68c-56.6,0-53.2-0.2-56.4,3.9c-2.2,2.9-2.2,7.6,0,10.5c3.1,4.1-0.3,3.9,56.4,3.9h50.9V188c0,56.6-0.2,53.2,3.9,56.4c2.9,2.2,7.6,2.2,10.5,0c4.1-3.1,3.9,0.3,3.9-56.4v-50.9H188c56.6,0,53.2,0.2,56.4-3.9c2.2-2.9,2.2-7.6,0-10.5c-3.1-4.1,0.3-3.9-56.4-3.9h-50.9V68c0-56.5,0.2-53.2-3.8-56.3C130.8,9.9,126.8,9.4,124.1,10.8z"/></g></g></g>
                     </svg>
-                    <p className='text-white text-xs'>New Campaign</p>
+                    <p className='text-white text-xs pl-1'>New Campaign</p>
             </div> 
             </Link>
 
