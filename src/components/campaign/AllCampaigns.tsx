@@ -134,7 +134,7 @@ return (
     <div>
     <div className='pb-16 pl-16 pr-16'>
 
-  <div className='pt-6 pb-1 max-w-2xl'>
+  <div className='pt-6 pb-1'>
     <h2 className='text-[#237b7c] text-md font-bold'>All Campaigns</h2>
   </div>
 
@@ -143,9 +143,9 @@ return (
     <div className='py-1 px-2 border border-[#237b7c] rounded-md cursor-pointer flex gap-[1px]'> <p className='text-[#237b7c] text-xs '>Inactive </p> <p className='text-[#237b7c] text-xs '> &#40;90&#41; </p></div>
     <div className='py-1 px-2 border border-[#237b7c] rounded-md cursor-pointer flex gap-[1px]'> <p className='text-[#237b7c] text-xs '>Active </p> <p className='text-[#237b7c] text-xs '> &#40;90&#41; </p></div>
    
-    <div className='flex gap-3 items-center ml-11 pl-8'>
+    <div className='flex gap-3 items-center  pl-8'>
   <div className='relative cursor-pointer'>
-        <input type="text" className='text-[10px] w-[200px] px-1 rounded-md border border-gray-300 h-7' placeholder='Search...' name="" id="" />
+        <input type="text" className='text-[10px] w-[225px] px-1 rounded-md border border-gray-300 h-7' placeholder='Search...' name="" id="" />
         <div className='absolute top-1/2 right-3 transform -translate-y-1/2'>
         <svg className='w-3 h-3' version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 256 256" enable-background="new 0 0 256 256" >
         <g><g><g><path fill="#666666" d="M96.1,10.5c-18.4,1.9-36,9.2-50.7,21.1c-4.1,3.3-12.3,11.7-15.2,15.5c-3.9,5-7.8,11.4-10.4,16.6C3.7,96.9,7.6,135,30.2,164.6c2.9,3.9,11.2,12.3,15.2,15.5c34.5,27.8,82.4,28.8,117.6,2.4l5.2-3.9l33.4,33.4c36.3,36.2,34.3,34.5,38.6,33.7c2.2-0.4,5.1-3.4,5.5-5.5c0.8-4.2,2.4-2.3-33.7-38.6l-33.4-33.4l3.9-5.2c26.4-35.2,25.4-83.2-2.4-117.6c-3.3-4.1-11.7-12.3-15.5-15.2C144.7,15,120.4,8,96.1,10.5z M116,25.4c9.6,1.2,17.5,3.6,25.9,7.9c40,20,56.4,68.8,36.5,108.5c-14,27.7-42,45.1-72.6,45.1c-27,0-52.4-13.7-67.6-36.5C18.7,121.3,20.7,82,42.9,54.7c2.7-3.3,9.4-9.9,12.7-12.5C72.2,28.9,95,22.6,116,25.4z"/></g></g></g>
@@ -154,7 +154,7 @@ return (
     </div>
 
     <div className='relative cursor-pointer'>
-        <input type="text" className='text-[10px] w-[200px] px-1 rounded-md border border-gray-300 h-7' placeholder='Filter By Date' name="" id="" />
+        <input type="text" className='text-[10px] w-[225px] px-1 rounded-md border border-gray-300 h-7' placeholder='Filter By Date' name="" id="" />
         <div className='absolute top-1/2 right-3 transform -translate-y-1/2'>
         {/* arrow down icon  */}
         <svg
@@ -203,24 +203,24 @@ return (
 
   </div>
 
-  <table  className='w-[60vw]'>
+  <table  className=''>
       <thead className='bg-[#f0f4f5] rounded-lg'>
         <tr className='w-full text-[#455555]'>
-          <th className='font-bold text-xs pl-2 pr-6 py-2 rounded-tl-md rounded-bl-md'>S/N</th>
-          <th className='font-bold text-xs pl-2 pr-6 py-2'>Campaign Name</th>
-          <th className='font-bold text-xs pl-2 pr-6 py-2'>Start Date</th>
-          <th className='font-bold text-xs pl-2 pr-6 py-2'>Status</th>
-          <th className='font-bold text-xs pl-2 pr-6 py-2 rounded-tr-md rounded-br-md'>Actions</th>
+          <th className='font-bold text-xs w-[150px] text-left p-2 rounded-tl-md rounded-bl-md'>S/N</th>
+          <th className='font-bold text-xs w-[150px] text-left p-2'>Campaign Name</th>
+          <th className='font-bold text-xs w-[150px] text-left p-2'>Start Date</th>
+          <th className='font-bold text-xs w-[150px] text-left p-2'>Status</th>
+          <th className='font-bold text-xs w-[150px] text-left p-2 rounded-tr-md rounded-br-md'>Actions</th>
         </tr>
       </thead>
       <tbody>
         {fetchedCampaign.map((row: any, index: any) => (
           <tr key={index}>
-            <td className='text-xs text-[#666666] pt-2 pb-2 pl-6 border-b border-gray-200'>{row.id}</td>
-            <td className='text-xs text-[#666666]  pt-2 pb-2 pl-11 border-b border-gray-200'>{row.campaignName}</td>
-            <td className='text-xs text-[#666666]  pt-2 pb-2 pl-8 border-b border-gray-200'>{moment(row.startDate).format('DD/MM/YYYY')}</td>
-            <td className={` ${row.campaignStatus === 'Inactive' ? 'text-[#990100]' : 'text-[#009a18]' } text-xs  pt-2 pb-2 pl-8 border-b border-gray-200`}> {row && typeof row.campaignStatus === 'string' && row.campaignStatus.toUpperCase()} </td>
-            <td className='text-xs text-[#666666]  pt-2 pb-2 pl-14 border-b border-gray-200'>
+            <td className='text-xs text-[#666666] w-[150px] text-left border-b border-gray-200 p-2'>{row.id}</td>
+            <td className='text-xs text-[#666666]  w-[150px] text-left border-b border-gray-200 p-2'>{row.campaignName}</td>
+            <td className='text-xs text-[#666666]  w-[150px] text-left border-b border-gray-200 p-2'>{moment(row.startDate).format('DD/MM/YYYY')}</td>
+            <td className={` ${row.campaignStatus === 'Inactive' ? 'text-[#990100]' : 'text-[#009a18]' } text-xs w-[150px] text-left p-2 border-b border-gray-200`}> {row && typeof row.campaignStatus === 'string' && row.campaignStatus.toUpperCase()} </td>
+            <td className='text-xs text-[#666666]  w-[150px] text-left border-b border-gray-200 p-2'>
                 <div className='flex items-center gap-3'>
 
                 <div onClick={() => handleViewCampaign(row.id)}>
