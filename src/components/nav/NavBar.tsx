@@ -184,10 +184,55 @@ const NavBar = () => {
                 <a href='/create/campaign'>
                 <div onClick={handleNoneActive} className='bg-[#237b7c] flex gap-1 rounded-md px-6 py-2 cursor-pointer items-center'>
                     {/* add icon  */}
-                    <svg className='w-2 h-2 fill-white stroke-2' version="1.1" xmlns="http://www.w3.org/2000/svg"  x="0px" y="0px" viewBox="0 0 256 256" enable-background="new 0 0 256 256" >
-                    <metadata> Svg Vector Icons : http://www.onlinewebfonts.com/icon </metadata>
-                    <g><g><g><path fill="white" stroke='white' d="M124.1,10.8c-1,0.6-2.6,1.9-3.4,3l-1.5,2L119,67.4l-0.1,51.6H68c-56.6,0-53.2-0.2-56.4,3.9c-2.2,2.9-2.2,7.6,0,10.5c3.1,4.1-0.3,3.9,56.4,3.9h50.9V188c0,56.6-0.2,53.2,3.9,56.4c2.9,2.2,7.6,2.2,10.5,0c4.1-3.1,3.9,0.3,3.9-56.4v-50.9H188c56.6,0,53.2,0.2,56.4-3.9c2.2-2.9,2.2-7.6,0-10.5c-3.1-4.1,0.3-3.9-56.4-3.9h-50.9V68c0-56.5,0.2-53.2-3.8-56.3C130.8,9.9,126.8,9.4,124.1,10.8z"/></g></g></g>
+                    <svg
+                    className='w-3 h-3'
+                    viewBox="0 0 210 297"
+                    version="1.1"
+                    id="svg1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    >
+                    <defs id="defs1" />
+                    <g id="layer1">
+                        <g id="g2" transform="matrix(1.0501718,0,0,1.0598286,-45.42073,-7.2288219)">
+                        <rect
+                            style={{
+                            fill: "#ffffff",
+                            fillOpacity: 1,
+                            stroke: "#ffffff",
+                            strokeWidth: 15,
+                            strokeLinecap: "butt",
+                            strokeLinejoin: "miter",
+                            strokeDasharray: "none",
+                            strokeOpacity: 1
+                            }}
+                            id="rect1"
+                            width="19.640734"
+                            height="181.26942"
+                            x="133.71991"
+                            y="49.696335"
+                        />
+                        <rect
+                            style={{
+                            fill: "#ffffff",
+                            fillOpacity: 1,
+                            stroke: "#ffffff",
+                            strokeWidth: 15,
+                            strokeLinecap: "butt",
+                            strokeLinejoin: "miter",
+                            strokeDasharray: "none",
+                            strokeOpacity: 1
+                            }}
+                            id="rect2"
+                            width="19.640734"
+                            height="181.26942"
+                            x="-150.15141"
+                            y="-234.17499"
+                            transform="matrix(0,-1,-1,0,0,0)"
+                        />
+                        </g>
+                    </g>
                     </svg>
+
                     <p className='text-white text-xs'>New Campaign</p>
                 </div> 
                 </a>
@@ -619,7 +664,7 @@ const NavBar = () => {
             />
                 </svg>
                 </div>
-                <h2 className='text-center text-sm font-semibold bg-gradient-to-r from-[#237b7c] via-[#237b7c] to-[#38327c] font-bold text-transparent bg-clip-text'>Need help?</h2>
+                <h2 className='text-center text-sm font-semibold bg-gradient-to-r from-[#237b7c] from-30% via-[#2c5d7b] via-50%  to-[#38327c] font-bold text-transparent bg-clip-text'>Need help?</h2>
                 <p className='text-gray-500 text-[10px] text-center px-4'>we're readily available to provide help</p>
                 <div className='flex justify-center p-2'>
                 <button className='text-xs text-[#237b7c] px-4 py-1 rounded-lg border border-[#237b7c]'>Get help</button>
