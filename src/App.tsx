@@ -3,166 +3,65 @@ import * as ReactDOM from "react-dom/client";
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
-import { jwtDecode } from "jwt-decode";
-import Home from "./pages/Home";
-import LoginPage from "./pages/LoginPage";
-import CartPage from "./pages/CartPage";
-import ProductDetailPage from "./pages/ProductDetailPage";
-import CheckOutPage from "./pages/CheckOutPage";
-import ProductFormPage from "./pages/ProductFormPage";
-import Products from "./features/ProductList/components/Products";
-import RegisterPage from "./pages/RegisterPage";
-import Verification from "./features/auth/Verification";
-import PasswordRecovery from "./features/auth/PasswordRecovery";
-import ChangePassword from "./features/auth/ChangePassword";
-import ProfilePage from "./pages/ProfilePage";
-import PaymentPage from "./pages/PaymentPage";
-import SuccessOrderPage from "./pages/SuccessOrderPage";
-import ProtectedRoute from "./features/auth/ProtectedRoute";
-import AdminPanel from "./pages/AdminPanel";
-import AdminProtectedRoute from "./features/auth/AdminProtectedRoute";
-import VerifyMsgPage from "./pages/VerifyMsgPage";
-import WishListPage from "./pages/WishListPage";
-import ProductReviewPage from "./pages/ProductReviewPage";
-import ProductReviewFormPage from "./pages/ProductReviewFormPage";
-import Logout from "./features/auth/Logout";
-import PageNotFound from "./pages/PageNotFound";
-import { Toaster } from "react-hot-toast"
-import Starter from "./features/doc/Starter";
-import StarterOne from "./features/doc/StarterOne";
-import StarterTwo from "./features/doc/StarterTwo";
-import StarterThree from "./features/doc/StarterThree";
-import StarterFour from "./features/doc/StarterFour";
-
+import CreateCampaign from "./components/campaign/CreateCampaign";
+import NavBar from "./components/nav/NavBar";
+import Campaign from "./components/campaign/Campaign";
+import Header from "./components/header/Header";
+import AllCampaigns from "./components/campaign/AllCampaigns";
+import OverView from "./components/overview/OverView";
+import Settings from "./components/setting/Settings";
+import Market from "./components/market/Market";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Starter />,
+    element: <AllCampaigns/>,
   },
   {
-    path: "/starterone",
-    element: <StarterOne />,
+    path: "/campaign/:id",
+    element: <Campaign/>,
   },
   {
-    path: "/startertwo",
-    element: <StarterTwo />,
+    path: "/create/campaign",
+    element: <CreateCampaign />,
   },
   {
-    path: "/starterthree",
-    element: <StarterThree />,
+    path: "/edit/campaign/:id",
+    element: <CreateCampaign />,
   },
   {
-    path: "/starterfour",
-    element: <StarterFour />,
+    path: "/market",
+    element: <Market />,
   },
   {
-    path: "/product",
-    element: <Home />,
+    path: "/setting",
+    element: <Settings />,
   },
   {
-    path: "/login",
-    element: <LoginPage />,
+    path: "/overview",
+    element: <OverView />,
   },
-  {
-    path: "/logout",
-    element: <Logout />,
-  },
-  {
-    path: "/register",
-    element: <RegisterPage />,
-  },
-  {
-    path: "/verify/email",
-    element: <VerifyMsgPage />,
-  },
-  {
-    path: "/verify/email/:id",
-    element: <VerifyMsgPage />,
-  },
-  {
-    path: "/password/link",
-    element: <PasswordRecovery />,
-  },
-  {
-    path: "/password/change/:id",
-    element: <ChangePassword />,
-  },
-  {
-    path: "/cart",
-    element: <CartPage />,
-  },
-  {
-    path: "/wishlist",
-    element: <WishListPage />,
-  },
-  {
-    path: "*",
-    element: <PageNotFound />,
-  },
-  {
-    path: "/product/review/:id",
-    element: <ProductReviewPage />,
-  },
-  {
-    path: "/product/review/form/:id",
-    element: <ProtectedRoute child={<ProductReviewFormPage />} />,
-  },
-  {
-    path: "/product/details/:id",
-    element: <ProductDetailPage />,
-  },
-  {
-    path: "/product/create",
-    element: <AdminProtectedRoute child={<ProductFormPage />} />,
-  },
-  {
-    path: "/product/update/:id",
-    element: <AdminProtectedRoute child={<ProductFormPage />} />,
-  },
-  {
-    path: "/products",
-    element: (
-      <Products
-        isOpen={false}
-        togglePopup={function (): void {
-          throw new Error("Function not implemented.");
-        }}
-      />
-    ),
-  },
-  {
-    path: "/checkout/:id",
-    element: <ProtectedRoute child={<CheckOutPage />} />,
-  },
-  {
-    path: "/payment/:id",
-    element: <ProtectedRoute child={<PaymentPage />} />,
-  },
-  {
-    path: "/order/success/:id",
-    element: <ProtectedRoute child={<SuccessOrderPage />} />,
-  },
-  {
-    path: "/payment",
-    element: <ProtectedRoute child={<PaymentPage />} />,
-  },
-  {
-    path: "/profile/:id",
-    element: <ProtectedRoute child={<ProfilePage />} />,
-  },
-  {
-    path: "/admin/:id",
-    element: <AdminProtectedRoute child={<AdminPanel />} />,
-  },
+ 
+ 
 ]);
 
 function App() {
   return (
     
       <div className="App">
+         <div className='grid grid-cols-1 sm:grid-cols-9 md:grid-cols-9'>
+        <div className='hidden sm:block sm:col-start-1 sm:col-end-3 md:col-start-1 md:col-end-3'>
+          <NavBar />
+        </div>
+
+      <div className='sm:col-start-3 sm:col-end-9 md:col-start-3 md:col-end-10'>
+        <Header />
         <RouterProvider router={router} />
-        <Toaster position="top-center"  />
+      </div>
+     
+    </div>
+        
+       
       </div>
   );
 }
