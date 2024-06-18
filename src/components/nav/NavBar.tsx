@@ -667,7 +667,7 @@ const NavBar = () => {
                 <h2 className='text-center text-sm font-semibold bg-gradient-to-r from-[#237b7c] from-30% via-[#2c5d7b] via-50%  to-[#38327c] font-bold text-transparent bg-clip-text'>Need help?</h2>
                 <p className='text-gray-500 text-[10px] text-center px-4'>we're readily available to provide help</p>
                 <div className='flex justify-center p-2'>
-                <button className='text-xs text-[#237b7c] px-4 py-1 rounded-lg border border-[#237b7c]'>Get help</button>
+                <button className='text-xs text-[#237b7c] px-4 py-1 rounded-lg hover:bg-[#237b7c] hover:text-white border border-[#237b7c]'>Get help</button>
                 </div>
             </div>
            </div>

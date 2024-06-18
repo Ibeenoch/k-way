@@ -129,7 +129,8 @@ useEffect(() => {
     }
 }, [isOpenModal])
 
-  return (
+
+return (
     <div>
     <div className='pb-16 pl-16 pr-16'>
 
@@ -328,7 +329,7 @@ useEffect(() => {
     <div className='flex items-center gap-3'>
         {
             <>
-            <button onClick={() => handlePageChange(currentPage - 1) }>
+            <button onClick={() => handlePageChange(currentPage <= 1 ? 1 : currentPage - 1) }>
                 {/* icon for previous page   */}
             <svg className='w-2 h-2' fill="#000000" xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd" viewBox="0 0 312 511.42"><path fill-rule="nonzero" d="M306.3 32.62 65.46 252.86 312 478.8l-29.84 32.62L0 252.83 276.46 0z"/></svg>
             </button>
@@ -345,7 +346,7 @@ useEffect(() => {
                 ))
             }
 
-            <button className='pl-8' onClick={() => handlePageChange(  currentPage > pageDiv ? pageDiv :  currentPage + 1) }>
+            <button className='pl-8' onClick={() => handlePageChange(  currentPage === pageDiv ? pageDiv  :  currentPage + 1) }>
                 <svg fill="#000000" className='w-2 h-2'  version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"  
                     viewBox="0 0 330 330" >
                 <path id="XMLID_222_" d="M250.606,154.389l-150-149.996c-5.857-5.858-15.355-5.858-21.213,0.001

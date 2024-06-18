@@ -17,7 +17,7 @@ const Header = () => {
         <div className='flex items-center gap-1'>
           <p className='text-sm font-normal'>BigTech</p>
           <svg
-            className='w-3 h-3'
+            className='w-3 h-3 cursor-pointer'
             version="1.1"
             viewBox="0 0 256 256"
             xmlSpace="preserve"
