@@ -114,7 +114,7 @@ const Campaign = () => {
         <polygon points="476.213,223.107 57.427,223.107 151.82,128.713 130.607,107.5 0,238.106 130.607,368.714 151.82,347.5 
           57.427,253.107 476.213,253.107 "/>
         </svg>
-        <p className='text-black text-xs'>Back</p>
+        <p className='text-black text-xs font-semibold'>Back</p>
       </div>
 
       <div className='flex justify-between max-w-xl'>
