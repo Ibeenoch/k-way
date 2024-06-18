@@ -48,7 +48,7 @@ const router = createBrowserRouter([
 function App() {
   return (
     
-      <div className="App">
+      <div className="App max-h-[790px]">
          <div className='grid grid-cols-1 sm:grid-cols-9 md:grid-cols-9'>
         <div className='hidden sm:block sm:col-start-1 sm:col-end-3 md:col-start-1 md:col-end-3'>
           <NavBar />

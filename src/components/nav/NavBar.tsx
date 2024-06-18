@@ -66,7 +66,7 @@ const NavBar = () => {
     }
 
   return (
-    <div className='bg-[#f0f4f5] px-4 h-full overflow-hidden'>
+    <div className='bg-[#f0f4f5] px-4 overflow-hidden'>
         
     <div className='flex items-center gap-4 pl-9'>
     {/* brand logo  */}
