@@ -202,7 +202,7 @@ useEffect(() => {
 
   </div>
 
-  <table  className='w-[65vw]'>
+  <table  className='w-[61vw]'>
       <thead className='bg-[#f0f4f5] rounded-lg'>
         <tr className='w-full text-[#455555]'>
           <th className='font-bold text-xs pl-2 pr-16 py-2 rounded-tl-md rounded-bl-md'>S/N</th>
