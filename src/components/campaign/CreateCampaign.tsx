@@ -34,6 +34,7 @@ const CreateCampaign = () => {
             const { data } = res;
             setCampaignName(data.campaignName);
             setcampaignDescription(data.campaignDescription);
+            setdailyDigest(data.dailyDigest);
             setstarted(moment(data.startDate).format("DD/MM/YYYY"));
             setended(moment(data.endDate).format("DD/MM/YYYY"));
             setlinkedKeywords(data.linkedKeywords);
