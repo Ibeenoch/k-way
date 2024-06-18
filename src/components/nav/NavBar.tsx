@@ -66,7 +66,7 @@ const NavBar = () => {
     }
 
   return (
-    <div className='bg-[#f0f4f5] px-4 h-full'>
+    <div className='bg-[#f0f4f5] px-4 h-full overflow-hidden'>
         
     <div className='flex items-center gap-4 pl-9'>
     {/* brand logo  */}
@@ -232,8 +232,11 @@ const NavBar = () => {
                         </g>
                     </g>
                     </svg>
-
-                    <p className='text-white text-xs'>New Campaign</p>
+                    <div className='flex gap-[3px]'>
+                      <p className='text-white text-xs'>New</p>
+                      <p className='text-white text-xs'>Campaign</p>  
+                    </div>
+                    
                 </div> 
                 </a>
             </div>
