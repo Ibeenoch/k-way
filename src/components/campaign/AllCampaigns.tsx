@@ -215,11 +215,11 @@ useEffect(() => {
       <tbody>
         {fetchedCampaign.map((row: any, index: any) => (
           <tr key={index}>
-            <td className='text-xs text-[#666666] pt-2 pb-2 pl-4 border-b border-gray-200'>{row.id}</td>
-            <td className='text-xs text-[#666666]  pt-2 pb-2 pl-7 border-b border-gray-200'>{row.campaignName}</td>
-            <td className='text-xs text-[#666666]  pt-2 pb-2 pl-6 border-b border-gray-200'>{moment(row.startDate).format('DD/MM/YYYY')}</td>
-            <td className={` ${row.campaignStatus === 'Inactive' ? 'text-[#990100]' : 'text-[#009a18]' } text-xs  pt-2 pb-2 pl-5 border-b border-gray-200`}> {row && typeof row.campaignStatus === 'string' && row.campaignStatus.toUpperCase()} </td>
-            <td className='text-xs text-[#666666]  pt-2 pb-2 pl-6 border-b border-gray-200'>
+            <td className='text-xs text-[#666666] pt-2 pb-2 pl-5 border-b border-gray-200'>{row.id}</td>
+            <td className='text-xs text-[#666666]  pt-2 pb-2 pl-8 border-b border-gray-200'>{row.campaignName}</td>
+            <td className='text-xs text-[#666666]  pt-2 pb-2 pl-7 border-b border-gray-200'>{moment(row.startDate).format('DD/MM/YYYY')}</td>
+            <td className={` ${row.campaignStatus === 'Inactive' ? 'text-[#990100]' : 'text-[#009a18]' } text-xs  pt-2 pb-2 pl-6 border-b border-gray-200`}> {row && typeof row.campaignStatus === 'string' && row.campaignStatus.toUpperCase()} </td>
+            <td className='text-xs text-[#666666]  pt-2 pb-2 pl-7 border-b border-gray-200'>
                 <div className='flex items-center gap-3'>
 
                 <div onClick={() => handleViewCampaign(row.id)}>
