@@ -194,7 +194,7 @@ const NavBar = () => {
             </div>
             
             <a href="/overview">
-                <div className='flex pl-6 mt-8 cursor-pointer'>
+                <div className='flex pl-6 mt-4 cursor-pointer'>
                     <div onClick={overViewActive} className={`${isOverview ? 'bg-white': 'bg-transparent'}  flex gap-1 rounded-md pl-6 pr-12 py-2 items-center`}>
                         {/* overview icon  */}
                         <svg

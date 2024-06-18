@@ -142,7 +142,7 @@ useEffect(() => {
     <div className='text-[#237b7c] text-xs py-1 px-2 border border-[#237b7c] rounded-md cursor-pointer'> Inactive &#40;90&#41; </div>
     <div className='text-[#237b7c] text-xs py-1 px-2 border border-[#237b7c] rounded-md cursor-pointer'> Active &#40;90&#41; </div>
 
-    <div className='flex gap-3 items-center pl-8'>
+    <div className='flex gap-4 items-center ml-14 pl-8'>
   <div className='relative cursor-pointer'>
         <input type="text" className='text-[10px] w-[225px] px-1 rounded-md border border-gray-300 h-7' placeholder='Search...' name="" id="" />
         <div className='absolute top-1/2 right-3 transform -translate-y-1/2'>
@@ -202,7 +202,7 @@ useEffect(() => {
 
   </div>
 
-  <table  className='w-[60.5vw]'>
+  <table  className='w-[65vw]'>
       <thead className='bg-[#f0f4f5] rounded-lg'>
         <tr className='w-full text-[#455555]'>
           <th className='font-bold text-xs pl-2 pr-16 py-2 rounded-tl-md rounded-bl-md'>S/N</th>
@@ -324,7 +324,7 @@ useEffect(() => {
       </tbody>
     </table>
 
-    <div className='fixed bottom-8 flex items-center gap-3 w-[57.5%] justify-between'>
+    <div className='fixed bottom-8 flex items-center gap-3 w-[61%] justify-between'>
     <div className='flex items-center gap-3'>
         {
             <>
