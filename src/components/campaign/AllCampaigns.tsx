@@ -51,6 +51,43 @@ const [ singleCampaign ,setSingleCampaign ] = useState<ICampaign>();
 
  const pageDiv = Math.ceil(totalresult / resultsPerPage);
 
+
+ const renderPagination = () => {
+    const pages = [];
+    const totalPagesToShow = 7;
+    const totalPages = pageDiv;
+
+    if (totalPages <= totalPagesToShow + 1) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      let startPage = Math.max(currentPage - Math.floor(totalPagesToShow / 2), 1);
+      let endPage = Math.min(startPage + totalPagesToShow - 1, totalPages);
+
+      if (endPage === totalPages) {
+        startPage = endPage - totalPagesToShow + 1;
+      }
+
+      for (let i = startPage; i <= endPage; i++) {
+        pages.push(i);
+      }
+
+      if (startPage > 1) {
+        pages.unshift(1, '...');
+      }
+
+      if (endPage < totalPages) {
+        pages.push('...', totalPages);
+      }
+    }
+
+    return pages;
+  };
+
+  const paginationPages = renderPagination();
+
+
  const handleViewCampaign = (id: number) => {
     navigate(`/campaign/${id}`)
     
@@ -329,15 +366,32 @@ return (
                 {/* icon for previous page   */}
             <svg className='w-[9px] h-[9px]' fill="#000000"  stroke='#000000' xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd" viewBox="0 0 312 511.42"><path fill-rule="nonzero" d="M306.3 32.62 65.46 252.86 312 478.8l-29.84 32.62L0 252.83 276.46 0z"/></svg>
             </button>
+          
+
+        {paginationPages.map((page, index) => (
+            <button
+                key={index}
+                onClick={() => typeof page === 'number' && handlePageChange(page)}
+                disabled={typeof page !== 'number'}
+            >
+            <div
+              className={`flex justify-center items-center ${
+                currentPage === page ? 'bg-[#237b7c]' : ''
+              } px-2 py-1 rounded-full cursor-pointer`}
+            >
+              <p
+                className={`text-xs font-bold ${
+                  currentPage === page ? 'text-white' : 'text-black'
+                }`}
+              >
+                {page}
+              </p>
+            </div>
+          </button>
+        ))}
+
             {
-                Array.from({length : pageDiv}, (_, index) => (
-                    <button key={index + 1} onClick={() => handlePageChange(index + 1)}>
-                        <div className={`flex justify-center items-center ${ currentPage === index + 1 ? 'bg-[#237b7c]': ''}  px-2 py-1 rounded-full cursor-pointer`} >
-                            <p className={`text-xs font-bold ${ currentPage === index + 1 ? 'text-white' : 'text-black'}`}>{index + 1 > currLimit ? `    ...    ${currLimit + 8 < pageDiv ? currLimit + 8 : pageDiv}` : index + 1  } </p> 
-                           
-                        </div>
-                    </button>
-                ))
+
             }
 
             <button className='pl-8' onClick={() => handlePageChange(  currentPage === pageDiv ? pageDiv  :  currentPage + 1) }>
