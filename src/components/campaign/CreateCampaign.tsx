@@ -5,6 +5,7 @@ import axios from 'axios';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import moment from 'moment';
 import { Keyword } from './KeyWords';
+import { createACampaign, getACampaignById, updateACampaignById } from './CampaignService';
 
 const CreateCampaign = () => {
     const { id } = useParams();
@@ -30,8 +31,7 @@ const CreateCampaign = () => {
     const getExistingCampaign = async() => {
         try {
             if(id){
-              const res = await axios.get(`${API}/${parseInt(id)}`);
-            const { data } = res;
+            const data = await getACampaignById(parseInt(id));
             setCampaignName(data.campaignName);
             setcampaignDescription(data.campaignDescription);
             setdailyDigest(data.dailyDigest);
@@ -145,11 +145,8 @@ const CreateCampaign = () => {
                 };
 
                 try {
-                    const res = await axios.put(`${API}/${parseInt(id)}`, campaign, { headers: {
-                        "Content-Type": 'application/json'
-                    }});
-                      const { data } = res;
-                      console.log('updated data ', data, res);
+                  
+                    const data = await updateACampaignById(parseInt(id), campaign)
                       closePopup();
                       setIsCreatedCampaign(true);
                       openPopup();
@@ -173,11 +170,8 @@ const CreateCampaign = () => {
                 campaignName, campaignDescription, startDate: convertDateToServerDate(started) , EndDate: convertDateToServerDate(ended), linkedKeywords, digestCampaign, dailyDigest,
             };
 
-            try {
-                const res = await axios.post(`${API}`, campaign, { headers: {
-                    "Content-Type": 'application/json'
-                }});
-                  const { data } = res;
+            try {              
+                const data = await createACampaign(campaign);
                   console.log('created data ', data);
                   setIsCreatedCampaign(true);
                   openPopup();

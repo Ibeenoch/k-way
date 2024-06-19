@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { MutableRefObject, useEffect, useRef, useState } from 'react'
 import moment from 'moment';
 import { Link, useNavigate } from 'react-router-dom';
+import { deleteACampaignById, getACampaignById, getCampaigns } from './CampaignService';
 
 const AllCampaigns = () => {
     interface ICampaign {
@@ -32,10 +33,8 @@ const [ singleCampaign ,setSingleCampaign ] = useState<ICampaign>();
 
 
 
-    const API = 'https://infinion-test-int-test.azurewebsites.net/api/Campaign';
     const fetchCampaign = async(page: number) => {
-        const res = await axios.get(`${API}`);
-        const { data } = res;
+        const data = await getCampaigns();
         setTotalResult(data.length);
         const startIndex = (page - 1) * resultsPerPage;
         const endIndex = startIndex + resultsPerPage;
@@ -76,9 +75,8 @@ const closeModalClick = (e: MouseEvent) => {
 };
 
 const confirmDeleteCampaign = async(id: number) => {
-    const findCamp = await axios.get(`${API}/${id}`);
-    console.log(findCamp);
-    setSingleCampaign(findCamp.data);
+    const data = await getACampaignById(id);
+    setSingleCampaign(data);
     setDeletedId(id);
     setIsDeleteCampaign(true);
     openPopup();
@@ -90,8 +88,7 @@ const handleAcceptedDelete = () => {
 }
 
 const deleteCampaign = async(deletedId: any) => {
-    const res = await axios.delete(`${API}/${(deletedId)}`);
-    const data = res.data;
+    const data = await deleteACampaignById(deletedId);
     closePopup();
     setIsDeleteCampaign(false);
     setIsDeletedCampaign(true);
@@ -103,7 +100,6 @@ useEffect(() => {
     const index = fetchedCampaign.findIndex((k: any) => k.id == deletedId);
     setFetchCampaign(fetchedCampaign.filter((k: any) => k.id !== deletedId ));
     setJustDelete(true);
-    console.log('deleted item ', fetchedCampaign , deletedId)
 }, [isDeletedCampaign])
 
 useEffect(() => {
@@ -325,13 +321,13 @@ return (
       </tbody>
     </table>
 
-    <div className='fixed bottom-8 flex items-center gap-3 w-[60%] justify-between'>
+    <div className='fixed bottom-5 flex items-center gap-3 w-[60%] justify-between'>
     <div className='flex items-center gap-3'>
         {
             <>
             <button onClick={() => handlePageChange(currentPage <= 1 ? 1 : currentPage - 1) }>
                 {/* icon for previous page   */}
-            <svg className='w-2 h-2' fill="#000000" xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd" viewBox="0 0 312 511.42"><path fill-rule="nonzero" d="M306.3 32.62 65.46 252.86 312 478.8l-29.84 32.62L0 252.83 276.46 0z"/></svg>
+            <svg className='w-[9px] h-[9px]' fill="#000000"  stroke='#000000' xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd" viewBox="0 0 312 511.42"><path fill-rule="nonzero" d="M306.3 32.62 65.46 252.86 312 478.8l-29.84 32.62L0 252.83 276.46 0z"/></svg>
             </button>
             {
                 Array.from({length : pageDiv}, (_, index) => (
@@ -347,7 +343,7 @@ return (
             }
 
             <button className='pl-8' onClick={() => handlePageChange(  currentPage === pageDiv ? pageDiv  :  currentPage + 1) }>
-                <svg fill="#000000" className='w-2 h-2'  version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"  
+                <svg fill="#000000" stroke='#000000' className='w-[10px] h-[10px]'  version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"  
                     viewBox="0 0 330 330" >
                 <path id="XMLID_222_" d="M250.606,154.389l-150-149.996c-5.857-5.858-15.355-5.858-21.213,0.001
                     c-5.857,5.858-5.857,15.355,0.001,21.213l139.393,139.39L79.393,304.394c-5.857,5.858-5.857,15.355,0.001,21.213

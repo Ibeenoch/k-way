@@ -4,6 +4,7 @@ import './campaign.css'
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import moment from 'moment';
+import { deleteACampaignById, getACampaignById } from './CampaignService';
 
 const Campaign = () => {
     const navigate = useNavigate()
@@ -28,13 +29,12 @@ const Campaign = () => {
         campaignDescription: '', campaignName: '', campaignStatus: '', dailyDigest: '', digestCampaign: '', endDate: '', id: 0, linkedKeywords: [], startDate: ''
     })
     const { id } = useParams();
-    const API = 'https://infinion-test-int-test.azurewebsites.net/api/Campaign';
     
     const getACampaign = async() => {
         console.log(typeof id)
         if(id){
-            const res = await axios.get(`${API}/${parseInt(id)}`);
-            const { data } = res;
+            const data = await getACampaignById(parseInt(id));
+            console.log('camp gotten ', data);
             setSingleCampaign(data);  
         }else{
             setIsDeletedCampaign(true);
@@ -73,8 +73,7 @@ const Campaign = () => {
     }
 
     const deleteCampaign = async(id: any) => {
-        const res = await axios.delete(`${API}/${parseInt(id)}`);
-        const data = res.data;
+        const data = await deleteACampaignById(parseInt(id));
         closePopup();
         setIsDeleteCampaign(false);
         setIsDeletedCampaign(true);
@@ -329,9 +328,9 @@ const Campaign = () => {
 
                 <div className='grid grid-cols-8 gap-2 border border-gray-300 rounded-md p-2 pb-8'>
                     {
-                        singleCampaign.linkedKeywords.map((item: any) => (
+                        singleCampaign.linkedKeywords.map((item: any, index: any) => (
                        
-                    <div className='flex gap-2 p-1 bg-[#237b7c] justify-center items-center rounded-md'>
+                    <div key={index} className='flex gap-2 p-1 bg-[#237b7c] justify-center items-center rounded-md'>
                         <p className='text-white text-[11px]'>{item}</p>
                         <svg fill="white" className='w-2 h-2' version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"  
                             viewBox="0 0 492 492" >
