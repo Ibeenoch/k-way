@@ -397,7 +397,7 @@ const Campaign = () => {
               <button
                 onClick={confirmDeleteCampaign}
                 type='button'
-                className="rounded-md text-[#237b7c] border border-[#237b7c] hover:border-[#990100] hover:bg-[#990100] px-12 py-1.5 text-xs font-semibold leading-6 hover:text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                className="rounded-md text-[#990100] border border-[#990100] hover:border-[#990100] hover:bg-[#990100] px-12 py-1.5 text-xs font-semibold leading-6 hover:text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
               >
                 Stop Campaign
               </button>
