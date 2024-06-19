@@ -25,7 +25,6 @@ const CreateCampaign = () => {
     const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   
     const modalRef: MutableRefObject<HTMLDivElement | null> = useRef(null);
-    const API = 'https://infinion-test-int-test.azurewebsites.net/api/Campaign';
     
 
     const getExistingCampaign = async() => {
@@ -183,7 +182,6 @@ const CreateCampaign = () => {
 
             try {              
                 const data = await createACampaign(campaign);
-                  console.log('created data ', data);
                   setIsCreatedCampaign(true);
                   openPopup();
             } catch (error) {
