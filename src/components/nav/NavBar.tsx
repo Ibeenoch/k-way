@@ -613,7 +613,7 @@ const NavBar = () => {
            <div className='bg-white py-4 px-5 mt-8 rounded-md'>
                 <div className='rounded-full flex justify-center pt-5'>
                 <svg
-                className="w-4 h-4 rounded-full border-2 border-[#237b7c]"
+                className="w-5 h-5 rounded-full border-2 border-[#237b7c]"
                 style={{ verticalAlign: "middle", fill: "currentColor", overflow: "hidden" }}
                 viewBox="0 0 1024 1024"
                 version="1.1"
