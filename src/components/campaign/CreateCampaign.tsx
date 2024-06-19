@@ -129,14 +129,16 @@ const CreateCampaign = () => {
     const handleCampaign = async(e: FormEvent) => {
         e.preventDefault();
         if(id){
-            if( campaignName && started && linkedKeywords){
+            if( campaignName && started && linkedKeywords  && campaignDescription){
                 const validateDateInputRegex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
                  
-                if( validateDateInputRegex.test(started) === false){
+                console.log('validated as ', validateDateInputRegex.test(started), validateDateInputRegex.test(ended));
+                if( validateDateInputRegex.test(started) === false || validateDateInputRegex.test(ended) === false){
                     closePopup();
                     setIsErr(true);
                     openPopup();
                     setError('Please Enter a valid date in this format dd/mm/yyyy');
+                    return;
                 };
     
     
@@ -154,15 +156,24 @@ const CreateCampaign = () => {
                     console.log(error);
                 }
             }
+
+            closePopup();
+            setIsErr(true);
+            openPopup();
+            setError('Please add all required fields');
+            return;
+
         }else{
-        if( campaignName && started && linkedKeywords){
+        if( campaignName && started && linkedKeywords && campaignDescription){
             const validateDateInputRegex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
              
-            if( validateDateInputRegex.test(started) === false){
+            if( validateDateInputRegex.test(started) === false || validateDateInputRegex.test(ended) === false){
+              console.log('validated as ', validateDateInputRegex.test(started));
                 closePopup();
                 setIsErr(true);
                 openPopup();
                 setError('Please Enter a valid date in this format dd/mm/yyyy');
+                return;
             };
 
 
@@ -179,6 +190,12 @@ const CreateCampaign = () => {
                 console.log(error);
             }
         }
+
+        closePopup();
+        setIsErr(true);
+        openPopup();
+        setError('Please add all required fields');
+        return;
 
         };
 
@@ -224,7 +241,7 @@ const CreateCampaign = () => {
             htmlFor="campDesc"
             className="block text-[11px]  leading-6 text-gray-500 flex"
           >
-           Campaign Description
+           <p>  Campaign Description</p> <p className='text-red-600'>&nbsp;*</p>
           </label>
           <div className="mt-1 mb-2">
             <textarea
