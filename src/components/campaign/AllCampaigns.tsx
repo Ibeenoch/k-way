@@ -112,6 +112,8 @@ const closeModalClick = (e: MouseEvent) => {
 };
 
 const confirmDeleteCampaign = async(id: number) => {
+    setIsDeletedCampaign(false);
+    setConfirmDelete(false);
     const data = await getACampaignById(id);
     setSingleCampaign(data);
     setDeletedId(id);
@@ -162,7 +164,7 @@ useEffect(() => {
     }
 }, [isOpenModal])
 
-const currLimit = currentPage + 6;
+
 return (
     <div>
     <div className='pb-16 pl-16 pr-16'>
