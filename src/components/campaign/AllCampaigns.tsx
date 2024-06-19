@@ -125,7 +125,7 @@ useEffect(() => {
     }
 }, [isOpenModal])
 
-
+const currLimit = currentPage + 6;
 return (
     <div>
     <div className='pb-16 pl-16 pr-16'>
@@ -333,10 +333,8 @@ return (
                 Array.from({length : pageDiv}, (_, index) => (
                     <button key={index + 1} onClick={() => handlePageChange(index + 1)}>
                         <div className={`flex justify-center items-center ${ currentPage === index + 1 ? 'bg-[#237b7c]': ''}  px-2 py-1 rounded-full cursor-pointer`} >
-                            <p className={`text-xs font-bold ${ currentPage === index + 1 ? 'text-white' : 'text-black'}`}>{index + 1 > index + 7 ? '...' : index + 1  } </p> 
-                            {index === index + 15 && (
-                                <p className={`text-xs font-bold ${ currentPage === index + 1 ? 'text-white' : 'text-black'}`}>{index + 15} </p> 
-                            )  }
+                            <p className={`text-xs font-bold ${ currentPage === index + 1 ? 'text-white' : 'text-black'}`}>{index + 1 > currLimit ? `    ...    ${currLimit + 8 < pageDiv ? currLimit + 8 : pageDiv}` : index + 1  } </p> 
+                           
                         </div>
                     </button>
                 ))
