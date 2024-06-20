@@ -366,7 +366,7 @@ return (
             <>
             <button onClick={() => handlePageChange(currentPage <= 1 ? 1 : currentPage - 1) }>
                 {/* icon for previous page   */}
-            <svg className='w-[9px] h-[9px]' fill="#000000"  stroke='#000000' xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd" viewBox="0 0 312 511.42"><path fill-rule="nonzero" d="M306.3 32.62 65.46 252.86 312 478.8l-29.84 32.62L0 252.83 276.46 0z"/></svg>
+            <svg className='w-[9px] h-[9px]' fill="#666666"  stroke='#666666' style={{ strokeWidth: "12"}} xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd" viewBox="0 0 312 511.42"><path fill-rule="nonzero" d="M306.3 32.62 65.46 252.86 312 478.8l-29.84 32.62L0 252.83 276.46 0z"/></svg>
             </button>
           
 
@@ -383,7 +383,7 @@ return (
             >
               <p
                 className={`text-xs font-bold ${
-                  currentPage === page ? 'text-white' : 'text-black'
+                  currentPage === page ? 'text-white' : 'text-[#666666]'
                 }`}
               >
                 {page}
@@ -392,12 +392,8 @@ return (
           </button>
         ))}
 
-            {
-
-            }
-
             <button className='pl-8' onClick={() => handlePageChange(  currentPage === pageDiv ? pageDiv  :  currentPage + 1) }>
-                <svg fill="#000000" stroke='#000000' className='w-[10px] h-[10px]'  version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"  
+                <svg  fill="#666666"  stroke='#666666' style={{ strokeWidth: "12"}} className='w-[10px] h-[10px]'  version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"  
                     viewBox="0 0 330 330" >
                 <path id="XMLID_222_" d="M250.606,154.389l-150-149.996c-5.857-5.858-15.355-5.858-21.213,0.001
                     c-5.857,5.858-5.857,15.355,0.001,21.213l139.393,139.39L79.393,304.394c-5.857,5.858-5.857,15.355,0.001,21.213
