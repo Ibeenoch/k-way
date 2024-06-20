@@ -382,7 +382,7 @@ return (
               } px-2 py-1 rounded-full cursor-pointer`}
             >
               <p
-                className={`text-xs font-bold ${
+                className={`text-xs pt-[1px] font-bold ${
                   currentPage === page ? 'text-white' : 'text-[#666666]'
                 }`}
               >
