@@ -12,6 +12,7 @@ const CreateCampaign = () => {
    const navigate = useNavigate();
     const [isCreatedCampaign, setIsCreatedCampaign] = useState(false);
     const [ isErr, setIsErr ] = useState(false);
+    const [ isNotValid, setIsNotValid ] = useState(false);
     const [campaignName, setCampaignName] = useState<any>('');
     const [campaignDescription, setcampaignDescription] = useState<string>('' );
     const [started, setstarted] = useState<string>('');
@@ -22,6 +23,7 @@ const CreateCampaign = () => {
     const [linkedKeywords, setlinkedKeywords] = useState<string[]>([]);
     const inputRef = useRef<HTMLTextAreaElement>(null);
     const [error, setError]= useState<string>('');
+    const [inValiderror, setInValiderror]= useState<string>('');
     const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   
     const modalRef: MutableRefObject<HTMLDivElement | null> = useRef(null);
@@ -157,9 +159,10 @@ const CreateCampaign = () => {
             }
 
             closePopup();
-            setIsErr(true);
+            setIsErr(false);
+            setIsNotValid(true);
             openPopup();
-            setError('Please add all required fields');
+            setInValiderror('Please add all required fields');
             return;
 
         }else{
@@ -190,10 +193,11 @@ const CreateCampaign = () => {
         }
 
         closePopup();
-        setIsErr(true);
-        openPopup();
-        setError('Please add all required fields');
-        return;
+            setIsErr(false);
+            setIsNotValid(true);
+            openPopup();
+            setInValiderror('Please add all required fields');
+            return;
 
         };
 
@@ -451,8 +455,15 @@ const CreateCampaign = () => {
               <div className='flex justify-center items-center gap-4'>
                   </div>
             </div>
+        ) : isNotValid ? (
+          <div className="bg-white p-6 rounded-lg shadow-lg text-center px-16 py-8" ref={modalRef}>
+          <h2 className="text-xs text-red-600 font-medium mb-4">Error</h2>
+            <p className="mb-4 text-red-600 text-[10px]">{inValiderror} </p>
+            <div className='flex justify-center items-center gap-4'>
+                </div>
+          </div>
         ) : (
-            <></>
+          <></>
         )
       }
 
