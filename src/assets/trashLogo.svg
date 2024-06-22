@@ -1,0 +1,23 @@
+<svg
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg1"
+   xmlns="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <g
+     id="layer1">
+    <path
+       id="rect1"
+       style="fill:none;fill-rule:evenodd;stroke-width:18;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
+       d="m 60.533894,68.852689 c 0,0 0.522805,-6.050841 6.722506,-8.894693 5.150969,-2.362791 15.847079,-1.608254 18.517667,-1.608254 2.355176,0 9.224579,-0.838702 13.117975,0.955027 5.835098,2.688294 8.621268,8.380926 8.621268,8.380926 z M 12.836687,73.520577 159.29469,74.104074 Z M 29.75839,74.104004 V 186.71884 c 0,0 -1.279217,13.30852 4.084506,18.67224 5.226194,5.2262 18.088301,4.08451 18.088301,4.08451 h 71.770293 c 0,0 9.60279,0.3165 14.0038,-4.08451 4.67598,-4.67606 4.66793,-15.75459 4.66793,-15.75459 V 74.104004 Z" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke-width:16.6454;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
+       d="m 67.28722,106.6766 c 0,64.87327 0,64.87327 0,64.87327"
+       id="path4" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke-width:16.6454;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
+       d="m 106.38152,105.50961 c 0,64.87327 0,64.87327 0,64.87327"
+       id="path9" />
+  </g>
+</svg>

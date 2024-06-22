@@ -1,6 +1,8 @@
 import { configureStore, ThunkAction, Action, combineReducers } from '@reduxjs/toolkit';
 import storage from 'redux-persist/lib/storage';
 import { persistReducer, persistStore } from 'redux-persist';
+import PostReducer from './features/pages/home/PostSlice';
+import AuthReducer from './features/pages/auth/authSlice';
 
 
 const persistConfig = {
@@ -10,7 +12,8 @@ const persistConfig = {
 }
 
 const reducers = combineReducers({
-
+ posts: PostReducer,
+ auth: AuthReducer
 })
 
 const persistedReducer = persistReducer(persistConfig, reducers)

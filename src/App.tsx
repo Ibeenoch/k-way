@@ -3,45 +3,79 @@ import * as ReactDOM from "react-dom/client";
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
-import CreateCampaign from "./components/campaign/CreateCampaign";
-import NavBar from "./components/nav/NavBar";
-import Campaign from "./components/campaign/Campaign";
-import Header from "./components/header/Header";
-import AllCampaigns from "./components/campaign/AllCampaigns";
-import OverView from "./components/overview/OverView";
-import Settings from "./components/setting/Settings";
-import Market from "./components/market/Market";
+import { Toaster, ToastOptions } from "react-hot-toast"
+import Home from "./app/features/pages/home/Home";
+import Profile from "./app/features/pages/profile/Profile";
+import Notification from "./app/features/pages/Notification/Notification";
+import ChatRoom from "./app/features/pages/chatroom/ChatRoom";
+import Message from "./app/features/pages/message/Message";
+import Trend from "./app/features/pages/trendlist/Trend";
+import Trends from "./app/features/pages/trendmain/Trends";
+import SignUp from "./app/features/pages/auth/SignUp";
+import Login from "./app/features/pages/auth/Login";
+import ProfileForm from "./app/features/pages/auth/ProfileForm";
+import Verification from "./app/features/pages/auth/Verification";
+import PasswordRecovery from "./app/features/pages/auth/PasswordRecovery";
+import ChangePassword from "./app/features/pages/auth/ChangePassword";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <AllCampaigns/>,
+    element: <Home />,
   },
   {
-    path: "/campaign/:id",
-    element: <Campaign/>,
+    path: "/profile/:id",
+    element: <Profile />,
   },
   {
-    path: "/create/campaign",
-    element: <CreateCampaign />,
+    path: "/notification",
+    element: <Notification />,
   },
   {
-    path: "/edit/campaign/:id",
-    element: <CreateCampaign />,
-  },
-  {
-    path: "/market",
-    element: <Market />,
-  },
-  {
-    path: "/setting",
-    element: <Settings />,
-  },
-  {
-    path: "/overview",
-    element: <OverView />,
+    path: "/message",
+    element: <Message />,
   },
  
+  {
+    path: "/chatroom",
+    element: <ChatRoom />,
+  },
+  {
+    path: "/trendlist",
+    element: <Trend />,
+  },
+  {
+    path: "/trends",
+    element: <Trends />,
+  },
+  {
+    path: "/register",
+    element: <SignUp />,
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    path: "/profile/create/:id",
+    element: <ProfileForm />,
+  },
+  {
+    path: "/verify/email",
+    element: <Verification />,
+  },
+  {
+    path: "/verify/email/:id",
+    element: <Verification />,
+  },
+  {
+    path: "/password/recovery",
+    element: <PasswordRecovery />,
+  },
+  {
+    path: "/password/reset/:id",
+    element: <ChangePassword />,
+  },
  
 ]);
 
@@ -49,19 +83,24 @@ function App() {
   return (
     
       <div className="App">
-         <div className='grid grid-cols-1 sm:grid-cols-9 md:grid-cols-9'>
-        <div className='hidden sm:block sm:col-start-1 sm:col-end-3 md:col-start-1 md:col-end-3'>
-          <NavBar />
-        </div>
-
-      <div className='sm:col-start-3 sm:col-end-9 md:col-start-3 md:col-end-10'>
-        <Header />
         <RouterProvider router={router} />
-      </div>
-     
-    </div>
-        
-       
+        <Toaster toastOptions={{
+          error: {
+            style: {
+              background: '#CE1126',
+              color: 'white',
+              padding: '7px'
+            }
+          },
+          success: {
+            style: {
+              background: '#37B400',
+              color: 'white',
+              padding: '7px'
+            }
+          },
+          
+        }}  />
       </div>
   );
 }

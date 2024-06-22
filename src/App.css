@@ -1,5 +1,4 @@
-/* body{
-  background-color: #fefff9;
+body{
   animation: transitionIn 1.5s;
 }
 @keyframes transitionIn {
@@ -15,5 +14,5 @@
 }
 
 a {
-  animation: transitionIn 1s;
-} */
+  animation: transitionIn 1.5s;
+}
