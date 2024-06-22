@@ -27,6 +27,8 @@ import { ReactComponent as CancelLogo } from '../../../../assets/cancelLogo.svg'
 import { ReactComponent as EditLogo } from '../../../../assets/editLogo.svg';
 import { ReactComponent as TrashLogo } from '../../../../assets/trashLogo.svg';
 import { ReactComponent as ProcessingLogo } from '../../../../assets/processingLogo.svg';
+import { ReactComponent as ArrowDownLogo } from '../../../../assets/arrowDownLogo.svg';
+import { ReactComponent as PlusLogo } from '../../../../assets/plusLogo.svg';
 
 const Middle = () => {
   const dispatch = useAppDispatch();
@@ -311,19 +313,17 @@ useEffect(() => {
       mobileMenuRef.current &&
       !mobileMenuRef.current.contains(e.target as Node)
     ) {
-      let mobile = document.getElementById("mobilemenu");
-      if (!mobile) {
-        setMenu(false);
-      }
+      
+      setMenu(false);
     }
-    if (
+  };
+
+  const hideDeskTopMenu = (e: MouseEvent) => {
+   if (
       desktopMenuRef.current &&
       !desktopMenuRef.current.contains(e.target as Node)
     ) {
-      let desktop = document.getElementById("desktopmenu");
-      if (!desktop) {
-        setDesktopMenu(false);
-      }
+      setDesktopMenu(false);
     }
   };
 
@@ -351,6 +351,18 @@ useEffect(() => {
       document.removeEventListener("mousedown", hideMobileMenu);
     };
   }, [hideMobileMenu]);
+
+  useEffect(() => {
+    if(hideDeskTopMenu){
+      document.addEventListener("mousedown", hideDeskTopMenu);
+    }else{
+      document.addEventListener("mousedown", hideDeskTopMenu);
+        };
+
+    return () => {
+      document.removeEventListener("mousedown", hideDeskTopMenu);
+    };
+  }, [hideDeskTopMenu]);
 
   useEffect(() => {
     dispatch(getAllPosts()).then((res: any) => {
@@ -468,29 +480,14 @@ useEffect(() => {
       {desktopmodal ? (
         <div className="hidden sm:block fixed mx-auto bottom-0 z-5 sm:rounded-xl sm:bg-gray-300 sm:pr-3 sm:pl-3 sm:pb-3 sm:max-w-sm md:max-w-sm lg:max-w-lg xl:max-w-xl ">
           <div className="flex justify-center sm:pb-2">
-            <svg
-              onClick={handleDesktopPost}
-              className="w-4 h-4 cursor-pointer"
-              style={{ strokeWidth: 4 }}
-              xmlns="http://www.w3.org/2000/svg"
-              version="1.1"
-              width="256"
-              height="256"
-              viewBox="0 0 256 256"
-            >
-              <defs></defs>
-              <g transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)">
-                <path
-                  d="M 90 24.25 c 0 -0.896 -0.342 -1.792 -1.025 -2.475 c -1.366 -1.367 -3.583 -1.367 -4.949 0 L 45 60.8 L 5.975 21.775 c -1.367 -1.367 -3.583 -1.367 -4.95 0 c -1.366 1.367 -1.366 3.583 0 4.95 l 41.5 41.5 c 1.366 1.367 3.583 1.367 4.949 0 l 41.5 -41.5 C 89.658 26.042 90 25.146 90 24.25 z"
-                  stroke-linecap="round"
-                />
-              </g>
-            </svg>
+            <ArrowDownLogo onClick={handleDesktopPost}
+              className="w-4 h-4 cursor-pointer"/>
+           
           </div>
 
           <div className="hidden sm:flex sm:bg-white sm:items-center sm:max-h-[30px] sm:p-2 sm:rounded-2xl">
             <img
-              src={`${process.env.PUBLIC_URL}/images/images-74.jpeg`}
+              src={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url}
               className="hidden sm:block sm:w-6 sm:h-6 sm:rounded-full"
               alt=""
             />
@@ -552,32 +549,9 @@ useEffect(() => {
       ) : (
         <div className="hidden sm:block sm:fixed sm:bottom-0 sm:right-[50%] sm:rounded-xl sm:p-3 sm:max-w-xs md:max-w-sm lg:max-w-md xl:max-w-xl">
           <div className="sm:p-3 rounded-full bg-black border border-white">
-            <svg
-              onClick={showDeskTopModal}
-              className="w-7 h-7 cursor-pointer"
-              style={{ strokeWidth: 5 }}
-              version="1.1"
-              xmlns="http://www.w3.org/2000/svg"
-              x="0px"
-              y="0px"
-              viewBox="0 0 256 256"
-              enable-background="new 0 0 256 256"
-            >
-              <metadata>
-                {" "}
-                Svg Vector Icons : http://www.onlinewebfonts.com/icon{" "}
-              </metadata>
-              <g>
-                <g>
-                  <g>
-                    <path
-                      fill="white"
-                      d="M124.1,10.8c-1,0.6-2.6,1.9-3.4,3l-1.5,2L119,67.4l-0.1,51.6H68c-56.6,0-53.2-0.2-56.4,3.9c-2.2,2.9-2.2,7.6,0,10.5c3.1,4.1-0.3,3.9,56.4,3.9h50.9V188c0,56.6-0.2,53.2,3.9,56.4c2.9,2.2,7.6,2.2,10.5,0c4.1-3.1,3.9,0.3,3.9-56.4v-50.9H188c56.6,0,53.2,0.2,56.4-3.9c2.2-2.9,2.2-7.6,0-10.5c-3.1-4.1,0.3-3.9-56.4-3.9h-50.9V68c0-56.5,0.2-53.2-3.8-56.3C130.8,9.9,126.8,9.4,124.1,10.8z"
-                    />
-                  </g>
-                </g>
-              </g>
-            </svg>
+            <PlusLogo onClick={showDeskTopModal}
+              className="w-7 h-7 cursor-pointer"/>
+           
           </div>
         </div>
       )}
@@ -1280,133 +1254,7 @@ useEffect(() => {
               alt=""
             />
 
-            {/* <div className="absolute right-0 bottom-14 flex justify-between pb-2 pt-[60%]">
-              <div></div>
-
-              <div className="flex flex-col items-center">
-                <div className="flex flex-col justify-end cursor-pointer items-center pr-4">
-                  <div className="p-2 w-12 h-12 bg-red-500 mt-2 rounded-full flex justify-center items-center">
-                    <HeartIcon color="white" className="w-12 h-12 fill-white" />
-                  </div>
-                  <p className="text-md text-gray-400 font-bold">124k</p>
-                </div>
-
-                <div className="flex flex-col justify-end cursor-pointer items-center pr-4">
-                  <div className="p-2 w-12 h-12 bg-sky-500 mt-2 rounded-full flex justify-center items-center">
-                    <svg
-                      className="w-12 h-12 fill-white stroke-white dark:fill-black dark:stroke-black"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        clip-rule="evenodd"
-                        d="M20.5399 16.8073C20.7615 16.5775 20.8134 16.2326 20.6692 15.9478L19.939 14.5059C18.2788 11.2271 14.9158 9.16048 11.2406 9.16049H10.8367C10.8113 8.60714 10.7785 8.05406 10.7382 7.50138L10.6697 6.56241C10.6144 5.80389 9.76867 5.37987 9.1278 5.78937C7.01209 7.14127 5.17281 8.88321 3.70799 10.9224L3.24781 11.563C3.05998 11.8245 3.05998 12.1766 3.24781 12.4381L3.70799 13.0787C5.17281 15.1179 7.01209 16.8598 9.1278 18.2117C9.76867 18.6212 10.6144 18.1972 10.6697 17.4387L10.7382 16.4997C10.7863 15.8402 10.8238 15.18 10.8507 14.5196C13.0228 14.4559 15.1925 14.8939 17.1864 15.8141L19.6858 16.9676C19.9756 17.1014 20.3183 17.0371 20.5399 16.8073ZM18.3291 14.6894L17.815 14.4522C15.3833 13.3299 12.7153 12.856 10.0678 13.0594C9.68551 13.0888 9.38691 13.4018 9.37558 13.785C9.34988 14.6542 9.30541 15.5229 9.24215 16.3907L9.23581 16.4776C7.57301 15.3039 6.11599 13.8598 4.92625 12.2036L4.78038 12.0005L4.92625 11.7975C6.11599 10.1413 7.57301 8.69718 9.23581 7.52347L9.24215 7.61043C9.29861 8.38499 9.34011 9.16037 9.36665 9.93613C9.38047 10.3401 9.71198 10.6605 10.1162 10.6605L11.2406 10.6605C14.1615 10.6605 16.8492 12.2032 18.3291 14.6894Z"
-                        fill="white"
-                      />
-                    </svg>
-                  </div>
-                  <p className="text-md text-gray-400 font-bold">124k</p>
-                </div>
-
-                <div className="flex flex-col justify-end cursor-pointer items-center pr-4">
-                  <div className="p-4 w-12 h-12 bg-sky-500 mt-2 rounded-full flex justify-center items-center">
-                    <svg
-                      className="w-12 h-12 fill-white stroke-white dark:fill-black dark:stroke-black"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 439.3 529.7"
-                    >
-                      <path d="M0 529.7l108.9-117.1h330.4V0H.7L0 529.7zM338.7 173c20.5 0 37.2 16.6 37.2 37.2 0 20.5-16.6 37.2-37.2 37.2s-37.2-16.6-37.2-37.2c.1-20.5 16.7-37.2 37.2-37.2zM220 173c20.5 0 37.2 16.6 37.2 37.2 0 20.5-16.6 37.2-37.2 37.2-20.5 0-37.2-16.6-37.2-37.2.1-20.5 16.7-37.2 37.2-37.2zm-118.7 0c20.5 0 37.2 16.6 37.2 37.2 0 20.5-16.6 37.2-37.2 37.2-20.5 0-37.2-16.6-37.2-37.2 0-20.5 16.7-37.2 37.2-37.2z" />
-                    </svg>
-                  </div>
-                  <p className="text-md text-gray-400 font-bold">124k</p>
-                </div>
-
-                <div className="flex flex-col justify-end cursor-pointer items-center pr-4">
-                  <div className="p-4 w-12 h-12 bg-sky-500 mt-2 rounded-full flex justify-center items-center">
-                    <svg
-                      className="w-12 h-12 fill-white stroke-white dark:fill-black dark:stroke-black"
-                      version="1.1"
-                      xmlns="http://www.w3.org/2000/svg"
-                      x="0px"
-                      y="0px"
-                      viewBox="0 0 256 256"
-                      enable-background="new 0 0 256 256"
-                    >
-                      <metadata>
-                        {" "}
-                        Svg Vector Icons : http://www.onlinewebfonts.com/icon{" "}
-                      </metadata>
-                      <g>
-                        <g>
-                          <g>
-                            <path d="M60.7,10.8c-0.7,0.4-1.4,1.3-1.7,1.9c-0.4,0.8-0.5,33.9-0.5,112.2c0,124.6-0.3,113.4,3.5,117.7c2.4,2.7,4.3,3.5,8.2,3.5c5.1,0,4.9,0.1,32-26.6c13.7-13.5,25.2-24.7,25.4-24.7s11.7,11,25.6,24.5c27.8,26.9,27.5,26.7,32.9,26.7c1.6,0,3.5-0.2,4.2-0.5c2.2-0.8,4.9-3.7,6.2-6.5l1.2-2.7V124.9c0-73.4-0.1-111.5-0.5-112.1c-0.2-0.5-1-1.3-1.7-1.8l-1.3-1h-66.1C67.3,10,61.8,10.1,60.7,10.8z M187.8,127.7v107.9l-1.2,0.6c-1.1,0.5-1.4,0.3-5.3-3.5c-2.2-2.1-14.7-14.3-27.7-26.9c-25.3-24.5-25.2-24.4-28.1-22.9c-0.7,0.3-13,12.3-27.5,26.5c-14.5,14.2-26.7,26.2-27.1,26.5c-0.6,0.5-1,0.5-1.7,0.1l-1-0.5V127.7V19.8H128h59.8V127.7z" />
-                          </g>
-                        </g>
-                      </g>
-                    </svg>{" "}
-                  </div>
-                  <p className="text-md text-gray-400 font-bold">124k</p>
-                </div>
-              </div>
-            </div> */}
-            {/* comment right  */}
-
-            {/* <div className="absolute left-0 bottom-14">
-              <div className="flex gap-4">
-                <img src={`${process.env.PUBLIC_URL}/images/ladies 8.png`} className="w-9 h-9 rounded-full" alt="" />
-                <div>
-                  <h1 className="text-md font-bold text-white">
-                    Harmony Waves
-                  </h1>
-                  <p className="text-sm text-white">
-                    Omg, the dress is so pretty😍
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex gap-4">
-                <img src={`${process.env.PUBLIC_URL}/images/ladies 8.png`} className="w-9 h-9 rounded-full" alt="" />
-                <div>
-                  <h1 className="text-md font-bold text-white">
-                    Harmony Waves
-                  </h1>
-                  <p className="text-sm text-white">
-                    Omg, the dress is so pretty😍
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex gap-4">
-                <img src={`${process.env.PUBLIC_URL}/images/ladies 8.png`} className="w-9 h-9 rounded-full" alt="" />
-                <div>
-                  <h1 className="text-md font-bold text-white">
-                    Harmony Waves
-                  </h1>
-                  <p className="text-sm text-white">
-                    Omg, the dress is so pretty😍
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center">
-                <h1 className="text-md font-bold text-white">More Comments</h1>
-                <svg
-                  className="w-4 h-4 fill-white stroke-white"
-                  version="1.1"
-                  id="Layer_1"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 330 330"
-                >
-                  <path
-                    id="XMLID_222_"
-                    d="M250.606,154.389l-150-149.996c-5.857-5.858-15.355-5.858-21.213,0.001
-    c-5.857,5.858-5.857,15.355,0.001,21.213l139.393,139.39L79.393,304.394c-5.857,5.858-5.857,15.355,0.001,21.213
-    C82.322,328.536,86.161,330,90,330s7.678-1.464,10.607-4.394l149.999-150.004c2.814-2.813,4.394-6.628,4.394-10.606
-    C255,161.018,253.42,157.202,250.606,154.389z"
-                  />
-                </svg>
-              </div>
-            </div> */}
+           
 
             <div className="fixed bottom-16 flex justify-between items-center">
             <div className="flex justify-between items-center">
