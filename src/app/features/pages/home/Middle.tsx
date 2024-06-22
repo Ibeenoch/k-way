@@ -4,10 +4,10 @@ import { PlusIcon, HeartIcon,  } from "@heroicons/react/24/outline";
 import EmojiPicker from "emoji-picker-react";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { selectUser } from "../auth/authSlice";
-import { createPost, getAllPosts, selectPost } from "./PostSlice";
+import { createPost, deletePost, getAllPosts, selectPost, updatePost } from "./PostSlice";
 import { timeStamp } from "console";
 import toast, { Toast } from 'react-hot-toast'
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import moment from 'moment';
 import ImgLazyLoad from "../lazyLoad/ImgLazyLoad";
 import { ReactComponent as GlobalTrendLogo } from '../../../../assets/globeTrend.svg';
@@ -68,6 +68,7 @@ const Middle = () => {
   const [postId, setPostId] = useState<string>('');
   const [personalPost, setPersonalPost] = useState<any>();
   const getUser = JSON.parse(localStorage.getItem('user') as any);
+  const { id } = useParams();
 
   const handleFileClick = () => {
     if(fileRef && fileRef.current){
@@ -157,15 +158,12 @@ const handlePostSubmit = async() => {
   let postData = new FormData();
   postData.append('content', content);
   postData.append('privacy', privacy);
-  postData.append('author', userId);
 
   if( imageInput.length > 0){
     imageInput.forEach((image: any) => {
     postData.append('image', image)
   }) 
   }
-
- 
 
   if( fileInput.length > 0){
     fileInput.forEach((video: any) => {
@@ -175,17 +173,32 @@ const handlePostSubmit = async() => {
 
   const token = getUser.token;
 
+ 
+if(id){
+ const post = {
+    postData, 
+    token,
+    id
+  };
+
+  if(post){
+    dispatch(updatePost(post)).then((res: any) => {
+      console.log('the update res ', res)
+    })
+  }
+}else{
+
   const post = {
     postData, 
     token
-  }
+  };
 
   if(post){
     dispatch(createPost(post)).then((res: any) => {
       console.log('posted   ', res)
     })
   }
- 
+}
 }
 
 const getAPost = async() => {
@@ -337,10 +350,16 @@ useEffect(() => {
     console.log('edit me')
     const findPost = posts.find((p: any) => p._id === id);
     setcontent(findPost.content);
+    navigate(`/${findPost._id}`)
     showPostModal()
   };
 
   const handleDeletePost = (id: string) => {
+    const token = getUser.token;
+    const post = { id, token };
+    dispatch(deletePost(post)).then((res: any) => {
+      console.log('is successfully deleted ', res);
+    })
   };
   return (
     <div className="mt-10 max-w-md sm:max-w-full">

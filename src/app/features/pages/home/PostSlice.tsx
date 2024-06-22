@@ -23,6 +23,24 @@ export const createPost = createAsyncThunk("/post/new", async (post: any) => {
   }
 });
 
+export const updatePost = createAsyncThunk("/post/update", async (post: any) => {
+  try {
+    const res = await api.updatepost(post);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+export const deletePost = createAsyncThunk("/post/delete", async (post: any) => {
+  try {
+    const res = await api.deletepost(post);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 export const getAllPosts = createAsyncThunk("/post/all", async () => {
   try {
     const res = await api.fetchAllPosts();
@@ -57,6 +75,34 @@ export const postSlice = createSlice({
         }
       })
       .addCase(createPost.rejected, (state, action) => {
+        state.status = "failed";
+      })
+      .addCase(updatePost.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(updatePost.fulfilled, (state, action) => {
+        if (action.payload !== undefined && action.payload._id) {
+          state.status = "success";
+          console.log('updated post ', action.payload)
+          const findIndex = state.posts.findIndex((p: any) => p._id === action.payload._id);
+          state.posts[findIndex] = action.payload;
+        }
+      })
+      .addCase(updatePost.rejected, (state, action) => {
+        state.status = "failed";
+      })
+      .addCase(deletePost.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(deletePost.fulfilled, (state, action) => {
+        console.log('deleted post ', action.payload)
+        if (action.payload !== undefined && action.payload._id) {
+          state.status = "success";
+          const findIndex = state.posts.findIndex((p: any) => p._id === action.payload._id);
+          state.posts.splice(findIndex, 1);
+        }
+      })
+      .addCase(deletePost.rejected, (state, action) => {
         state.status = "failed";
       })
       .addCase(getAllPosts.pending, (state, action) => {
