@@ -26,6 +26,7 @@ import { ReactComponent as ImageLogo } from '../../../../assets/imagesLogo.svg';
 import { ReactComponent as CancelLogo } from '../../../../assets/cancelLogo.svg';
 import { ReactComponent as EditLogo } from '../../../../assets/editLogo.svg';
 import { ReactComponent as TrashLogo } from '../../../../assets/trashLogo.svg';
+import { ReactComponent as ProcessingLogo } from '../../../../assets/processingLogo.svg';
 
 const Middle = () => {
   const dispatch = useAppDispatch();
@@ -45,6 +46,9 @@ const Middle = () => {
   const [desktopmodal, setdeskTopModal] = useState<boolean>(false);
   const [mobileIconModal, setMobileIconModal] = useState<boolean>(false);
   const [postModal, setPostModal] = useState<boolean>(false);
+  const [isPosting, setIsPosting] = useState<boolean>(false);
+  const [isUpdated, setIsUpdated] = useState<boolean>(false);
+  const [isDeleted, setIsDeleted] = useState<boolean>(false);
   const [commentModal, setCommentModal] = useState<boolean>(false);
   const [mobileCommentModal, setMobileCommentModal] = useState<boolean>(false);
   const [postClicked, setPostClicked] = useState<string>("");
@@ -152,6 +156,7 @@ console.log(fileInput, imageInput, fileInput.length, imageInput.length);
 
 
 const handlePostSubmit = async() => {
+  setIsPosting(true);
   const getUser = JSON.parse(localStorage.getItem('user') as any);
   const userId = getUser._doc._id;
   const data = { content, privacy,  };
@@ -170,7 +175,7 @@ const handlePostSubmit = async() => {
     postData.append('video', video)
   })
   }
-
+console.log('imglength ', imageInput.length, 'videolength ', fileInput.length )
   const token = getUser.token;
 
  
@@ -178,12 +183,17 @@ if(id){
  const post = {
     postData, 
     token,
-    id
+    _id: id,
   };
 
   if(post){
     dispatch(updatePost(post)).then((res: any) => {
       console.log('the update res ', res)
+      if(res.payload !== undefined){
+      setIsUpdated(true);
+      hidePostModal();
+     }
+
     })
   }
 }else{
@@ -196,6 +206,13 @@ if(id){
   if(post){
     dispatch(createPost(post)).then((res: any) => {
       console.log('posted   ', res)
+      if(res.payload !== undefined){
+         dispatch(getAllPosts()).then((res: any) => {
+          setIsPosting(false);
+          hidePostModal();
+      });
+      }
+     
     })
   }
 }
@@ -355,11 +372,15 @@ useEffect(() => {
   };
 
   const handleDeletePost = (id: string) => {
+    const getConfirmation = window.confirm("Are you sure Your want to delete this post? This action cannot be undo");
+    if(getConfirmation){
     const token = getUser.token;
     const post = { id, token };
     dispatch(deletePost(post)).then((res: any) => {
       console.log('is successfully deleted ', res);
     })
+  }
+
   };
   return (
     <div className="mt-10 max-w-md sm:max-w-full">
@@ -1495,28 +1516,9 @@ useEffect(() => {
           <img className='rounded-full w-7 h-7 cursor-pointer' src={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url} alt="" />
 
             {/* cancel or close  */}
-            <svg
-              onClick={hidePostModal}
-              className="w-3 h-3 fill-black z-40 mr-2 cursor-pointer"
-              version="1.1"
-              id="Layer_1"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 492 492"
-            >
-              <g>
-                <g>
-                  <path
-                    d="M300.188,246L484.14,62.04c5.06-5.064,7.852-11.82,7.86-19.024c0-7.208-2.792-13.972-7.86-19.028L468.02,7.872
-                  c-5.068-5.076-11.824-7.856-19.036-7.856c-7.2,0-13.956,2.78-19.024,7.856L246.008,191.82L62.048,7.872
-                  c-5.06-5.076-11.82-7.856-19.028-7.856c-7.2,0-13.96,2.78-19.02,7.856L7.872,23.988c-10.496,10.496-10.496,27.568,0,38.052
-                  L191.828,246L7.872,429.952c-5.064,5.072-7.852,11.828-7.852,19.032c0,7.204,2.788,13.96,7.852,19.028l16.124,16.116
-                  c5.06,5.072,11.824,7.856,19.02,7.856c7.208,0,13.968-2.784,19.028-7.856l183.96-183.952l183.952,183.952
-                  c5.068,5.072,11.824,7.856,19.024,7.856h0.008c7.204,0,13.96-2.784,19.028-7.856l16.12-16.116
-                  c5.06-5.064,7.852-11.824,7.852-19.028c0-7.204-2.792-13.96-7.852-19.028L300.188,246z"
-                  />
-                </g>
-              </g>
-            </svg>
+            <CancelLogo  onClick={hidePostModal}
+              className="w-3 h-3 fill-black z-40 mr-2 cursor-pointer"/>
+            
           </div>
 
           <textarea
@@ -1575,7 +1577,13 @@ useEffect(() => {
             )}
 
             <button onClick={handlePostSubmit} className="text-[9px] text-white dark-text-black bg-black dark:bg-white font-semibold rounded-2xl px-3 py-1 transform-transition duration-100 hover:scale-110">
-              Send
+             {
+              isPosting ? (
+                <ProcessingLogo className="w-4 h-4 stroke-white" />
+              ) : (
+                'Send'
+              )
+             } 
             </button>
           </div>
         </div>

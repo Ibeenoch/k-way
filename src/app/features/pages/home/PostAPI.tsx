@@ -23,6 +23,7 @@ export const updatepost = async(post: any) => {
     const token = post.token;
     const data = post.postData;
     const id = post._id;
+
     const option = {
       headers: {
         'Content-type': 'multipart/form-data',
@@ -39,14 +40,14 @@ export const updatepost = async(post: any) => {
 export const deletepost = async(post: any) => {
   try {
     const token = post.token;
-    const id = post._id;
+    const id = post.id;
     const option = {
       headers: {
-        'Content-type': 'multipart/form-data',
+        'Content-type': 'application/json',
         'authorization': `Bearer ${token}`
       }
     }
-    const res = await axios.put(`${API}/post/delete/${id}`, option);
+    const res = await axios.delete(`${API}/post/delete/${id}`, option);
     return res.data;
   } catch (error) {
     console.log(error);
