@@ -192,6 +192,7 @@ if(id){
       if(res.payload !== undefined){
       setIsUpdated(true);
       hidePostModal();
+      navigate('/');
      }
 
     })
@@ -210,6 +211,7 @@ if(id){
          dispatch(getAllPosts()).then((res: any) => {
           setIsPosting(false);
           hidePostModal();
+          navigate('/');
       });
       }
      
@@ -232,7 +234,8 @@ useEffect(() => {
 
 useEffect(() => {
   getAPost()
-}, [postId])
+}, [postId]);
+
   const videoUrl = `${process.env.PUBLIC_URL}/video.mp4`;
 
   const showComment = () => {
@@ -259,6 +262,7 @@ useEffect(() => {
 
   useEffect(() => {
      setDesktopMenu(false);
+     setMenu(false);
   }, [postModal])
 
   const hidePostModal = () => {
@@ -309,7 +313,6 @@ useEffect(() => {
     ) {
       let mobile = document.getElementById("mobilemenu");
       if (!mobile) {
-        console.log("not mobile");
         setMenu(false);
       }
     }
@@ -319,7 +322,6 @@ useEffect(() => {
     ) {
       let desktop = document.getElementById("desktopmenu");
       if (!desktop) {
-        console.log("not desktop");
         setDesktopMenu(false);
       }
     }
@@ -330,7 +332,6 @@ useEffect(() => {
   };
 
   const showMobileModal = (img: any, id: any) => {
-    // post && post.photos[0] && post.photos[0].url
     const post = posts.find((item: any) => item._id === id );
     setPersonalPost(post)
     console.log('type of is ' ,typeof id, post)
@@ -358,13 +359,13 @@ useEffect(() => {
   }, [])
 
   const menuShow = (id: string) => {
-    setPostClicked(id)
+    setPostClicked(id);
+    setIsPosting(false);
     setMenu((prev) => !prev);
     setDesktopMenu(true);
   };
 
   const handleEditPost = (id: string) => {
-    console.log('edit me')
     const findPost = posts.find((p: any) => p._id === id);
     setcontent(findPost.content);
     navigate(`/${findPost._id}`)
@@ -853,11 +854,11 @@ useEffect(() => {
          {
                     post && post.owner && post.owner._id === getUser._doc._id ? (
                       <>
-                    <div className="flex gap-2 px-2 cursor-pointer items-center pt-4">
+                    <div onClick={() =>handleEditPost(post._id)} className="flex gap-2 px-2 cursor-pointer items-center pt-4">
                       <EditLogo  className="stroke-black w-4 h-4"/>
                       <p className="text-black text-md">Edit Post</p>
                     </div>
-                    <div className="flex gap-2 cursor-pointer items-center pt-4">
+                    <div  onClick={() =>handleDeletePost(post._id)} className="flex gap-2 cursor-pointer items-center pt-4">
                       <TrashLogo className="fill-black stroke-black w-6 h-6"/>
                       <p className="text-black text-md">Delete Post</p>
                     </div>
