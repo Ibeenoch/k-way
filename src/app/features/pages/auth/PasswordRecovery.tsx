@@ -3,6 +3,8 @@ import { FormEvent, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../../app/hooks";
 import toast, { Toaster} from "react-hot-toast"
 import { emailPasswordLink } from "./authSlice";
+import { ReactComponent as ProcessingLogo } from '../../../../assets/processingLogo.svg'
+
 const PasswordRecovery = () => {
   const [email, setEmail] = useState<string>("");
   const { id } = useParams();
@@ -12,12 +14,14 @@ const PasswordRecovery = () => {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+    setIsClicked(true)
     const data = { email };
     if(email){
       dispatch(emailPasswordLink(data)).then((res) => {
         console.log('emmail link ', res)
         if(res && res.payload && res.payload.message){
-          setIsSent(true)
+          setIsSent(true);
+          setIsClicked(false);
         }
       })
     }
@@ -100,7 +104,7 @@ const PasswordRecovery = () => {
               >
              { isClicked  ? (
                     <div className="flex items-center">
-                      <svg className="w-9 h-9" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><radialGradient id="a11" cx=".66" fx=".66" cy=".3125" fy=".3125" gradientTransform="scale(1.5)"><stop offset="0" stop-color="#FFFFFF"></stop><stop offset=".3" stop-color="#FFFFFF" stop-opacity=".9"></stop><stop offset=".6" stop-color="#FFFFFF" stop-opacity=".6"></stop><stop offset=".8" stop-color="#FFFFFF" stop-opacity=".3"></stop><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"></stop></radialGradient><circle transform-origin="center" fill="none" stroke="url(#a11)" stroke-width="8" stroke-linecap="round" stroke-dasharray="200 1000" stroke-dashoffset="0" cx="100" cy="100" r="70"><animateTransform type="rotate" attributeName="transform" calcMode="spline" dur="2" values="360;0" keyTimes="0;1" keySplines="0 0 1 1" repeatCount="indefinite"></animateTransform></circle><circle transform-origin="center" fill="none" opacity=".2" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" cx="100" cy="100" r="70"></circle></svg>
+                      <ProcessingLogo className="w-9 h-9"/>
                        <p>Processing...</p>
                     </div>
                   ) : (

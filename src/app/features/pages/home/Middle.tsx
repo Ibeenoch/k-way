@@ -4,7 +4,7 @@ import { PlusIcon, HeartIcon,  } from "@heroicons/react/24/outline";
 import EmojiPicker from "emoji-picker-react";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { selectUser } from "../auth/authSlice";
-import { createPost, deletePost, getAllPosts, selectPost, updatePost } from "./PostSlice";
+import { createPost, deletePost, getAllPosts, likePost, rePost, selectPost, updatePost } from "./PostSlice";
 import { timeStamp } from "console";
 import toast, { Toast } from 'react-hot-toast'
 import { useNavigate, useParams } from "react-router-dom";
@@ -225,6 +225,32 @@ if(id){
 const getAPost = async() => {
 
 }
+
+const handleLike = async (postId: string) => {
+  const token = getUser && getUser.token;
+  const userId =  getUser && getUser._doc._id;
+  const postLike = {
+    token,
+    userId,
+    postId
+  };
+  dispatch(likePost(postLike)).then((res: any) => {
+    console.log('res ', res)
+  })
+};
+
+const handleReShare = async (postId: string) => {
+  const token = getUser && getUser.token;
+  const userId =  getUser && getUser._doc._id;
+  const postReshare = {
+    token,
+    userId,
+    postId
+  };
+  dispatch(rePost(postReshare)).then((res: any) => {
+    console.log('res ', res)
+  })
+};
 
 const fetchAllPosts = async() => {
 
@@ -741,6 +767,17 @@ useEffect(() => {
 
           posts && Array.isArray(posts) && posts.map((post: any, index: number) => (       
       <div key={index} className="rounded-full my-1 p-3 max-w-full bg-white dark-bg-gray-700 border border-gray-400 rounded-lg">
+       {
+        post.reShared &&  (
+          <>
+          <div className="flex border-b border-b-gray-300 pb-4">
+           <ImgLazyLoad className="w-8 h-8 rounded-full cursor-pointer" src={post && post.reShare && post.reShare[0].user.profilePhoto && post.reShare[0].user.profilePhoto.url} alt={post && post.reShare && post.reShare[0].user.profilePhoto && post.reShare[0].user.profilePhoto.public_id} />
+            <p className="text-black dark:text-white text-xs font-medium px-1">{post && post.reShare && post.reShare[0].user.fullname}</p>
+            <p className="text-gray-500 text-xs font-semibold px-3">Reshared this post</p>
+          </div>
+          </>
+        ) 
+       }
         <div className="flex items-center gap-2 w-full">
           <ImgLazyLoad className="w-8 h-8 rounded-full cursor-pointer" key={index} src={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.url} alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
           <div className="w-full flex items-center justify-between gap-1">
@@ -946,12 +983,12 @@ useEffect(() => {
             <div className="p-[5px] bg-red-600 rounded-full">
               <LikeLogo  className="w-[12px] h-[12px] fill-white stroke-white"/>
             </div>
-            <p className="text-[8px] text-gray-600">441k</p>
+            <p className="text-[8px] text-gray-600"> {post.likes.length}</p>
 
             <div className="p-[5px] bg-green-600 rounded-full">
               <RetweetLogo  className="w-[12px] h-[12px] fill-white stroke-white"/>
             </div>
-            <p className="text-[8px] text-gray-600">731k</p>
+            <p className="text-[8px] text-gray-600">{post.reShare.length}</p>
 
             <div className="p-[5px] bg-sky-600 rounded-full">
               <BookMarkLogo className="w-[12px] h-[12px] fill-white stroke-white"/>
@@ -965,17 +1002,17 @@ useEffect(() => {
         {/* icons */}
         <div className="flex justify-between items-center">
           <div className="flex items-center pl-9 sm:gap-1 mt-4">
-            <div className="bg-black mr-1 cursor-pointer sm:mx-0 flex items-center py-1 px-3 rounded-lg">
+            <div  onClick={() =>handleLike(post._id)} className="bg-black mr-1 cursor-pointer sm:mx-0 flex items-center py-1 px-3 rounded-lg">
               <LikeLogo  className="w-[12px] h-[12px] fill-white stroke-white dark:fill-black dark:stroke-black"/>
               <p className="text-white dark:text-black text-[10px] pl-1">
                 Like
               </p>
             </div>
 
-            <div className="bg-black mr-1  cursor-pointer sm:mx-0 flex items-center py-1 px-3 rounded-lg">
+            <div onClick={() =>handleReShare(post._id)} className="bg-black mr-1  cursor-pointer sm:mx-0 flex items-center py-1 px-3 rounded-lg">
               <RetweetLogo  className="w-[13px] h-[13px] fill-white stroke-white dark:fill-black dark:stroke-black"/>
               <p className="text-white dark:text-black text-[10px] pl-1">
-                Retweet
+                ReShare
               </p>
             </div>
 

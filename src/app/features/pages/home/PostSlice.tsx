@@ -32,6 +32,24 @@ export const updatePost = createAsyncThunk("/post/update", async (post: any) => 
   }
 });
 
+export const likePost = createAsyncThunk("/post/like", async (post: any) => {
+  try {
+    const res = await api.likepost(post);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+export const rePost = createAsyncThunk("/post/repost", async (post: any) => {
+  try {
+    const res = await api.repost(post);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 export const deletePost = createAsyncThunk("/post/delete", async (post: any) => {
   try {
     const res = await api.deletepost(post);
@@ -89,6 +107,32 @@ export const postSlice = createSlice({
         }
       })
       .addCase(updatePost.rejected, (state, action) => {
+        state.status = "failed";
+      })
+      .addCase(likePost.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(likePost.fulfilled, (state, action) => {
+        if (action.payload !== undefined && action.payload._id) {
+          state.status = "success";
+          console.log('like post ', action.payload)
+          const findIndex = state.posts.findIndex((p: any) => p._id === action.payload._id);
+          state.posts[findIndex] = action.payload;
+        }
+      })
+      .addCase(likePost.rejected, (state, action) => {
+        state.status = "failed";
+      })
+      .addCase(rePost.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(rePost.fulfilled, (state, action) => {
+        if (action.payload !== undefined && action.payload._id) {
+          state.status = "success";
+          state.posts.push(action.payload);
+        }
+      })
+      .addCase(rePost.rejected, (state, action) => {
         state.status = "failed";
       })
       .addCase(deletePost.pending, (state, action) => {

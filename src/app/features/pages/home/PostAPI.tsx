@@ -18,6 +18,46 @@ export const createpost = async(post: any) => {
   }
 }
 
+export const likepost = async(post: any) => {
+  try {
+    const token = post.token;
+    const userId = post.userId;
+    const id = post.postId;
+console.log('post ', post);
+const data = {userId}
+
+    const option = {
+      headers: {
+        'authorization': `Bearer ${token}`
+      }
+    };
+
+    const res = await axios.put(`${API}/post/like/${id}/${userId}`, data, option);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export const repost = async(post: any) => {
+  try {
+    const token = post.token;
+    const userId = post.userId;
+    const id = post.postId;
+    const data = {userId}
+    console.log('post ', post);
+    const option = {
+      headers: {
+        'authorization': `Bearer ${token}`
+      }
+    }
+    const res = await axios.put(`${API}/post/reshare/${id}/${userId}`, data, option);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export const updatepost = async(post: any) => {
   try {
     const token = post.token;
