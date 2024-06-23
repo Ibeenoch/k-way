@@ -30,12 +30,14 @@ import { ReactComponent as ProcessingLogo } from '../../../../assets/processingL
 import { ReactComponent as ArrowDownLogo } from '../../../../assets/arrowDownLogo.svg';
 import { ReactComponent as PlusLogo } from '../../../../assets/plusLogo.svg';
 import { ReactComponent as ThreeDotVerticalLogo } from '../../../../assets/threeDotVerticalLogo.svg';
+import { formatCreatedAt } from "../../../../utils/timeformat";
 
 const Middle = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const desktopMenuRef = useRef<HTMLDivElement>(null);
+  const desktopCommentMenuRef = useRef<HTMLDivElement>(null);
   const [onePic, setOnePic] = useState<boolean>(false);
   const [twoPics, setTwoPics] = useState<boolean>(false);
   const [threePics, setThreePics] = useState<boolean>(false);
@@ -43,6 +45,7 @@ const Middle = () => {
   const [playvideo, setPlayVideo] = useState<boolean>(false);
   const [menu, setMenu] = useState<boolean>(false);
   const [desktopMenu, setDesktopMenu] = useState<boolean>(false);
+  const [desktopCommentMenu, setDesktopCommentMenu] = useState<boolean>(false);
   const [mobileModal, setMobileModal] = useState<boolean>(false);
   const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);
   const [fullvideoScreen, setFullVideoScreen] = useState<boolean>(false);
@@ -52,6 +55,7 @@ const Middle = () => {
   const [isPosting, setIsPosting] = useState<boolean>(false);
   const [isUpdated, setIsUpdated] = useState<boolean>(false);
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
+  const [isCommenting, setIsCommenting] = useState<boolean>(false);
   const [commentModal, setCommentModal] = useState<boolean>(false);
   const [mobileCommentModal, setMobileCommentModal] = useState<boolean>(false);
   const [postClicked, setPostClicked] = useState<string>("");
@@ -62,7 +66,7 @@ const Middle = () => {
   const [displayImage, setDisplayImage] = useState<string>('');
 
   const { profile } = useAppSelector(selectUser);
-  const { posts } = useAppSelector(selectPost);
+  const { posts, comments } = useAppSelector(selectPost);
 
   const fileRef = useRef<HTMLInputElement>(null);
   const [fileInput, setFileInput] = useState<File[]>([]);
@@ -157,15 +161,27 @@ console.log(fileInput, imageInput, fileInput.length, imageInput.length);
 
  }
 
-const handleCommentSubmit = () => {
+const handleCommentSubmit = (postId: string) => {
+  setIsCommenting(true);
   if(comment === ''){
+    setIsCommenting(false);
     setCommentErr('No comment has been added, please add a comment');
     setTimeout(() => { setCommentErr('');}, 5000);
     return;
   }
+    const userId = getUser && getUser._doc && getUser._doc._id;
+    const token = getUser && getUser.token;
 
-  dispatch(commentOnPost(comment)).then((res: any) => {
+    const comments = {
+      id: postId,
+      token,
+      userId,
+      comment
+    }
+
+  dispatch(commentOnPost(comments)).then((res: any) => {
     console.log('comment ', res);
+    setIsCommenting(false);
   })
 }
 
@@ -379,6 +395,15 @@ useEffect(() => {
     }
   };
 
+  const hideCommentDeskTopMenu = (e: MouseEvent) => {
+   if (
+      desktopCommentMenuRef.current &&
+      !desktopCommentMenuRef.current.contains(e.target as Node)
+    ) {
+      setDesktopCommentMenu(false);
+    }
+  };
+
   const hideMobileModal = () => {
     setMobileModal(false);
   };
@@ -428,6 +453,23 @@ useEffect(() => {
     setMenu((prev) => !prev);
     setDesktopMenu(true);
   };
+
+  const showCommentMenuBar = (id: string) => {
+    setDesktopCommentMenu(true);
+  };
+
+  
+  useEffect(() => {
+    if(hideCommentDeskTopMenu){
+      document.addEventListener("mousedown", hideCommentDeskTopMenu);
+    }else{
+      document.addEventListener("mousedown", hideCommentDeskTopMenu);
+        };
+
+    return () => {
+      document.removeEventListener("mousedown", hideCommentDeskTopMenu);
+    };
+  }, [hideCommentDeskTopMenu]);
 
   const handleEditPost = (id: string) => {
     const findPost = posts.find((p: any) => p._id === id);
@@ -812,7 +854,7 @@ useEffect(() => {
                 <h1 className="text-black dark:text-white text-sm font-semibold">
                   {post && post.owner && post.owner.fullname}
                 </h1>
-              <p className="text-gray text-[8px]"> {post && post.createdAt && getConvertedTime(getUser.createdAt)} </p>
+              <p className="text-gray text-[8px]"> {post && formatCreatedAt(post.createdAt)} </p>
               </div>
               <VerifyMarkLogo className="w-5 h-5 fill-blue-500 stroke-white"/>
            
@@ -924,6 +966,243 @@ useEffect(() => {
                       </>
                     )
                   }
+        
+      </div>
+
+        {/* desktop comment modal  */}
+        <div
+        className={`${
+          commentModal ? "hidden sm:flex" : "hidden"
+        } fixed top-0 left-0 bg-black sm:px-[30%] md:px[45%] w-full h-full justify-center items-center`}
+      >
+        <div className={`w-full h-full  bg-white`}>
+          <div className="flex justify-between items-center p-2">
+            <div>
+              <h1 className="font-semibold text-xs text-black">23k Comment</h1>
+            </div>
+            {/* close comment */}
+            <CancelLogo onClick={hideComment}
+              className="w-3 h-3 fill-black dark:white z-40 mr-2 cursor-pointer"
+              />
+           
+          </div>
+
+          <div className="flex bg-gray-100 items-center max-h-[30px] p-2 rounded-xl">
+            <ImgLazyLoad
+              src={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url }
+              className="block w-6 h-6 rounded-full"
+              alt={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.public_id }
+            />
+            <input
+              type="text"
+              onChange={(e) => (setComment(e.target.value))}
+              value={comment}
+              className="block text-xs w-[700px] h-[30px] bg-gray-100 border-0"
+              placeholder="Comment on this"
+              name=""
+              id=""
+            />
+            <button
+              type="button"
+              onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+              className="text-black cursor-pointer"
+            >
+              🙂
+            </button>
+            {showEmojiPicker && (
+              <div className="absolute z-5">
+                <EmojiPicker onEmojiClick={onEmojiClick} />
+              </div>
+            )}
+          </div>
+          <p className="text-red-600 text-[8px]">{commentErr}</p>
+
+         
+          <div className="flex justify-between items-center p-2">
+            <div className="flex gap-4 sm:max-w-xs sm:gap-0 sm:flex-wrap">
+              
+            </div>
+
+           
+
+            <button onClick={() => handleCommentSubmit(post._id)} className="text-[9px] text-white dark-text-black bg-black dark:bg-white font-semibold rounded-2xl px-3 py-1 transform-transition duration-100 hover:scale-110">
+            {
+              isCommenting ? (
+                <>
+                <ProcessingLogo className="w-4 h-4 fill-white" />
+                </>
+              ) : (
+                'Comment'
+              )
+            }  
+            </button>
+          </div>
+
+            {/* view other people comments  */}
+            <div className="p-4">
+              <div className="flex justify-between">
+              <div className="flex space-x-2">
+                <img src={comments && comments.owner.profilePhoto && comments.owner.profilePhoto.url} className="w-7 h-7 rounded-full" alt="" />
+                <div className="flex flex-col space-y-1">
+                  <div>
+
+                 <div className="flex gap-1 items-center"> 
+                  <p className="text-xs font-medium text-black">{comments && comments.owner && comments.owner.fullname}  </p>
+                 <p className="text-gray-400 text-[9px]">{formatCreatedAt(comments && comments.createdAt)}</p> 
+                  </div>
+                  <p className="text-[9px] text-gray-600">@{comments && comments.owner && comments.owner.handle} </p>
+                  </div>
+                  <p className="text-[10px] text-black dark:text-white">{comments && comments.content}</p>
+                   <div className="flex gap-2 items-center">
+                    <div className="flex items-center">
+                    {/* heart icon  */}
+                    <HeartIcon className="w-[14px] h-[14px]" fill="red" stroke="red" />
+                      <p className="text-xs text-gray-500 dark:text-white">25k</p>
+                    </div>
+                    <div className="flex items-center">
+                      {/* comment icon  */}
+                      <CommentLogo className="w-[12px] h-[12px] fill-gray-600 stroke-gray-600"/>
+                 
+                  <p className="text-xs text-gray-500 dark:text-white">54k</p>
+                    </div>
+                      
+                   </div>
+
+                   <div className="">
+                    <p className="text-gray-400 text-sm pt-1 flex">See Reply &#40;<span>9</span>&#41; </p>
+                   </div>
+                </div>
+              </div>
+
+              <div className="relative">
+                 {/* three dot icon vertical */}
+                 <ThreeDotVerticalLogo onClick={() =>showCommentMenuBar(comments._id)} className="w-5 relative h-5 fill-black stroke-black dark:fill-white cursor-pointer dark:stroke-white"/>
+              
+                
+                {/* desktop comment menu  */}
+              <div
+                ref={desktopCommentMenuRef}
+                id="desktopcommentmenu"
+                className={`hidden ${
+                  desktopCommentMenu ? "sm:block" : "sm:hidden"
+                } absolute shadow-xl w-[200px]  shadow-purple-80 z-10 right-0 rounded-3xl mx-auto bg-white  h-auto p-5`}
+              >
+                <div className="flex gap-2 cursor-pointer items-center -pt-4">
+                  <svg
+                    id="svg"
+                    className="fill-black stroke-black w-5 h-5"
+                    version="1.1"
+                    viewBox="144 144 512 512"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g id="IconSvg_bgCarrier" stroke-width="0"></g>
+                    <g
+                      id="IconSvg_tracerCarrier"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke="#CCCCCC"
+                    ></g>
+                    <g id="IconSvg_iconCarrier">
+                      <g xmlns="http://www.w3.org/2000/svg">
+                        <path d="m179.58 617.6h392.83c8.6914 0 15.742-7.0391 15.742-15.742 0-116.98-95.172-212.15-212.17-212.15-116.97 0.015625-212.15 95.188-212.15 212.15 0 8.707 7.0547 15.746 15.746 15.746zm196.41-196.39c94.324 0 171.99 72.629 180 164.92h-359.98c7.9961-92.293 85.664-164.92 179.98-164.92z" />
+                        <path d="m281.26 277.13c0 52.238 42.508 94.746 94.746 94.746 52.238 0 94.746-42.492 94.746-94.746 0-52.254-42.508-94.746-94.746-94.746-52.254 0.011719-94.746 42.508-94.746 94.746zm157.99 0c0 34.875-28.387 63.258-63.258 63.258-34.875 0-63.258-28.387-63.258-63.258 0-34.875 28.371-63.258 63.258-63.258 34.887-0.003906 63.258 28.383 63.258 63.258z" />
+                        <path d="m636.16 273.21c0-8.707-7.0547-15.742-15.742-15.742h-36.195l-0.003906-36.195c0-8.707-7.0547-15.742-15.742-15.742-8.6914 0-15.742 7.0391-15.742 15.742v36.195h-36.195c-8.6914 0-15.742 7.0391-15.742 15.742 0 8.707 7.0547 15.742 15.742 15.742h36.195v36.211c0 8.707 7.0547 15.742 15.742 15.742 8.6914 0 15.742-7.0391 15.742-15.742v-36.211l36.195 0.003906c8.6914 0 15.746-7.0391 15.746-15.746z" />
+                      </g>
+                    </g>
+                  </svg>
+                  <p className="text-black text-md">Follow @texilola😎</p>
+                </div>
+
+                <div className="flex gap-2 items-center pt-4  cursor-pointer">
+                  <svg
+                    className="fill-black stroke-black w-5 h-5"
+                    version="1.1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    x="0px"
+                    y="0px"
+                    viewBox="0 0 256 256"
+                    enable-background="new 0 0 256 256"
+                  >
+                    <metadata>
+                      {" "}
+                      Svg Vector Icons : http://www.onlinewebfonts.com/icon{" "}
+                    </metadata>
+                    <g>
+                      <g>
+                        <g>
+                          <path d="M116.7,10.8C87.9,13.8,62.4,26.2,42.5,47c-17.6,18.2-28.3,40.9-31.9,67.1c-0.9,6.8-0.8,23,0.3,29.8c2.1,13.3,5.6,24.7,11.2,35.9c15.8,31.9,44.4,54.5,79.4,62.8c12.3,2.9,28.8,3.7,41.9,2c15.8-2.1,32.7-8,45.9-16c31.2-19.2,51.2-49.9,56.2-86.5c1-7,0.9-23-0.3-30.3c-3.9-26.4-15.9-49.8-34.9-68.2c-17.9-17.3-40.3-28.3-64.9-32.1C138.9,10.6,122.6,10.1,116.7,10.8z M141.9,29.1c33.6,4.9,62.2,25.9,76.7,56.4c13.2,27.7,12.6,60.5-1.6,88.1c-2.6,5.1-7.8,13.1-10.6,16.4l-1.7,2l-70.4-70.1C95.7,83.2,64,51.5,63.9,51.4c-0.1-0.1,1.7-1.7,4-3.3c13.3-9.9,29-16.4,45.7-19C120,28.1,135.3,28.1,141.9,29.1z M152.2,164.7l40,39.9l-1.7,1.4c-3.6,3.1-13,9-19,11.8c-35,16.9-76.6,12.1-106.8-12.3c-4.9-4-13.5-12.9-17.2-17.8c-26.4-35.4-26.4-83.7,0.2-119.3l3.3-4.4l30.6,30.5C98.4,111.1,130.2,142.8,152.2,164.7z" />
+                        </g>
+                      </g>
+                    </g>
+                  </svg>
+                  <p className="text-black text-md">Block @texilola😎</p>
+                </div>
+
+                <div className="flex gap-2 items-center cursor-pointer pt-4">
+                  <svg
+                    version="1.1"
+                    className="fill-black stroke-black w-5 h-5"
+                    xmlns="http://www.w3.org/2000/svg"
+                    x="0px"
+                    y="0px"
+                    viewBox="0 0 256 256"
+                    enable-background="new 0 0 256 256"
+                  >
+                    <metadata>
+                      {" "}
+                      Svg Vector Icons : http://www.onlinewebfonts.com/icon{" "}
+                    </metadata>
+                    <g>
+                      <g>
+                        <g>
+                          <path d="M23.5,11.4L22,12.8v115.3v115.3l1.3,1.2c1.8,1.7,5.1,1.7,6.6,0.1c1.1-1.2,1.1-2.8,1.3-41l0.1-39.8l101.3-0.1l101.3-0.2l-26.9-32.2l-26.9-32.2l2.5-3c18.4-21.7,50.8-60.9,50.5-61.1c-0.1-0.2-45.6-0.3-101-0.3H31.4V24.5c0-10.6-0.3-12.2-2.3-13.8C27.6,9.5,25,9.8,23.5,11.4z M212.9,45.5c-0.5,0.6-10.7,12.9-22.9,27.5l-22,26.4l22.8,27.3c12.5,15,22.8,27.4,22.8,27.6c0,0.2-41,0.4-91.1,0.4H31.4V99.6V44.5h91.1C209,44.5,213.7,44.6,212.9,45.5z" />
+                        </g>
+                      </g>
+                    </g>
+                  </svg>
+                  <p className="text-black text-md">Report Post</p>
+                </div>
+
+                <div className="flex gap-2 cursor-pointer items-center pt-4">
+                  <svg
+                    version="1.1"
+                    className="fill-black stroke-black w-5 h-5"
+                    xmlns="http://www.w3.org/2000/svg"
+                    x="0px"
+                    y="0px"
+                    viewBox="0 0 256 256"
+                    enable-background="new 0 0 256 256"
+                  >
+                    <metadata>
+                      {" "}
+                      Svg Vector Icons : http://www.onlinewebfonts.com/icon{" "}
+                    </metadata>
+                    <g>
+                      <g>
+                        <g>
+                          <path d="M173.7,14.2c-23.9,16.2-44.9,28.4-59.9,35c-3.7,1.7-10.9,4.4-15.9,6.2c-9.3,3.2-12,4.5-14.5,7.3c-1.8,2-4.7,7.7-6.9,13.8l-1.7,4.6l-16.7,0.2l-16.6,0.2l-3,1.5c-3.8,1.9-7.5,5.5-9.2,9.3L27.8,95v33v33l1.4,2.9c1.7,3.7,5.6,7.7,9.4,9.4l2.9,1.4l14.4,0.2l14.4,0.2l58.6-58.1l58.6-58.1l0-3.3c0.3-17.9,0-41.5-0.6-42.4c-0.3-0.6-1.3-1.5-2.2-2C181.8,9.2,180.4,9.6,173.7,14.2z" />
+                          <path
+                            fill="#000000"
+                            d="M217.9,43.2c-1.6,1-173.4,171.2-175.9,174.3c-2.9,3.6-1.5,8.8,2.9,10.6c4.7,2,0.4,5.9,64.1-57.4c31.6-31.4,71.3-70.8,88.2-87.5l30.8-30.6l0.2-2.5c0.3-3.1-0.7-5.3-3-6.8C223.1,42,219.9,42,217.9,43.2z"
+                          />
+                          <path
+                            fill="#000000"
+                            d="M140,151.5c-25.9,25.7-47.1,46.8-47.3,47c-0.1,0.2,1.9,1,4.3,1.8c19.7,6.4,39.6,16.9,71,37.7c7.1,4.7,12.6,8,13.3,8c1.9,0,4.5-1.3,5.4-2.7c0.8-1.2,0.9-6.2,0.9-69.6c0-37.6-0.1-68.5-0.3-68.6C187.2,104.9,165.9,125.8,140,151.5z"
+                          />
+                        </g>
+                      </g>
+                    </g>
+                  </svg>
+                  <p className="text-black text-md">Mute @texilola😎</p>
+                </div>
+              </div>
+
+              </div>
+              </div>
+            </div>
+
+        </div>
+
         
       </div>
         {/* post images  */}
@@ -1629,227 +1908,7 @@ useEffect(() => {
         </div>
       </div>
 
-         {/* desktop comment modal  */}
-         <div
-        className={`${
-          commentModal ? "hidden sm:flex" : "hidden"
-        } fixed top-0 left-0 bg-black sm:px-[30%] md:px[45%] w-full h-full justify-center items-center`}
-      >
-        <div className={`w-full h-full  bg-white`}>
-          <div className="flex justify-between items-center p-2">
-            <div>
-              <h1 className="font-semibold text-xs text-black">23k Comment</h1>
-            </div>
-            {/* close comment */}
-            <CancelLogo onClick={hideComment}
-              className="w-3 h-3 fill-black dark:white z-40 mr-2 cursor-pointer"
-              />
-           
-          </div>
-
-          <div className="flex bg-gray-100 items-center max-h-[30px] p-2 rounded-xl">
-            <ImgLazyLoad
-              src={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url }
-              className="block w-6 h-6 rounded-full"
-              alt={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.public_id }
-            />
-            <input
-              type="text"
-              onChange={(e) => (setComment(e.target.value))}
-              value={comment}
-              className="block text-xs w-[700px] h-[30px] bg-gray-100 border-0"
-              placeholder="Comment on this"
-              name=""
-              id=""
-            />
-            <button
-              type="button"
-              onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-              className="text-black cursor-pointer"
-            >
-              🙂
-            </button>
-            {showEmojiPicker && (
-              <div className="absolute z-5">
-                <EmojiPicker onEmojiClick={onEmojiClick} />
-              </div>
-            )}
-          </div>
-          <p className="text-red-600 text-[8px]">{commentErr}</p>
-
-         
-          <div className="flex justify-between items-center p-2">
-            <div className="flex gap-4 sm:max-w-xs sm:gap-0 sm:flex-wrap">
-              
-            </div>
-
-           
-
-            <button onClick={handleCommentSubmit} className="text-[9px] text-white dark-text-black bg-black dark:bg-white font-semibold rounded-2xl px-3 py-1 transform-transition duration-100 hover:scale-110">
-              Send
-            </button>
-          </div>
-
-            {/* view other people comments  */}
-            <div className="p-4">
-              <div className="flex justify-between">
-              <div className="flex space-x-2">
-                <img src={`${process.env.PUBLIC_URL}/images/images-74.jpeg`} className="w-7 h-7 rounded-full" alt="" />
-                <div className="flex flex-col space-y-1">
-                  <p className="text-xs text-black dark:text-white">@takejack . 20min</p>
-                  <p className="text-sm text-black dark:text-white">Her daughter is so smart!</p>
-                   <div className="flex gap-2 items-center">
-                    <div className="flex items-center">
-                    {/* heart icon  */}
-                    <HeartIcon className="w-[14px] h-[14px]" fill="red" stroke="red" />
-                      <p className="text-xs text-gray-500 dark:text-white">25k</p>
-                    </div>
-                    <div className="flex items-center">
-                      {/* comment icon  */}
-                      <CommentLogo className="w-[12px] h-[12px] fill-gray-600 stroke-gray-600"/>
-                 
-                  <p className="text-xs text-gray-500 dark:text-white">54k</p>
-                    </div>
-                      
-                   </div>
-
-                   <div className="">
-                    <p className="text-gray-400 text-sm pt-1 flex">See Reply &#40;<span>9</span>&#41; </p>
-                   </div>
-                </div>
-              </div>
-
-              <div className="">
-                 {/* three dot icon vertical */}
-                 <ThreeDotVerticalLogo className="w-5 relative h-5 fill-black stroke-black dark:fill-white cursor-pointer dark:stroke-white"/>
-              
-                
-                {/* desktop menu  */}
-              <div
-                ref={desktopMenuRef}
-                id="desktopmenu"
-                className={`hidden ${
-                  desktopMenu ? "sm:block" : "sm:hidden"
-                } absolute shadow-xl shadow-purple-80 z-10 left-[50%] rounded-3xl mx-auto bg-white  h-1/3 p-5`}
-              >
-                <div className="flex gap-2 cursor-pointer items-center -pt-4">
-                  <svg
-                    id="svg"
-                    className="fill-black stroke-black w-5 h-5"
-                    version="1.1"
-                    viewBox="144 144 512 512"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <g id="IconSvg_bgCarrier" stroke-width="0"></g>
-                    <g
-                      id="IconSvg_tracerCarrier"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke="#CCCCCC"
-                    ></g>
-                    <g id="IconSvg_iconCarrier">
-                      <g xmlns="http://www.w3.org/2000/svg">
-                        <path d="m179.58 617.6h392.83c8.6914 0 15.742-7.0391 15.742-15.742 0-116.98-95.172-212.15-212.17-212.15-116.97 0.015625-212.15 95.188-212.15 212.15 0 8.707 7.0547 15.746 15.746 15.746zm196.41-196.39c94.324 0 171.99 72.629 180 164.92h-359.98c7.9961-92.293 85.664-164.92 179.98-164.92z" />
-                        <path d="m281.26 277.13c0 52.238 42.508 94.746 94.746 94.746 52.238 0 94.746-42.492 94.746-94.746 0-52.254-42.508-94.746-94.746-94.746-52.254 0.011719-94.746 42.508-94.746 94.746zm157.99 0c0 34.875-28.387 63.258-63.258 63.258-34.875 0-63.258-28.387-63.258-63.258 0-34.875 28.371-63.258 63.258-63.258 34.887-0.003906 63.258 28.383 63.258 63.258z" />
-                        <path d="m636.16 273.21c0-8.707-7.0547-15.742-15.742-15.742h-36.195l-0.003906-36.195c0-8.707-7.0547-15.742-15.742-15.742-8.6914 0-15.742 7.0391-15.742 15.742v36.195h-36.195c-8.6914 0-15.742 7.0391-15.742 15.742 0 8.707 7.0547 15.742 15.742 15.742h36.195v36.211c0 8.707 7.0547 15.742 15.742 15.742 8.6914 0 15.742-7.0391 15.742-15.742v-36.211l36.195 0.003906c8.6914 0 15.746-7.0391 15.746-15.746z" />
-                      </g>
-                    </g>
-                  </svg>
-                  <p className="text-black text-md">Follow @texilola😎</p>
-                </div>
-
-                <div className="flex gap-2 items-center pt-4  cursor-pointer">
-                  <svg
-                    className="fill-black stroke-black w-5 h-5"
-                    version="1.1"
-                    xmlns="http://www.w3.org/2000/svg"
-                    x="0px"
-                    y="0px"
-                    viewBox="0 0 256 256"
-                    enable-background="new 0 0 256 256"
-                  >
-                    <metadata>
-                      {" "}
-                      Svg Vector Icons : http://www.onlinewebfonts.com/icon{" "}
-                    </metadata>
-                    <g>
-                      <g>
-                        <g>
-                          <path d="M116.7,10.8C87.9,13.8,62.4,26.2,42.5,47c-17.6,18.2-28.3,40.9-31.9,67.1c-0.9,6.8-0.8,23,0.3,29.8c2.1,13.3,5.6,24.7,11.2,35.9c15.8,31.9,44.4,54.5,79.4,62.8c12.3,2.9,28.8,3.7,41.9,2c15.8-2.1,32.7-8,45.9-16c31.2-19.2,51.2-49.9,56.2-86.5c1-7,0.9-23-0.3-30.3c-3.9-26.4-15.9-49.8-34.9-68.2c-17.9-17.3-40.3-28.3-64.9-32.1C138.9,10.6,122.6,10.1,116.7,10.8z M141.9,29.1c33.6,4.9,62.2,25.9,76.7,56.4c13.2,27.7,12.6,60.5-1.6,88.1c-2.6,5.1-7.8,13.1-10.6,16.4l-1.7,2l-70.4-70.1C95.7,83.2,64,51.5,63.9,51.4c-0.1-0.1,1.7-1.7,4-3.3c13.3-9.9,29-16.4,45.7-19C120,28.1,135.3,28.1,141.9,29.1z M152.2,164.7l40,39.9l-1.7,1.4c-3.6,3.1-13,9-19,11.8c-35,16.9-76.6,12.1-106.8-12.3c-4.9-4-13.5-12.9-17.2-17.8c-26.4-35.4-26.4-83.7,0.2-119.3l3.3-4.4l30.6,30.5C98.4,111.1,130.2,142.8,152.2,164.7z" />
-                        </g>
-                      </g>
-                    </g>
-                  </svg>
-                  <p className="text-black text-md">Block @texilola😎</p>
-                </div>
-
-                <div className="flex gap-2 items-center cursor-pointer pt-4">
-                  <svg
-                    version="1.1"
-                    className="fill-black stroke-black w-5 h-5"
-                    xmlns="http://www.w3.org/2000/svg"
-                    x="0px"
-                    y="0px"
-                    viewBox="0 0 256 256"
-                    enable-background="new 0 0 256 256"
-                  >
-                    <metadata>
-                      {" "}
-                      Svg Vector Icons : http://www.onlinewebfonts.com/icon{" "}
-                    </metadata>
-                    <g>
-                      <g>
-                        <g>
-                          <path d="M23.5,11.4L22,12.8v115.3v115.3l1.3,1.2c1.8,1.7,5.1,1.7,6.6,0.1c1.1-1.2,1.1-2.8,1.3-41l0.1-39.8l101.3-0.1l101.3-0.2l-26.9-32.2l-26.9-32.2l2.5-3c18.4-21.7,50.8-60.9,50.5-61.1c-0.1-0.2-45.6-0.3-101-0.3H31.4V24.5c0-10.6-0.3-12.2-2.3-13.8C27.6,9.5,25,9.8,23.5,11.4z M212.9,45.5c-0.5,0.6-10.7,12.9-22.9,27.5l-22,26.4l22.8,27.3c12.5,15,22.8,27.4,22.8,27.6c0,0.2-41,0.4-91.1,0.4H31.4V99.6V44.5h91.1C209,44.5,213.7,44.6,212.9,45.5z" />
-                        </g>
-                      </g>
-                    </g>
-                  </svg>
-                  <p className="text-black text-md">Report Post</p>
-                </div>
-
-                <div className="flex gap-2 cursor-pointer items-center pt-4">
-                  <svg
-                    version="1.1"
-                    className="fill-black stroke-black w-5 h-5"
-                    xmlns="http://www.w3.org/2000/svg"
-                    x="0px"
-                    y="0px"
-                    viewBox="0 0 256 256"
-                    enable-background="new 0 0 256 256"
-                  >
-                    <metadata>
-                      {" "}
-                      Svg Vector Icons : http://www.onlinewebfonts.com/icon{" "}
-                    </metadata>
-                    <g>
-                      <g>
-                        <g>
-                          <path d="M173.7,14.2c-23.9,16.2-44.9,28.4-59.9,35c-3.7,1.7-10.9,4.4-15.9,6.2c-9.3,3.2-12,4.5-14.5,7.3c-1.8,2-4.7,7.7-6.9,13.8l-1.7,4.6l-16.7,0.2l-16.6,0.2l-3,1.5c-3.8,1.9-7.5,5.5-9.2,9.3L27.8,95v33v33l1.4,2.9c1.7,3.7,5.6,7.7,9.4,9.4l2.9,1.4l14.4,0.2l14.4,0.2l58.6-58.1l58.6-58.1l0-3.3c0.3-17.9,0-41.5-0.6-42.4c-0.3-0.6-1.3-1.5-2.2-2C181.8,9.2,180.4,9.6,173.7,14.2z" />
-                          <path
-                            fill="#000000"
-                            d="M217.9,43.2c-1.6,1-173.4,171.2-175.9,174.3c-2.9,3.6-1.5,8.8,2.9,10.6c4.7,2,0.4,5.9,64.1-57.4c31.6-31.4,71.3-70.8,88.2-87.5l30.8-30.6l0.2-2.5c0.3-3.1-0.7-5.3-3-6.8C223.1,42,219.9,42,217.9,43.2z"
-                          />
-                          <path
-                            fill="#000000"
-                            d="M140,151.5c-25.9,25.7-47.1,46.8-47.3,47c-0.1,0.2,1.9,1,4.3,1.8c19.7,6.4,39.6,16.9,71,37.7c7.1,4.7,12.6,8,13.3,8c1.9,0,4.5-1.3,5.4-2.7c0.8-1.2,0.9-6.2,0.9-69.6c0-37.6-0.1-68.5-0.3-68.6C187.2,104.9,165.9,125.8,140,151.5z"
-                          />
-                        </g>
-                      </g>
-                    </g>
-                  </svg>
-                  <p className="text-black text-md">Mute @texilola😎</p>
-                </div>
-              </div>
-
-              </div>
-              </div>
-            </div>
-
-        </div>
-
-        
-      </div>
+       
 
     </div>
   );

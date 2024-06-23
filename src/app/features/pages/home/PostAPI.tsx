@@ -130,6 +130,7 @@ export const makeComment = async(comments: any) => {
     const userId = comments.userId;
     const token = comments.token;
     const comment = comments.comment;
+    const dataComment = { comment };
 
     const option = {
       headers: {
@@ -137,7 +138,7 @@ export const makeComment = async(comments: any) => {
         'authorization': `Bearer ${token}`
       }
     };
-    const res = await axios.post(`${API}/comment/${id}/${userId}`, comment, option);
+    const res = await axios.post(`${API}/post/comment/${id}/${userId}`, dataComment, option);
     return res.data;
   } catch (error) {
     console.log(error);
@@ -157,7 +158,7 @@ export const editComment = async(comments: any) => {
         'authorization': `Bearer ${token}`
       }
     };
-    const res = await axios.put(`${API}/updatecomment/${id}/${commentId}`, comment, option);
+    const res = await axios.put(`${API}/post/updatecomment/${id}/${commentId}`, comment, option);
     return res.data;
   } catch (error) {
     console.log(error);
@@ -175,7 +176,7 @@ export const deleteComment = async(comments: any) => {
         'authorization': `Bearer ${token}`
       }
     };
-    const res = await axios.delete(`${API}/deletecomment/${id}/${commentId}`, option);
+    const res = await axios.delete(`${API}/post/deletecomment/${id}/${commentId}`, option);
     return res.data;
   } catch (error) {
     console.log(error);
@@ -195,7 +196,7 @@ export const replyComment = async(comments: any) => {
         'authorization': `Bearer ${token}`
       }
     };
-    const res = await axios.post(`${API}/replycomment/${id}/${commentId}/${userId}`, comment, option);
+    const res = await axios.post(`${API}/post/replycomment/${id}/${commentId}/${userId}`, comment, option);
     return res.data;
   } catch (error) {
     console.log(error);
@@ -206,7 +207,7 @@ export const allComments = async(comments: any) => {
   try {
     const id = comments.postId;
 
-    const res = await axios.get(`${API}/comment/${id}`);
+    const res = await axios.get(`${API}/post/comment/${id}`);
     return res.data;
   } catch (error) {
     console.log(error);
