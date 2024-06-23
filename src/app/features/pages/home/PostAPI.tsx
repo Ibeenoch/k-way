@@ -203,10 +203,8 @@ export const replyComment = async(comments: any) => {
   }
 }
 
-export const allComments = async(comments: any) => {
+export const allComments = async(id: any) => {
   try {
-    const id = comments.postId;
-
     const res = await axios.get(`${API}/post/comment/${id}`);
     return res.data;
   } catch (error) {

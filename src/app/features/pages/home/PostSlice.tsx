@@ -237,7 +237,7 @@ export const postSlice = createSlice({
         console.log('comments posts ', action.payload)
         if (action.payload !== undefined) {
           state.status = "success";
-          state.comments = action.payload;
+          state.comments.push(action.payload);
         }
       })
       .addCase(commentOnPost.rejected, (state, action) => {

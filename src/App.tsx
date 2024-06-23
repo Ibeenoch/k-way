@@ -17,6 +17,7 @@ import ProfileForm from "./app/features/pages/auth/ProfileForm";
 import Verification from "./app/features/pages/auth/Verification";
 import PasswordRecovery from "./app/features/pages/auth/PasswordRecovery";
 import ChangePassword from "./app/features/pages/auth/ChangePassword";
+import ReplyComment from "./app/features/pages/home/ReplyComment";
 
 const router = createBrowserRouter([
   {
@@ -79,6 +80,10 @@ const router = createBrowserRouter([
   {
     path: "/password/reset/:id",
     element: <ChangePassword />,
+  },
+  {
+    path: "/reply/comment/:commentId/:userId",
+    element: <ReplyComment />,
   },
  
 ]);

@@ -50,7 +50,7 @@ const Left = () => {
   }
 
   return (
-    <div className='p-2 fixed'>
+    <div className='p-2 sticky top-0'>
       <div className='flex flex-col rounded-tl-3xl justify-center bg-white p-6'>
         <div className='flex gap-2 items-center justify-center'>
         <div className='rounded-full bg-sky-500 cursor-pointer w-18 h-18'></div>
@@ -74,18 +74,18 @@ const Left = () => {
             <p className='text-gray-500 text-xs'>{getUser && getUser._doc && getUser._doc.address}</p>
         </div>
 
-        <div className='flex gap-1 mt-3'>
-          <div className='flex flex-col justify-center px-3 border-r-2 border-gray-400'>
-            <h1 className='text-black dark:text-white text-center font-semibold text-sm'>{getUser && getUser._doc && getUser._doc.followers && getUser._doc.followers.length}</h1>
-            <p className='text-xs text-gray-400'>Followers</p>
+        <div className='flex gap-1 mt-3 justify-center'>
+          <div className='flex flex-col justify-center px-1 border-r-2 border-gray-400'>
+            <h1 className='text-black text-center font-semibold text-[9px]'>{getUser && getUser._doc && getUser._doc.followers && getUser._doc.followers.length}</h1>
+            <p className='text-[9px] text-gray-400'>Followers</p>
           </div>
-          <div className='flex flex-col justify-center px-3 border-r-2 border-gray-400'>
-            <h1 className='text-black dark:text-white text-center font-semibold text-sm'>{getUser && getUser._doc && getUser._doc.following && getUser._doc.following.length}</h1>
-            <p className='text-xs text-gray-400'>Following</p>
+          <div className='flex flex-col justify-center px-1 border-r-2 border-gray-400'>
+            <h1 className='text-black dark:text-white text-center font-semibold text-[9px]'>{getUser && getUser._doc && getUser._doc.following && getUser._doc.following.length}</h1>
+            <p className='text-[9px] text-gray-400'>Following</p>
           </div>
-          <div className='flex flex-col justify-center px-3'>
-            <h1 className='text-black dark:text-white text-center font-semibold text-sm'>965</h1>
-            <p className='text-xs text-gray-400'>Posts</p>
+          <div className='flex flex-col justify-center px-1'>
+            <h1 className='text-black dark:text-white text-center font-semibold text-[9px]'>965</h1>
+            <p className='text-[9px] text-gray-400'>Posts</p>
           </div>
         </div>
       </div>
