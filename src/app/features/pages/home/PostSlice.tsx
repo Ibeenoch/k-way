@@ -6,11 +6,13 @@ import * as api from './PostAPI'
 
 export interface postInterface {
   posts: any;
+  comments: any;
   status: "success" | "loading" | "failed" | "idle";
 }
 
 const initialState: postInterface = {
   posts: [],
+  comments: [],
   status: "idle",
 };
 
@@ -35,6 +37,15 @@ export const updatePost = createAsyncThunk("/post/update", async (post: any) => 
 export const likePost = createAsyncThunk("/post/like", async (post: any) => {
   try {
     const res = await api.likepost(post);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+export const bookmarkPost = createAsyncThunk("/post/bookmark", async (post: any) => {
+  try {
+    const res = await api.bookmarkpost(post);
     return res;
   } catch (error) {
     console.log(error);
@@ -68,7 +79,50 @@ export const getAllPosts = createAsyncThunk("/post/all", async () => {
   }
 });
 
+export const commentOnPost = createAsyncThunk("/post/comment", async (comments: any) => {
+  try {
+    const res = await api.makeComment(comments);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+});
 
+export const editComment = createAsyncThunk("/post/editcomment", async (comments: any) => {
+  try {
+    const res = await api.editComment(comments);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+export const deleteComment = createAsyncThunk("/post/deletecomment", async (comments: any) => {
+  try {
+    const res = await api.deleteComment(comments);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+export const allComments = createAsyncThunk("/post/allcomment", async (comments: any) => {
+  try {
+    const res = await api.allComments(comments);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+export const replyComment = createAsyncThunk("/post/replycomment", async (comments: any) => {
+  try {
+    const res = await api.replyComment(comments);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 
 export const postSlice = createSlice({
@@ -123,6 +177,20 @@ export const postSlice = createSlice({
       .addCase(likePost.rejected, (state, action) => {
         state.status = "failed";
       })
+      .addCase(bookmarkPost.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(bookmarkPost.fulfilled, (state, action) => {
+        if (action.payload !== undefined && action.payload._id) {
+          state.status = "success";
+          console.log('like post ', action.payload)
+          const findIndex = state.posts.findIndex((p: any) => p._id === action.payload._id);
+          state.posts[findIndex] = action.payload;
+        }
+      })
+      .addCase(bookmarkPost.rejected, (state, action) => {
+        state.status = "failed";
+      })
       .addCase(rePost.pending, (state, action) => {
         state.status = "loading";
       })
@@ -160,6 +228,74 @@ export const postSlice = createSlice({
         }
       })
       .addCase(getAllPosts.rejected, (state, action) => {
+        state.status = "failed";
+      })
+      .addCase(commentOnPost.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(commentOnPost.fulfilled, (state, action) => {
+        console.log('comments posts ', action.payload)
+        if (action.payload !== undefined) {
+          state.status = "success";
+          state.comments = action.payload;
+        }
+      })
+      .addCase(commentOnPost.rejected, (state, action) => {
+        state.status = "failed";
+      })
+      .addCase(editComment.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(editComment.fulfilled, (state, action) => {
+        console.log('edit comments posts ', action.payload)
+        if (action.payload !== undefined) {
+          state.status = "success";
+          const index = state.comments.findIndex((c: any) => c._id === action.payload._id);
+          state.comments[index] = action.payload;
+        }
+      })
+      .addCase(editComment.rejected, (state, action) => {
+        state.status = "failed";
+      })
+      .addCase(deleteComment.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(deleteComment.fulfilled, (state, action) => {
+        console.log('delete comments posts ', action.payload)
+        if (action.payload !== undefined) {
+          state.status = "success";
+          const index = state.comments.findIndex((c: any) => c._id === action.payload._id);
+          state.comments.splice(index, 1);
+        }
+      })
+      .addCase(deleteComment.rejected, (state, action) => {
+        state.status = "failed";
+      })
+      .addCase(allComments.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(allComments.fulfilled, (state, action) => {
+        console.log('delete comments posts ', action.payload)
+        if (action.payload !== undefined) {
+          state.status = "success";
+          state.comments = action.payload;
+        }
+      })
+      .addCase(allComments.rejected, (state, action) => {
+        state.status = "failed";
+      })
+      .addCase(replyComment.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(replyComment.fulfilled, (state, action) => {
+        console.log('delete comments posts ', action.payload)
+        if (action.payload !== undefined) {
+          state.status = "success";
+          console.log('reply comments ', action.payload)
+          // state.comments = action.payload;
+        }
+      })
+      .addCase(replyComment.rejected, (state, action) => {
         state.status = "failed";
       })
       
