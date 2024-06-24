@@ -222,6 +222,24 @@ export const allrepliesforaComment = async(commentId: any) => {
   }
 };
 
+export const likeAComment = async(comments: any) => {
+  try {
+    const token = comments.token;
+    const commentId = comments.commentId;
+console.log(comments);
+    const option = {
+      headers: {
+        'authorization': `Bearer ${token}`
+      }
+    };
+
+    const res = await axios.put(`${API}/post/likecomment/${commentId}`, comments, option);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const allCommentsforaPost = async(id: any) => {
   try {
     const res = await axios.get(`${API}/post/comment/${id}`);

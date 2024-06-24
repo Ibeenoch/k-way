@@ -8,7 +8,7 @@ export interface postInterface {
   posts: any;
   post: any;
   comments: any;
-  repliedcomments: any;
+  repliedcomments: any[];
   status: "success" | "loading" | "failed" | "idle";
   editCommentStatus: "success" | "loading" | "failed" | "idle";
 }
@@ -88,6 +88,24 @@ export const getAllPosts = createAsyncThunk("/post/all", async () => {
 export const getAllRepliesForComment = createAsyncThunk("/post/allrepliesforComment", async (commentId: any) => {
   try {
     const res = await api.allrepliesforaComment(commentId);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+export const likeComment = createAsyncThunk("/post/likeaComment", async (comments: any) => {
+  try {
+    const res = await api.likeAComment(comments);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+export const likeReplyComment = createAsyncThunk("/post/likereplyComment", async (comments: any) => {
+  try {
+    const res = await api.likeAComment(comments);
     return res;
   } catch (error) {
     console.log(error);
@@ -314,6 +332,34 @@ export const postSlice = createSlice({
       .addCase(editComment.rejected, (state, action) => {
         state.status = "failed";
       })
+      .addCase(likeComment.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(likeComment.fulfilled, (state, action) => {
+        console.log('like comments posts ', action.payload)
+        if (action.payload !== undefined) {
+          state.status = "success";
+          const index = state.comments.findIndex((c: any) => c._id === action.payload._id);
+          state.comments[index] = action.payload;
+        }
+      })
+      .addCase(likeComment.rejected, (state, action) => {
+        state.status = "failed";
+      })
+      .addCase(likeReplyComment.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(likeReplyComment.fulfilled, (state, action) => {
+        if (action.payload !== undefined) {
+          state.status = "success";
+          const index = state.comments.findIndex((c: any) => c._id === action.payload._id);
+          state.repliedcomments[index] = action.payload;
+          console.log('lets check replies ', action.payload._id);
+        }
+      })
+      .addCase(likeReplyComment.rejected, (state, action) => {
+        state.status = "failed";
+      })
       .addCase(deleteComment.pending, (state, action) => {
         state.status = "loading";
       })
@@ -349,7 +395,7 @@ export const postSlice = createSlice({
         if (action.payload !== undefined) {
           state.status = "success";
           console.log('reply comments ', action.payload)
-           state.repliedcomments = action.payload;
+           state.repliedcomments.push(action.payload);
         }
       })
       .addCase(replyComment.rejected, (state, action) => {

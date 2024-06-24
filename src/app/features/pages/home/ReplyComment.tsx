@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { allCommentForAPost, commentOnPost, deleteComment, getAllRepliesForComment, replyComment, selectPost } from './PostSlice';
+import { allCommentForAPost, commentOnPost, deleteComment, getAllRepliesForComment, likeReplyComment, replyComment, selectPost } from './PostSlice';
 
 import { ReactComponent as CommentLogo } from '../../../../assets/comment.svg';
 import { ReactComponent as ReplyLogo } from '../../../../assets/replyLogo.svg';
@@ -24,6 +24,7 @@ const ReplyComment = () => {
   const [commemtClicked, setCommentClicked] = useState<string>('');
   const [isCommenting, setIsCommenting] = useState<boolean>(false);
   const [comment, setComment] = useState<string>("");
+  const [findReply, setFindReply] = useState<boolean>(false);
   const [commentErr, setCommentErr] = useState<string>("");
   const { post, comments, repliedcomments } = useAppSelector(selectPost);
   const getUser = JSON.parse(localStorage.getItem('user') as any);
@@ -48,13 +49,19 @@ const handleCommentSubmit = () => {
     }
 
   dispatch(replyComment(comments)).then((res: any) => {
-    console.log('comment replied ', res);
-    setIsCommenting(false);
+   
+    if(res && res.payload !== undefined){
+      console.log('comment replied ', res);
+      setIsCommenting(false);
+      setComment('');
+      setFindReply(false); 
+    }
   })
 }
 
 
 const handleReplyComent = async (commentId: string) => {
+  setFindReply(true);
   const userId = getUser._doc._id;
   navigate(`/reply/comment/${commentId}`)
 }
@@ -63,14 +70,31 @@ const handleReplyComent = async (commentId: string) => {
 const fetchAllRepliesForTheComment = () => {
  dispatch(getAllRepliesForComment(commentId)).then((res: any) => {
   console.log('replies  ', res);
+  if(res && res.payload !== undefined){
+    setFindReply(false);
+  }
  })
 }
 
+const handleLike = (commentId: string) => {
+  const token = getUser && getUser.token;
+  const likes = { token, commentId };
+
+  dispatch(likeReplyComment(likes)).then((res: any) => {
+    console.log('liked reply comment', res)
+    if(res && res.payload !== undefined){
+      setFindReply(true);
+    }
+  })
+}
+
 useEffect(() => {
-  fetchAllRepliesForTheComment()
-}, []);
+  fetchAllRepliesForTheComment();
+}, [findReply]);
 
-
+const viewPersonProfile = (id: string) => {
+  navigate(`/profile/${id}`);
+}
 
   const showCommentMenuBar = (id: string) => {
     setCommentClicked(id);
@@ -83,6 +107,7 @@ useEffect(() => {
 
 const handleGoBack = () => {
   navigate(-1);
+  setFindReply(true);
 }
 
 const handleEditIcon = (commentId: string, postId: string) => {
@@ -103,21 +128,24 @@ const getConfirmation = (commentId: string) => {
 }
 
   return (
-    <div className='bg-black h-[100vh]'>
+    <div className='h-[100vh]'>
       
         {/* desktop comment modal  */}
        <div className='sm:mx-[30%] bg-white h-screen p-3'>
+        
         <div className='flex gap-3'>
           <BackArrowLogo onClick={handleGoBack} className='w-4 h-4 cursor-pointer' />
-        <h2 className='text-xs font-medium text-black'>Reply to stephen's Comment</h2>
+        <h2 className='text-xs font-medium text-black'>Reply Comment</h2>
         </div>
         <div className="fixed max-w-[100%] sm:max-w-[38%] bottom-0 border border-gray-400 rounded-xl">
             <div className="flex bg-gray-100 items-center max-h-[30px] p-2 mb-1 rounded-xl">
+            <div onClick={() => viewPersonProfile(getUser._doc._id)}>
             <ImgLazyLoad
               src={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url }
-              className="block w-7 h-7 rounded-full"
+              className="block w-7 h-7 rounded-full cursor-pointer"
               alt={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.public_id }
             />
+            </div>
             <input
               type="text"
               onChange={(e) => (setComment(e.target.value))}
@@ -132,7 +160,7 @@ const getConfirmation = (commentId: string) => {
             {
               isCommenting ? (
                 <>
-                <ProcessingLogo className="w-4 h-4 fill-white" />
+               <div className='flex items-center'><ProcessingLogo className="w-5 h-5 fill-white" /> <p className='text-[9px] text-white'> Replying...</p></div> 
                 </>
               ) : (
                 'Comment'
@@ -153,7 +181,7 @@ const getConfirmation = (commentId: string) => {
             <div className="p-4">
               <div className="flex justify-between">
               <div className="flex space-x-2">
-                <img src={comment && comment.owner.profilePhoto && comment.owner.profilePhoto.url} className="w-7 h-7 rounded-full" alt="" />
+                <img onClick={() => viewPersonProfile(comment.owner._id)} src={comment && comment.owner.profilePhoto && comment.owner.profilePhoto.url} className="w-7 h-7 rounded-full cursor-pointer" alt="" />
                 <div className="flex flex-col space-y-1">
                   <div>
 
@@ -167,14 +195,14 @@ const getConfirmation = (commentId: string) => {
                    <div className="flex gap-2 items-center">
                     <div className="flex items-center">
                     {/* heart icon  */}
-                    <HeartIcon className="w-[14px] h-[14px]" fill="red" stroke="red" />
-                      <p className="text-xs text-gray-500 dark:text-white">25k</p>
+                    <HeartIcon onClick={() => handleLike(comment._id)} className="w-[14px] h-[14px] cursor-pointer" fill="red" stroke="red" />
+                      <p className="text-xs text-gray-500 dark:text-white">{comment && comment.likes && comment.likes.length}</p>
                     </div>
                     <div className="flex items-center">
                       {/* comment icon  */}
-                      <CommentLogo className="w-[12px] h-[12px] fill-gray-600 stroke-gray-600"/>
+                      <CommentLogo  onClick={() => handleReplyComent(comment._id)} className="w-[12px] h-[12px] fill-gray-600 stroke-gray-600 cursor-pointer"/>
                  
-                  <p className="text-xs text-gray-500 dark:text-white">54k</p>
+                  <p className="text-xs text-gray-500 dark:text-white">{comment && comment.replies && comment.replies.length}</p>
                     </div>
                       
                    </div>

@@ -24,7 +24,7 @@ import { ReactComponent as ThreeDotVerticalLogo } from '../../../../assets/three
 import { formatCreatedAt } from "../../../../utils/timeformat";
 import { useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
-import { allCommentForAPost, bookmarkPost, commentOnPost, deleteComment, deletePost, getAllRepliesForComment, likePost, rePost, selectPost } from "../home/PostSlice";
+import { allCommentForAPost, bookmarkPost, commentOnPost, deleteComment, deletePost, getAllRepliesForComment, likeComment, likePost, rePost, selectPost } from "../home/PostSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import EmojiPicker from "emoji-picker-react";
 import { HeartIcon } from "@heroicons/react/24/outline";
@@ -133,6 +133,14 @@ const SinglePost = () => {
             console.log('replies comments ', res.payload)
             navigate(`/reply/comment/${commentId}`)
         }
+    })
+  };
+
+  const handleCommentLike = (commentId: string) => {
+    const token = getUser && getUser.token;
+    const likes = { token, commentId };
+    dispatch(likeComment(likes)).then((res: any) => {
+      console.log('liked the comment', res)
     })
   }
 
@@ -458,8 +466,8 @@ const handleBookmark = async (postId: string) => {
             {
               isCommenting ? (
                 <>
-                <ProcessingLogo className="w-4 h-4 fill-white" />
-                </>
+               <div className='flex items-center'><ProcessingLogo className="w-5 h-5 fill-white" /> <p className='text-[9px] text-white'> Commenting...</p></div> 
+               </>
               ) : (
                 'Comment'
               )
@@ -493,14 +501,14 @@ const handleBookmark = async (postId: string) => {
                    <div className="flex gap-2 items-center">
                     <div className="flex items-center">
                     {/* heart icon  */}
-                    <HeartIcon className="w-[14px] h-[14px]" fill="red" stroke="red" />
-                      <p className="text-xs text-gray-500 dark:text-white">25k</p>
+                    <HeartIcon onClick={() => handleCommentLike(comment._id)} className="w-[14px] h-[14px] cursor-pointer" fill="red" stroke="red" />
+                      <p className="text-xs text-gray-500 dark:text-white">{comment && comment.likes && comment.likes.length}</p>
                     </div>
                     <div className="flex items-center">
                       {/* comment icon  */}
-                      <CommentLogo className="w-[12px] h-[12px] fill-gray-600 stroke-gray-600"/>
+                      <CommentLogo className="w-[12px] h-[12px] fill-gray-600 stroke-gray-600 cursor-pointer"/>
                  
-                  <p className="text-xs text-gray-500 dark:text-white">54k</p>
+                  <p className="text-xs text-gray-500 dark:text-white">{comment && comment.replies && comment.replies.length}</p>
                     </div>
                       
                    </div>
