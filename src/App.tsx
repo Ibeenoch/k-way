@@ -18,6 +18,8 @@ import Verification from "./app/features/pages/auth/Verification";
 import PasswordRecovery from "./app/features/pages/auth/PasswordRecovery";
 import ChangePassword from "./app/features/pages/auth/ChangePassword";
 import ReplyComment from "./app/features/pages/home/ReplyComment";
+import EditComment from "./app/features/pages/home/EditComment";
+import SinglePost from "./app/features/pages/singlePost/SinglePost";
 
 const router = createBrowserRouter([
   {
@@ -27,6 +29,10 @@ const router = createBrowserRouter([
   {
     path: "/:id",
     element: <Home />,
+  },
+  {
+    path: "/post/:id",
+    element: <SinglePost />,
   },
   {
     path: "/profile/:id",
@@ -84,6 +90,10 @@ const router = createBrowserRouter([
   {
     path: "/reply/comment/:commentId/:userId",
     element: <ReplyComment />,
+  },
+  {
+    path: "/edit/:postId/:commentId",
+    element: <EditComment />,
   },
  
 ]);

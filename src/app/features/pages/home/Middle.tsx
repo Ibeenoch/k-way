@@ -4,11 +4,9 @@ import { PlusIcon, HeartIcon,  } from "@heroicons/react/24/outline";
 import EmojiPicker from "emoji-picker-react";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { selectUser } from "../auth/authSlice";
-import { allComments, bookmarkPost, commentOnPost, createPost, deletePost, getAllPosts, likePost, rePost, selectPost, updatePost } from "./PostSlice";
-import { timeStamp } from "console";
+import { allCommentForAPost, bookmarkPost, commentOnPost, createPost, deletePost, getAPost, getAllPosts, likePost, rePost, resetEditCommentStatus, selectPost, updatePost } from "./PostSlice";
 import toast, { Toast } from 'react-hot-toast'
 import { useNavigate, useParams } from "react-router-dom";
-import moment from 'moment';
 import ImgLazyLoad from "../lazyLoad/ImgLazyLoad";
 import { ReactComponent as GlobalTrendLogo } from '../../../../assets/globeTrend.svg';
 import { ReactComponent as LikeLogo } from '../../../../assets/like.svg';
@@ -68,7 +66,7 @@ const Middle = () => {
   const [displayImage, setDisplayImage] = useState<string>('');
 
   const { profile } = useAppSelector(selectUser);
-  const { posts, comments } = useAppSelector(selectPost);
+  const { posts, comments, editCommentStatus } = useAppSelector(selectPost);
 
   const fileRef = useRef<HTMLInputElement>(null);
   const [fileInput, setFileInput] = useState<File[]>([]);
@@ -221,9 +219,6 @@ if(id){
 }
 }
 
-const getAPost = async() => {
-
-}
 
 const handleLike = async (postId: string) => {
   const token = getUser && getUser.token;
@@ -264,27 +259,43 @@ const handleReShare = async (postId: string) => {
   })
 };
 
-const fetchAllPosts = async() => {
-
+const goToPost = async (id: string) => {
+  dispatch(getAPost(id)).then((res: any) => {
+    console.log('get post', res);
+    if(res && res.payload !== undefined){
+      dispatch(allCommentForAPost(id)).then((res: any) => {
+        console.log('get comment', res);
+        if(res && res.payload !== undefined){
+          navigate(`/post/${id}`);
+        }
+      })
+       
+    }
+  })
+ 
 }
 
-useEffect(() => {
-  fetchAllPosts()
-}, []);
 
-useEffect(() => {
-  getAPost()
-}, [postId]);
 
   const videoUrl = `${process.env.PUBLIC_URL}/video.mp4`;
 
   const showComment = async(postId: string) => {
-    const getAllComments = await dispatch(allComments(postId)).then((res: any) => {
+    console.log('the postid ', postId);
+    const getAllComments = await dispatch(allCommentForAPost(postId)).then((res: any) => {
       console.log('res ', res);
       setCommentModal(true);
       setMobileCommentModal(true);
 
     })
+    
+  }
+
+  if(editCommentStatus === 'success'){
+    console.log(" postId  ", id);
+    if(id){
+      showComment(id);
+    resetEditCommentStatus();
+    }
     
   }
 
@@ -304,6 +315,10 @@ useEffect(() => {
     setPostModal(true);
    
   };
+
+  const handleEditIcon = (commentId: string, postId: string) => {
+    navigate(`/edit/${postId}/${commentId}`);
+  }
 
   useEffect(() => {
      setDesktopMenu(false);
@@ -881,7 +896,7 @@ useEffect(() => {
           </div>
         </div>
         {/* post text  */}
-        <div className="ml-9">
+        <div onClick={() => goToPost(post._id)} className="ml-9">
           <p className="text-xs text-black dark:text-white">
             {post.content}
           </p>
@@ -1003,102 +1018,6 @@ useEffect(() => {
             </button>
           </div>
 
-            {/* view other people comments  */}
-            {
-              comments && comments.length > 0 && Array.isArray(comments) ? (
-                comments.map((comment) => (
-            
-            <div className="p-4 bg-white">
-              <div className="flex justify-between">
-              <div className="flex space-x-2">
-                <img src={comment && comment.owner.profilePhoto && comment.owner.profilePhoto.url} className="w-7 h-7 rounded-full" alt="" />
-                <div className="flex flex-col space-y-1">
-                  <div>
-
-                 <div className="flex gap-1 items-center"> 
-                  <p className="text-xs font-medium text-black">{comment && comment.owner && comment.owner.fullname}  </p>
-                 <p className="text-gray-400 text-[9px]">{formatCreatedAt(comment && comment.createdAt)}</p> 
-                  </div>
-                  <p className="text-[9px] text-gray-600">@{comment && comment.owner && comment.owner.handle} </p>
-                  </div>
-                  <p className="text-[10px] text-black dark:text-white">{comment && comment.content}</p>
-                   <div className="flex gap-2 items-center">
-                    <div className="flex items-center">
-                    {/* heart icon  */}
-                    <HeartIcon className="w-[14px] h-[14px]" fill="red" stroke="red" />
-                      <p className="text-xs text-gray-500 dark:text-white">25k</p>
-                    </div>
-                    <div className="flex items-center">
-                      {/* comment icon  */}
-                      <CommentLogo className="w-[12px] h-[12px] fill-gray-600 stroke-gray-600"/>
-                 
-                  <p className="text-xs text-gray-500 dark:text-white">54k</p>
-                    </div>
-                      
-                   </div>
-
-                   <div onClick={() => handleReplyComent(comment._id)} className="cursor-pointer">
-                    <p className="text-gray-400 text-sm pt-1 flex">See Reply &#40;<span>9</span>&#41; </p>
-                   </div>
-                </div>
-              </div>
-
-              <div className="relative">
-                 {/* three dot icon vertical */}
-                 <ThreeDotVerticalLogo onClick={() =>showCommentMenuBar(comment._id)} className="w-5 relative h-5 fill-black stroke-black dark:fill-white cursor-pointer dark:stroke-white"/>
-              
-                
-                {/* desktop comment menu  */}
-              <div
-                ref={desktopCommentMenuRef}
-                id="desktopCommentMenu"
-                className={`hidden ${
-                  desktopCommentMenu && comment._id === commemtClicked ? "sm:block" : "sm:hidden"
-                } absolute shadow-xl w-[150px] top-0 shadow-purple-80 z-10 -right-3 rounded-3xl mx-auto bg-white  h-auto p-5`}
-              >
-                <div className="flex justify-end">
-                  <CancelLogo onClick={closeCommentMenu} className="w-3 h-3 cursor-pointer"/>
-                </div>
-                {
-                  comment && comment.owner && comment.owner._id === getUser._doc._id ? (
-                    <>
-                     <div className="flex gap-2 group cursor-pointer items-center pl-1">
-                  <EditLogo className="stroke-black w-3 h-3 group-hover:stroke-purple-600"/>
-                  <p className="text-black text-[10px] group-hover:text-purple-600">Edit Comment</p>
-                </div>
-
-                <div className="flex gap-2 group items-center pt-4  cursor-pointer">
-                 <TrashLogo className="fill-black stroke-black w-5 h-5 group-hover:stroke-red-600 group-hover:fill-red-600"/>
-                  <p className="text-black text-[10px] group-hover:text-red-600">Delete Comment</p>
-                </div>
-
-                <div onClick={() => handleReplyComent(comment._id)} className="flex gap-2 group items-center cursor-pointer pt-4">
-                  <ReplyLogo className="w-5 h-5  group-hover:stroke-purple-600" />
-                  <p className="text-black text-[10px] group-hover:text-purple-600">Reply Comment</p>
-                </div>
-
-                    </>
-                  ) : (
-                    <>
-                     <div className="flex gap-2 group items-center cursor-pointer pt-4">
-                  <ReplyLogo className="w-5 h-5  group-hover:stroke-purple-600" />
-                  <p className="text-black text-[10px] group-hover:text-purple-600">Reply Comment</p>
-                </div>
-                    </>
-                  )
-                }
-               
-              </div>
-
-              </div>
-              </div>
-            </div>
-      
-                ))
-              ) : (
-                <> <p className="text-gray-600 text-[10px]">No comment has been added</p></>
-              )
-            }
         </div>
         
       </div>
@@ -1175,95 +1094,95 @@ useEffect(() => {
 
             {/* view other people comments  */}
             {
-              comments && comments.length > 0 && Array.isArray(comments) ? (
-                comments.map((comment) => (
+            //   comments && comments.length > 0 && Array.isArray(comments) ? (
+            //     comments.map((comment) => (
             
-            <div className="p-4">
-              <div className="flex justify-between">
-              <div className="flex space-x-2">
-                <img src={comment && comment.owner.profilePhoto && comment.owner.profilePhoto.url} className="w-7 h-7 rounded-full" alt="" />
-                <div className="flex flex-col space-y-1">
-                  <div>
+            // <div className="p-4">
+            //   <div className="flex justify-between">
+            //   <div className="flex space-x-2">
+            //     <img src={comment && comment.owner.profilePhoto && comment.owner.profilePhoto.url} className="w-7 h-7 rounded-full" alt="" />
+            //     <div className="flex flex-col space-y-1">
+            //       <div>
 
-                 <div className="flex gap-1 items-center"> 
-                  <p className="text-xs font-medium text-black">{comment && comment.owner && comment.owner.fullname}  </p>
-                 <p className="text-gray-400 text-[9px]">{formatCreatedAt(comment && comment.createdAt)}</p> 
-                  </div>
-                  <p className="text-[9px] text-gray-600">@{comment && comment.owner && comment.owner.handle} </p>
-                  </div>
-                  <p className="text-[10px] text-black dark:text-white">{comment && comment.content}</p>
-                   <div className="flex gap-2 items-center">
-                    <div className="flex items-center">
-                    {/* heart icon  */}
-                    <HeartIcon className="w-[14px] h-[14px]" fill="red" stroke="red" />
-                      <p className="text-xs text-gray-500 dark:text-white">25k</p>
-                    </div>
-                    <div className="flex items-center">
-                      {/* comment icon  */}
-                      <CommentLogo className="w-[12px] h-[12px] fill-gray-600 stroke-gray-600"/>
+            //      <div className="flex gap-1 items-center"> 
+            //       <p className="text-xs font-medium text-black">{comment && comment.owner && comment.owner.fullname}  </p>
+            //      <p className="text-gray-400 text-[9px]">{formatCreatedAt(comment && comment.createdAt)}</p> 
+            //       </div>
+            //       <p className="text-[9px] text-gray-600">@{comment && comment.owner && comment.owner.handle} </p>
+            //       </div>
+            //       <p className="text-[10px] text-black dark:text-white">{comment && comment.content}</p>
+            //        <div className="flex gap-2 items-center">
+            //         <div className="flex items-center">
+            //         {/* heart icon  */}
+            //         <HeartIcon className="w-[14px] h-[14px]" fill="red" stroke="red" />
+            //           <p className="text-xs text-gray-500 dark:text-white">25k</p>
+            //         </div>
+            //         <div className="flex items-center">
+            //           {/* comment icon  */}
+            //           <CommentLogo className="w-[12px] h-[12px] fill-gray-600 stroke-gray-600"/>
                  
-                  <p className="text-xs text-gray-500 dark:text-white">54k</p>
-                    </div>
+            //       <p className="text-xs text-gray-500 dark:text-white">54k</p>
+            //         </div>
                       
-                   </div>
+            //        </div>
 
-                   <div className="">
-                    <p className="text-gray-400 text-sm pt-1 flex">See Reply &#40;<span>9</span>&#41; </p>
-                   </div>
-                </div>
-              </div>
+            //        <div className="">
+            //         <p className="text-gray-400 text-sm pt-1 flex">See Reply &#40;<span>9</span>&#41; </p>
+            //        </div>
+            //     </div>
+            //   </div>
 
-              <div className="relative">
-                 {/* three dot icon vertical */}
-                 <ThreeDotVerticalLogo onClick={() =>showCommentMenuBar(comment._id)} className="w-5 relative h-5 fill-black stroke-black dark:fill-white cursor-pointer dark:stroke-white"/>
+            //   <div className="relative">
+            //      {/* three dot icon vertical */}
+            //      <ThreeDotVerticalLogo onClick={() =>showCommentMenuBar(comment._id)} className="w-5 relative h-5 fill-black stroke-black dark:fill-white cursor-pointer dark:stroke-white"/>
               
                 
-                {/* mobile comment menu  */}
-              <div
-                ref={desktopCommentMenuRef}
-                className={`hidden ${
-                  desktopCommentMenu && commemtClicked === comment._id ? "sm:block" : "sm:hidden"
-                } absolute shadow-xl w-[150px] top-0 shadow-purple-80 z-10 -right-3 rounded-3xl mx-auto bg-white  h-auto p-5`}
-              >
-                {
-                  comment && comment.owner && comment.owner._id === getUser._doc._id ? (
-                    <>
-                     <div className="flex gap-2 group cursor-pointer items-center pl-1">
-                  <EditLogo className="stroke-black w-3 h-3 group-hover:stroke-purple-600"/>
-                  <p className="text-black text-[10px] group-hover:text-purple-600">Edit Comment</p>
-                </div>
+            //     {/* mobile comment menu  */}
+            //   <div
+            //     ref={desktopCommentMenuRef}
+            //     className={`hidden ${
+            //       desktopCommentMenu && commemtClicked === comment._id ? "sm:block" : "sm:hidden"
+            //     } absolute shadow-xl w-[150px] top-0 shadow-purple-80 z-10 -right-3 rounded-3xl mx-auto bg-white  h-auto p-5`}
+            //   >
+            //     {
+            //       comment && comment.owner && comment.owner._id === getUser._doc._id ? (
+            //         <>
+            //          <div className="flex gap-2 group cursor-pointer items-center pl-1">
+            //       <EditLogo className="stroke-black w-3 h-3 group-hover:stroke-purple-600"/>
+            //       <p className="text-black text-[10px] group-hover:text-purple-600">Edit Comment</p>
+            //     </div>
 
-                <div className="flex gap-2 group items-center pt-4  cursor-pointer">
-                 <TrashLogo className="fill-black stroke-black w-5 h-5 group-hover:stroke-red-600 group-hover:fill-red-600"/>
-                  <p className="text-black text-[10px] group-hover:text-red-600">Delete Comment</p>
-                </div>
+            //     <div className="flex gap-2 group items-center pt-4  cursor-pointer">
+            //      <TrashLogo className="fill-black stroke-black w-5 h-5 group-hover:stroke-red-600 group-hover:fill-red-600"/>
+            //       <p className="text-black text-[10px] group-hover:text-red-600">Delete Comment</p>
+            //     </div>
 
-                <div className="flex gap-2 group items-center cursor-pointer pt-4">
-                  <ReplyLogo className="w-5 h-5  group-hover:stroke-purple-600" />
-                  <p className="text-black text-[10px] group-hover:text-purple-600">Reply Comment</p>
-                </div>
+            //     <div className="flex gap-2 group items-center cursor-pointer pt-4">
+            //       <ReplyLogo className="w-5 h-5  group-hover:stroke-purple-600" />
+            //       <p className="text-black text-[10px] group-hover:text-purple-600">Reply Comment</p>
+            //     </div>
 
-                    </>
-                  ) : (
-                    <>
-                     <div className="flex gap-2 group items-center cursor-pointer pt-4">
-                  <ReplyLogo className="w-5 h-5  group-hover:stroke-purple-600" />
-                  <p className="text-black text-[10px] group-hover:text-purple-600">Reply Comment</p>
-                </div>
-                    </>
-                  )
-                }
+            //         </>
+            //       ) : (
+            //         <>
+            //          <div className="flex gap-2 group items-center cursor-pointer pt-4">
+            //       <ReplyLogo className="w-5 h-5  group-hover:stroke-purple-600" />
+            //       <p className="text-black text-[10px] group-hover:text-purple-600">Reply Comment</p>
+            //     </div>
+            //         </>
+            //       )
+            //     }
                
-              </div>
+            //   </div>
 
-              </div>
-              </div>
-            </div>
+            //   </div>
+            //   </div>
+            // </div>
       
-                ))
-              ) : (
-                <> <p className="text-gray-600 text-[10px]">No comment has been added</p></>
-              )
+            //     ))
+            //   ) : (
+            //     <> <p className="text-gray-600 text-[10px]">No comment has been added</p></>
+            //   )
             }
         </div>
       </div>
@@ -1346,7 +1265,7 @@ useEffect(() => {
           </div>
         )  : (<> </> )}
 
-        <div className="flex justify-between items-center">
+        <div onClick={() => goToPost(post._id)} className="flex justify-between items-center">
           <div className="flex ml-9 mt-4 gap-1 items-center">
             <div className="p-[5px] bg-red-600 rounded-full">
               <LikeLogo  className="w-[12px] h-[12px] fill-white stroke-white"/>
@@ -1395,7 +1314,7 @@ useEffect(() => {
             <div></div>
           </div>
 
-          <div  onClick={() =>handleBookmark(post._id)} className="bg-black flex items-center sm:gap-1 p-2 mr-4 sm:mr-0 mt-4 rounded-lg">
+          <div  onClick={() =>handleBookmark(post._id)} className="bg-black flex cursor-pointer items-center sm:gap-1 p-2 mr-4 sm:mr-0 mt-4 rounded-lg">
             <BookMarkLogo   className="w-[12px] h-[12px] fill-white stroke-white dark:fill-black dark:stroke-black"/>
           </div>
         </div>

@@ -124,6 +124,15 @@ export const fetchAllPosts = async() => {
   }
 }
 
+export const fetchAPost = async(id: string) => {
+  try {
+    const res = await axios.get(`${API}/post/single/${id}`);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export const makeComment = async(comments: any) => {
   try {
     const id = comments.id;
@@ -147,10 +156,10 @@ export const makeComment = async(comments: any) => {
 
 export const editComment = async(comments: any) => {
   try {
-    const id = comments.id;
     const commentId = comments.commentId;
     const token = comments.token;
     const comment = comments.comment;
+    const data = {comment};
 
     const option = {
       headers: {
@@ -158,7 +167,7 @@ export const editComment = async(comments: any) => {
         'authorization': `Bearer ${token}`
       }
     };
-    const res = await axios.put(`${API}/post/updatecomment/${id}/${commentId}`, comment, option);
+    const res = await axios.put(`${API}/post/updatecomment/${commentId}`, data, option);
     return res.data;
   } catch (error) {
     console.log(error);
@@ -203,7 +212,7 @@ export const replyComment = async(comments: any) => {
   }
 }
 
-export const allComments = async(id: any) => {
+export const allCommentsforaPost = async(id: any) => {
   try {
     const res = await axios.get(`${API}/post/comment/${id}`);
     return res.data;

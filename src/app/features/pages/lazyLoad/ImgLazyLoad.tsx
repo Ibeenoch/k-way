@@ -11,7 +11,7 @@ interface LazyLoadProps {
 const ImgLazyLoad: React.FC<LazyLoadProps> = ({ src, alt, className, onClick }) => {
   return (
       <LazyLoad height={200} offset={100} className={className} >
-        <img src={src} alt={alt} onClick={onClick} />
+        <img className='w-full h-auto object-center' src={src} alt={alt} onClick={onClick} />
       </LazyLoad>
   )
 }

@@ -6,14 +6,18 @@ import * as api from './PostAPI'
 
 export interface postInterface {
   posts: any;
+  post: any;
   comments: any;
   status: "success" | "loading" | "failed" | "idle";
+  editCommentStatus: "success" | "loading" | "failed" | "idle";
 }
 
 const initialState: postInterface = {
   posts: [],
+  post: {},
   comments: [],
   status: "idle",
+  editCommentStatus: "idle",
 };
 
 export const createPost = createAsyncThunk("/post/new", async (post: any) => {
@@ -79,6 +83,15 @@ export const getAllPosts = createAsyncThunk("/post/all", async () => {
   }
 });
 
+export const getAPost = createAsyncThunk("/post/single", async (id: string) => {
+  try {
+    const res = await api.fetchAPost(id);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 export const commentOnPost = createAsyncThunk("/post/comment", async (comments: any) => {
   try {
     const res = await api.makeComment(comments);
@@ -106,9 +119,9 @@ export const deleteComment = createAsyncThunk("/post/deletecomment", async (comm
   }
 });
 
-export const allComments = createAsyncThunk("/post/allcomment", async (comments: any) => {
+export const allCommentForAPost = createAsyncThunk("/post/allcomment", async (comments: any) => {
   try {
-    const res = await api.allComments(comments);
+    const res = await api.allCommentsforaPost(comments);
     return res;
   } catch (error) {
     console.log(error);
@@ -131,6 +144,9 @@ export const postSlice = createSlice({
   reducers: {
     logout: (state) => {
       return initialState;
+    },
+    resetEditCommentStatus: (state) => {
+       state.editCommentStatus = 'idle';
     },
   },
 
@@ -172,6 +188,7 @@ export const postSlice = createSlice({
           console.log('like post ', action.payload)
           const findIndex = state.posts.findIndex((p: any) => p._id === action.payload._id);
           state.posts[findIndex] = action.payload;
+          state.post = action.payload;
         }
       })
       .addCase(likePost.rejected, (state, action) => {
@@ -186,6 +203,7 @@ export const postSlice = createSlice({
           console.log('like post ', action.payload)
           const findIndex = state.posts.findIndex((p: any) => p._id === action.payload._id);
           state.posts[findIndex] = action.payload;
+          state.post = action.payload;
         }
       })
       .addCase(bookmarkPost.rejected, (state, action) => {
@@ -198,6 +216,7 @@ export const postSlice = createSlice({
         if (action.payload !== undefined && action.payload._id) {
           state.status = "success";
           state.posts.push(action.payload);
+          state.post = action.payload;
         }
       })
       .addCase(rePost.rejected, (state, action) => {
@@ -230,6 +249,19 @@ export const postSlice = createSlice({
       .addCase(getAllPosts.rejected, (state, action) => {
         state.status = "failed";
       })
+      .addCase(getAPost.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(getAPost.fulfilled, (state, action) => {
+        console.log('fetched post ', action.payload)
+        if (action.payload !== undefined) {
+          state.status = "success";
+          state.post = action.payload;
+        }
+      })
+      .addCase(getAPost.rejected, (state, action) => {
+        state.status = "failed";
+      })
       .addCase(commentOnPost.pending, (state, action) => {
         state.status = "loading";
       })
@@ -252,6 +284,7 @@ export const postSlice = createSlice({
           state.status = "success";
           const index = state.comments.findIndex((c: any) => c._id === action.payload._id);
           state.comments[index] = action.payload;
+          state.editCommentStatus = 'success';
         }
       })
       .addCase(editComment.rejected, (state, action) => {
@@ -271,17 +304,17 @@ export const postSlice = createSlice({
       .addCase(deleteComment.rejected, (state, action) => {
         state.status = "failed";
       })
-      .addCase(allComments.pending, (state, action) => {
+      .addCase(allCommentForAPost.pending, (state, action) => {
         state.status = "loading";
       })
-      .addCase(allComments.fulfilled, (state, action) => {
+      .addCase(allCommentForAPost.fulfilled, (state, action) => {
         console.log('delete comments posts ', action.payload)
         if (action.payload !== undefined) {
           state.status = "success";
           state.comments = action.payload;
         }
       })
-      .addCase(allComments.rejected, (state, action) => {
+      .addCase(allCommentForAPost.rejected, (state, action) => {
         state.status = "failed";
       })
       .addCase(replyComment.pending, (state, action) => {
@@ -302,7 +335,7 @@ export const postSlice = createSlice({
   },
 });
 
-export const { logout } = postSlice.actions;
+export const { logout, resetEditCommentStatus } = postSlice.actions;
 
 export const selectPost = (state: RootState) => state.posts;
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { allComments, commentOnPost, selectPost } from './PostSlice';
+import { allCommentForAPost, commentOnPost, selectPost } from './PostSlice';
 
 import { ReactComponent as CommentLogo } from '../../../../assets/comment.svg';
 import { ReactComponent as ReplyLogo } from '../../../../assets/replyLogo.svg';
@@ -8,6 +8,7 @@ import { ReactComponent as EditLogo } from '../../../../assets/editLogo.svg';
 import { ReactComponent as TrashLogo } from '../../../../assets/trashLogo.svg';
 import { ReactComponent as ProcessingLogo } from '../../../../assets/processingLogo.svg';
 import { ReactComponent as ThreeDotVerticalLogo } from '../../../../assets/threeDotVerticalLogo.svg';
+import { ReactComponent as BackArrowLogo } from '../../../../assets/arrowBack.svg';
 import { formatCreatedAt } from "../../../../utils/timeformat";
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../hooks';
@@ -87,7 +88,7 @@ useEffect(() => {
 
 
   const showComment = async(postId: string) => {
-    const getAllComments = await dispatch(allComments(postId)).then((res: any) => {
+    const getAllComments = await dispatch(allCommentForAPost(postId)).then((res: any) => {
       console.log('res ', res);
       setCommentModal(true);
       setMobileCommentModal(true);
@@ -127,7 +128,9 @@ useEffect(() => {
     setDesktopCommentMenu(false);
   };
 
-
+const handleGoBack = () => {
+  navigate(-1);
+}
 
 
   return (
@@ -135,7 +138,10 @@ useEffect(() => {
       
         {/* desktop comment modal  */}
        <div className='sm:mx-[30%] bg-white h-screen p-3'>
+        <div className='flex gap-3'>
+          <BackArrowLogo onClick={handleGoBack} className='w-4 h-4 cursor-pointer' />
         <h2 className='text-xs font-medium text-black'>Reply to stephen's Comment</h2>
+        </div>
         <div className="p-4 bg-white">
               <div className="flex justify-between">
               <div className="flex space-x-2">
