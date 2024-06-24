@@ -24,7 +24,7 @@ import { ReactComponent as ThreeDotVerticalLogo } from '../../../../assets/three
 import { formatCreatedAt } from "../../../../utils/timeformat";
 import { useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
-import { allCommentForAPost, bookmarkPost, commentOnPost, deletePost, likePost, rePost, selectPost } from "../home/PostSlice";
+import { allCommentForAPost, bookmarkPost, commentOnPost, deleteComment, deletePost, getAllRepliesForComment, likePost, rePost, selectPost } from "../home/PostSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import EmojiPicker from "emoji-picker-react";
 import { HeartIcon } from "@heroicons/react/24/outline";
@@ -128,8 +128,12 @@ const SinglePost = () => {
 
           
   const handleReplyComent = async (commentId: string) => {
-    const userId = getUser._doc._id;
-    navigate(`/reply/comment/${commentId}/${userId}`)
+    dispatch(getAllRepliesForComment(commentId)).then((res: any) => {
+        if(res && res.payload !== undefined){
+            console.log('replies comments ', res.payload)
+            navigate(`/reply/comment/${commentId}`)
+        }
+    })
   }
 
   const handleReShare = async (postId: string) => {
@@ -211,10 +215,23 @@ const handleBookmark = async (postId: string) => {
     setMobileModal(true);
   };
 
+  const getConfirmation = (commentId: string) => {
+    const acceptTodelete = window.confirm('Are you sure you want to trash this comment? this action cannot be undo!!!');
+    if(acceptTodelete){
+        const token = getUser && getUser.token;
+        const comments = {
+            commentId, id, token
+        }
+        dispatch(deleteComment(comments)).then((res: any) => {
+            console.log('deleted comment ', res)
+        })
+    }
+  }
+
   return (
-    <div className="bg-black">
-    <div className="sm:mx-[25%] ">
-         <div  className="rounded-full my-1 p-3 max-w-full bg-white dark-bg-gray-700 border border-gray-400 rounded-lg">
+    <div className="bg-black h-full">
+    <div className="sm:mx-[25%]">
+         <div  className="rounded-full p-3 max-w-full bg-white dark-bg-gray-700 border border-gray-400 rounded-lg">
 
         <div className="flex items-center gap-2 w-full">
           <ImgLazyLoad className="w-8 h-8 rounded-full cursor-pointer" src={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.url} alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
@@ -414,28 +431,30 @@ const handleBookmark = async (postId: string) => {
             <BookMarkLogo   className="w-[12px] h-[12px] fill-white stroke-white dark:fill-black dark:stroke-black"/>
           </div>
         </div> 
+
+        
           </div>
 
         
       
-        
-        <div className="flex bg-gray-100 items-center max-h-[30px] p-2 mb-1 rounded-xl">
+        <div className="fixed max-w-[100%] sm:max-w-[50%] bottom-0 border border-gray-400 rounded-xl">
+            <div className="flex bg-gray-100 items-center max-h-[30px] p-2 mb-1 rounded-xl">
             <ImgLazyLoad
               src={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url }
-              className="block w-6 h-6 rounded-full"
+              className="block w-7 h-7 rounded-full"
               alt={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.public_id }
             />
             <input
               type="text"
               onChange={(e) => (setComment(e.target.value))}
               value={comment}
-              className="block text-xs w-[700px] h-[30px] bg-gray-100 border-0"
+              className="block text-xs w-[700px] h-[30px] p-3 bg-gray-100 border-0 focus:ring-0 focus:ring-inset focus:ring-none"
               placeholder="Comment on this post"
               name=""
               id=""
             />
             
-            <button onClick={() => handleCommentSubmit(post._id)} className="text-[9px] text-white border border-white bg-black dark:bg-white font-semibold rounded-2xl px-3 py-1 transform-transition duration-100 hover:scale-110">
+            <button onClick={() => handleCommentSubmit(post._id)} className="text-[9px] text-white bg-black font-semibold rounded-2xl px-3 py-1 transform-transition duration-100 hover:scale-110">
             {
               isCommenting ? (
                 <>
@@ -449,18 +468,15 @@ const handleBookmark = async (postId: string) => {
           
           </div>
           <p className="text-red-600 text-[8px]">{commentErr}</p>
-
-         
-         
+        </div>
 
             {/* view other people comments  */}
-       
-            
+
             {
               comments && comments.length > 0 && Array.isArray(comments) ? (
                 comments.map((comment) => (
-            
-            <div className="p-4 bg-white">
+            <div className="border-b border-gray-300 bg-white">
+            <div className="p-4">
               <div className="flex justify-between">
               <div className="flex space-x-2">
                 <img src={comment && comment.owner.profilePhoto && comment.owner.profilePhoto.url} className="w-7 h-7 rounded-full" alt="" />
@@ -519,7 +535,7 @@ const handleBookmark = async (postId: string) => {
                   <p className="text-black text-[10px] group-hover:text-purple-600">Edit Comment</p>
                 </div>
 
-                <div className="flex gap-2 group items-center pt-4  cursor-pointer">
+                <div onClick={() =>getConfirmation(comment._id)} className="flex gap-2 group items-center pt-4  cursor-pointer">
                  <TrashLogo className="fill-black stroke-black w-5 h-5 group-hover:stroke-red-600 group-hover:fill-red-600"/>
                   <p className="text-black text-[10px] group-hover:text-red-600">Delete Comment</p>
                 </div>
@@ -545,10 +561,10 @@ const handleBookmark = async (postId: string) => {
               </div>
               </div>
             </div>
-      
+            </div>
                 ))
               ) : (
-                <> <p className="text-gray-600 text-[10px]">No comment has been added</p></>
+                <> <p className="text-gray-600 text-[10px] bg-white pt-4 px-2">No comment has been added</p></>
               )
             }
 

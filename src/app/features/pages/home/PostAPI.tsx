@@ -194,23 +194,33 @@ export const deleteComment = async(comments: any) => {
 
 export const replyComment = async(comments: any) => {
   try {
-    const userId = comments.userId;
-    const id = comments.postId;
+    
     const commentId = comments.commentId;
     const token = comments.token;
-    const comment = comments.reply;
+    const content = comments.comment;
+    const data = { content };
 
     const option = {
       headers: {
         'authorization': `Bearer ${token}`
       }
     };
-    const res = await axios.post(`${API}/post/replycomment/${id}/${commentId}/${userId}`, comment, option);
+    console.log('the data ', data)
+    const res = await axios.post(`${API}/post/replycomment/${commentId}`, data, option);
     return res.data;
   } catch (error) {
     console.log(error);
   }
-}
+};
+
+export const allrepliesforaComment = async(commentId: any) => {
+  try {
+    const res = await axios.get(`${API}/post/replies/${commentId}`);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const allCommentsforaPost = async(id: any) => {
   try {

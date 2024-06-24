@@ -5,6 +5,7 @@ import { commentOnPost, editComment, selectPost } from './PostSlice';
 import ImgLazyLoad from '../lazyLoad/ImgLazyLoad';
 import EmojiPicker from 'emoji-picker-react';
 import { ReactComponent as ProcessingLogo } from '../../../../assets/processingLogo.svg';
+import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 
 
 
@@ -44,7 +45,7 @@ const EditComment = () => {
         dispatch(editComment(comments)).then((res: any) => {
           console.log('comment ', res.payload.content);
           if(res && res.payload && res.payload.content){
-            navigate(`/${postId}`)
+            navigate(-1)
             setIsCommenting(false);
           }
         })
@@ -65,10 +66,17 @@ const EditComment = () => {
         populateComment()
       }, [])
     
+      const goBack = () => {
+        navigate(-1);
+      };
+
   return (
     <div className='bg-black h-screen'>
         <div  className='sm:mx-[30%] p-1 bg-white h-auto p-3'>
+            <div className='flex items-center gap-3'>
+                <ArrowLeftIcon onClick={goBack} className='w-4 h-4 cursor-pointer' />
             <h2 className='text-xs font-semibold text-black'>Edit Your comment</h2>
+            </div>
         <div className="flex bg-gray-100 items-center max-h-[30px] p-2 rounded-xl">
                 <ImgLazyLoad
                 src={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url }

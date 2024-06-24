@@ -8,6 +8,7 @@ export interface postInterface {
   posts: any;
   post: any;
   comments: any;
+  repliedcomments: any;
   status: "success" | "loading" | "failed" | "idle";
   editCommentStatus: "success" | "loading" | "failed" | "idle";
 }
@@ -17,6 +18,7 @@ const initialState: postInterface = {
   post: {},
   comments: [],
   status: "idle",
+  repliedcomments: [],
   editCommentStatus: "idle",
 };
 
@@ -77,6 +79,15 @@ export const deletePost = createAsyncThunk("/post/delete", async (post: any) => 
 export const getAllPosts = createAsyncThunk("/post/all", async () => {
   try {
     const res = await api.fetchAllPosts();
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+export const getAllRepliesForComment = createAsyncThunk("/post/allrepliesforComment", async (commentId: any) => {
+  try {
+    const res = await api.allrepliesforaComment(commentId);
     return res;
   } catch (error) {
     console.log(error);
@@ -249,6 +260,19 @@ export const postSlice = createSlice({
       .addCase(getAllPosts.rejected, (state, action) => {
         state.status = "failed";
       })
+      .addCase(getAllRepliesForComment.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(getAllRepliesForComment.fulfilled, (state, action) => {
+        if (action.payload !== undefined) {
+          state.status = "success";
+          console.log('fetched replies ', action.payload)
+          state.repliedcomments = action.payload;
+        }
+      })
+      .addCase(getAllRepliesForComment.rejected, (state, action) => {
+        state.status = "failed";
+      })
       .addCase(getAPost.pending, (state, action) => {
         state.status = "loading";
       })
@@ -321,11 +345,11 @@ export const postSlice = createSlice({
         state.status = "loading";
       })
       .addCase(replyComment.fulfilled, (state, action) => {
-        console.log('delete comments posts ', action.payload)
+        console.log('reply comments posts ', action.payload)
         if (action.payload !== undefined) {
           state.status = "success";
           console.log('reply comments ', action.payload)
-          // state.comments = action.payload;
+           state.repliedcomments = action.payload;
         }
       })
       .addCase(replyComment.rejected, (state, action) => {

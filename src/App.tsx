@@ -88,7 +88,7 @@ const router = createBrowserRouter([
     element: <ChangePassword />,
   },
   {
-    path: "/reply/comment/:commentId/:userId",
+    path: "/reply/comment/:commentId",
     element: <ReplyComment />,
   },
   {

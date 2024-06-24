@@ -66,7 +66,7 @@ const Middle = () => {
   const [displayImage, setDisplayImage] = useState<string>('');
 
   const { profile } = useAppSelector(selectUser);
-  const { posts, comments, editCommentStatus } = useAppSelector(selectPost);
+  const { posts, comments } = useAppSelector(selectPost);
 
   const fileRef = useRef<HTMLInputElement>(null);
   const [fileInput, setFileInput] = useState<File[]>([]);
@@ -279,25 +279,9 @@ const goToPost = async (id: string) => {
 
   const videoUrl = `${process.env.PUBLIC_URL}/video.mp4`;
 
-  const showComment = async(postId: string) => {
-    console.log('the postid ', postId);
-    const getAllComments = await dispatch(allCommentForAPost(postId)).then((res: any) => {
-      console.log('res ', res);
-      setCommentModal(true);
-      setMobileCommentModal(true);
 
-    })
-    
-  }
 
-  if(editCommentStatus === 'success'){
-    console.log(" postId  ", id);
-    if(id){
-      showComment(id);
-    resetEditCommentStatus();
-    }
-    
-  }
+
 
   const hideComment = () => {
     setCommentModal(false)
@@ -828,7 +812,7 @@ const goToPost = async (id: string) => {
        }
         <div className="flex items-center gap-2 w-full">
           <ImgLazyLoad className="w-8 h-8 rounded-full cursor-pointer" key={index} src={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.url} alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
-          <div className="w-full flex items-center justify-between gap-1">
+          <div onClick={() => goToPost(post._id)}  className="w-full cursor-pointer flex items-center justify-between gap-1">
             <div className="flex items-center">
               <div className="mt-3">
                 <h1 className="text-black dark:text-white text-sm font-semibold">
@@ -949,248 +933,15 @@ const goToPost = async (id: string) => {
         
       </div>
 
-        {/* desktop comment modal  */}
-        <div
-        className={`${
-          commentModal ? "hidden sm:flex" : "hidden"
-        } fixed top-0 left-0 bg-black sm:px-[30%] md:px[45%] w-full h-full overflow-y-auto justify-center items-center`}
-      >
-        <div className={`w-full h-full  bg-white`}>
-          <div className="flex justify-between items-center p-2">
-            <div>
-              <h1 className="font-semibold text-xs text-black">23k Comment</h1>
-            </div>
-            {/* close comment */}
-            <CancelLogo onClick={hideComment}
-              className="w-3 h-3 fill-black dark:white z-40 mr-2 cursor-pointer"
-              />
-           
-          </div>
-
-          <div className="flex bg-gray-100 items-center max-h-[30px] p-2 rounded-xl">
-            <ImgLazyLoad
-              src={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url }
-              className="block w-6 h-6 rounded-full"
-              alt={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.public_id }
-            />
-            <input
-              type="text"
-              onChange={(e) => (setComment(e.target.value))}
-              value={comment}
-              className="block text-xs w-[700px] h-[30px] bg-gray-100 border-0"
-              placeholder="Comment on this"
-              name=""
-              id=""
-            />
-            <button
-              type="button"
-              onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-              className="text-black cursor-pointer"
-            >
-              🙂
-            </button>
-            {showEmojiPicker && (
-              <div className="absolute z-5">
-                <EmojiPicker onEmojiClick={onEmojiClick} />
-              </div>
-            )}
-          </div>
-          <p className="text-red-600 text-[8px]">{commentErr}</p>
-
-         
-          <div className="flex justify-between items-center p-2">
-            <div className="flex gap-4 sm:max-w-xs sm:gap-0 sm:flex-wrap">
-              
-            </div>
-
-           
-
-            <button onClick={() => handleCommentSubmit(post._id)} className="text-[9px] text-white dark-text-black bg-black dark:bg-white font-semibold rounded-2xl px-3 py-1 transform-transition duration-100 hover:scale-110">
-            {
-              isCommenting ? (
-                <>
-                <ProcessingLogo className="w-4 h-4 fill-white" />
-                </>
-              ) : (
-                'Comment'
-              )
-            }  
-            </button>
-          </div>
-
-        </div>
-        
-      </div>
+       
 
       
-         {/* mobile comment modal  */}
-         <div
-        className={`${
-          mobileCommentModal ? "flex sm:hidden" : "hidden"
-        } fixed top-[20%] left-0 bg-white rounded-3xl w-full h-full justify-center items-center`}
-      >
-        <div className={`w-full h-full  bg-white`}>
-          <div className="flex justify-between items-center p-2">
-            <div>
-              <h1 className="font-semibold text-xs text-black">23k Comment</h1>
-            </div>
-            {/* close comment */}
-            <CancelLogo onClick={hideComment}
-              className="w-3 h-3 fill-black dark:white z-40 mr-2 cursor-pointer"
-              />
-           
-          </div>
-
-          <div className="flex bg-gray-100 items-center max-h-[30px] p-2 rounded-xl">
-            <ImgLazyLoad
-              src={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url }
-              className="block w-6 h-6 rounded-full"
-              alt={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.public_id }
-            />
-            <input
-              type="text"
-              onChange={(e) => (setComment(e.target.value))}
-              value={comment}
-              className="block text-xs w-[700px] h-[30px] bg-gray-100 border-0"
-              placeholder="Comment on this"
-              name=""
-              id=""
-            />
-            <button
-              type="button"
-              onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-              className="text-black cursor-pointer"
-            >
-              🙂
-            </button>
-            {showEmojiPicker && (
-              <div className="absolute z-5">
-                <EmojiPicker onEmojiClick={onEmojiClick} />
-              </div>
-            )}
-          </div>
-          <p className="text-red-600 text-[8px]">{commentErr}</p>
-
-         
-          <div className="flex justify-between items-center p-2">
-            <div className="flex gap-4 sm:max-w-xs sm:gap-0 sm:flex-wrap">
-              
-            </div>
-
-           
-
-            <button onClick={() => handleCommentSubmit(post._id)} className="text-[9px] text-white dark-text-black bg-black dark:bg-white font-semibold rounded-2xl px-3 py-1 transform-transition duration-100 hover:scale-110">
-            {
-              isCommenting ? (
-                <>
-                <ProcessingLogo className="w-4 h-4 fill-white" />
-                </>
-              ) : (
-                'Comment'
-              )
-            }  
-            </button>
-          </div>
-
-            {/* view other people comments  */}
-            {
-            //   comments && comments.length > 0 && Array.isArray(comments) ? (
-            //     comments.map((comment) => (
-            
-            // <div className="p-4">
-            //   <div className="flex justify-between">
-            //   <div className="flex space-x-2">
-            //     <img src={comment && comment.owner.profilePhoto && comment.owner.profilePhoto.url} className="w-7 h-7 rounded-full" alt="" />
-            //     <div className="flex flex-col space-y-1">
-            //       <div>
-
-            //      <div className="flex gap-1 items-center"> 
-            //       <p className="text-xs font-medium text-black">{comment && comment.owner && comment.owner.fullname}  </p>
-            //      <p className="text-gray-400 text-[9px]">{formatCreatedAt(comment && comment.createdAt)}</p> 
-            //       </div>
-            //       <p className="text-[9px] text-gray-600">@{comment && comment.owner && comment.owner.handle} </p>
-            //       </div>
-            //       <p className="text-[10px] text-black dark:text-white">{comment && comment.content}</p>
-            //        <div className="flex gap-2 items-center">
-            //         <div className="flex items-center">
-            //         {/* heart icon  */}
-            //         <HeartIcon className="w-[14px] h-[14px]" fill="red" stroke="red" />
-            //           <p className="text-xs text-gray-500 dark:text-white">25k</p>
-            //         </div>
-            //         <div className="flex items-center">
-            //           {/* comment icon  */}
-            //           <CommentLogo className="w-[12px] h-[12px] fill-gray-600 stroke-gray-600"/>
-                 
-            //       <p className="text-xs text-gray-500 dark:text-white">54k</p>
-            //         </div>
-                      
-            //        </div>
-
-            //        <div className="">
-            //         <p className="text-gray-400 text-sm pt-1 flex">See Reply &#40;<span>9</span>&#41; </p>
-            //        </div>
-            //     </div>
-            //   </div>
-
-            //   <div className="relative">
-            //      {/* three dot icon vertical */}
-            //      <ThreeDotVerticalLogo onClick={() =>showCommentMenuBar(comment._id)} className="w-5 relative h-5 fill-black stroke-black dark:fill-white cursor-pointer dark:stroke-white"/>
-              
-                
-            //     {/* mobile comment menu  */}
-            //   <div
-            //     ref={desktopCommentMenuRef}
-            //     className={`hidden ${
-            //       desktopCommentMenu && commemtClicked === comment._id ? "sm:block" : "sm:hidden"
-            //     } absolute shadow-xl w-[150px] top-0 shadow-purple-80 z-10 -right-3 rounded-3xl mx-auto bg-white  h-auto p-5`}
-            //   >
-            //     {
-            //       comment && comment.owner && comment.owner._id === getUser._doc._id ? (
-            //         <>
-            //          <div className="flex gap-2 group cursor-pointer items-center pl-1">
-            //       <EditLogo className="stroke-black w-3 h-3 group-hover:stroke-purple-600"/>
-            //       <p className="text-black text-[10px] group-hover:text-purple-600">Edit Comment</p>
-            //     </div>
-
-            //     <div className="flex gap-2 group items-center pt-4  cursor-pointer">
-            //      <TrashLogo className="fill-black stroke-black w-5 h-5 group-hover:stroke-red-600 group-hover:fill-red-600"/>
-            //       <p className="text-black text-[10px] group-hover:text-red-600">Delete Comment</p>
-            //     </div>
-
-            //     <div className="flex gap-2 group items-center cursor-pointer pt-4">
-            //       <ReplyLogo className="w-5 h-5  group-hover:stroke-purple-600" />
-            //       <p className="text-black text-[10px] group-hover:text-purple-600">Reply Comment</p>
-            //     </div>
-
-            //         </>
-            //       ) : (
-            //         <>
-            //          <div className="flex gap-2 group items-center cursor-pointer pt-4">
-            //       <ReplyLogo className="w-5 h-5  group-hover:stroke-purple-600" />
-            //       <p className="text-black text-[10px] group-hover:text-purple-600">Reply Comment</p>
-            //     </div>
-            //         </>
-            //       )
-            //     }
-               
-            //   </div>
-
-            //   </div>
-            //   </div>
-            // </div>
       
-            //     ))
-            //   ) : (
-            //     <> <p className="text-gray-600 text-[10px]">No comment has been added</p></>
-            //   )
-            }
-        </div>
-      </div>
 
         {/* post images  */}
 
         { post && post.photos && post.photos.length > 0 ? (
-        <div className="mt-2 pl-9">
+        <div onClick={() => goToPost(post._id)}  className="mt-2 pl-9 cursor-pointer">
           { post && post.photos && post.photos.length === 1 ? (
             <div className="rounded-3xl overflow-hidden">
           <ImgLazyLoad onClick={() => showMobileModal(post && post.photos[0] && post.photos[0].url, post && post._id)}
@@ -1254,7 +1005,7 @@ const goToPost = async (id: string) => {
           )}
         </div>
         ) : post && post.video ? (
-          <div className="rounded-3xl overflow-hidden z-2">
+          <div onClick={() => goToPost(post._id)}  className="rounded-3xl cursor-pointer overflow-hidden z-2">
             <video
               onClick={showFullScreen}
               className="w-full cursor-pointer object-cover h-[200px]"
@@ -1265,7 +1016,7 @@ const goToPost = async (id: string) => {
           </div>
         )  : (<> </> )}
 
-        <div onClick={() => goToPost(post._id)} className="flex justify-between items-center">
+        <div onClick={() => goToPost(post._id)} className="flex cursor-pointer justify-between items-center">
           <div className="flex ml-9 mt-4 gap-1 items-center">
             <div className="p-[5px] bg-red-600 rounded-full">
               <LikeLogo  className="w-[12px] h-[12px] fill-white stroke-white"/>
@@ -1303,7 +1054,7 @@ const goToPost = async (id: string) => {
               </p>
             </div>
 
-            <div onClick={() => showComment(post._id)} className="bg-black mr-1  cursor-pointer sm:mx-0 flex items-center py-1 px-3 rounded-lg">
+            <div onClick={() => goToPost(post._id)} className="bg-black mr-1 cursor-pointer sm:mx-0 flex items-center py-1 px-3 rounded-lg">
               <CommentLogo  className="w-[12px] h-[12px] fill-white stroke-white dark:fill-black dark:stroke-black"/>
               <p className="text-white dark:text-black text-[10px] pl-1">
                 Comment
