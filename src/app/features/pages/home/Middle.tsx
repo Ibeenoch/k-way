@@ -136,6 +136,10 @@ const Middle = () => {
 const handlePostSubmit = async() => {
   setIsPosting(true);
   const getUser = JSON.parse(localStorage.getItem('user') as any);
+  if(getUser === null){
+    navigate('/login');
+    return;
+  };
   const userId = getUser._doc._id;
   const data = { content, privacy,  };
   let postData = new FormData();
@@ -209,6 +213,10 @@ if(id){
 
 
 const handleLike = async (postId: string) => {
+  if(getUser === null){
+    navigate('/login');
+    return;
+  };
   const token = getUser && getUser.token;
   const userId =  getUser && getUser._doc._id;
   const postLike = {
@@ -222,6 +230,10 @@ const handleLike = async (postId: string) => {
 };
 
 const handleBookmark = async (postId: string) => {
+  if(getUser === null){
+    navigate('/login');
+    return;
+  };
   const token = getUser && getUser.token;
   const userId =  getUser && getUser._doc._id;
   const postBooked = {
@@ -235,6 +247,10 @@ const handleBookmark = async (postId: string) => {
 };
 
 const handleReShare = async (postId: string) => {
+  if(getUser === null){
+    navigate('/login');
+    return;
+  };
   const token = getUser && getUser.token;
   const userId =  getUser && getUser._doc._id;
   const postReshare = {
@@ -298,6 +314,10 @@ const handleTouchEnd = (e : React.TouchEvent<HTMLDivElement>) => {
 
 
  const handleCommentSubmit = (postId: string) => {
+  if(getUser === null){
+    navigate('/login');
+    return;
+  };
     setIsCommenting(true);
     if(comment === ''){
       setIsCommenting(false);
@@ -360,6 +380,10 @@ const handleTouchEnd = (e : React.TouchEvent<HTMLDivElement>) => {
   };
 
   const handleEditIcon = (commentId: string, postId: string) => {
+    if(getUser === null){
+      navigate('/login');
+      return;
+    };
     navigate(`/edit/${postId}/${commentId}`);
   }
 
@@ -429,6 +453,10 @@ const handleTouchEnd = (e : React.TouchEvent<HTMLDivElement>) => {
   };
 
   const handleReplyComent = async (commentId: string) => {
+    if(getUser === null){
+      navigate('/login');
+      return;
+    };
     const userId = getUser._doc._id;
     navigate(`/reply/comment/${commentId}/${userId}`)
   }
@@ -442,10 +470,8 @@ const handleTouchEnd = (e : React.TouchEvent<HTMLDivElement>) => {
     setDisplayImage(img);
     setDisplayProfileImage(post.owner.profilePhoto.url);
     setMobileModal(true);
-    setCurrentPostId(id)
-    setPersonalPost(post)
-    console.log('type of is ' ,typeof id, img)
-
+    setCurrentPostId(id);
+    setPersonalPost(post);
   };
 
   useEffect(() => {
@@ -511,6 +537,10 @@ const viewNextImage = () => {
 };
 
   const handleEditPost = (id: string) => {
+    if(getUser === null){
+      navigate('/login');
+      return;
+    };
     const findPost = posts.find((p: any) => p._id === id);
     setcontent(findPost.content);
     navigate(`/${findPost._id}`)
@@ -518,6 +548,10 @@ const viewNextImage = () => {
   };
 
   const handleDeletePost = (id: string) => {
+    if(getUser === null){
+      navigate('/login');
+      return;
+    };
     const getConfirmation = window.confirm("Are you sure Your want to delete this post? This action cannot be undo");
     if(getConfirmation){
     const token = getUser.token;
@@ -528,6 +562,21 @@ const viewNextImage = () => {
   }
 
   };
+
+  
+
+
+  const viewProfile = () => {
+    console.log('jjj')
+    if(getUser !== null){
+      // navigate(`/profile/${getUser && getUser._doc && getUser._doc._id}`)
+      console.log('okay ', getUser)
+    }else{
+      navigate('/login');
+    }
+  };
+
+
   return (
     <div className="mt-10 max-w-md sm:max-w-full">
       <h1 className="text-md font-bold text-black dark:text-white pl-4">
@@ -536,23 +585,30 @@ const viewNextImage = () => {
       {/* stories */}
       <div className="my-4">
         <div className="flex max-w-full overflow-x-auto">
-          {/* add a story  */}
-          <div className="relative inline-block mx-1 flex-none">
-            <img
+        {/* <img
               className="w-20 h-20 border-2 opacity-80 border-purple-500 rounded-full cursor-pointer"
               src={`${process.env.PUBLIC_URL}/images/images-73.jpeg`}
               alt=""
-            />
+            /> */}
+          {/* add a story  */}
+          <div  onClick={viewProfile} className="relative inline-block mx-1 flex-none">
+          {
+         getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url ? (
+            <img className="w-20 h-20 border-2 opacity-80 border-purple-500 rounded-full cursor-pointer" src={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url} alt="" />
+
+          ) : (
+            <img className="w-20 h-20 border-2 opacity-80 border-purple-500 rounded-full cursor-pointer" src={`${process.env.PUBLIC_URL}/images/user.png`} alt="" />
+          )
+        }
             <PlusIcon
               width="20"
               height="20"
-              className="absolute inset-0 m-auto fill-white stroke-white"
+              className="absolute inset-0 m-auto z-8 stroke-[4px] fill-gray-400 stroke-gray-400 cursor-pointer"
               strokeWidth="1"
             >
-              {" "}
             </PlusIcon>
             <p className="text-[10px] text-black dark:text-white text-center">
-              Your story
+            { getUser !== null && 'Your story' }  
             </p>
           </div>
           <div className="flex gap-2 ">
@@ -619,11 +675,14 @@ const viewNextImage = () => {
           </div>
 
           <div className="hidden sm:flex sm:bg-white sm:items-center sm:max-h-[30px] sm:p-2 sm:rounded-2xl">
-            <img
-              src={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url}
-              className="hidden sm:block sm:w-6 sm:h-6 sm:rounded-full"
-              alt=""
-            />
+          {
+         getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url ? (
+            <img onClick={viewProfile} className='rounded-full border border-purple-500 w-[100px] h-[100px] cursor-pointer -ml-4' src={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url} alt="" />
+
+          ) : (
+            <img onClick={viewProfile} className='rounded-full border border-purple-500 w-[100px] h-[100px] cursor-pointer -ml-4' src={`${process.env.PUBLIC_URL}/images/user.png`} alt="" />
+          )
+        }
             <input
               onClick={showPostModal}
               type="text"
@@ -895,7 +954,7 @@ const viewNextImage = () => {
                 </h1>
               <p className="text-gray text-[8px]"> {post && formatCreatedAt(post.createdAt)} </p>
               </div>
-              <VerifyMarkLogo className="w-5 h-5 fill-blue-500 stroke-white"/>
+              <VerifyMarkLogo className="w-5 h-5 fill-purple-500 stroke-white"/>
            
               <p className="text-gray-600 text-[10px] ">@{post && post.owner && post.owner.handle}</p>
             </div>
@@ -913,7 +972,7 @@ const viewNextImage = () => {
                   } absolute shadow-xl shadow-purple-80 z-10 top-0 -right-[10px] w-[150px] h-auto rounded-3xl mx-auto bg-white  p-2`}
                 >
                   {
-                    post && post.owner && post.owner._id === getUser._doc._id ? (
+                  getUser !== undefined && getUser && getUser._doc && getUser._doc._id  ===   post && post.owner && post.owner._id ? (
                       <>
                     <div onClick={() =>handleEditPost(post._id)} className="flex gap-2 px-2 cursor-pointer items-center pt-4">
                       <EditLogo  className="stroke-black w-3 h-3"/>
@@ -970,7 +1029,7 @@ const viewNextImage = () => {
         } bottom-0 bg-white p-5 w-full h-auto rounded-tl-3xl rounded-tr-3xl sm:hidden`}
       >
          {
-                    post && post.owner && post.owner._id === getUser._doc._id ? (
+           getUser !== undefined && getUser && getUser._doc && getUser._doc._id  ===   post && post.owner && post.owner._id ? (
                       <>
                     <div onClick={() =>handleEditPost(post._id)} className="flex gap-2 px-2 cursor-pointer items-center pt-4">
                       <EditLogo  className="stroke-black w-4 h-4"/>

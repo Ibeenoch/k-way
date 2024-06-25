@@ -46,6 +46,10 @@ const Left = () => {
   }
 
   const viewProfile = () => {
+    if(getUser === null){
+      navigate('/login');
+      return;
+    }
     navigate(`/profile/${getUser && getUser._doc && getUser._doc._id}`)
   }
 
@@ -56,14 +60,19 @@ const Left = () => {
         <div className='rounded-full bg-sky-500 cursor-pointer w-18 h-18'></div>
         {
          getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url ? (
-            <img onClick={viewProfile} className='rounded-full w-[100px] h-[100px] cursor-pointer -ml-4' src={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url} alt="" />
+            <img onClick={viewProfile} className='rounded-full border border-purple-500 w-[100px] h-[100px] cursor-pointer -ml-4' src={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url} alt="" />
 
           ) : (
-            <img onClick={viewProfile} className='rounded-full w-[100px] h-[100px] cursor-pointer -ml-4' src={`${process.env.PUBLIC_URL}/images/user.png`} alt="" />
+            <img onClick={viewProfile} className='rounded-full border border-purple-500 w-[100px] h-[100px] cursor-pointer -ml-4' src={`${process.env.PUBLIC_URL}/images/user.png`} alt="" />
           )
         }
         </div>
 
+        {
+          getUser !== null && (
+            <>
+            
+           
         <div className='flex flex-col text-center justify-center'>
             <div className="flex gap-1 justify-center items-center pt-2">
               <VerifyMark className="w-5 h-5 fill-purple-500" />
@@ -88,6 +97,9 @@ const Left = () => {
             <p className='text-[9px] text-gray-400'>Posts</p>
           </div>
         </div>
+          </>
+          )
+        }
       </div>
        {/* nav icons destop  */}
       <div className='flex flex-col pt-4 bg-white dark:bg-dark p-2'>
