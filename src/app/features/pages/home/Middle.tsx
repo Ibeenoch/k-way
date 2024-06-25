@@ -3,7 +3,7 @@ import pics from "../../../../images/images-74.jpeg";
 import { PlusIcon, HeartIcon,  } from "@heroicons/react/24/outline";
 import EmojiPicker from "emoji-picker-react";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
-import { selectUser } from "../auth/authSlice";
+import { selectUser, userFollowers, userFollowing } from "../auth/authSlice";
 import { allCommentForAPost, bookmarkPost, commentOnPost, createPost, deletePost, getAPost, getAllPosts, likePost, rePost, resetEditCommentStatus, selectPost, updatePost } from "./PostSlice";
 import toast, { Toast } from 'react-hot-toast'
 import { useNavigate, useParams } from "react-router-dom";
@@ -130,7 +130,31 @@ const Middle = () => {
  const getPrivacy = (e: ChangeEvent<HTMLSelectElement>) => {
   setPrivacy(e.target.value)
 
- }
+ };
+
+ const handleFollowing = (userId: string) => {
+  if(getUser === null){
+    navigate('login');
+    return;
+  };
+  const token = getUser && getUser.token;
+  const follow = { token, userId };
+  dispatch(userFollowing(follow)).then((res: any) => {
+    console.log('user res ', res);
+  })
+ };
+
+ const handleFollower = (userId: string) => {
+  if(getUser === null){
+    navigate('login');
+    return;
+  };
+  const token = getUser && getUser.token;
+  const follow = { token, userId };
+  dispatch(userFollowers(follow)).then((res: any) => {
+    console.log('user res ', res);
+  })
+ };
 
 
 const handlePostSubmit = async() => {
@@ -985,14 +1009,21 @@ const viewNextImage = () => {
                       </>
                     ) : (
                       <>
-                       <div className="flex gap-2 cursor-pointer items-center pt-4">
-                    <AddContactLogo  className="fill-black stroke-black w-3 h-3"/>
-                    <p className="text-black text-[10px]">Follow @texilola😎</p>
-                  </div>
+                      {
+                        getUser && getUser._doc && getUser._doc.following  && getUser._doc.following.includes(post.owner._id) && (
+                          <>
+                          <div onClick={() => handleFollowing(post && post.owner && post.owner._id )} className="flex gap-2 cursor-pointer items-center pt-4">
+                            <AddContactLogo  className="fill-black stroke-black w-3 h-3"/>
+                            <p className="text-black text-[10px]">Follow @{post && post.owner && post.owner.handle }</p>
+                          </div>
+                          </>
+                        )
+                      }
+                    
 
                   <div className="flex gap-2 items-center pt-4  cursor-pointer">
                     <BlockContactLogo  className="fill-black stroke-black w-3 h-3"/>
-                    <p className="text-black text-[10px]">Block @texilola😎</p>
+                    <p className="text-black text-[10px]">Block @{post && post.owner && post.owner.handle }</p>
                   </div>
 
                   <div className="flex gap-2 items-center cursor-pointer pt-4">
@@ -1002,7 +1033,7 @@ const viewNextImage = () => {
 
                   <div className="flex gap-2 cursor-pointer items-center pt-4">
                     <MuteContactLogo   className="fill-black stroke-black w-3 h-3"/>
-                    <p className="text-black text-[10px]">Mute @texilola😎</p>
+                    <p className="text-black text-[10px]">Mute @{post && post.owner && post.owner.handle }</p>
                   </div>
                       </>
                     )
@@ -1085,19 +1116,20 @@ const viewNextImage = () => {
 
           <div className='flex justify-between items-center z-14 my-2 px-4'>
             <div className='flex gap-2'>
-              <img className='w-9 h-9 rounded-full cursor-pointer' src={displayProfileImage} alt="" />
-            <div className="z-9">
+              <img className='w-9 h-9 rounded-full cursor-pointer z-40' src={displayProfileImage} alt="" />
+            <div className="z-40">
               <h1 className='text-sm text-white font-semibold'>{personalPost && personalPost.owner && personalPost.owner.fullname}</h1>
               <p className='text-xs text-gray-300'>@{personalPost && personalPost.owner && personalPost.owner.handle}</p>
             </div>
             </div>
             
-            <button className='text-xs px-4 py-1 bg-black dark:bg-white rounded-full border border-white text-white dark:text-black transform-transition duration-100 hover:scale-110'>Follow</button>
+            <button onClick={() => handleFollowing(post && post.owner && post.owner._id)} className='text-xs px-4 py-1 bg-black z-40 dark:bg-white rounded-full border border-white text-white dark:text-black transform-transition duration-100 hover:scale-110'>Follow</button>
           </div>
 
          
 
           <div className="fixed z-5 inset-0 flex justify-center items-center">
+            <div className="pt-1"></div>
            <div  onTouchStart={handleTouchStart}  onTouchEnd={handleTouchEnd} onTouchMove={handleTouchMove} > <img
            
               className="max-w-[600px] cursor-pointer"

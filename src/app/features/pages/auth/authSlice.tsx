@@ -109,6 +109,30 @@ export const userFollowing = createAsyncThunk(
   }
 );
 
+export const getFollowing = createAsyncThunk(
+  "/user/getfollowing",
+  async (data: any) => {
+    try {
+      const res = await api.getFollowing(data);
+      return res;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
+export const getFollowers = createAsyncThunk(
+  "/user/getfollowers",
+  async (data: any) => {
+    try {
+      const res = await api.getFollowers(data);
+      return res;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
 
 export const authSlice = createSlice({
   name: "user",
@@ -228,6 +252,30 @@ export const authSlice = createSlice({
          };
       })
       .addCase(userFollowing.rejected, (state, action) => {
+        state.status = "failed";
+      })
+      .addCase(getFollowing.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(getFollowing.fulfilled, (state, action) => {
+        if(action.payload !== undefined){
+          state.status = "success";
+          state.user = action.payload
+         };
+      })
+      .addCase(getFollowing.rejected, (state, action) => {
+        state.status = "failed";
+      })
+      .addCase(getFollowers.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(getFollowers.fulfilled, (state, action) => {
+        if(action.payload !== undefined){
+          state.status = "success";
+          state.user = action.payload
+         };
+      })
+      .addCase(getFollowers.rejected, (state, action) => {
         state.status = "failed";
       })
       
