@@ -133,6 +133,30 @@ export const getFollowers = createAsyncThunk(
   }
 );
 
+export const getAUser = createAsyncThunk(
+  "/user/aUser",
+  async (data: any) => {
+    try {
+      const res = await api.getAUser(data);
+      return res;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
+export const getAllUser = createAsyncThunk(
+  "/user/all",
+  async () => {
+    try {
+      const res = await api.getAllUser();
+      return res;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
 
 export const authSlice = createSlice({
   name: "user",
@@ -236,7 +260,8 @@ export const authSlice = createSlice({
       .addCase(userFollowers.fulfilled, (state, action) => {
         if(action.payload !== undefined){
           state.status = "success";
-          state.user = action.payload
+          state.user = action.payload;
+          localStorage.setItem('user', JSON.stringify(action.payload));
          };
       })
       .addCase(userFollowers.rejected, (state, action) => {
@@ -248,7 +273,8 @@ export const authSlice = createSlice({
       .addCase(userFollowing.fulfilled, (state, action) => {
         if(action.payload !== undefined){
           state.status = "success";
-          state.user = action.payload
+          state.user = action.payload;
+          localStorage.setItem('user', JSON.stringify(action.payload));
          };
       })
       .addCase(userFollowing.rejected, (state, action) => {
@@ -260,7 +286,8 @@ export const authSlice = createSlice({
       .addCase(getFollowing.fulfilled, (state, action) => {
         if(action.payload !== undefined){
           state.status = "success";
-          state.user = action.payload
+          state.user = action.payload;
+          localStorage.setItem('user', JSON.stringify(action.payload));
          };
       })
       .addCase(getFollowing.rejected, (state, action) => {
@@ -272,10 +299,37 @@ export const authSlice = createSlice({
       .addCase(getFollowers.fulfilled, (state, action) => {
         if(action.payload !== undefined){
           state.status = "success";
-          state.user = action.payload
+          state.user = action.payload;
+          localStorage.setItem('user', JSON.stringify(action.payload));
          };
       })
       .addCase(getFollowers.rejected, (state, action) => {
+        state.status = "failed";
+      })
+      .addCase(getAUser.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(getAUser.fulfilled, (state, action) => {
+        if(action.payload !== undefined){
+          state.status = "success";
+          state.user = action.payload;
+          localStorage.setItem('user', JSON.stringify(action.payload));
+         };
+      })
+      .addCase(getAUser.rejected, (state, action) => {
+        state.status = "failed";
+      })
+      .addCase(getAllUser.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(getAllUser.fulfilled, (state, action) => {
+        if(action.payload !== undefined){
+          state.status = "success";
+          state.users = action.payload;
+          localStorage.setItem('users', JSON.stringify(action.payload));
+         };
+      })
+      .addCase(getAllUser.rejected, (state, action) => {
         state.status = "failed";
       })
       

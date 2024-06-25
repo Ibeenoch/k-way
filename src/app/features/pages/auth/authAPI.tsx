@@ -154,3 +154,25 @@ export const getFollowers = async (token: any) => {
     console.log(error)
    }
 };
+
+export const getAUser = async (userId: any) => {
+  try {
+
+      const res = await axios.get(`${API}/user/${userId}`, );
+      return res.data;
+    
+   } catch (error) {
+    console.log(error)
+   }
+};
+
+export const getAllUser = async () => {
+  try {
+
+      const res = await axios.get(`${API}/user`, );
+      return res.data;
+    
+   } catch (error) {
+    console.log(error)
+   }
+};
