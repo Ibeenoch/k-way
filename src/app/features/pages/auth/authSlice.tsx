@@ -133,6 +133,18 @@ export const getFollowers = createAsyncThunk(
   }
 );
 
+export const getOtherUser = createAsyncThunk(
+  "/user/otheruser",
+  async (data: any) => {
+    try {
+      const res = await api.getAUser(data);
+      return res;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
 export const getAUser = createAsyncThunk(
   "/user/aUser",
   async (data: any) => {
@@ -317,6 +329,19 @@ export const authSlice = createSlice({
          };
       })
       .addCase(getAUser.rejected, (state, action) => {
+        state.status = "failed";
+      })
+      .addCase(getOtherUser.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(getOtherUser.fulfilled, (state, action) => {
+        if(action.payload !== undefined){
+          state.status = "success";
+          state.otherperson = action.payload;
+          localStorage.setItem('otheruser', JSON.stringify(action.payload));
+         };
+      })
+      .addCase(getOtherUser.rejected, (state, action) => {
         state.status = "failed";
       })
       .addCase(getAllUser.pending, (state, action) => {

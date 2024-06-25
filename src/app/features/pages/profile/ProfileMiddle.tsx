@@ -32,9 +32,9 @@ const ProfileMiddle = () => {
   
     const videoUrl = `${process.env.PUBLIC_URL}/video.mp4`;
     const { user, profile } = useAppSelector(selectUser);
-    const getUser = JSON.parse(localStorage.getItem('user') as any);
+    const getUser = JSON.parse(localStorage.getItem('otheruser') as any);
 
- 
+  
 
     const activateFeed = () => {
         setShowFeed(true);
@@ -217,7 +217,7 @@ const ProfileMiddle = () => {
             <p className='text-xs text-gray-400'>Following</p>
           </div>
           <div className='flex flex-col justify-center px-3'>
-            <h1 className='text-black dark:text-white text-center font-semibold text-sm'>965</h1>
+            <h1 className='text-black dark:text-white text-center font-semibold text-sm'>{getUser && getUser._doc && getUser._doc.posts && getUser._doc.posts.length }</h1>
             <p className='text-xs text-gray-400'>Posts</p>
           </div>
         </div>

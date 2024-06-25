@@ -3,7 +3,7 @@ import pics from "../../../../images/images-74.jpeg";
 import { PlusIcon, HeartIcon,  } from "@heroicons/react/24/outline";
 import EmojiPicker from "emoji-picker-react";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
-import { selectUser, userFollowers, userFollowing } from "../auth/authSlice";
+import { getAUser, getAllUser, getOtherUser, selectUser, userFollowers, userFollowing } from "../auth/authSlice";
 import { allCommentForAPost, bookmarkPost, commentOnPost, createPost, deletePost, getAPost, getAllPosts, likePost, rePost, resetEditCommentStatus, selectPost, updatePost } from "./PostSlice";
 import toast, { Toast } from 'react-hot-toast'
 import { useNavigate, useParams } from "react-router-dom";
@@ -91,6 +91,12 @@ const Middle = () => {
        fileRef.current?.click();
     }
   }
+
+  useEffect(() => {
+    dispatch(getAllUser()).then((res: any) => {
+      console.log('all users ', res)
+    })
+  }, []);
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if(e.target.files){
@@ -489,6 +495,15 @@ const handleTouchEnd = (e : React.TouchEvent<HTMLDivElement>) => {
     setMobileModal(false);
   };
 
+  const viewUserProfile = (userId: string) => {
+    dispatch(getOtherUser(userId)).then((res: any) => {
+      console.log('user profile ', res);
+      if(res && res.payload !== undefined){
+        navigate(`/profile/${userId}`)
+      }
+    })
+  }
+
   const showMobileModal = (img: any, id: any) => {
     const post = posts.find((item: any) => item._id === id );
     setDisplayImage(img);
@@ -701,10 +716,10 @@ const viewNextImage = () => {
           <div className="hidden sm:flex sm:bg-white sm:items-center sm:max-h-[30px] sm:p-2 sm:rounded-2xl">
           {
          getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url ? (
-            <img onClick={viewProfile} className='rounded-full border border-purple-500 w-[100px] h-[100px] cursor-pointer -ml-4' src={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url} alt="" />
+            <img onClick={viewProfile} className='w-8 h-8 rounded-full cursor-pointer' src={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url} alt="" />
 
           ) : (
-            <img onClick={viewProfile} className='rounded-full border border-purple-500 w-[100px] h-[100px] cursor-pointer -ml-4' src={`${process.env.PUBLIC_URL}/images/user.png`} alt="" />
+            <img onClick={viewProfile} className='w-8 h-8 rounded-full cursor-pointer' src={`${process.env.PUBLIC_URL}/images/user.png`} alt="" />
           )
         }
             <input
@@ -969,7 +984,7 @@ const viewNextImage = () => {
         ) 
        }
         <div className="flex items-center gap-2 w-full">
-          <ImgLazyLoad className="w-8 h-8 rounded-full cursor-pointer" key={index} src={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.url} alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
+          <ImgLazyLoad onClick={() => viewUserProfile(post && post.owner && post.owner._id)} className="w-8 h-8 rounded-full cursor-pointer" key={index} src={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.url} alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
           <div  className="w-full cursor-pointer flex items-center justify-between gap-1">
             <div  onClick={() => goToPost(post._id)} className="flex items-center">
               <div className="mt-3">
@@ -1123,7 +1138,7 @@ const viewNextImage = () => {
             </div>
             </div>
             
-            <button onClick={() => handleFollowing(post && post.owner && post.owner._id)} className='text-xs px-4 py-1 bg-black z-40 dark:bg-white rounded-full border border-white text-white dark:text-black transform-transition duration-100 hover:scale-110'>Follow</button>
+            <button onClick={() => handleFollowing(post && post.owner && post.owner._id)} className='text-xs px-4 py-1 bg-black z-40 dark:bg-white rounded-full border border-white text-white dark:text-black transform-transition duration-100 hover:scale-110'>{  }Follow</button>
           </div>
 
          

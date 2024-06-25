@@ -93,7 +93,7 @@ const Left = () => {
             <p className='text-[9px] text-gray-400'>Following</p>
           </div>
           <div className='flex flex-col justify-center px-1'>
-            <h1 className='text-black dark:text-white text-center font-semibold text-[9px]'>965</h1>
+            <h1 className='text-black dark:text-white text-center font-semibold text-[9px]'>{getUser && getUser._doc && getUser._doc.posts && getUser._doc.posts.length }</h1>
             <p className='text-[9px] text-gray-400'>Posts</p>
           </div>
         </div>
