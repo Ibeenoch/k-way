@@ -17,6 +17,7 @@ import { ReactComponent as ImageLogo } from '../../../../assets/imagesLogo.svg';
 import { ReactComponent as CancelLogo } from '../../../../assets/cancelLogo.svg';
 import { ReactComponent as EditLogo } from '../../../../assets/editLogo.svg';
 import { ReactComponent as TrashLogo } from '../../../../assets/trashLogo.svg';
+import { ReactComponent as SendLogo } from '../../../../assets/sendLogo.svg';
 import { ReactComponent as BackArrowLogo } from '../../../../assets/arrowBack.svg';
 import { ReactComponent as ProcessingLogo } from '../../../../assets/processingLogo.svg';
 import { ReactComponent as ArrowDownLogo } from '../../../../assets/arrowDownLogo.svg';
@@ -232,6 +233,14 @@ const handleBookmark = async (postId: string) => {
   const closeCommentMenu = () => {
     setDesktopCommentMenu(false);
   };
+
+  useEffect(() => {
+    document.body.classList.add('bg-black');
+
+    return() => {
+        document.body.classList.remove('bg-black');
+    };
+  }, [])
 
   const showMobileModal = (img: any, id: any) => {
 
@@ -579,13 +588,13 @@ const handleBookmark = async (postId: string) => {
             </div>
                 ))
               ) : (
-                <> <p className="text-gray-600 text-[10px] bg-white pt-4 px-2">No comment has been added</p></>
+                <> <p className="text-gray-600 text-center pb-4 text-[10px] bg-white pt-4 px-2">No comment has been added</p></>
               )
             }
 
 
-        <div className="fixed max-w-[100%] sm:max-w-[50%] pt-2 bottom-0 border border-gray-400 rounded-xl">
-            <div className="flex bg-gray-100 items-center max-h-[30px] p-2 mb-1 rounded-xl">
+        <div className="fixed max-w-[100%] sm:max-w-[50%] pt-2 bottom-0 rounded-xl">
+            <div className="flex bg-white items-center max-h-[30px] p-2 mb-1 rounded-xl">
             <ImgLazyLoad
               src={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url }
               className="block w-7 h-7 rounded-full"
@@ -608,7 +617,7 @@ const handleBookmark = async (postId: string) => {
                <div className='flex items-center'><ProcessingLogo className="w-5 h-5 fill-white" /> <p className='text-[9px] text-white'> Commenting...</p></div> 
                </>
               ) : (
-                'Comment'
+                <SendLogo className="w-6 h-6 fill-white" />
               )
             }  
             </button>

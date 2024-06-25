@@ -9,6 +9,7 @@ import { ReactComponent as TrashLogo } from '../../../../assets/trashLogo.svg';
 import { ReactComponent as ProcessingLogo } from '../../../../assets/processingLogo.svg';
 import { ReactComponent as ThreeDotVerticalLogo } from '../../../../assets/threeDotVerticalLogo.svg';
 import { ReactComponent as BackArrowLogo } from '../../../../assets/arrowBack.svg';
+import { ReactComponent as SendLogo } from '../../../../assets/sendLogo.svg';
 import { formatCreatedAt } from "../../../../utils/timeformat";
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../hooks';
@@ -105,6 +106,13 @@ const viewPersonProfile = (id: string) => {
     setDesktopCommentMenu(false);
   };
 
+  useEffect(() => {
+    document.body.classList.add('bg-black');
+    return () => {
+      document.body.classList.remove('bg-black')
+    }
+  }, [])
+
 const handleGoBack = () => {
   navigate(-1);
   setFindReply(true);
@@ -160,10 +168,10 @@ const getConfirmation = (commentId: string) => {
             {
               isCommenting ? (
                 <>
-               <div className='flex items-center'><ProcessingLogo className="w-5 h-5 fill-white" /> <p className='text-[9px] text-white'> Replying...</p></div> 
-                </>
+               <div className='flex items-center'><ProcessingLogo className="w-5 h-5 fill-white" /> <p className='text-[9px] text-white'> Commenting...</p></div> 
+               </>
               ) : (
-                'Comment'
+                <SendLogo className="w-6 h-6 fill-white" />
               )
             }  
             </button>
@@ -266,7 +274,7 @@ const getConfirmation = (commentId: string) => {
             </div>
                 ))
               ) : (
-                <> <p className="text-gray-600 text-[10px] bg-white pt-4 px-2">No comment has been added</p></>
+                <> <p className="text-gray-600 text-center pb-4 text-[10px] bg-white pt-4 px-2">No comment has been added</p></>
               )
             }
 

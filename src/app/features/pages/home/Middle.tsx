@@ -1161,6 +1161,119 @@ const viewNextImage = () => {
           </div>
         </div>
       </div>
+
+
+      {/* video view modal  */}
+
+      <div
+        className={`${
+          fullvideoScreen ? "flex" : "hidden"
+        } fixed top-0 left-0 bg-black  w-full h-full overflow-y-auto flex-cols justify-center items-center`}
+      >
+        <video
+          className="w-full h-screen object-cover"
+          controls
+          src={videoUrl}
+        ></video>
+
+        {/* video icons controls */}
+        <div className="absolute z-30 bottom-14 right-0 flex flex-col items-center space-y-4">
+          <div className="flex flex-col items-center">
+            <div className="flex flex-col cursor-pointer justify-end items-center pr-4">
+              <div className="p-2 w-8 h-8 bg-red-500 mt-2 rounded-full flex justify-center items-center">
+                <HeartIcon color="white" className="w-12 h-12 fill-white" />
+              </div>
+              <p className="text-xs text-white">124k</p>
+            </div>
+
+            <div className="flex flex-col cursor-pointer justify-end items-center pr-4">
+              <div className="p-2 w-9 h-9 bg-sky-500 mt-2 rounded-full flex justify-center items-center">
+               <ReplyLogo className="w-15 h-15 fill-white stroke-white" />
+              </div>
+              <p className="text-xs text-white">124k</p>
+            </div>
+
+            <div className="flex flex-col cursor-pointer justify-end items-center pr-4">
+              <div className="p-2 w-8 h-8 bg-sky-500 mt-2 rounded-full flex justify-center items-center">
+               <CommentLogo className="w-4 h-4 fill-white stroke-white" />
+              </div>
+              <p className="text-xs text-white">124k</p>
+            </div>
+
+            <div className="flex flex-col cursor-pointer justify-end items-center pr-4">
+            <div className="p-2 w-8 h-8 bg-sky-500 mt-2 rounded-full flex justify-center items-center">
+               <BookMarkLogo className="w-4 h-4 fill-white stroke-white" />
+              </div>
+              <p className="text-xs text-white">124k</p>
+            </div>
+          </div>
+        </div>
+
+        {/* cancel or close  */}
+        <div className="absolute top-5 right-5 flex justify-between items-center">
+          {/* cancel or close  */}
+          <CancelLogo onClick={hideFullScreen}
+            className="w-4 h-4 fill-white cursor-pointer"/>
+        </div>
+
+        {/* people comments  */}
+        <div className="absolute bottom-16 left-3  flex flex-col">
+          <div className="flex gap-4">
+            <img src={`${process.env.PUBLIC_URL}/images/ladies 8.png`} className="w-9 h-9 rounded-full" alt="" />
+            <div>
+              <h1 className="text-md font-bold text-white">Harmony Waves</h1>
+              <p className="text-sm text-white">
+                Omg, the dress is so pretty😍
+              </p>
+            </div>
+          </div>
+
+          <div className="flex gap-4">
+            <img src={`${process.env.PUBLIC_URL}/images/ladies 8.png`} className="w-9 h-9 rounded-full" alt="" />
+            <div>
+              <h1 className="text-md font-bold text-white">Harmony Waves</h1>
+              <p className="text-sm text-white">
+                Omg, the dress is so pretty😍
+              </p>
+            </div>
+          </div>
+
+          <div className="flex gap-4">
+            <img src={`${process.env.PUBLIC_URL}/images/ladies 8.png`} className="w-9 h-9 rounded-full" alt="" />
+            <div>
+              <h1 className="text-md font-bold text-white">Harmony Waves</h1>
+              <p className="text-sm text-white">
+                Omg, the dress is so pretty😍
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* add your comment  */}
+
+        <div className="fixed bottom-0 flex border border-white rounded-xl">
+             <input
+                  type="text"
+                  className="rounded-md border-0 bg-transparent w-[70vw] sm:left-[25%] sm:w-[42vw] mx-auto left-0 py-2 text-white shadow-sm placeholder:text-white  sm:text-xs"
+                  placeholder="start typing here"
+                  name=""
+                  id=""
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                /> 
+                <button onClick={() => handleCommentSubmit(post._id)} className="text-white font-medium text-xs rounded-xl py-2 px-4">
+                {
+              isCommenting ? (
+                <>
+               <div className='flex items-center'><ProcessingLogo className="w-5 h-5 fill-white" /> <p className='text-[9px] text-white'> Commenting...</p></div> 
+               </>
+              ) : (
+                <SendLogo className="w-6 h-6 fill-white" />
+              )
+            }  
+                </button>
+                </div>
+      </div>
       
 
         {/* post images  */}
@@ -1300,179 +1413,6 @@ const viewNextImage = () => {
       }
       </div>
       
-
-      {/* video view modal  */}
-
-      <div
-        className={`${
-          fullvideoScreen ? "flex" : "hidden"
-        } fixed top-0 left-0 bg-black  w-full h-full flex-cols justify-center items-center`}
-      >
-        <video
-          className="w-full h-screen object-cover"
-          
-          controls
-          src={videoUrl}
-        ></video>
-
-        {/* video icons controls */}
-        <div className="absolute z-30 bottom-12 right-0 flex flex-col items-center space-y-4">
-          <div className="flex flex-col items-center">
-            <div className="flex flex-col cursor-pointer justify-end items-center pr-4">
-              <div className="p-2 w-12 h-12 bg-red-500 mt-2 rounded-full flex justify-center items-center">
-                <HeartIcon color="white" className="w-12 h-12 fill-white" />
-              </div>
-              <p className="text-md text-gray-400 font-bold">124k</p>
-            </div>
-
-            <div className="flex flex-col cursor-pointer justify-end items-center pr-4">
-              <div className="p-2 w-12 h-12 bg-sky-500 mt-2 rounded-full flex justify-center items-center">
-                <svg
-                  className="w-12 h-12 fill-white stroke-white dark:fill-black dark:stroke-black"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    clip-rule="evenodd"
-                    d="M20.5399 16.8073C20.7615 16.5775 20.8134 16.2326 20.6692 15.9478L19.939 14.5059C18.2788 11.2271 14.9158 9.16048 11.2406 9.16049H10.8367C10.8113 8.60714 10.7785 8.05406 10.7382 7.50138L10.6697 6.56241C10.6144 5.80389 9.76867 5.37987 9.1278 5.78937C7.01209 7.14127 5.17281 8.88321 3.70799 10.9224L3.24781 11.563C3.05998 11.8245 3.05998 12.1766 3.24781 12.4381L3.70799 13.0787C5.17281 15.1179 7.01209 16.8598 9.1278 18.2117C9.76867 18.6212 10.6144 18.1972 10.6697 17.4387L10.7382 16.4997C10.7863 15.8402 10.8238 15.18 10.8507 14.5196C13.0228 14.4559 15.1925 14.8939 17.1864 15.8141L19.6858 16.9676C19.9756 17.1014 20.3183 17.0371 20.5399 16.8073ZM18.3291 14.6894L17.815 14.4522C15.3833 13.3299 12.7153 12.856 10.0678 13.0594C9.68551 13.0888 9.38691 13.4018 9.37558 13.785C9.34988 14.6542 9.30541 15.5229 9.24215 16.3907L9.23581 16.4776C7.57301 15.3039 6.11599 13.8598 4.92625 12.2036L4.78038 12.0005L4.92625 11.7975C6.11599 10.1413 7.57301 8.69718 9.23581 7.52347L9.24215 7.61043C9.29861 8.38499 9.34011 9.16037 9.36665 9.93613C9.38047 10.3401 9.71198 10.6605 10.1162 10.6605L11.2406 10.6605C14.1615 10.6605 16.8492 12.2032 18.3291 14.6894Z"
-                    fill="white"
-                  />
-                </svg>
-              </div>
-              <p className="text-md text-gray-400 font-bold">124k</p>
-            </div>
-
-            <div className="flex flex-col cursor-pointer justify-end items-center pr-4">
-              <div className="p-4 w-12 h-12 bg-sky-500 mt-2 rounded-full flex justify-center items-center">
-                <svg
-                  className="w-12 h-12 fill-white stroke-white dark:fill-black dark:stroke-black"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 439.3 529.7"
-                >
-                  <path d="M0 529.7l108.9-117.1h330.4V0H.7L0 529.7zM338.7 173c20.5 0 37.2 16.6 37.2 37.2 0 20.5-16.6 37.2-37.2 37.2s-37.2-16.6-37.2-37.2c.1-20.5 16.7-37.2 37.2-37.2zM220 173c20.5 0 37.2 16.6 37.2 37.2 0 20.5-16.6 37.2-37.2 37.2-20.5 0-37.2-16.6-37.2-37.2.1-20.5 16.7-37.2 37.2-37.2zm-118.7 0c20.5 0 37.2 16.6 37.2 37.2 0 20.5-16.6 37.2-37.2 37.2-20.5 0-37.2-16.6-37.2-37.2 0-20.5 16.7-37.2 37.2-37.2z" />
-                </svg>
-              </div>
-              <p className="text-md text-gray-400 font-bold">124k</p>
-            </div>
-
-            <div className="flex flex-col cursor-pointer justify-end items-center pr-4">
-              <div className="p-4 w-12 h-12 bg-sky-500 mt-2 rounded-full flex justify-center items-center">
-                <svg
-                  className="w-12 h-12 fill-white stroke-white dark:fill-black dark:stroke-black"
-                  version="1.1"
-                  xmlns="http://www.w3.org/2000/svg"
-                  x="0px"
-                  y="0px"
-                  viewBox="0 0 256 256"
-                  enable-background="new 0 0 256 256"
-                >
-                  <metadata>
-                    {" "}
-                    Svg Vector Icons : http://www.onlinewebfonts.com/icon{" "}
-                  </metadata>
-                  <g>
-                    <g>
-                      <g>
-                        <path d="M60.7,10.8c-0.7,0.4-1.4,1.3-1.7,1.9c-0.4,0.8-0.5,33.9-0.5,112.2c0,124.6-0.3,113.4,3.5,117.7c2.4,2.7,4.3,3.5,8.2,3.5c5.1,0,4.9,0.1,32-26.6c13.7-13.5,25.2-24.7,25.4-24.7s11.7,11,25.6,24.5c27.8,26.9,27.5,26.7,32.9,26.7c1.6,0,3.5-0.2,4.2-0.5c2.2-0.8,4.9-3.7,6.2-6.5l1.2-2.7V124.9c0-73.4-0.1-111.5-0.5-112.1c-0.2-0.5-1-1.3-1.7-1.8l-1.3-1h-66.1C67.3,10,61.8,10.1,60.7,10.8z M187.8,127.7v107.9l-1.2,0.6c-1.1,0.5-1.4,0.3-5.3-3.5c-2.2-2.1-14.7-14.3-27.7-26.9c-25.3-24.5-25.2-24.4-28.1-22.9c-0.7,0.3-13,12.3-27.5,26.5c-14.5,14.2-26.7,26.2-27.1,26.5c-0.6,0.5-1,0.5-1.7,0.1l-1-0.5V127.7V19.8H128h59.8V127.7z" />
-                      </g>
-                    </g>
-                  </g>
-                </svg>{" "}
-              </div>
-              <p className="text-md text-gray-400 font-bold">124k</p>
-            </div>
-          </div>
-        </div>
-
-        {/* cancel or close  */}
-        <div className="absolute top-5 right-5 flex justify-between items-center">
-          {/* cancel or close  */}
-          <svg
-            onClick={hideFullScreen}
-            className="w-4 h-4 fill-white cursor-pointer"
-            version="1.1"
-            id="Layer_1"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 492 492"
-          >
-            <g>
-              <g>
-                <path
-                  d="M300.188,246L484.14,62.04c5.06-5.064,7.852-11.82,7.86-19.024c0-7.208-2.792-13.972-7.86-19.028L468.02,7.872
-                    c-5.068-5.076-11.824-7.856-19.036-7.856c-7.2,0-13.956,2.78-19.024,7.856L246.008,191.82L62.048,7.872
-                    c-5.06-5.076-11.82-7.856-19.028-7.856c-7.2,0-13.96,2.78-19.02,7.856L7.872,23.988c-10.496,10.496-10.496,27.568,0,38.052
-                    L191.828,246L7.872,429.952c-5.064,5.072-7.852,11.828-7.852,19.032c0,7.204,2.788,13.96,7.852,19.028l16.124,16.116
-                    c5.06,5.072,11.824,7.856,19.02,7.856c7.208,0,13.968-2.784,19.028-7.856l183.96-183.952l183.952,183.952
-                    c5.068,5.072,11.824,7.856,19.024,7.856h0.008c7.204,0,13.96-2.784,19.028-7.856l16.12-16.116
-                    c5.06-5.064,7.852-11.824,7.852-19.028c0-7.204-2.792-13.96-7.852-19.028L300.188,246z"
-                />
-              </g>
-            </g>
-          </svg>
-        </div>
-
-        {/* people comments  */}
-        <div className="absolute bottom-16 left-3  flex flex-col">
-          <div className="flex gap-4">
-            <img src={`${process.env.PUBLIC_URL}/images/ladies 8.png`} className="w-9 h-9 rounded-full" alt="" />
-            <div>
-              <h1 className="text-md font-bold text-white">Harmony Waves</h1>
-              <p className="text-sm text-white">
-                Omg, the dress is so pretty😍
-              </p>
-            </div>
-          </div>
-
-          <div className="flex gap-4">
-            <img src={`${process.env.PUBLIC_URL}/images/ladies 8.png`} className="w-9 h-9 rounded-full" alt="" />
-            <div>
-              <h1 className="text-md font-bold text-white">Harmony Waves</h1>
-              <p className="text-sm text-white">
-                Omg, the dress is so pretty😍
-              </p>
-            </div>
-          </div>
-
-          <div className="flex gap-4">
-            <img src={`${process.env.PUBLIC_URL}/images/ladies 8.png`} className="w-9 h-9 rounded-full" alt="" />
-            <div>
-              <h1 className="text-md font-bold text-white">Harmony Waves</h1>
-              <p className="text-sm text-white">
-                Omg, the dress is so pretty😍
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* add your comment  */}
-
-        <div className="absolute bottom-0  flex justify-between items-center">
-          <div className="relative flex items-center">
-            <input
-              type="text"
-              className="block w-[100vw] rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-              placeholder="start typing here"
-              name=""
-              id=""
-            />
-            <div className="absolute right-4 rounded-full p-2 bg-sky-400">
-              <svg
-                className="w-7 h-7 z-40 fill-white cursor-pointer"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <g fill-rule="nonzero">
-                  <path d="m3.45559904 3.48107721 3.26013002 7.74280879c.20897233.4963093.20897233 1.0559187 0 1.552228l-3.26013002 7.7428088 18.83130296-8.5189228zm-.74951511-1.43663117 20.99999997 9.49999996c.3918881.1772827.3918881.7338253 0 .911108l-20.99999997 9.5c-.41424571.1873968-.8433362-.2305504-.66690162-.6495825l3.75491137-8.9179145c.10448617-.2481546.10448617-.5279594 0-.776114l-3.75491137-8.9179145c-.17643458-.41903214.25265591-.83697933.66690162-.64958246z" />
-                  <path d="m6 12.5v-1h16.5v1z" />
-                </g>
-              </svg>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    
-
       {/* post form modal  */}
       <div
         className={`${
@@ -1545,10 +1485,6 @@ const viewNextImage = () => {
         </div>
         
       </div>
-
-
-
-       
 
     </div>
   );
