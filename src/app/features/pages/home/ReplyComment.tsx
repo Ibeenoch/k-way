@@ -137,7 +137,7 @@ const getConfirmation = (commentId: string) => {
           <BackArrowLogo onClick={handleGoBack} className='w-4 h-4 cursor-pointer' />
         <h2 className='text-xs font-medium text-black'>Reply Comment</h2>
         </div>
-        <div className="fixed max-w-[100%] sm:max-w-[38%] bottom-0 border border-gray-400 rounded-xl">
+        <div className="fixed max-w-[100%] sm:max-w-[38%] bottom-0 pt-2 border border-gray-400 rounded-xl">
             <div className="flex bg-gray-100 items-center max-h-[30px] p-2 mb-1 rounded-xl">
             <div onClick={() => viewPersonProfile(getUser._doc._id)}>
             <ImgLazyLoad
@@ -208,7 +208,7 @@ const getConfirmation = (commentId: string) => {
                    </div>
 
                    <div onClick={() => handleReplyComent(comment._id)} className="cursor-pointer">
-                    <p className="text-gray-400 text-sm pt-1 flex">See Reply &#40;<span>9</span>&#41; </p>
+                    <p className="text-gray-400 text-sm pt-1 flex">See Reply &#40;<span>{comment && comment.replies && comment.replies.length}</span>&#41; </p>
                    </div>
                 </div>
               </div>

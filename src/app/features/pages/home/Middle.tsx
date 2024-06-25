@@ -15,6 +15,9 @@ import { ReactComponent as CommentLogo } from '../../../../assets/comment.svg';
 import { ReactComponent as RetweetLogo } from '../../../../assets/retweet.svg';
 import { ReactComponent as BookMarkLogo } from '../../../../assets/bookmark.svg';
 import { ReactComponent as ReplyLogo } from '../../../../assets/replyLogo.svg';
+import { ReactComponent as SendLogo } from '../../../../assets/sendLogo.svg';
+import { ReactComponent as ArrowPreviousLogo } from '../../../../assets/arrowPrevious.svg';
+import { ReactComponent as ArrowNextLogo } from '../../../../assets/arrowNext.svg';
 import { ReactComponent as MenuLogo } from '../../../../assets/threeDot.svg';
 import { ReactComponent as BlockContactLogo } from '../../../../assets/blockContact.svg';
 import { ReactComponent as ReportContactLogo } from '../../../../assets/reportContact.svg';
@@ -37,11 +40,6 @@ const Middle = () => {
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const desktopMenuRef = useRef<HTMLDivElement>(null);
   const desktopCommentMenuRef = useRef<HTMLDivElement>(null);
-  const [onePic, setOnePic] = useState<boolean>(false);
-  const [twoPics, setTwoPics] = useState<boolean>(false);
-  const [threePics, setThreePics] = useState<boolean>(false);
-  const [fourPics, setFourPics] = useState<boolean>(true);
-  const [playvideo, setPlayVideo] = useState<boolean>(false);
   const [menu, setMenu] = useState<boolean>(false);
   const [desktopMenu, setDesktopMenu] = useState<boolean>(false);
   const [desktopCommentMenu, setDesktopCommentMenu] = useState<boolean>(false);
@@ -62,8 +60,13 @@ const Middle = () => {
   const [content, setcontent] = useState<string>("");
   const [comment, setComment] = useState<string>("");
   const [commentErr, setCommentErr] = useState<string>("");
+  const [currentPostId, setCurrentPostId] = useState<string>("");
   const [privacy, setPrivacy] = useState<string>('public');
   const [displayImage, setDisplayImage] = useState<string>('');
+  const [touchstart, setTouchStart] = useState<number>();
+  const [touchend, setTouchEnd] = useState<number>();
+  const [displayProfileImage, setDisplayProfileImage] = useState<string>('');
+  const [toRefresh, setToRefresh] = useState<boolean>(false);
 
   const { profile } = useAppSelector(selectUser);
   const { posts, comments } = useAppSelector(selectPost);
@@ -129,30 +132,6 @@ const Middle = () => {
 
  }
 
-const handleCommentSubmit = (postId: string) => {
-  setIsCommenting(true);
-  if(comment === ''){
-    setIsCommenting(false);
-    setCommentErr('No comment has been added, please add a comment');
-    setTimeout(() => { setCommentErr('');}, 5000);
-    return;
-  }
-    const userId = getUser && getUser._doc && getUser._doc._id;
-    const token = getUser && getUser.token;
-
-    const comments = {
-      id: postId,
-      token,
-      userId,
-      comment
-    }
-
-  dispatch(commentOnPost(comments)).then((res: any) => {
-    console.log('comment ', res);
-    setIsCommenting(false);
-  })
-}
-
 
 const handlePostSubmit = async() => {
   setIsPosting(true);
@@ -162,21 +141,24 @@ const handlePostSubmit = async() => {
   let postData = new FormData();
   postData.append('content', content);
   postData.append('privacy', privacy);
-
+  
   if( imageInput.length > 0){
     imageInput.forEach((image: any) => {
-    postData.append('image', image)
-  }) 
+      postData.append('image', image)
+    }) 
   }
-
+  
   if( fileInput.length > 0){
     fileInput.forEach((video: any) => {
-    postData.append('video', video)
-  })
+      postData.append('video', video)
+    })
   }
-console.log('imglength ', imageInput.length, 'videolength ', fileInput.length )
+  console.log('imglength ', imageInput.length, 'videolength ', fileInput.length )
   const token = getUser.token;
-
+  
+  setcontent('');
+  setFileInput([]);
+  setImageInput([]);
  
 if(id){
  const post = {
@@ -192,6 +174,7 @@ if(id){
       setIsUpdated(true);
       hidePostModal();
       navigate('/');
+      window.scrollTo(0, document.documentElement.scrollHeight);
      }
 
     })
@@ -203,6 +186,10 @@ if(id){
     token
   };
 
+  setcontent('');
+  setFileInput([]);
+  setImageInput([]);
+
   if(post){
     dispatch(createPost(post)).then((res: any) => {
       console.log('posted   ', res)
@@ -211,6 +198,7 @@ if(id){
           setIsPosting(false);
           hidePostModal();
           navigate('/');
+          window.scrollTo(0, document.documentElement.scrollHeight);
       });
       }
      
@@ -275,13 +263,84 @@ const goToPost = async (id: string) => {
  
 }
 
+const handleTouchStart = (e : React.TouchEvent<HTMLDivElement>) => {
+  setTouchStart(e.targetTouches[0].clientX)
+}
 
+const handleTouchMove = (e : React.TouchEvent<HTMLDivElement>) => {
+  setTouchEnd(e.targetTouches[0].clientX)
+}
+
+console.log('touch ', touchstart, touchend);
+const handleTouchEnd = (e : React.TouchEvent<HTMLDivElement>) => {
+  if(!touchstart || !touchend) return;
+
+  const distance = touchstart - touchend;
+  const minimumSwipeDistance = 50;
+
+    const findPost = posts.find((p: any) => p._id === currentPostId);
+    const picsLength = findPost.photos.length;
+    const findIndex = findPost.photos.findIndex((img: any) => img.url === displayImage);
+    console.log(' the dist and minswipedist ', distance, minimumSwipeDistance);
+  if(distance > minimumSwipeDistance){
+    // swipe left = next
+    setDisplayImage(findPost.photos[findIndex === picsLength - 1 ? picsLength - 1 : findIndex + 1].url)
+  }else if(distance < -minimumSwipeDistance){
+    //swipe right = prev
+    setDisplayImage(findPost.photos[findIndex <= 0 ? 0 : findIndex - 1].url);
+
+  };
+
+ 
+}
 
   const videoUrl = `${process.env.PUBLIC_URL}/video.mp4`;
 
 
+ const handleCommentSubmit = (postId: string) => {
+    setIsCommenting(true);
+    if(comment === ''){
+      setIsCommenting(false);
+      setCommentErr('No comment has been added, please add a comment');
+      setTimeout(() => { setCommentErr('');}, 5000);
+      return;
+    }
+      const userId = getUser && getUser._doc && getUser._doc._id;
+      const token = getUser && getUser.token;
+  
+      const comments = {
+        id: postId,
+        token,
+        userId,
+        comment
+      };    
+  
+    dispatch(commentOnPost(comments)).then((res: any) => {
+      console.log('comment ', res);
+      if(res && res.payload !== undefined){
+        setIsCommenting(false);
+        setToRefresh(true);
+      }
+    })
+  }
+
+  const getPost = (currentPostId: string) => {
+    dispatch(getAPost(currentPostId)).then((res: any) => {
+      console.log('get post', res);
+      if(res && res.payload !== undefined){
+        dispatch(allCommentForAPost(currentPostId)).then((res: any) => {
+          console.log('get comment', res);
+          
+        })
+         
+      }
+    })
+  };
 
 
+  useEffect(() => {
+    getPost(currentPostId);
+  }, [toRefresh]);
 
   const hideComment = () => {
     setCommentModal(false)
@@ -380,11 +439,13 @@ const goToPost = async (id: string) => {
 
   const showMobileModal = (img: any, id: any) => {
     const post = posts.find((item: any) => item._id === id );
-    setPersonalPost(post)
-    console.log('type of is ' ,typeof id, post)
-
     setDisplayImage(img);
+    setDisplayProfileImage(post.owner.profilePhoto.url);
     setMobileModal(true);
+    setCurrentPostId(id)
+    setPersonalPost(post)
+    console.log('type of is ' ,typeof id, img)
+
   };
 
   useEffect(() => {
@@ -433,7 +494,21 @@ const goToPost = async (id: string) => {
     setDesktopCommentMenu(false);
   };
 
+const viewPrevImage = () => {
+  const findPost = posts.find((p: any) => p._id === currentPostId);
+  const picsLength = findPost.photos.length;
+  const findIndex = findPost.photos.findIndex((img: any) => img.url === displayImage);
+  setDisplayImage(findPost.photos[findIndex <= 0 ? 0 : findIndex - 1].url);
 
+};
+
+const viewNextImage = () => {
+  const findPost = posts.find((p: any) => p._id === currentPostId);
+  const picsLength = findPost.photos.length;
+  const findIndex = findPost.photos.findIndex((img: any) => img.url === displayImage);
+  setDisplayImage(findPost.photos[findIndex === picsLength - 1 ? picsLength - 1 : findIndex + 1].url);
+
+};
 
   const handleEditPost = (id: string) => {
     const findPost = posts.find((p: any) => p._id === id);
@@ -793,7 +868,7 @@ const goToPost = async (id: string) => {
       )}
 
      
-
+      <div className="pb-[150px] sm:pb-[100px]">
       {/* feeds */}
         {
 
@@ -812,8 +887,8 @@ const goToPost = async (id: string) => {
        }
         <div className="flex items-center gap-2 w-full">
           <ImgLazyLoad className="w-8 h-8 rounded-full cursor-pointer" key={index} src={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.url} alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
-          <div onClick={() => goToPost(post._id)}  className="w-full cursor-pointer flex items-center justify-between gap-1">
-            <div className="flex items-center">
+          <div  className="w-full cursor-pointer flex items-center justify-between gap-1">
+            <div  onClick={() => goToPost(post._id)} className="flex items-center">
               <div className="mt-3">
                 <h1 className="text-black dark:text-white text-sm font-semibold">
                   {post && post.owner && post.owner.fullname}
@@ -935,13 +1010,104 @@ const goToPost = async (id: string) => {
 
        
 
-      
+        {/* picture modal  */}
+        <div
+        className={`${
+          mobileModal ? "flex" : "hidden"
+        } fixed top-0 left-0 bg-black w-full h-full justify-center items-center`}
+      >
+        <div className={`w-full sm:px-[25%] h-full sm:max-h-sm sm:bg-gray-900`}>
+          <div className="flex justify-between items-center p-2 ">
+            <MenuLogo className="w-3 h-3  z-40 fill-white mt-3 ml-3 cursor-pointer" />
+          
+            {/* cancel or close  */}
+            <CancelLogo onClick={hideMobileModal}  className="w-3 h-3 fill-white z-40 mt-4 mr-4 cursor-pointer" />
+          </div>
+
+          <div className='flex justify-between items-center z-14 my-2 px-4'>
+            <div className='flex gap-2'>
+              <img className='w-9 h-9 rounded-full cursor-pointer' src={displayProfileImage} alt="" />
+            <div className="z-9">
+              <h1 className='text-sm text-white font-semibold'>{personalPost && personalPost.owner && personalPost.owner.fullname}</h1>
+              <p className='text-xs text-gray-300'>@{personalPost && personalPost.owner && personalPost.owner.handle}</p>
+            </div>
+            </div>
+            
+            <button className='text-xs px-4 py-1 bg-black dark:bg-white rounded-full border border-white text-white dark:text-black transform-transition duration-100 hover:scale-110'>Follow</button>
+          </div>
+
+         
+
+          <div className="fixed z-5 inset-0 flex justify-center items-center">
+           <div  onTouchStart={handleTouchStart}  onTouchEnd={handleTouchEnd} onTouchMove={handleTouchMove} > <img
+           
+              className="max-w-[600px] cursor-pointer"
+              src={displayImage}
+              alt=""
+            />
+            </div>
+
+            {/* show image  */}
+          <div className="hidden sm:z-[20px] sm:px-[25%] sm:fixed inset-0 sm:flex justify-between items-center">
+            <ArrowPreviousLogo onClick={() => viewPrevImage()} className="w-9 h-9 fill-white cursor-pointer" /> 
+            <ArrowNextLogo  onClick={() =>viewNextImage()} className="w-9 h-9 fill-white cursor-pointer" />
+          </div>
+
+            <div className="fixed bottom-11 flex justify-between items-center">
+            <div className="flex justify-between items-center">
+          <div className="flex ml-9 mt-4 gap-8 items-center">
+            <div className="p-[5px] flex gap-1 cursor-pointer">
+              <HeartIcon className="w-5 h-5 fill-white stroke-white"/>             
+            <p className="text-xs text-white">{post && post.likes && post.likes.length}</p>
+            </div>
+
+            <div className="p-[5px] flex gap-1 cursor-pointer">
+              <RetweetLogo  className="w-5 h-5 fill-white stroke-white"/>
+            <p className="text-xs text-white">{post && post.reShare && post.reShare.length}</p>
+            </div>
+
+            <div className="p-[5px] flex gap-1 cursor-pointer">
+              <BookMarkLogo className="w-5 h-5 fill-white stroke-white"/>
+             
+            <p className="text-xs text-white">{post && post.bookmark && post.bookmark.length}</p>
+            </div>
+
+          </div>
+
+        </div>
+            </div>
+            
+            <div className="fixed bottom-0 flex border border-white rounded-xl">
+             <input
+                  type="text"
+                  className="rounded-md border-0 bg-transparent w-[70vw] sm:left-[25%] sm:w-[42vw] mx-auto left-0 py-2 text-white shadow-sm placeholder:text-white  sm:text-xs"
+                  placeholder="start typing here"
+                  name=""
+                  id=""
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                /> 
+                <button onClick={() => handleCommentSubmit(post._id)} className="text-white font-medium text-xs rounded-xl py-2 px-4">
+                {
+              isCommenting ? (
+                <>
+               <div className='flex items-center'><ProcessingLogo className="w-5 h-5 fill-white" /> <p className='text-[9px] text-white'> Commenting...</p></div> 
+               </>
+              ) : (
+                <SendLogo className="w-6 h-6 fill-white" />
+              )
+            }  
+                </button>
+                </div>
+          </div>
+        </div>
+      </div>
       
 
         {/* post images  */}
 
         { post && post.photos && post.photos.length > 0 ? (
-        <div onClick={() => goToPost(post._id)}  className="mt-2 pl-9 cursor-pointer">
+        <div  className="mt-2 pl-9 cursor-pointer">
           { post && post.photos && post.photos.length === 1 ? (
             <div className="rounded-3xl overflow-hidden">
           <ImgLazyLoad onClick={() => showMobileModal(post && post.photos[0] && post.photos[0].url, post && post._id)}
@@ -1005,7 +1171,7 @@ const goToPost = async (id: string) => {
           )}
         </div>
         ) : post && post.video ? (
-          <div onClick={() => goToPost(post._id)}  className="rounded-3xl cursor-pointer overflow-hidden z-2">
+          <div  className="rounded-3xl cursor-pointer overflow-hidden z-20">
             <video
               onClick={showFullScreen}
               className="w-full cursor-pointer object-cover h-[200px]"
@@ -1035,7 +1201,7 @@ const goToPost = async (id: string) => {
             <p className="text-[8px] text-gray-600">{post.bookmark.length}</p>
           </div>
 
-          <p className="text-[10px] mt-3 text-gray-600">45 Comments</p>
+          <p className="text-[10px] mt-3 text-gray-600">{post.comments.length} Comments</p>
         </div>
         {/* icons */}
         <div className="flex justify-between items-center">
@@ -1073,7 +1239,7 @@ const goToPost = async (id: string) => {
         ))
       
       }
-      
+      </div>
       
 
       {/* video view modal  */}
@@ -1246,194 +1412,13 @@ const goToPost = async (id: string) => {
         </div>
       </div>
 
-      {/* picture modal  */}
-      <div
-        className={`${
-          mobileModal ? "flex" : "hidden"
-        } fixed top-0 left-0 bg-black w-full h-full justify-center items-center`}
-      >
-        <div className={`w-full sm:px-[2%] h-full sm:max-h-sm sm:bg-gray-900`}>
-          <div className="flex justify-between items-center p-2 ">
-            <svg
-              className="w-3 h-3  z-40 fill-white mt-3 ml-3 cursor-pointer"
-              version="1.1"
-              id="Capa_1"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 342.382 342.382"
-            >
-              <g>
-                <g>
-                  <g>
-                    <path
-                      d="M45.225,125.972C20.284,125.972,0,146.256,0,171.191c0,24.94,20.284,45.219,45.225,45.219
-                      c24.926,0,45.219-20.278,45.219-45.219C90.444,146.256,70.151,125.972,45.225,125.972z"
-                    />
-                  </g>
-                  <g>
-                    <path
-                      d="M173.409,125.972c-24.938,0-45.225,20.284-45.225,45.219c0,24.94,20.287,45.219,45.225,45.219
-                      c24.936,0,45.226-20.278,45.226-45.219C218.635,146.256,198.345,125.972,173.409,125.972z"
-                    />
-                  </g>
-                  <g>
-                    <path
-                      d="M297.165,125.972c-24.932,0-45.222,20.284-45.222,45.219c0,24.94,20.29,45.219,45.222,45.219
-                      c24.926,0,45.217-20.278,45.217-45.219C342.382,146.256,322.091,125.972,297.165,125.972z"
-                    />
-                  </g>
-                </g>
-              </g>
-            </svg>
-            {/* cancel or close  */}
-            <svg
-              onClick={hideMobileModal}
-              className="w-3 h-3 fill-white z-40 mt-4 mr-4 cursor-pointer"
-              version="1.1"
-              id="Layer_1"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 492 492"
-            >
-              <g>
-                <g>
-                  <path
-                    d="M300.188,246L484.14,62.04c5.06-5.064,7.852-11.82,7.86-19.024c0-7.208-2.792-13.972-7.86-19.028L468.02,7.872
-                  c-5.068-5.076-11.824-7.856-19.036-7.856c-7.2,0-13.956,2.78-19.024,7.856L246.008,191.82L62.048,7.872
-                  c-5.06-5.076-11.82-7.856-19.028-7.856c-7.2,0-13.96,2.78-19.02,7.856L7.872,23.988c-10.496,10.496-10.496,27.568,0,38.052
-                  L191.828,246L7.872,429.952c-5.064,5.072-7.852,11.828-7.852,19.032c0,7.204,2.788,13.96,7.852,19.028l16.124,16.116
-                  c5.06,5.072,11.824,7.856,19.02,7.856c7.208,0,13.968-2.784,19.028-7.856l183.96-183.952l183.952,183.952
-                  c5.068,5.072,11.824,7.856,19.024,7.856h0.008c7.204,0,13.96-2.784,19.028-7.856l16.12-16.116
-                  c5.06-5.064,7.852-11.824,7.852-19.028c0-7.204-2.792-13.96-7.852-19.028L300.188,246z"
-                  />
-                </g>
-              </g>
-            </svg>
-          </div>
-
-          <div className='flex justify-between items-center z-9 my-2 px-4'>
-            <div className='flex gap-2'>
-              <img className='w-9 h-9 rounded-full' src={displayImage} alt="" />
-            <div>
-              <h1 className='text-sm text-white font-semibold'>{personalPost && personalPost.owner && personalPost.owner.fullname}</h1>
-              <p className='text-xs text-gray-300'>@{personalPost && personalPost.owner && personalPost.owner.handle}</p>
-            </div>
-            </div>
-            
-            <button className='text-xs px-4 py-1 bg-black dark:bg-white rounded-full border border-white text-white dark:text-black transform-transition duration-100 hover:scale-110'>Follow</button>
-          </div>
-
-          {/* image  */}
-          <div className="fixed bottom-1/4 sm:left-1/4 lg:bottom-0">
-            <img
-              className=""
-              src={displayImage}
-              alt=""
-            />
-
-           
-
-            <div className="fixed bottom-16 flex justify-between items-center">
-            <div className="flex justify-between items-center">
-          <div className="flex ml-9 mt-4 items-center">
-            <div className="p-[5px] flex gap-1">
-              <svg
-                className="w-[12px] h-[12px] fill-white stroke-white"
-                version="1.1"
-                xmlns="http://www.w3.org/2000/svg"
-                x="0px"
-                y="0px"
-                viewBox="0 0 256 256"
-                enable-background="new 0 0 256 256"
-              >
-                <metadata>
-                  {" "}
-                  Svg Vector Icons : http://www.onlinewebfonts.com/icon{" "}
-                </metadata>
-                <g>
-                  <g>
-                    <g>
-                      <path d="M70.8,25.1c-15.9,2.2-28.3,8.4-39.7,19.8c-7.9,8-12.5,14.9-16.4,25.1c-9.8,25.3-3.9,55.9,14.5,75.4c1.8,1.8,16.5,15.8,32.9,31.1s35.1,32.9,41.7,39c6.6,6.2,13,11.8,14.3,12.6c3.1,1.8,7.7,3.2,10.4,3.2c2.7,0,6.5-1.1,9.3-2.7c1.2-0.7,6.6-5.7,12.2-11.2c12.5-12.3,26.4-25.3,54.2-50.9c22.2-20.5,25.6-23.9,29.7-30.1c16.3-24.3,16.2-56.5,0-81.2c-4.1-6.1-13-15.1-19-19.1c-26-17.3-60.1-14.8-82.7,5.9c-1.9,1.8-3.8,3.3-4.1,3.3c-0.3,0-2.1-1.5-4-3.2c-8.5-7.9-19.6-13.6-32.1-16.2C87,24.9,75.5,24.4,70.8,25.1z" />
-                    </g>
-                  </g>
-                </g>
-              </svg>
-            <p className="text-[8px] text-white">441k</p>
-            </div>
-
-            <div className="p-[5px] flex gap-1">
-              <svg
-                className="w-[12px] h-[12px] fill-white stroke-white"
-                viewBox="0 0 1024 1024"
-                version="1.1"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M924.72 578.4L816 685.68V347.728C816 254.944 743.648 176 650.864 176H341.984l78.56 80h230.32C699.456 256 736 299.12 736 347.728V685.28l-105.472-106.88-55.84 56.56 204 203.632 202.88-203.632-56.848-56.56zM362.848 752C314.272 752 272 716.32 272 667.712V330.048l108.464 107.04 57.28-56.576-203.296-203.632L30.976 380.512l55.216 56.576L192 329.968v337.76C192 760.48 270.08 832 362.848 832h308.96l-78.56-80h-230.4z" />
-              </svg>
-            <p className="text-[8px] text-white">731k</p>
-            </div>
-
-            <div className="p-[5px] flex gap-1">
-              <svg
-                className="w-[12px] h-[12px] fill-white stroke-white"
-                version="1.1"
-                xmlns="http://www.w3.org/2000/svg"
-                x="0px"
-                y="0px"
-                viewBox="0 0 256 256"
-                enable-background="new 0 0 256 256"
-              >
-                <metadata>
-                  {" "}
-                  Svg Vector Icons : http://www.onlinewebfonts.com/icon{" "}
-                </metadata>
-                <g>
-                  <g>
-                    <g>
-                      <path d="M60.7,10.8c-0.7,0.4-1.4,1.3-1.7,1.9c-0.4,0.8-0.5,33.9-0.5,112.2c0,124.6-0.3,113.4,3.5,117.7c2.4,2.7,4.3,3.5,8.2,3.5c5.1,0,4.9,0.1,32-26.6c13.7-13.5,25.2-24.7,25.4-24.7s11.7,11,25.6,24.5c27.8,26.9,27.5,26.7,32.9,26.7c1.6,0,3.5-0.2,4.2-0.5c2.2-0.8,4.9-3.7,6.2-6.5l1.2-2.7V124.9c0-73.4-0.1-111.5-0.5-112.1c-0.2-0.5-1-1.3-1.7-1.8l-1.3-1h-66.1C67.3,10,61.8,10.1,60.7,10.8z M187.8,127.7v107.9l-1.2,0.6c-1.1,0.5-1.4,0.3-5.3-3.5c-2.2-2.1-14.7-14.3-27.7-26.9c-25.3-24.5-25.2-24.4-28.1-22.9c-0.7,0.3-13,12.3-27.5,26.5c-14.5,14.2-26.7,26.2-27.1,26.5c-0.6,0.5-1,0.5-1.7,0.1l-1-0.5V127.7V19.8H128h59.8V127.7z" />
-                    </g>
-                  </g>
-                </g>
-              </svg>
-            <p className="text-[8px] text-white">241k</p>
-            </div>
-
-          </div>
-
-        </div>
-            </div>
-
-            {/* <div className="fixed bottom-16 flex justify-between items-center">
-             <div className="relative flex items-center">
-                <div className="absolute right-0 rounded-full p-2 bg-sky-400">
-                  <svg
-                    className="w-7 h-7 z-40 fill-white cursor-pointer"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <g fill-rule="nonzero">
-                      <path d="m3.45559904 3.48107721 3.26013002 7.74280879c.20897233.4963093.20897233 1.0559187 0 1.552228l-3.26013002 7.7428088 18.83130296-8.5189228zm-.74951511-1.43663117 20.99999997 9.49999996c.3918881.1772827.3918881.7338253 0 .911108l-20.99999997 9.5c-.41424571.1873968-.8433362-.2305504-.66690162-.6495825l3.75491137-8.9179145c.10448617-.2481546.10448617-.5279594 0-.776114l-3.75491137-8.9179145c-.17643458-.41903214.25265591-.83697933.66690162-.64958246z" />
-                      <path d="m6 12.5v-1h16.5v1z" />
-                    </g>
-                  </svg>
-                </div>
-              </div>
-            </div> */}
-
-             <input
-                  type="text"
-                  className="fixed bottom-0 bg-transparent w-[100vw] left-0 border-0 py-2 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-white focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6"
-                  placeholder="start typing here"
-                  name=""
-                  id=""
-                /> 
-          </div>
-        </div>
-      </div>
+    
 
       {/* post form modal  */}
       <div
         className={`${
           postModal ? "flex" : "hidden"
-        } fixed top-0 left-0 bg-black sm:px-[36.6%] md:px[45%] w-full h-full justify-center items-center`}
+        } fixed top-0 left-0 bg-black sm:px-[30%]  w-full h-full justify-center items-center`}
       >
         <div className={`w-full h-full  bg-white`}>
           <div className="flex justify-between items-center p-2">
@@ -1450,7 +1435,7 @@ const goToPost = async (id: string) => {
             value={content}
             name=""
             id=""
-            className="bg-white flex-none w-full h-[80vh] text-xs border border-none"
+            className="bg-white resize-none flex-none w-full h-[85vh] text-xs border border-none"
             placeholder="make a post"
           ></textarea>
 
@@ -1487,25 +1472,13 @@ const goToPost = async (id: string) => {
               </div>
             </div>
 
-            <button
-              type="button"
-              onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-              className="sm:text-black cursor-pointer"
-            >
-              🙂
-            </button>
-            {showEmojiPicker && (
-              <div className="absolute z-5">
-                <EmojiPicker onEmojiClick={onEmojiClick} />
-              </div>
-            )}
 
             <button onClick={handlePostSubmit} className="text-[9px] text-white dark-text-black bg-black dark:bg-white font-semibold rounded-2xl px-3 py-1 transform-transition duration-100 hover:scale-110">
              {
               isPosting ? (
-                <ProcessingLogo className="w-4 h-4 stroke-white" />
+                <div className="flex items-center"><ProcessingLogo className="w-4 h-4 stroke-white" /> <p>Posting...</p></div>
               ) : (
-                'Send'
+                <SendLogo className="w-4 h-4 fill-white"/>
               )
              } 
             </button>

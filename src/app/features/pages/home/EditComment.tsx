@@ -119,8 +119,8 @@ const EditComment = () => {
                 {
                 isCommenting ? (
                     <>
-                   <div className='flex items-center text-[9px] text-white'> <ProcessingLogo className="w-4 h-4 fill-white" /><p>sending</p></div> 
-                    </>
+               <div className='flex items-center'><ProcessingLogo className="w-5 h-5 fill-white" /> <p className='text-[9px] text-white'> Editing...</p></div> 
+               </>
                 ) : (
                     'Comment'
                 )

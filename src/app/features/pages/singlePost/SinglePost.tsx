@@ -17,14 +17,15 @@ import { ReactComponent as ImageLogo } from '../../../../assets/imagesLogo.svg';
 import { ReactComponent as CancelLogo } from '../../../../assets/cancelLogo.svg';
 import { ReactComponent as EditLogo } from '../../../../assets/editLogo.svg';
 import { ReactComponent as TrashLogo } from '../../../../assets/trashLogo.svg';
+import { ReactComponent as BackArrowLogo } from '../../../../assets/arrowBack.svg';
 import { ReactComponent as ProcessingLogo } from '../../../../assets/processingLogo.svg';
 import { ReactComponent as ArrowDownLogo } from '../../../../assets/arrowDownLogo.svg';
 import { ReactComponent as PlusLogo } from '../../../../assets/plusLogo.svg';
 import { ReactComponent as ThreeDotVerticalLogo } from '../../../../assets/threeDotVerticalLogo.svg';
 import { formatCreatedAt } from "../../../../utils/timeformat";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
-import { allCommentForAPost, bookmarkPost, commentOnPost, deleteComment, deletePost, getAllRepliesForComment, likeComment, likePost, rePost, selectPost } from "../home/PostSlice";
+import { allCommentForAPost, bookmarkPost, commentOnPost, deleteComment, deletePost, getAPost, getAllRepliesForComment, likeComment, likePost, rePost, selectPost } from "../home/PostSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import EmojiPicker from "emoji-picker-react";
 import { HeartIcon } from "@heroicons/react/24/outline";
@@ -36,6 +37,7 @@ const SinglePost = () => {
     const [desktopMenu, setDesktopMenu] = useState<boolean>(false);
     const [postClicked, setPostClicked] = useState<string>("");
     const [content, setcontent] = useState<string>("");
+    const [findReply, setFindReply] = useState<boolean>(false);
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const { id } = useParams();
@@ -77,7 +79,10 @@ const SinglePost = () => {
           postId
         };
         dispatch(likePost(postLike)).then((res: any) => {
-          console.log('res ', res)
+          console.log('res ', res);
+          if(res && res.payload !== undefined){
+            setFindReply(true);
+          }
         })
       };
 
@@ -141,6 +146,9 @@ const SinglePost = () => {
     const likes = { token, commentId };
     dispatch(likeComment(likes)).then((res: any) => {
       console.log('liked the comment', res)
+      if(res && res.payload !== undefined){
+        setFindReply(true);
+      }
     })
   }
 
@@ -164,10 +172,12 @@ const SinglePost = () => {
       console.log('res ', res);
       setCommentModal(true);
       setMobileCommentModal(true);
-
+      setFindReply(false);
     })
     
   }
+
+
 
   
 const handleBookmark = async (postId: string) => {
@@ -179,7 +189,8 @@ const handleBookmark = async (postId: string) => {
       postId
     };
     dispatch(bookmarkPost(postBooked)).then((res: any) => {
-      console.log('res ', res)
+      console.log('res ', res);
+      
     })
   };
   
@@ -209,7 +220,12 @@ const handleBookmark = async (postId: string) => {
   
     dispatch(commentOnPost(comments)).then((res: any) => {
       console.log('comment ', res);
-      setIsCommenting(false);
+      if(res && res.payload !== undefined){
+        setComment('');
+        window.scrollTo(0, document.documentElement.scrollHeight);
+        setIsCommenting(false);
+        setFindReply(true);
+      }
     })
   }
 
@@ -231,16 +247,39 @@ const handleBookmark = async (postId: string) => {
             commentId, id, token
         }
         dispatch(deleteComment(comments)).then((res: any) => {
-            console.log('deleted comment ', res)
+            console.log('deleted comment ', res);
+            setFindReply(true);
         })
     }
+  };
+
+  const getPost = (id: string) => {
+            dispatch(getAPost(id)).then((res: any) => {
+                console.log(res)
+            })
+          }
+
+  useEffect(() => {
+    if(id){
+        showComment(id);
+        getPost(id);
+    }
+  }, [findReply, navigate]);
+
+  const handleGoBack = () => {
+    navigate(-1);
   }
 
   return (
     <div className="bg-black h-full">
-    <div className="sm:mx-[25%]">
-         <div  className="rounded-full p-3 max-w-full bg-white dark-bg-gray-700 border border-gray-400 rounded-lg">
+        <div onClick={handleGoBack} className='bg-white sm:bg-transparent sm:fixed flex gap-3 py-2 cursor-pointer'>
+          <BackArrowLogo  className='w-4 h-4 cursor-pointer sm:fill-white fill-black' />
+        <h2 className='text-xs font-medium text-black sm:text-white'>Back to Post Feeds</h2>
+        </div>
 
+    <div className="sm:mx-[25%]">
+         <div  className="p-3 max-w-full bg-white dark-bg-gray-700 border border-gray-400">
+         
         <div className="flex items-center gap-2 w-full">
           <ImgLazyLoad className="w-8 h-8 rounded-full cursor-pointer" src={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.url} alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
           <div className="w-full flex items-center justify-between gap-1">
@@ -405,7 +444,7 @@ const handleBookmark = async (postId: string) => {
             <p className="text-[8px] text-gray-600">{post.bookmark.length}</p>
           </div>
 
-          <p className="text-[10px] mt-3 text-gray-600">45 Comments</p>
+          <p className="text-[10px] mt-3 text-gray-600">{post.comments.length} comments</p>
         </div>
         {/* icons */}
         <div className="flex justify-between items-center">
@@ -445,41 +484,9 @@ const handleBookmark = async (postId: string) => {
 
         
       
-        <div className="fixed max-w-[100%] sm:max-w-[50%] bottom-0 border border-gray-400 rounded-xl">
-            <div className="flex bg-gray-100 items-center max-h-[30px] p-2 mb-1 rounded-xl">
-            <ImgLazyLoad
-              src={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url }
-              className="block w-7 h-7 rounded-full"
-              alt={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.public_id }
-            />
-            <input
-              type="text"
-              onChange={(e) => (setComment(e.target.value))}
-              value={comment}
-              className="block text-xs w-[700px] h-[30px] p-3 bg-gray-100 border-0 focus:ring-0 focus:ring-inset focus:ring-none"
-              placeholder="Comment on this post"
-              name=""
-              id=""
-            />
-            
-            <button onClick={() => handleCommentSubmit(post._id)} className="text-[9px] text-white bg-black font-semibold rounded-2xl px-3 py-1 transform-transition duration-100 hover:scale-110">
-            {
-              isCommenting ? (
-                <>
-               <div className='flex items-center'><ProcessingLogo className="w-5 h-5 fill-white" /> <p className='text-[9px] text-white'> Commenting...</p></div> 
-               </>
-              ) : (
-                'Comment'
-              )
-            }  
-            </button>
-          
-          </div>
-          <p className="text-red-600 text-[8px]">{commentErr}</p>
-        </div>
 
             {/* view other people comments  */}
-
+            
             {
               comments && comments.length > 0 && Array.isArray(comments) ? (
                 comments.map((comment) => (
@@ -506,7 +513,7 @@ const handleBookmark = async (postId: string) => {
                     </div>
                     <div className="flex items-center">
                       {/* comment icon  */}
-                      <CommentLogo className="w-[12px] h-[12px] fill-gray-600 stroke-gray-600 cursor-pointer"/>
+                      <CommentLogo  onClick={() => handleReplyComent(comment._id)} className="w-[12px] h-[12px] fill-gray-600 stroke-gray-600 cursor-pointer"/>
                  
                   <p className="text-xs text-gray-500 dark:text-white">{comment && comment.replies && comment.replies.length}</p>
                     </div>
@@ -514,7 +521,7 @@ const handleBookmark = async (postId: string) => {
                    </div>
 
                    <div onClick={() => handleReplyComent(comment._id)} className="cursor-pointer">
-                    <p className="text-gray-400 text-sm pt-1 flex">See Reply &#40;<span>9</span>&#41; </p>
+                    <p className="text-gray-400 text-sm pt-1 flex">See Reply &#40;<span>{comment && comment.replies && comment.replies.length}</span>&#41; </p>
                    </div>
                 </div>
               </div>
@@ -576,6 +583,39 @@ const handleBookmark = async (postId: string) => {
               )
             }
 
+
+        <div className="fixed max-w-[100%] sm:max-w-[50%] pt-2 bottom-0 border border-gray-400 rounded-xl">
+            <div className="flex bg-gray-100 items-center max-h-[30px] p-2 mb-1 rounded-xl">
+            <ImgLazyLoad
+              src={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url }
+              className="block w-7 h-7 rounded-full"
+              alt={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.public_id }
+            />
+            <input
+              type="text"
+              onChange={(e) => (setComment(e.target.value))}
+              value={comment}
+              className="block text-xs w-[700px] h-[30px] p-3 bg-gray-100 border-0 focus:ring-0 focus:ring-inset focus:ring-none"
+              placeholder="Comment on this post"
+              name=""
+              id=""
+            />
+            
+            <button onClick={() => handleCommentSubmit(post._id)} className="text-[9px] text-white bg-black font-semibold rounded-2xl px-3 py-1 transform-transition duration-100 hover:scale-110">
+            {
+              isCommenting ? (
+                <>
+               <div className='flex items-center'><ProcessingLogo className="w-5 h-5 fill-white" /> <p className='text-[9px] text-white'> Commenting...</p></div> 
+               </>
+              ) : (
+                'Comment'
+              )
+            }  
+            </button>
+          
+          </div>
+          <p className="text-red-600 text-[8px]">{commentErr}</p>
+        </div>
       
     </div>
     </div>

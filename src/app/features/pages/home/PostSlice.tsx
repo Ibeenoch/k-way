@@ -188,7 +188,7 @@ export const postSlice = createSlice({
         if (action.payload !== undefined && action.payload._id) {
           state.status = "success";
           console.log('created post ', action.payload)
-          state.posts.push(action.payload)
+          state.posts.unshift(action.payload)
         }
       })
       .addCase(createPost.rejected, (state, action) => {
@@ -311,7 +311,7 @@ export const postSlice = createSlice({
         console.log('comments posts ', action.payload)
         if (action.payload !== undefined) {
           state.status = "success";
-          state.comments.push(action.payload);
+          state.comments.unshift(action.payload);
         }
       })
       .addCase(commentOnPost.rejected, (state, action) => {
@@ -395,7 +395,7 @@ export const postSlice = createSlice({
         if (action.payload !== undefined) {
           state.status = "success";
           console.log('reply comments ', action.payload)
-           state.repliedcomments.push(action.payload);
+           state.repliedcomments.unshift(action.payload);
         }
       })
       .addCase(replyComment.rejected, (state, action) => {
