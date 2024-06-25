@@ -86,3 +86,39 @@ export const updateProfile = async (data: any) => {
     console.log(error)
    }
 };
+
+export const userFollowers = async (followers: any) => {
+  try {
+    const { userId, token } = followers;
+    const option = {
+      headers : {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    }
+
+      const res = await axios.put(`${API}/user/follower/${userId}`, followers, option);
+      return res.data;
+    
+   } catch (error) {
+    console.log(error)
+   }
+};
+
+export const userFollowing = async (followers: any) => {
+  try {
+    const { userId, token } = followers;
+    const option = {
+      headers : {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    }
+
+      const res = await axios.put(`${API}/user/following/${userId}`, followers, option);
+      return res.data;
+    
+   } catch (error) {
+    console.log(error)
+   }
+};

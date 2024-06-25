@@ -85,78 +85,30 @@ export const emailPasswordLink = createAsyncThunk(
   }
 );
 
-// export const passwordChange = createAsyncThunk(
-//   "/user/changepassword",
-//   async (data: any) => {
-//     try {
-//       const res = await api.passwordReset(data);
-//       return res?.data;
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   }
-// );
+export const userFollowers = createAsyncThunk(
+  "/user/followers",
+  async (data: any) => {
+    try {
+      const res = await api.userFollowers(data);
+      return res;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
 
-// export const getAUser = createAsyncThunk(
-//   "/user/getAUser",
-//   async (data: any) => {
-//     try {
-//       const res = await api.fetchAUser(data);
-//       return res?.data;
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   }
-// );
+export const userFollowing = createAsyncThunk(
+  "/user/following",
+  async (data: any) => {
+    try {
+      const res = await api.userFollowing(data);
+      return res;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
 
-// export const getotherUser = createAsyncThunk(
-//   "/user/getotherUser",
-//   async (data: any) => {
-//     try {
-//       const res = await api.fetchOtherUser(data);
-//       return res?.data;
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   }
-// );
-
-// export const getAllUser = createAsyncThunk(
-//   "/user/getAllUser",
-//   async (token: any) => {
-//     try {
-//       const res = await api.fetchAllUser(token);
-//       return res?.data;
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   }
-// );
-// export const deleteUser = createAsyncThunk(
-//   "/user/delete",
-//   async (data: any) => {
-//     try {
-//       const res = await api.deleteuser(data);
-//       return res?.data;
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   }
-// );
-
-
-
-// export const uploadUserPhoto = createAsyncThunk(
-//   "/user/imageUpload",
-//   async (data: any) => {
-//     try {
-//       const res = await api.uploadProfilePics(data);
-//       return res?.data;
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   }
-// );
 
 export const authSlice = createSlice({
   name: "user",
@@ -252,6 +204,30 @@ export const authSlice = createSlice({
          
       })
       .addCase(emailPasswordLink.rejected, (state, action) => {
+        state.status = "failed";
+      })
+      .addCase(userFollowers.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(userFollowers.fulfilled, (state, action) => {
+        if(action.payload !== undefined){
+          state.status = "success";
+          state.user = action.payload
+         };
+      })
+      .addCase(userFollowers.rejected, (state, action) => {
+        state.status = "failed";
+      })
+      .addCase(userFollowing.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(userFollowing.fulfilled, (state, action) => {
+        if(action.payload !== undefined){
+          state.status = "success";
+          state.user = action.payload
+         };
+      })
+      .addCase(userFollowing.rejected, (state, action) => {
         state.status = "failed";
       })
       
