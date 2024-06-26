@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { getAUser, getAllUser, getOtherUser, selectUser, userFollowers, userFollowing } from "../auth/authSlice";
 import { allCommentForAPost, bookmarkPost, commentOnPost, createPost, deletePost, getAPost, getAllPosts, likePost, rePost, resetEditCommentStatus, selectPost, updatePost } from "./PostSlice";
 import toast, { Toast } from 'react-hot-toast'
+import { io, Socket } from 'socket.io-client'
 import { useNavigate, useParams } from "react-router-dom";
 import ImgLazyLoad from "../lazyLoad/ImgLazyLoad";
 import { ReactComponent as GlobalTrendLogo } from '../../../../assets/globeTrend.svg';
@@ -37,6 +38,7 @@ import { formatCreatedAt } from "../../../../utils/timeformat";
 const Middle = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const socket: Socket = io('http://localhost:5800');
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const desktopMenuRef = useRef<HTMLDivElement>(null);
   const desktopCommentMenuRef = useRef<HTMLDivElement>(null);
@@ -269,6 +271,18 @@ const handleLike = async (postId: string) => {
     console.log('res ', res)
   })
 };
+
+useEffect(() => {
+  socket.on('connection', (data) => {
+    console.log('data liked post  ', data);
+    socket.on('postLiked', (data) => {
+      console.log('data liked post  ', data);
+    })
+  })
+  // socket.on('postLiked', (data) => {
+  //   console.log('data liked post  ', data);
+  // })
+}, [dispatch])
 
 const handleBookmark = async (postId: string) => {
   if(getUser === null){
