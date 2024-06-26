@@ -273,7 +273,8 @@ export const authSlice = createSlice({
         if(action.payload !== undefined){
           state.status = "success";
           state.user = action.payload;
-          localStorage.setItem('user', JSON.stringify(action.payload));
+          localStorage.setItem('user', JSON.stringify(action.payload.mine));
+          localStorage.setItem('otheruser', JSON.stringify(action.payload.user));
          };
       })
       .addCase(userFollowers.rejected, (state, action) => {
@@ -286,7 +287,8 @@ export const authSlice = createSlice({
         if(action.payload !== undefined){
           state.status = "success";
           state.user = action.payload;
-          localStorage.setItem('user', JSON.stringify(action.payload));
+          localStorage.setItem('user', JSON.stringify(action.payload.mine));
+          localStorage.setItem('otheruser', JSON.stringify(action.payload.user));
          };
       })
       .addCase(userFollowing.rejected, (state, action) => {
@@ -351,7 +353,7 @@ export const authSlice = createSlice({
         if(action.payload !== undefined){
           state.status = "success";
           state.users = action.payload;
-          localStorage.setItem('users', JSON.stringify(action.payload));
+          localStorage.setItem('alluser', JSON.stringify(action.payload));
          };
       })
       .addCase(getAllUser.rejected, (state, action) => {

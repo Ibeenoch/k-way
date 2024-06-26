@@ -1,5 +1,21 @@
+import { useAppDispatch } from "../../../hooks";
+import { userFollowing } from "../auth/authSlice";
 
 const Right = () => {
+  const getAllUser = JSON.parse(localStorage.getItem('alluser') as any);
+  const getAUser = JSON.parse(localStorage.getItem('user') as any);
+  const dispatch = useAppDispatch();
+
+  const handleFollow = (userId: string) => {
+   const findUser = getAllUser.find((p: any) => p._id === userId );
+    const token = findUser && findUser.token;
+    const follow = { token, userId };
+    dispatch(userFollowing(follow)).then((res: any) => {
+      console.log('user following res ', res);
+    })
+  };
+console.log('getAll users ', getAllUser);
+
   return (
     <div className='p-4 top-0 overflow-y-auto'>
       <div className='w-full bg-white dark:bg-black dark:text-white rounded-3xl p-4'>
@@ -144,54 +160,21 @@ const Right = () => {
       <div className='w-full bg-white dark:bg-black mt-4 rounded-3xl p-4'>
           <h1 className='text-black dark-text-white font-bold text-md'>Suggestions</h1>
           {/* people */}
-
+        {
+          getAllUser && getAllUser.length > 0 && getAllUser.map((person: any) => (       
           <div className='flex justify-between items-center my-2 px-4'>
             <div className='flex gap-2'>
-              <img className='w-9 h-9 rounded-full' src={`${process.env.PUBLIC_URL}/images/ladies 8.png`} alt="" />
+              <img className='w-9 h-9 rounded-full' src={person && person.profilePhoto && person.profilePhoto.url} alt="" />
             <div>
-              <h1 className='text-sm text-black dark:text-white font-semibold'>Chioma Ada</h1>
-              <p className='text-xs text-gray-600'>@chiada</p>
+              <h1 className='text-sm text-black dark:text-white font-semibold'>{person && person.fullname}</h1>
+              <p className='text-xs text-gray-600'>@{person && person.handle}</p>
             </div>
             </div>
             
-            <button className='text-xs px-4 py-1 bg-black dark:bg-white rounded-full text-white dark:text-black transform-transition duration-100 hover:scale-110'>Follow</button>
+            <button onClick={() => handleFollow(person && person._id)} className='text-xs px-4 py-1 bg-black dark:bg-white rounded-full text-white dark:text-black transform-transition duration-100 hover:scale-110'>{person && person.followers && person.followers.includes(getAUser && getAUser._doc && getAUser._doc._id) ? 'Unfollow' : 'Follow'} </button>
           </div>
-
-          <div className='flex justify-between items-center my-2 px-4'>
-            <div className='flex gap-2'>
-              <img className='w-9 h-9 rounded-full' src={`${process.env.PUBLIC_URL}/images/ladies 7.png`} alt="" />
-            <div>
-              <h1 className='text-sm text-black dark:text-white font-semibold'>Ade Yomi</h1>
-              <p className='text-xs text-gray-600'>@adeyomi</p>
-            </div>
-            </div>
-            
-            <button className='text-xs px-4 py-1 bg-black dark:bg-white rounded-full text-white dark:text-black transform-transition duration-100 hover:scale-110'>Follow</button>
-          </div>
-
-          <div className='flex justify-between items-center my-2 px-4'>
-            <div className='flex gap-2'>
-              <img className='w-9 h-9 rounded-full' src={`${process.env.PUBLIC_URL}/images/ladies 6.png`} alt="" />
-            <div>
-              <h1 className='text-sm text-black dark:text-white font-semibold'>Tola Femi</h1>
-              <p className='text-xs text-gray-600'>@_tolafemi</p>
-            </div>
-            </div>
-            
-            <button className='text-xs px-4 py-1 bg-black dark:bg-white rounded-full text-white dark:text-black transform-transition duration-100 hover:scale-110'>Follow</button>
-          </div>
-
-          <div className='flex justify-between items-center my-2 px-4'>
-            <div className='flex gap-2'>
-              <img className='w-9 h-9 rounded-full' src={`${process.env.PUBLIC_URL}/images/ladies1.png`} alt="" />
-            <div>
-              <h1 className='text-sm text-black dark:text-white font-semibold'>Tom Figi</h1>
-              <p className='text-xs text-gray-600'>@tomfigi</p>
-            </div>
-            </div>
-            
-            <button className='text-xs px-4 py-1 bg-black dark:bg-white rounded-full text-white dark:text-black transform-transition duration-100 hover:scale-110'>Follow</button>
-          </div>
+          ))
+          }
       </div>
     </div>
   )

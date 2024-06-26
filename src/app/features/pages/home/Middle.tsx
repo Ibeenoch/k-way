@@ -81,6 +81,7 @@ const Middle = () => {
   const [isvideoUploaded, setIsVideoUploaded] = useState<boolean>(false);
   const [imageUploaded, setImageUploaded] = useState<boolean>(false);
   const [isImageUploaded, setIsImageUploaded] = useState<boolean>(false);
+  const [toggleControls, setToggleControls] = useState<boolean>(false);
   const [postId, setPostId] = useState<string>('');
   const [personalPost, setPersonalPost] = useState<any>();
   const getUser = JSON.parse(localStorage.getItem('user') as any);
@@ -138,15 +139,25 @@ const Middle = () => {
 
  };
 
- const handleFollowing = (userId: string) => {
+ const handleFollowing = (auserId: string) => {
   if(getUser === null){
-    navigate('login');
+    navigate('/login');
     return;
   };
+  if(getUser._doc._id === auserId){
+    console.log('the same ', getUser._doc._id, ' and ', auserId);
+    return;
+  }
+  console.log('different');
   const token = getUser && getUser.token;
-  const follow = { token, userId };
+  const follow = { token, auserId };
   dispatch(userFollowing(follow)).then((res: any) => {
-    console.log('user res ', res);
+  console.log('just followed ', res)
+    if(res && res.payload !== undefined){
+      dispatch(getAllPosts()).then((res: any) => {
+         console.log('a post ', res); 
+      })
+    }
   })
  };
 
@@ -308,6 +319,14 @@ const goToPost = async (id: string) => {
   })
  
 }
+
+
+const toggleImageControls = () => {
+setToggleControls((prev) => !prev);
+}
+console.log('toggleControls  ', toggleControls)
+
+
 
 const handleTouchStart = (e : React.TouchEvent<HTMLDivElement>) => {
   setTouchStart(e.targetTouches[0].clientX)
@@ -1123,13 +1142,13 @@ const viewNextImage = () => {
       >
         <div className={`w-full sm:px-[25%] h-full sm:max-h-sm sm:bg-gray-900`}>
           <div className="flex justify-between items-center p-2 ">
-            <MenuLogo className="w-3 h-3  z-40 fill-white mt-3 ml-3 cursor-pointer" />
+            <MenuLogo className={`${toggleControls ? 'block': 'hidden'} w-3 h-3  z-40 fill-white mt-3 ml-3 cursor-pointer`} />
           
             {/* cancel or close  */}
-            <CancelLogo onClick={hideMobileModal}  className="w-3 h-3 fill-white z-40 mt-4 mr-4 cursor-pointer" />
+            <CancelLogo onClick={hideMobileModal}  className={`${toggleControls ? 'block': 'hidden'} w-3 h-3 fill-white z-40 mt-4 mr-4 cursor-pointer`} />
           </div>
 
-          <div className='flex justify-between items-center z-14 my-2 px-4'>
+          <div className={`${toggleControls ? 'flex': 'hidden'} justify-between items-center z-14 my-2 px-4`}>
             <div className='flex gap-2'>
               <img className='w-9 h-9 rounded-full cursor-pointer z-40' src={displayProfileImage} alt="" />
             <div className="z-40">
@@ -1138,42 +1157,45 @@ const viewNextImage = () => {
             </div>
             </div>
             
-            <button onClick={() => handleFollowing(post && post.owner && post.owner._id)} className='text-xs px-4 py-1 bg-black z-40 dark:bg-white rounded-full border border-white text-white dark:text-black transform-transition duration-100 hover:scale-110'>{  }Follow</button>
+            <button onClick={() => handleFollowing(post && post.owner && post.owner._id)} className='text-xs px-4 py-1 bg-black z-40 dark:bg-white rounded-full border border-white text-white dark:text-black transform-transition duration-100 hover:scale-110'>
+              { post && post.owner && post.owner.followers && post.owner.followers.includes(getUser && getUser._doc && getUser._doc._id.toString()) ? 'UnFollow' : "Follow" }
+            </button>
           </div>
 
          
 
           <div className="fixed z-5 inset-0 flex justify-center items-center">
             <div className="pt-1"></div>
-           <div  onTouchStart={handleTouchStart}  onTouchEnd={handleTouchEnd} onTouchMove={handleTouchMove} > <img
-           
-              className="max-w-[600px] cursor-pointer"
+           <div className="z-40"  onClick={toggleImageControls} onTouchStart={handleTouchStart}  onTouchEnd={handleTouchEnd} onTouchMove={handleTouchMove} > 
+            <img
+             
+              className="max-w-[600px] cursor-pointer z-40"
               src={displayImage}
               alt=""
             />
             </div>
 
             {/* show image  */}
-          <div className="hidden sm:z-[20px] sm:px-[25%] sm:fixed inset-0 sm:flex justify-between items-center">
+          <div className={`hidden sm:z-[20px] sm:px-[10%] ${ toggleControls ? 'sm:fixed' : 'sm:hidden'} inset-0 sm:flex justify-between items-center`}>
             <ArrowPreviousLogo onClick={() => viewPrevImage()} className="w-9 h-9 fill-white cursor-pointer" /> 
             <ArrowNextLogo  onClick={() =>viewNextImage()} className="w-9 h-9 fill-white cursor-pointer" />
           </div>
 
-            <div className="fixed bottom-11 flex justify-between items-center">
+            <div className={`fixed bottom-11 ${toggleControls ? 'flex' : 'hidden'}  justify-between items-center`}>
             <div className="flex justify-between items-center">
           <div className="flex ml-9 mt-4 gap-8 items-center">
             <div className="p-[5px] flex gap-1 cursor-pointer">
-              <HeartIcon className="w-5 h-5 fill-white stroke-white"/>             
+              <HeartIcon onClick={() =>handleLike(post._id)} className="w-5 h-5 fill-white stroke-white"/>             
             <p className="text-xs text-white">{post && post.likes && post.likes.length}</p>
             </div>
 
             <div className="p-[5px] flex gap-1 cursor-pointer">
-              <RetweetLogo  className="w-5 h-5 fill-white stroke-white"/>
+              <RetweetLogo  onClick={() =>handleReShare(post._id)}   className="w-5 h-5 fill-white stroke-white"/>
             <p className="text-xs text-white">{post && post.reShare && post.reShare.length}</p>
             </div>
 
             <div className="p-[5px] flex gap-1 cursor-pointer">
-              <BookMarkLogo className="w-5 h-5 fill-white stroke-white"/>
+              <BookMarkLogo  onClick={() =>handleBookmark(post._id)} className="w-5 h-5 fill-white stroke-white"/>
              
             <p className="text-xs text-white">{post && post.bookmark && post.bookmark.length}</p>
             </div>
@@ -1183,10 +1205,10 @@ const viewNextImage = () => {
         </div>
             </div>
             
-            <div className="fixed bottom-0 flex border border-white rounded-xl">
+            <div className={`fixed bottom-0 ${toggleControls ? 'flex' : 'hidden' } border border-white rounded-xl`}>
              <input
                   type="text"
-                  className="rounded-md border-0 bg-transparent w-[70vw] sm:left-[25%] sm:w-[42vw] mx-auto left-0 py-2 text-white shadow-sm placeholder:text-white  sm:text-xs"
+                  className="rounded-md border-0 border-none focus:ring-0 focus:ring-inset focus:ring-none bg-transparent w-[70vw] sm:left-[25%] sm:w-[42vw] mx-auto left-0 py-2 text-white shadow-sm placeholder:text-white  sm:text-xs"
                   placeholder="start typing here"
                   name=""
                   id=""
@@ -1228,30 +1250,30 @@ const viewNextImage = () => {
           <div className="flex flex-col items-center">
             <div className="flex flex-col cursor-pointer justify-end items-center pr-4">
               <div className="p-2 w-8 h-8 bg-red-500 mt-2 rounded-full flex justify-center items-center">
-                <HeartIcon color="white" className="w-12 h-12 fill-white" />
+                <HeartIcon onClick={() =>handleLike(post._id)} color="white" className="w-12 h-12 fill-white" />
               </div>
-              <p className="text-xs text-white">124k</p>
+              <p className="text-xs text-white">{post && post.likes && post.likes.length}</p>
             </div>
 
             <div className="flex flex-col cursor-pointer justify-end items-center pr-4">
-              <div className="p-2 w-9 h-9 bg-sky-500 mt-2 rounded-full flex justify-center items-center">
+              <div  onClick={() =>handleReShare(post._id)}  className="p-2 w-9 h-9 bg-sky-500 mt-2 rounded-full flex justify-center items-center">
                <ReplyLogo className="w-15 h-15 fill-white stroke-white" />
               </div>
-              <p className="text-xs text-white">124k</p>
+              <p className="text-xs text-white">{post && post.reShare && post.reShare.length}</p>
             </div>
 
-            <div className="flex flex-col cursor-pointer justify-end items-center pr-4">
-              <div className="p-2 w-8 h-8 bg-sky-500 mt-2 rounded-full flex justify-center items-center">
+            <div  onClick={() => goToPost(post._id)} className="flex flex-col cursor-pointer justify-end items-center pr-4">
+              <div  className="p-2 w-8 h-8 bg-sky-500 mt-2 rounded-full flex justify-center items-center">
                <CommentLogo className="w-4 h-4 fill-white stroke-white" />
               </div>
-              <p className="text-xs text-white">124k</p>
+              <p className="text-xs text-white">{post && post.comments && post.comments.length}</p>
             </div>
 
             <div className="flex flex-col cursor-pointer justify-end items-center pr-4">
             <div className="p-2 w-8 h-8 bg-sky-500 mt-2 rounded-full flex justify-center items-center">
-               <BookMarkLogo className="w-4 h-4 fill-white stroke-white" />
+               <BookMarkLogo  onClick={() =>handleBookmark(post._id)} className="w-4 h-4 fill-white stroke-white" />
               </div>
-              <p className="text-xs text-white">124k</p>
+              <p className="text-xs text-white">{post && post.bookmark && post.bookmark.length}</p>
             </div>
           </div>
         </div>
