@@ -123,6 +123,8 @@ export const fetchAllPosts = async() => {
 
 export const fetchAPost = async(id: string) => {
   try {
+    if(!id) return;
+    console.log('postId ', id);
     const res = await axios.get(`${API}/post/single/${id}`);
     return res.data;
   } catch (error) {

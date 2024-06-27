@@ -31,10 +31,7 @@ const ProfileMiddle = () => {
     const [inputStr, setInputStr] = useState<string>("");
   
     const videoUrl = `${process.env.PUBLIC_URL}/video.mp4`;
-    const { user, profile } = useAppSelector(selectUser);
     const otheruser = JSON.parse(localStorage.getItem('otheruser') as any);
-
-  
 
     const activateFeed = () => {
         setShowFeed(true);
@@ -151,11 +148,10 @@ const ProfileMiddle = () => {
     const showDesktopMenu = () => {
       setDesktopMenu(false);
     };
-    console.log('profile ', profile)
 
-    const viewProfile = () => {
-      navigate(`/profile/${otheruser && otheruser._doc && otheruser._doc._id}`)
-    }
+    // const viewProfile = () => {
+    //   navigate(`/profile/${otheruser && otheruser._doc && otheruser._doc._id}`)
+    // }
   
     const editProfile = () => {
       if(otheruser && otheruser._doc && otheruser._doc._id === id ){
@@ -163,9 +159,9 @@ const ProfileMiddle = () => {
       }
     }
 
-    if(otheruser && otheruser._doc && !otheruser._doc.fullname){
-      navigate(`/profile/create/${otheruser && otheruser._doc && otheruser._doc._id}`);
-    }
+    // if(otheruser && otheruser._doc && !otheruser._doc.fullname){
+    //   navigate(`/profile/create/${otheruser && otheruser._doc && otheruser._doc._id}`);
+    // }
 
   return (
     <div className="mt-10 max-w-md sm:max-w-full">
@@ -177,7 +173,7 @@ const ProfileMiddle = () => {
           otheruser && otheruser._doc && otheruser._doc.profilePhoto && otheruser._doc.profilePhoto.url ? (
             <>
             <div className="relative">
-            <img onClick={viewProfile} className='rounded-full w-[250px] h-[250px] cursor-pointer -ml-4' src={otheruser && otheruser._doc && otheruser._doc.profilePhoto && otheruser._doc.profilePhoto.url} alt="" />
+            <img className='rounded-full w-[250px] h-[250px] cursor-pointer -ml-4' src={otheruser && otheruser._doc && otheruser._doc.profilePhoto && otheruser._doc.profilePhoto.url} alt="" />
              <div onClick={editProfile} className="absolute bottom-0 right-9 cursor-pointer">
                 <svg className="w-5 h-5" fill="none"  stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
               </div> 
@@ -187,7 +183,7 @@ const ProfileMiddle = () => {
           ) : (
             <>
             <div className="relative">
-             <img onClick={viewProfile} className='rounded-full w-[250px] h-[250px] cursor-pointer -ml-4' src={`${process.env.PUBLIC_URL}/images/user.png`} alt="" />
+             <img className='rounded-full w-[250px] h-[250px] cursor-pointer -ml-4' src={`${process.env.PUBLIC_URL}/images/user.png`} alt="" />
              <div onClick={editProfile} className="absolute bottom-0 right-9 cursor-pointer">
                 <svg className="w-5 h-5" fill="none"  stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
               </div> 

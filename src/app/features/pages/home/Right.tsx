@@ -37,8 +37,9 @@ const viewProfile = (userId: string) => {
   const findPerson = getUsers.users.find((u: any) => u._id === userId);
   if(!findPerson.fullname || findPerson.fullname === ''){
     return;
+  }else{
+    navigate(`/profile/${userId}`);
   }
-  navigate(`/profile/${userId}`);
 }
 
 return (

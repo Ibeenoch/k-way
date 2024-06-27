@@ -248,6 +248,19 @@ const handleBookmark = async (postId: string) => {
     setMobileModal(true);
   };
 
+const navigateToProfile = () => {
+  if(getUser && getUser._doc  && getUser._doc.fullname){
+    navigate(`/profile/${getUser && getUser._doc && getUser._doc._id}`)
+  }else{
+    navigate(`/profile/create/${getUser && getUser._doc && getUser._doc._id}`)
+  }
+};
+
+const viewOthersProfile = ( userId: string ) => {
+  navigate(`/profile/${userId}`);
+
+}
+
   const getConfirmation = (commentId: string) => {
     const acceptTodelete = window.confirm('Are you sure you want to trash this comment? this action cannot be undo!!!');
     if(acceptTodelete){
@@ -290,7 +303,7 @@ const handleBookmark = async (postId: string) => {
          <div  className="p-3 max-w-full bg-white dark-bg-gray-700 border border-gray-400">
          
         <div className="flex items-center gap-2 w-full">
-          <ImgLazyLoad className="w-8 h-8 rounded-full cursor-pointer" src={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.url} alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
+          <ImgLazyLoad onClick={() => viewOthersProfile(post && post.owner && post.owner.public_id)} className="w-8 h-8 rounded-full cursor-pointer" src={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.url} alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
           <div className="w-full flex items-center justify-between gap-1">
             <div className="flex items-center">
               <div className="mt-3">
@@ -595,7 +608,7 @@ const handleBookmark = async (postId: string) => {
 
         <div className="fixed max-w-[100%] sm:max-w-[50%] pt-2 bottom-0 rounded-xl">
             <div className="flex bg-white items-center max-h-[30px] p-2 mb-1 rounded-xl">
-            <ImgLazyLoad
+            <ImgLazyLoad onClick={navigateToProfile}
               src={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url }
               className="block w-7 h-7 rounded-full"
               alt={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.public_id }
