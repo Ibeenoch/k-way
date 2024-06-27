@@ -1,16 +1,18 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
-import { useAppSelector } from '../../../hooks';
-import { selectUser } from '../auth/authSlice';
+import React, { useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../../hooks';
+import { getAUser, selectUser } from '../auth/authSlice';
+import { AppContext, useAppContext } from '../home/homeContext'
 import { ReactComponent as Home } from '../../../../assets/homelogo.svg';
 import { ReactComponent as Envelope } from '../../../../assets/messageLogo.svg';
 import { ReactComponent as GlobalTrend } from '../../../../assets/globeTrend.svg';
 import { ReactComponent as Bell } from '../../../../assets/notificationLogo.svg';
 import { ReactComponent as VerifyMark } from '../../../../assets/verifyChecker.svg';
+import { ReactComponent as CompanyLogo } from '../../../../assets/companylogo.svg';
 
 
 const Left = () => {
-  const [isNews, setIsNews] = useState<boolean>(false);
+  const [isNews, setIsNews] = useState<boolean>(true);
   const [isMessage, setIsMessage] = useState<boolean>(false);
   const [isNotification, setisNotifications] = useState<boolean>(false);
   const [isTrends, setIsTrends] = useState<boolean>(false);
@@ -18,30 +20,62 @@ const Left = () => {
   const navigate = useNavigate();
   const { profile } = useAppSelector(selectUser);
   const getUser = JSON.parse(localStorage.getItem('user') as any);
-  // const userId = getUser.id || getUser.userId;
-
+  const { refresh, toggleRefresh } = useAppContext();
   const newsFeedActive = () => {
+    localStorage.setItem('active', JSON.stringify('newsActive'));
     setIsNews(true); setIsMessage(false); setisNotifications(false); setIsTrends(false); setIsMedia(false);
-    navigate('/')
-    
+    navigate('/');
+  };
+
+const dispatch = useAppDispatch();
+ useEffect(() => {
+  if(refresh){
+    if(!getUser)return;
+    const userId = getUser && getUser._doc && getUser._doc._id;
+    dispatch(getAUser(userId)).then((res: any) => {
+      console.log('logging update ', res);
+    })
   }
+ }, [refresh]);
+    console.log('to refresh ', refresh);
+
+    useEffect(() => {
+      const activePage =  JSON.parse( localStorage.getItem('active') as any);
+      if(activePage === 'newsActive'){
+         newsFeedActive();
+      }else if( activePage === 'messageActive'){
+         messageActive();
+      }else if( activePage === 'notificationActive'){
+         notificationActive();
+      }else if( activePage === 'trendsActive'){
+         trendsActive();
+      }else{
+         console.log('none');
+      }
+     
+    }, [])
+  
 
   const messageActive = () => {
+    localStorage.setItem('active', JSON.stringify('messageActive'));
     setIsNews(false); setIsMessage(true); setisNotifications(false); setIsTrends(false); setIsMedia(false);
     navigate('/message')
   }
 
   const notificationActive = () => {
+    localStorage.setItem('active', JSON.stringify('notificationActive'));
     setIsNews(false); setIsMessage(false); setisNotifications(true); setIsTrends(false); setIsMedia(false);
     navigate('/notification')
   }
 
   const trendsActive = () => {
+    localStorage.setItem('active', JSON.stringify('trendsActive'));
     setIsNews(false); setIsMessage(false); setisNotifications(false); setIsTrends(true); setIsMedia(false);
     navigate('/trendlist')
   }
 
   const mediaActive = () => {
+    localStorage.setItem('active', JSON.stringify('mediaActive'));
     setIsNews(false); setIsMessage(false); setisNotifications(false); setIsTrends(false); setIsMedia(true);
   }
 
@@ -56,15 +90,18 @@ const Left = () => {
   return (
     <div className='p-2 sticky top-0'>
       <div className='flex flex-col rounded-tl-3xl justify-center bg-white p-6'>
+        <div className='mx-auto pb-4'>
+          <Link to='/' >
+        <CompanyLogo className='w-12 h-12' />
+          </Link>
+        </div>
         <div className='flex gap-2 items-center justify-center'>
         <div className='rounded-full bg-sky-500 cursor-pointer w-18 h-18'></div>
         {
-         getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url ? (
+         getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url && (
             <img onClick={viewProfile} className='rounded-full border border-purple-500 w-[100px] h-[100px] cursor-pointer -ml-4' src={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url} alt="" />
 
-          ) : (
-            <img onClick={viewProfile} className='rounded-full border border-purple-500 w-[100px] h-[100px] cursor-pointer -ml-4' src={`${process.env.PUBLIC_URL}/images/user.png`} alt="" />
-          )
+          ) 
         }
         </div>
 

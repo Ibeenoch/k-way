@@ -146,11 +146,10 @@ const Middle = () => {
     navigate('/login');
     return;
   };
-  if(getUser._doc._id === auserId){
-    console.log('the same ', getUser._doc._id, ' and ', auserId);
-    return;
-  }
-  console.log('different');
+  // if(getUser._doc._id === auserId){
+  //   console.log('the same ', getUser._doc._id, ' and ', auserId);
+  //   return;
+  // }
   const token = getUser && getUser.token;
   const follow = { token, auserId };
   dispatch(userFollowing(follow)).then((res: any) => {
@@ -273,16 +272,17 @@ const handleLike = async (postId: string) => {
 };
 
 useEffect(() => {
-  socket.on('connection', (data) => {
-    console.log('data liked post  ', data);
-    socket.on('postLiked', (data) => {
-      console.log('data liked post  ', data);
-    })
-  })
+  // socket.on('connection', (data) => {
+  //   console.log('data liked post  ', data);
+  //   socket.on('postLiked', (data) => {
+  //     console.log('data liked post  ', data);
+  //   })
+  // })
+
   // socket.on('postLiked', (data) => {
   //   console.log('data liked post  ', data);
   // })
-}, [dispatch])
+}, [])
 
 const handleBookmark = async (postId: string) => {
   if(getUser === null){
@@ -657,28 +657,26 @@ const viewNextImage = () => {
       {/* stories */}
       <div className="my-4">
         <div className="flex max-w-full overflow-x-auto">
-        {/* <img
-              className="w-20 h-20 border-2 opacity-80 border-purple-500 rounded-full cursor-pointer"
-              src={`${process.env.PUBLIC_URL}/images/images-73.jpeg`}
-              alt=""
-            /> */}
           {/* add a story  */}
           <div  onClick={viewProfile} className="relative inline-block mx-1 flex-none">
           {
-         getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url ? (
-            <img className="w-20 h-20 border-2 opacity-80 border-purple-500 rounded-full cursor-pointer" src={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url} alt="" />
+         getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url && (
+            <img className="w-20 h-20 border-2 opacity-60 border-purple-500 rounded-full cursor-pointer" src={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url} alt="" />
 
-          ) : (
-            <img className="w-20 h-20 border-2 opacity-80 border-purple-500 rounded-full cursor-pointer" src={`${process.env.PUBLIC_URL}/images/user.png`} alt="" />
-          )
+          ) 
         }
+            {
+                getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url && (
             <PlusIcon
               width="20"
               height="20"
-              className="absolute inset-0 m-auto z-8 stroke-[4px] fill-gray-400 stroke-gray-400 cursor-pointer"
+              className="absolute inset-0 m-auto z-8 stroke-[4px] fill-gray-400 stroke-white cursor-pointer"
               strokeWidth="1"
             >
             </PlusIcon>
+                
+                )
+            }
             <p className="text-[10px] text-black dark:text-white text-center">
             { getUser !== null && 'Your story' }  
             </p>
@@ -1009,15 +1007,15 @@ const viewNextImage = () => {
         post.reShared &&  (
           <>
           <div className="flex border-b border-b-gray-300 pb-4">
-           <ImgLazyLoad className="w-8 h-8 rounded-full cursor-pointer" src={post && post.reShare && post.reShare[0].user.profilePhoto && post.reShare[0].user.profilePhoto.url} alt={post && post.reShare && post.reShare[0].user.profilePhoto && post.reShare[0].user.profilePhoto.public_id} />
-            <p className="text-black dark:text-white text-xs font-medium px-1">{post && post.reShare && post.reShare[0].user.fullname}</p>
+           <ImgLazyLoad className="w-8 h-8 rounded-full cursor-pointer" src={post && post.reShare && post.reShare[0] && post.reShare[0].user  && post.reShare[0].user.profilePhoto && post.reShare[0].user.profilePhoto.url} alt=""/>
+            <p className="text-black dark:text-white text-xs font-medium px-1">{post && post.reShare && post.reShare[0]  && post.reShare[0].user  && post.reShare[0].user.fullname}</p>
             <p className="text-gray-500 text-xs font-semibold px-3">Reshared this post</p>
           </div>
           </>
         ) 
        }
         <div className="flex items-center gap-2 w-full">
-          <ImgLazyLoad onClick={() => viewUserProfile(post && post.owner && post.owner._id)} className="w-8 h-8 rounded-full cursor-pointer" key={index} src={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.url} alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
+          <ImgLazyLoad onClick={() => viewUserProfile(post && post.owner && post.owner._id)} className="w-8 h-8 rounded-full cursor-pointer" key={index} src={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.url} alt='' />
           <div  className="w-full cursor-pointer flex items-center justify-between gap-1">
             <div  onClick={() => goToPost(post._id)} className="flex items-center">
               <div className="mt-3">
@@ -1517,7 +1515,7 @@ const viewNextImage = () => {
             value={content}
             name=""
             id=""
-            className="bg-white resize-none flex-none w-full h-[85vh] text-xs border border-none"
+            className="bg-white resize-none flex-none w-full h-[85vh] text-xs border-none focus:ring-0"
             placeholder="make a post"
           ></textarea>
 

@@ -1,11 +1,11 @@
 import React, { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 import { useAppDispatch, useAppSelector } from "../../../../app/hooks";
 import toast, { Toaster } from "react-hot-toast";
 import Switch from "react-switch";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/20/solid";
-import { createUserProfile, registerUser, selectUser } from "./authSlice";
+import { createUserProfile, getAUser, registerUser, selectUser } from "./authSlice";
 
 interface ProfileInterface {
   fullname: string;
@@ -37,7 +37,16 @@ const ProfileForm: React.FC = () => {
   const [photoURL, setPhotoURL] = useState<string>('');
   const [imageUploaded, setImageUploaded] = useState<boolean>(false);
   const { status, user } = useAppSelector(selectUser);
-  const { token, _id } = getUser;
+  const { id } = useParams();
+  
+  useEffect(() => {
+    dispatch(getAUser(id)).then((res: any) => {
+      console.log('users fetched ', res);
+    })
+  }, []);
+
+  const { token } = getUser;
+  const _id = getUser && getUser._doc && getUser._doc._id;
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -82,6 +91,8 @@ console.log('image upload ', image)
           dispatch(createUserProfile(data)).then((res: any) => {
             if(res && res.payload){
               navigate(`/profile/${res.payload._doc._id}`)
+            }else{
+              setIsClicked(false);
             }
           })
 
@@ -108,6 +119,8 @@ console.log('image upload ', image)
         if(res && res.payload && res.payload._doc && res.payload._doc._id ){
           console.log('good  ', res.payload._doc._id)
           navigate(`/profile/${res && res.payload && res.payload._doc && res.payload._doc._id}`)
+        }else{
+          setIsClicked(false);
         }
       })
 

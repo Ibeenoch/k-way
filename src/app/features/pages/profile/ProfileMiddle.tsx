@@ -183,7 +183,7 @@ const ProfileMiddle = () => {
           ) : (
             <>
             <div className="relative">
-             <img onClick={viewProfile} className='rounded-full w-[250px] h-[250px] cursor-pointer -ml-4' src={`${process.env.PUBLIC_URL}/images/images-74.jpeg`} alt="" />
+             <img onClick={viewProfile} className='rounded-full w-[250px] h-[250px] cursor-pointer -ml-4' src={`${process.env.PUBLIC_URL}/images/user.png`} alt="" />
              <div onClick={editProfile} className="absolute bottom-0 right-9 cursor-pointer">
                 <svg className="w-5 h-5" fill="none"  stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
               </div> 
@@ -266,7 +266,7 @@ const ProfileMiddle = () => {
 
         <div className="hidden sm:flex sm:bg-white sm:items-center sm:max-h-[30px] sm:p-2 sm:rounded-2xl">
           <img
-            src={`${process.env.PUBLIC_URL}/images/images-74.jpeg`}
+            src={`${process.env.PUBLIC_URL}/images/user.png`}
             className="hidden sm:block sm:w-6 sm:h-6 sm:rounded-full"
             alt=""
           />
@@ -604,7 +604,7 @@ const ProfileMiddle = () => {
           </svg>
 
           <img
-            src={`${process.env.PUBLIC_URL}/images/images-74.jpeg`}
+            src={`${process.env.PUBLIC_URL}/images/user.png`}
             className="w-10 h-10 rounded-full cursor-pointer border border-purple-500"
             alt=""
           />
@@ -767,7 +767,7 @@ const ProfileMiddle = () => {
     <div className="rounded-full my-1 p-3 max-w-full bg-white dark-bg-gray-700 border border-gray-400 rounded-lg">
       <div className="flex items-center gap-2 w-full">
         <img
-          src={`${process.env.PUBLIC_URL}/images/images-74.jpeg`}
+          src={`${process.env.PUBLIC_URL}/images/user.png`}
           className="w-8 h-8 rounded-full cursor-pointer"
           alt=""
         />
@@ -957,7 +957,7 @@ const ProfileMiddle = () => {
             <img
               onClick={showMobileModal}
               className="w-full h-50 cursor-pointer"
-              src={`${process.env.PUBLIC_URL}/images/images-74.jpeg`}
+              src={`${process.env.PUBLIC_URL}/images/user.png`}
               alt=""
             />
           </div>
@@ -966,13 +966,13 @@ const ProfileMiddle = () => {
             <img
               onClick={showMobileModal}
               className="w-1/2 h-25 border-r-2 border-white cursor-pointer"
-              src={`${process.env.PUBLIC_URL}/images/images-74.jpeg`}
+              src={`${process.env.PUBLIC_URL}/images/user.png`}
               alt=""
             />
             <img
               onClick={showMobileModal}
               className="w-1/2 h-25 border-l-2 border-white cursor-pointer"
-              src={`${process.env.PUBLIC_URL}/images/images-74.jpeg`}
+              src={`${process.env.PUBLIC_URL}/images/user.png`}
               alt=""
             />
           </div>
@@ -981,14 +981,14 @@ const ProfileMiddle = () => {
             <img
               onClick={showMobileModal}
               className="w-1/2 h-30 border-r-2 border-r-white cursor-pointer"
-              src={`${process.env.PUBLIC_URL}/images/images-74.jpeg`}
+              src={`${process.env.PUBLIC_URL}/images/user.png`}
               alt=""
             />
             <div className="flex flex-col w-full">
               <img
                 onClick={showMobileModal}
                 className="w-full h-15 border-b-2 border-l-2 border-b-white cursor-pointer"
-                src={`${process.env.PUBLIC_URL}/images/images-74.jpeg`}
+                src={`${process.env.PUBLIC_URL}/images/user.png`}
                 alt=""
               />
               <img
@@ -1004,25 +1004,25 @@ const ProfileMiddle = () => {
             <img
               onClick={showMobileModal}
               className="w-full h-full  border-r-2 border-b-2 border-white cursor-pointer"
-              src={`${process.env.PUBLIC_URL}/images/images-74.jpeg`}
+              src={`${process.env.PUBLIC_URL}/images/user.png`}
               alt=""
             />
             <img
               onClick={showMobileModal}
               className="w-full h-full  border-l-2 border-b-2 border-white cursor-pointer"
-              src={`${process.env.PUBLIC_URL}/images/images-74.jpeg`}
+              src={`${process.env.PUBLIC_URL}/images/user.png`}
               alt=""
             />
             <img
               onClick={showMobileModal}
               className="w-full h-full  border-t-2 border-r-2 border-white cursor-pointer"
-              src={`${process.env.PUBLIC_URL}/images/images-74.jpeg`}
+              src={`${process.env.PUBLIC_URL}/images/user.png`}
               alt=""
             />
             <img
               onClick={showMobileModal}
               className="w-full h-full border-t-2 border-l-2 border-white cursor-pointer"
-              src={`${process.env.PUBLIC_URL}/images/images-74.jpeg`}
+              src={`${process.env.PUBLIC_URL}/images/user.png`}
               alt=""
             />
           </div>
@@ -1199,7 +1199,7 @@ const ProfileMiddle = () => {
     <div className="rounded-full my-1 p-3 max-w-full bg-white dark-bg-gray-700 border border-gray-400 rounded-lg">
       <div className="flex items-center gap-2 w-full">
         <img
-          src={`${process.env.PUBLIC_URL}/images/images-74.jpeg`}
+          src={`${process.env.PUBLIC_URL}/images/user.png`}
           className="w-8 h-8 rounded-full cursor-pointer"
           alt=""
         />
@@ -1389,7 +1389,7 @@ const ProfileMiddle = () => {
             <img
               onClick={showMobileModal}
               className="w-full h-50 cursor-pointer"
-              src={`${process.env.PUBLIC_URL}/images/images-74.jpeg`}
+              src={`${process.env.PUBLIC_URL}/images/user.png`}
               alt=""
             />
           </div>
@@ -1398,13 +1398,13 @@ const ProfileMiddle = () => {
             <img
               onClick={showMobileModal}
               className="w-1/2 h-25 border-r-2 border-white cursor-pointer"
-              src={`${process.env.PUBLIC_URL}/images/images-74.jpeg`}
+              src={`${process.env.PUBLIC_URL}/images/user.png`}
               alt=""
             />
             <img
               onClick={showMobileModal}
               className="w-1/2 h-25 border-l-2 border-white cursor-pointer"
-              src={`${process.env.PUBLIC_URL}/images/images-74.jpeg`}
+              src={`${process.env.PUBLIC_URL}/images/user.png`}
               alt=""
             />
           </div>
@@ -1413,14 +1413,14 @@ const ProfileMiddle = () => {
             <img
               onClick={showMobileModal}
               className="w-1/2 h-30 border-r-2 border-r-white cursor-pointer"
-              src={`${process.env.PUBLIC_URL}/images/images-74.jpeg`}
+              src={`${process.env.PUBLIC_URL}/images/user.png`}
               alt=""
             />
             <div className="flex flex-col w-full">
               <img
                 onClick={showMobileModal}
                 className="w-full h-15 border-b-2 border-l-2 border-b-white cursor-pointer"
-                src={`${process.env.PUBLIC_URL}/images/images-74.jpeg`}
+                src={`${process.env.PUBLIC_URL}/images/user.png`}
                 alt=""
               />
               <img
@@ -1436,25 +1436,25 @@ const ProfileMiddle = () => {
             <img
               onClick={showMobileModal}
               className="w-full h-full  border-r-2 border-b-2 border-white cursor-pointer"
-              src={`${process.env.PUBLIC_URL}/images/images-74.jpeg`}
+              src={`${process.env.PUBLIC_URL}/images/user.png`}
               alt=""
             />
             <img
               onClick={showMobileModal}
               className="w-full h-full  border-l-2 border-b-2 border-white cursor-pointer"
-              src={`${process.env.PUBLIC_URL}/images/images-74.jpeg`}
+              src={`${process.env.PUBLIC_URL}/images/user.png`}
               alt=""
             />
             <img
               onClick={showMobileModal}
               className="w-full h-full  border-t-2 border-r-2 border-white cursor-pointer"
-              src={`${process.env.PUBLIC_URL}/images/images-74.jpeg`}
+              src={`${process.env.PUBLIC_URL}/images/user.png`}
               alt=""
             />
             <img
               onClick={showMobileModal}
               className="w-full h-full border-t-2 border-l-2 border-white cursor-pointer"
-              src={`${process.env.PUBLIC_URL}/images/images-74.jpeg`}
+              src={`${process.env.PUBLIC_URL}/images/user.png`}
               alt=""
             />
           </div>
@@ -2256,7 +2256,7 @@ const ProfileMiddle = () => {
 
           <div className='flex justify-between items-center my-2 px-4'>
             <div className='flex gap-2'>
-              <img className='w-9 h-9 rounded-full' src={`${process.env.PUBLIC_URL}/images/images-74.jpeg`} alt="" />
+              <img className='w-9 h-9 rounded-full' src={`${process.env.PUBLIC_URL}/images/user.png`} alt="" />
             <div>
               <h1 className='text-sm text-black dark:text-white font-semibold'>Tom Figi</h1>
               <p className='text-xs text-gray-600'>@tomfigi</p>
@@ -2314,7 +2314,7 @@ const ProfileMiddle = () => {
 
           <div className='flex justify-between items-center my-2 px-4'>
             <div className='flex gap-2'>
-              <img className='w-9 h-9 rounded-full' src={`${process.env.PUBLIC_URL}/images/images-74.jpeg`} alt="" />
+              <img className='w-9 h-9 rounded-full' src={`${process.env.PUBLIC_URL}/images/user.png`} alt="" />
             <div>
               <h1 className='text-sm text-black dark:text-white font-semibold'>Tom Figi</h1>
               <p className='text-xs text-gray-600'>@tomfigi</p>

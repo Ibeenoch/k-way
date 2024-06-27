@@ -76,7 +76,8 @@ export const updateProfile = async (data: any) => {
         'Authorization': `Bearer ${token}`
       }
     }
-     const { _id, profilefile } = data
+     const { _id, profilefile } = data;
+     console.log('update profile ', data);
     if(profilefile){
       const res = await axios.put(`${API}/user/update/${_id}`, profilefile, option);
       return res.data;
@@ -95,7 +96,8 @@ export const userFollowers = async (followers: any) => {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       }
-    }
+    };
+    
 
       const res = await axios.put(`${API}/user/follower/${userId}`, followers, option);
       return res.data;
@@ -107,15 +109,17 @@ export const userFollowers = async (followers: any) => {
 
 export const userFollowing = async (followers: any) => {
   try {
-    const { userId, token } = followers;
+    const { auserId, token } = followers;
     const option = {
       headers : {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       }
-    }
+    };
+    
+    console.log('different ', followers);
 
-      const res = await axios.put(`${API}/user/following/${userId}`, followers, option);
+      const res = await axios.put(`${API}/user/following/${auserId}`, followers, option);
       return res.data;
     
    } catch (error) {

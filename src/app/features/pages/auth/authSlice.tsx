@@ -275,6 +275,10 @@ export const authSlice = createSlice({
           state.user = action.payload;
           localStorage.setItem('user', JSON.stringify(action.payload.mine));
           localStorage.setItem('otheruser', JSON.stringify(action.payload.user));
+          console.log({
+            mine: action.payload.mine,
+            user: action.payload.user
+          });
          };
       })
       .addCase(userFollowers.rejected, (state, action) => {
@@ -289,6 +293,10 @@ export const authSlice = createSlice({
           state.user = action.payload;
           localStorage.setItem('user', JSON.stringify(action.payload.mine));
           localStorage.setItem('otheruser', JSON.stringify(action.payload.user));
+          console.log({
+            mine: action.payload.mine,
+            user: action.payload.user
+          });
          };
       })
       .addCase(userFollowing.rejected, (state, action) => {
