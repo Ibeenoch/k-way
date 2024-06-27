@@ -163,6 +163,10 @@ const ProfileMiddle = () => {
       }
     }
 
+    if(otheruser && otheruser._doc && !otheruser._doc.fullname){
+      navigate(`/profile/create/${otheruser && otheruser._doc && otheruser._doc._id}`);
+    }
+
   return (
     <div className="mt-10 max-w-md sm:max-w-full">
                

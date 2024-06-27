@@ -255,7 +255,6 @@ export const postSlice = createSlice({
         state.status = "loading";
       })
       .addCase(deletePost.fulfilled, (state, action) => {
-        console.log('deleted post ', action.payload)
         if (action.payload !== undefined && action.payload._id) {
           state.status = "success";
           const findIndex = state.posts.findIndex((p: any) => p._id === action.payload._id);
@@ -269,7 +268,6 @@ export const postSlice = createSlice({
         state.status = "loading";
       })
       .addCase(getAllPosts.fulfilled, (state, action) => {
-        console.log('fetched posts ', action.payload)
         if (action.payload !== undefined) {
           state.status = "success";
           state.posts = action.payload;
@@ -284,7 +282,6 @@ export const postSlice = createSlice({
       .addCase(getAllRepliesForComment.fulfilled, (state, action) => {
         if (action.payload !== undefined) {
           state.status = "success";
-          console.log('fetched replies ', action.payload)
           state.repliedcomments = action.payload;
         }
       })
@@ -295,7 +292,6 @@ export const postSlice = createSlice({
         state.status = "loading";
       })
       .addCase(getAPost.fulfilled, (state, action) => {
-        console.log('fetched post ', action.payload)
         if (action.payload !== undefined) {
           state.status = "success";
           state.post = action.payload;
@@ -308,7 +304,6 @@ export const postSlice = createSlice({
         state.status = "loading";
       })
       .addCase(commentOnPost.fulfilled, (state, action) => {
-        console.log('comments posts ', action.payload)
         if (action.payload !== undefined) {
           state.status = "success";
           state.comments.unshift(action.payload);
@@ -321,7 +316,6 @@ export const postSlice = createSlice({
         state.status = "loading";
       })
       .addCase(editComment.fulfilled, (state, action) => {
-        console.log('edit comments posts ', action.payload)
         if (action.payload !== undefined) {
           state.status = "success";
           const index = state.comments.findIndex((c: any) => c._id === action.payload._id);
@@ -336,7 +330,6 @@ export const postSlice = createSlice({
         state.status = "loading";
       })
       .addCase(likeComment.fulfilled, (state, action) => {
-        console.log('like comments posts ', action.payload)
         if (action.payload !== undefined) {
           state.status = "success";
           const index = state.comments.findIndex((c: any) => c._id === action.payload._id);
@@ -354,7 +347,6 @@ export const postSlice = createSlice({
           state.status = "success";
           const index = state.comments.findIndex((c: any) => c._id === action.payload._id);
           state.repliedcomments[index] = action.payload;
-          console.log('lets check replies ', action.payload._id);
         }
       })
       .addCase(likeReplyComment.rejected, (state, action) => {
@@ -364,7 +356,6 @@ export const postSlice = createSlice({
         state.status = "loading";
       })
       .addCase(deleteComment.fulfilled, (state, action) => {
-        console.log('delete comments posts ', action.payload)
         if (action.payload !== undefined) {
           state.status = "success";
           const index = state.comments.findIndex((c: any) => c._id === action.payload._id);
@@ -378,7 +369,6 @@ export const postSlice = createSlice({
         state.status = "loading";
       })
       .addCase(allCommentForAPost.fulfilled, (state, action) => {
-        console.log('delete comments posts ', action.payload)
         if (action.payload !== undefined) {
           state.status = "success";
           state.comments = action.payload;
@@ -391,10 +381,8 @@ export const postSlice = createSlice({
         state.status = "loading";
       })
       .addCase(replyComment.fulfilled, (state, action) => {
-        console.log('reply comments posts ', action.payload)
         if (action.payload !== undefined) {
           state.status = "success";
-          console.log('reply comments ', action.payload)
            state.repliedcomments.unshift(action.payload);
         }
       })

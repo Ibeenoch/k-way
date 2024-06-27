@@ -185,7 +185,6 @@ export const authSlice = createSlice({
         state.status = "loading";
       })
       .addCase(registerUser.fulfilled, (state, action) => {
-        console.log('regslice  ', action.payload)
         if (action.payload !== undefined && action.payload.email) {
           state.status = "success";
           state.user = action.payload;
@@ -207,7 +206,6 @@ export const authSlice = createSlice({
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.status = "failed";
-        console.log('errtttt   ', action.payload)
       })
       .addCase(createUserProfile.pending, (state, action) => {
         state.status = "loading";
@@ -215,7 +213,6 @@ export const authSlice = createSlice({
       .addCase(createUserProfile.fulfilled, (state, action) => {
         if (action.payload !== undefined) {
           state.status = "success";
-          console.log('the profile updated is ', action.payload)
           // if there is previous photo and it was edited without the user adding a photo, use the old photo else use the new one
           if(action.payload && action.payload._doc && !action.payload._doc.profilePhoto ){
             const getUser = JSON.parse(localStorage.getItem('user') as any);
@@ -248,7 +245,6 @@ export const authSlice = createSlice({
         state.status = "loading";
       })
       .addCase(resetPassword.fulfilled, (state, action) => {
-        console.log('resetPassword ', action.payload)
           state.status = "success";
          
       })
@@ -275,10 +271,6 @@ export const authSlice = createSlice({
           state.user = action.payload;
           localStorage.setItem('user', JSON.stringify(action.payload.mine));
           localStorage.setItem('otheruser', JSON.stringify(action.payload.user));
-          console.log({
-            mine: action.payload.mine,
-            user: action.payload.user
-          });
          };
       })
       .addCase(userFollowers.rejected, (state, action) => {
@@ -293,10 +285,7 @@ export const authSlice = createSlice({
           state.user = action.payload;
           localStorage.setItem('user', JSON.stringify(action.payload.mine));
           localStorage.setItem('otheruser', JSON.stringify(action.payload.user));
-          console.log({
-            mine: action.payload.mine,
-            user: action.payload.user
-          });
+         
          };
       })
       .addCase(userFollowing.rejected, (state, action) => {

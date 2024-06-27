@@ -23,8 +23,7 @@ export const likepost = async(post: any) => {
     const token = post.token;
     const userId = post.userId;
     const id = post.postId;
-console.log('post ', post);
-const data = {userId}
+    const data = {userId}
 
     const option = {
       headers: {
@@ -44,8 +43,7 @@ export const bookmarkpost = async(post: any) => {
     const token = post.token;
     const userId = post.userId;
     const id = post.postId;
-console.log('post ', post);
-const data = {userId}
+    const data = {userId}
 
     const option = {
       headers: {
@@ -66,7 +64,6 @@ export const repost = async(post: any) => {
     const userId = post.userId;
     const id = post.postId;
     const data = {userId}
-    console.log('post ', post);
     const option = {
       headers: {
         'authorization': `Bearer ${token}`
@@ -226,7 +223,7 @@ export const likeAComment = async(comments: any) => {
   try {
     const token = comments.token;
     const commentId = comments.commentId;
-console.log(comments);
+
     const option = {
       headers: {
         'authorization': `Bearer ${token}`

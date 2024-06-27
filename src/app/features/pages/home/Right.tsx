@@ -1,22 +1,47 @@
+import { useContext, useEffect } from "react";
 import { useAppDispatch } from "../../../hooks";
-import { userFollowing } from "../auth/authSlice";
+import { getAllUser, userFollowing } from "../auth/authSlice";
+import { useAppContext } from "./homeContext";
+import { useNavigate } from "react-router-dom";
 
 const Right = () => {
-  const getAllUser = JSON.parse(localStorage.getItem('alluser') as any);
+  const getUsers = JSON.parse(localStorage.getItem('alluser') as any);
   const getAUser = JSON.parse(localStorage.getItem('user') as any);
+  const { refresh, toggleRefresh } = useAppContext();
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const handleFollow = (userId: string) => {
-   const findUser = getAllUser.find((p: any) => p._id === userId );
+   const findUser = getUsers.find((p: any) => p._id === userId );
     const token = findUser && findUser.token;
     const follow = { token, userId };
-    dispatch(userFollowing(follow)).then((res: any) => {
-      console.log('user following res ', res);
-    })
+    dispatch(userFollowing(follow))
   };
-console.log('getAll users ', getAllUser);
 
-  return (
+useEffect(() => {
+  if(refresh){
+    dispatch(getAllUser())
+  }
+}, [refresh]);
+
+useEffect(() => {
+  dispatch(getAllUser())
+}, []);
+
+const viewProfile = (userId: string) => {
+
+  if(userId === getAUser && getAUser._doc  && getAUser._doc._id || userId === getAUser._id){
+    navigate(`/profile/create/${userId}`);
+    return;
+  };
+  const findPerson = getUsers.users.find((u: any) => u._id === userId);
+  if(!findPerson.fullname || findPerson.fullname === ''){
+    return;
+  }
+  navigate(`/profile/${userId}`);
+}
+
+return (
     <div className='p-4 top-0 overflow-y-auto'>
       <div className='w-full bg-white dark:bg-black dark:text-white rounded-3xl p-4'>
 
@@ -161,13 +186,19 @@ console.log('getAll users ', getAllUser);
           <h1 className='text-black dark-text-white font-bold text-md'>Suggestions</h1>
           {/* people */}
         {
-          getAllUser && getAllUser.length > 0 && getAllUser.map((person: any) => (       
+          getUsers  && getUsers.users && getUsers.users.length > 0 && getUsers.users.map((person: any) => (       
           <div className='flex justify-between items-center my-2 px-4'>
-            <div className='flex gap-2'>
-              <img className='w-9 h-9 rounded-full' src={person && person.profilePhoto && person.profilePhoto.url} alt="" />
+            <div onClick={() =>viewProfile(person._id)} className='flex gap-2 cursor-pointer'>
+              {
+                person && person.profilePhoto && person.profilePhoto.url ? (
+                  <img className='w-9 h-9 rounded-full' src={person && person.profilePhoto && person.profilePhoto.url} alt="" />
+                ) : (
+                  <img className='w-9 h-9 rounded-full' src={`${process.env.PUBLIC_URL}/images/user.png`} alt="" />
+                )
+              }
             <div>
-              <h1 className='text-sm text-black dark:text-white font-semibold'>{person && person.fullname}</h1>
-              <p className='text-xs text-gray-600'>@{person && person.handle}</p>
+              <h1 className='text-sm text-black dark:text-white font-semibold'>{person && person.fullname ?  person.fullname : 'anonymous'}</h1>
+              <p className='text-xs text-gray-600'>@{person && person.handle ?  person.handle : 'anonymous'}</p>
             </div>
             </div>
             

@@ -34,11 +34,13 @@ import { ReactComponent as ArrowDownLogo } from '../../../../assets/arrowDownLog
 import { ReactComponent as PlusLogo } from '../../../../assets/plusLogo.svg';
 import { ReactComponent as ThreeDotVerticalLogo } from '../../../../assets/threeDotVerticalLogo.svg';
 import { formatCreatedAt } from "../../../../utils/timeformat";
+import { useAppContext } from "./homeContext";
 
 const Middle = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const socket: Socket = io('http://localhost:5800');
+  const { refresh, toggleRefresh } = useAppContext();
+  // const socket: Socket = io('http://localhost:5800');
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const desktopMenuRef = useRef<HTMLDivElement>(null);
   const desktopCommentMenuRef = useRef<HTMLDivElement>(null);
@@ -96,9 +98,7 @@ const Middle = () => {
   }
 
   useEffect(() => {
-    dispatch(getAllUser()).then((res: any) => {
-      console.log('all users ', res)
-    })
+    dispatch(getAllUser())
   }, []);
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -153,10 +153,9 @@ const Middle = () => {
   const token = getUser && getUser.token;
   const follow = { token, auserId };
   dispatch(userFollowing(follow)).then((res: any) => {
-  console.log('just followed ', res)
     if(res && res.payload !== undefined){
       dispatch(getAllPosts()).then((res: any) => {
-         console.log('a post ', res); 
+        toggleRefresh();
       })
     }
   })
@@ -169,9 +168,7 @@ const Middle = () => {
   };
   const token = getUser && getUser.token;
   const follow = { token, userId };
-  dispatch(userFollowers(follow)).then((res: any) => {
-    console.log('user res ', res);
-  })
+  dispatch(userFollowers(follow));
  };
 
 
@@ -199,7 +196,6 @@ const handlePostSubmit = async() => {
       postData.append('video', video)
     })
   }
-  console.log('imglength ', imageInput.length, 'videolength ', fileInput.length )
   const token = getUser.token;
   
   setcontent('');
@@ -215,7 +211,6 @@ if(id){
 
   if(post){
     dispatch(updatePost(post)).then((res: any) => {
-      console.log('the update res ', res)
       if(res.payload !== undefined){
       setIsUpdated(true);
       hidePostModal();
@@ -238,9 +233,9 @@ if(id){
 
   if(post){
     dispatch(createPost(post)).then((res: any) => {
-      console.log('posted   ', res)
       if(res.payload !== undefined){
          dispatch(getAllPosts()).then((res: any) => {
+          toggleRefresh();
           setIsPosting(false);
           hidePostModal();
           navigate('/');
@@ -266,9 +261,7 @@ const handleLike = async (postId: string) => {
     userId,
     postId
   };
-  dispatch(likePost(postLike)).then((res: any) => {
-    console.log('res ', res)
-  })
+  dispatch(likePost(postLike));
 };
 
 useEffect(() => {
@@ -296,9 +289,7 @@ const handleBookmark = async (postId: string) => {
     userId,
     postId
   };
-  dispatch(bookmarkPost(postBooked)).then((res: any) => {
-    console.log('res ', res)
-  })
+  dispatch(bookmarkPost(postBooked));
 };
 
 const handleReShare = async (postId: string) => {
@@ -313,17 +304,13 @@ const handleReShare = async (postId: string) => {
     userId,
     postId
   };
-  dispatch(rePost(postReshare)).then((res: any) => {
-    console.log('res ', res)
-  })
+  dispatch(rePost(postReshare));
 };
 
 const goToPost = async (id: string) => {
   dispatch(getAPost(id)).then((res: any) => {
-    console.log('get post', res);
     if(res && res.payload !== undefined){
       dispatch(allCommentForAPost(id)).then((res: any) => {
-        console.log('get comment', res);
         if(res && res.payload !== undefined){
           navigate(`/post/${id}`);
         }
@@ -338,7 +325,6 @@ const goToPost = async (id: string) => {
 const toggleImageControls = () => {
 setToggleControls((prev) => !prev);
 }
-console.log('toggleControls  ', toggleControls)
 
 
 
@@ -350,7 +336,6 @@ const handleTouchMove = (e : React.TouchEvent<HTMLDivElement>) => {
   setTouchEnd(e.targetTouches[0].clientX)
 }
 
-console.log('touch ', touchstart, touchend);
 const handleTouchEnd = (e : React.TouchEvent<HTMLDivElement>) => {
   if(!touchstart || !touchend) return;
 
@@ -360,8 +345,8 @@ const handleTouchEnd = (e : React.TouchEvent<HTMLDivElement>) => {
     const findPost = posts.find((p: any) => p._id === currentPostId);
     const picsLength = findPost.photos.length;
     const findIndex = findPost.photos.findIndex((img: any) => img.url === displayImage);
-    console.log(' the dist and minswipedist ', distance, minimumSwipeDistance);
-  if(distance > minimumSwipeDistance){
+
+    if(distance > minimumSwipeDistance){
     // swipe left = next
     setDisplayImage(findPost.photos[findIndex === picsLength - 1 ? picsLength - 1 : findIndex + 1].url)
   }else if(distance < -minimumSwipeDistance){
@@ -399,7 +384,6 @@ const handleTouchEnd = (e : React.TouchEvent<HTMLDivElement>) => {
       };    
   
     dispatch(commentOnPost(comments)).then((res: any) => {
-      console.log('comment ', res);
       if(res && res.payload !== undefined){
         setIsCommenting(false);
         setToRefresh(true);
@@ -409,12 +393,8 @@ const handleTouchEnd = (e : React.TouchEvent<HTMLDivElement>) => {
 
   const getPost = (currentPostId: string) => {
     dispatch(getAPost(currentPostId)).then((res: any) => {
-      console.log('get post', res);
       if(res && res.payload !== undefined){
-        dispatch(allCommentForAPost(currentPostId)).then((res: any) => {
-          console.log('get comment', res);
-          
-        })
+        dispatch(allCommentForAPost(currentPostId))
          
       }
     })
@@ -483,7 +463,6 @@ const handleTouchEnd = (e : React.TouchEvent<HTMLDivElement>) => {
   };
 
   const onEmojiClick = (emojiObject: any) => {
-    console.log("events emoji ", emojiObject);
     setcontent((prev) => prev + emojiObject.emoji);
     setShowEmojiPicker(false);
   };
@@ -530,7 +509,6 @@ const handleTouchEnd = (e : React.TouchEvent<HTMLDivElement>) => {
 
   const viewUserProfile = (userId: string) => {
     dispatch(getOtherUser(userId)).then((res: any) => {
-      console.log('user profile ', res);
       if(res && res.payload !== undefined){
         navigate(`/profile/${userId}`)
       }
@@ -571,9 +549,7 @@ const handleTouchEnd = (e : React.TouchEvent<HTMLDivElement>) => {
   }, [hideDeskTopMenu]);
 
   useEffect(() => {
-    dispatch(getAllPosts()).then((res: any) => {
-      console.log('fetching all post ', res)
-    })
+    dispatch(getAllPosts())
   }, [])
 
   const menuShow = (id: string) => {
@@ -628,9 +604,7 @@ const viewNextImage = () => {
     if(getConfirmation){
     const token = getUser.token;
     const post = { id, token };
-    dispatch(deletePost(post)).then((res: any) => {
-      console.log('is successfully deleted ', res);
-    })
+    dispatch(deletePost(post))
   }
 
   };
@@ -639,12 +613,10 @@ const viewNextImage = () => {
 
 
   const viewProfile = () => {
-    console.log('jjj')
-    if(getUser !== null){
-      // navigate(`/profile/${getUser && getUser._doc && getUser._doc._id}`)
-      console.log('okay ', getUser)
+    if(getUser && getUser._doc  && getUser._doc.fullname){
+      navigate(`/profile/${getUser && getUser._doc && getUser._doc._id}`)
     }else{
-      navigate('/login');
+      navigate(`/profile/create/${getUser && getUser._doc && getUser._doc._id}`)
     }
   };
 
@@ -678,7 +650,7 @@ const viewNextImage = () => {
                 )
             }
             <p className="text-[10px] text-black dark:text-white text-center">
-            { getUser !== null && 'Your story' }  
+            { getUser && getUser._doc && getUser._doc.fullname && 'Your story' }  
             </p>
           </div>
           <div className="flex gap-2 ">

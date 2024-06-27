@@ -45,7 +45,6 @@ export const passwordRecovery = async (data: any) => {
   try {
     if(data){
       const res = await axios.post(`${API}/user/password/recovery`, data);
-      console.log(res)
       return res.data;
     }
     
@@ -77,7 +76,6 @@ export const updateProfile = async (data: any) => {
       }
     }
      const { _id, profilefile } = data;
-     console.log('update profile ', data);
     if(profilefile){
       const res = await axios.put(`${API}/user/update/${_id}`, profilefile, option);
       return res.data;
@@ -117,8 +115,6 @@ export const userFollowing = async (followers: any) => {
       }
     };
     
-    console.log('different ', followers);
-
       const res = await axios.put(`${API}/user/following/${auserId}`, followers, option);
       return res.data;
     

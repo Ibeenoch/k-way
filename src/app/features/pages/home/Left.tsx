@@ -106,7 +106,7 @@ const dispatch = useAppDispatch();
         </div>
 
         {
-          getUser !== null && (
+          getUser && getUser._doc && getUser._doc.fullname && (
             <>
             
            
