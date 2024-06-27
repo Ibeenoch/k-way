@@ -123,15 +123,10 @@ export const userFollowing = async (followers: any) => {
    }
 };
 
-export const getFollowing = async (token: any) => {
+export const getFollowing = async (userId: any) => {
   try {
-    const option = {
-      headers : {
-        'Authorization': `Bearer ${token}`
-      }
-    }
-
-      const res = await axios.get(`${API}/user/following`, option);
+   
+      const res = await axios.get(`${API}/user/following/${userId}`);
       return res.data;
     
    } catch (error) {
@@ -139,15 +134,10 @@ export const getFollowing = async (token: any) => {
    }
 };
 
-export const getFollowers = async (token: any) => {
+export const getFollowers = async (userId: any) => {
   try {
-    const option = {
-      headers : {
-        'Authorization': `Bearer ${token}`
-      }
-    }
-
-      const res = await axios.get(`${API}/user/followers`, option);
+   
+      const res = await axios.get(`${API}/user/followers/${userId}`);
       return res.data;
     
    } catch (error) {

@@ -2,12 +2,15 @@ import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 
 import { PlusIcon, HeartIcon } from "@heroicons/react/24/outline";
 import EmojiPicker from "emoji-picker-react";
-import { useAppSelector } from "../../../hooks";
+import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { selectUser } from "../auth/authSlice";
 import { useNavigate, useParams } from "react-router-dom";
+import { getAllPosts } from "../home/PostSlice";
+import { getFollowers, getFollowing } from "../auth/authSlice";
 
 const ProfileMiddle = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const { id } = useParams();
     const mobileMenuRef = useRef<HTMLDivElement>(null);
     const desktopMenuRef = useRef<HTMLDivElement>(null);
@@ -33,11 +36,18 @@ const ProfileMiddle = () => {
     const videoUrl = `${process.env.PUBLIC_URL}/video.mp4`;
     const otheruser = JSON.parse(localStorage.getItem('otheruser') as any);
 
+    const fetchFeeds = () => {
+      dispatch(getAllPosts()).then((res: any) => {
+        console.log('all posts fetched ', res);
+      })
+    };
+
     const activateFeed = () => {
         setShowFeed(true);
         setShowupload(false);
         setShowFollowers(false);
         setShowFollowing(false);
+        fetchFeeds();
     }
 
     const activateUpload = () => {
@@ -46,19 +56,36 @@ const ProfileMiddle = () => {
         setShowFollowers(false);
         setShowFollowing(false);
     }
+    const getFollower = (id: string) => {
+      dispatch(getFollowers(id)).then((res: any) => {
+        console.log('followers are ', res);
+      });
+    };
 
-    const activateFollowers = () => {
+    const activateFollowers = ( ) => {
         setShowFeed(false);
         setShowupload(false);
         setShowFollowers(true);
         setShowFollowing(false);
+        if(id){
+          getFollower(id);
+        }
     }
+
+    const gettheFollowing = (uid: string) => {
+      dispatch(getFollowing(uid)).then((res: any) => {
+        console.log('following are ', res);
+      });
+    };
 
     const activateFollowing = () => {
         setShowFeed(false);
         setShowupload(false);
         setShowFollowers(false);
         setShowFollowing(true);
+        if(id){
+          gettheFollowing(id);
+        }
     }
   
     const showPostModal = () => {
@@ -152,6 +179,12 @@ const ProfileMiddle = () => {
     // const viewProfile = () => {
     //   navigate(`/profile/${otheruser && otheruser._doc && otheruser._doc._id}`)
     // }
+
+  
+
+    useEffect(() => {
+      fetchFeeds()
+    }, [])
   
     const editProfile = () => {
       if(otheruser && otheruser._doc && otheruser._doc._id === id ){
@@ -159,9 +192,9 @@ const ProfileMiddle = () => {
       }
     }
 
-    // if(otheruser && otheruser._doc && !otheruser._doc.fullname){
-    //   navigate(`/profile/create/${otheruser && otheruser._doc && otheruser._doc._id}`);
-    // }
+    if(otheruser && otheruser._doc && !otheruser._doc.fullname){
+      navigate(`/profile/create/${otheruser && otheruser._doc && otheruser._doc._id}`);
+    }
 
   return (
     <div className="mt-10 max-w-md sm:max-w-full">
@@ -221,6 +254,10 @@ const ProfileMiddle = () => {
             <p className='text-xs text-gray-400'>Posts</p>
           </div>
         </div>
+      </div>
+
+      <div className="mx-auto flex justify-center py-4">
+        <button className="text-white bg-black hover:bg-white hover:text-black duration-200 hover:border-black hover:scale-105 rounded-2xl border border-white font-semibold text-center px-4 py-1">Follow</button>
       </div>
 
     <div className="flex justify-around px-4 mb-4">

@@ -9,6 +9,10 @@ export interface postInterface {
   post: any;
   comments: any;
   repliedcomments: any[];
+  likes: any[];
+  bookmark: any[];
+  reshared: any[];
+  view: 'likes' | 'bookmark' | 'reshare' | 'none'
   status: "success" | "loading" | "failed" | "idle";
   editCommentStatus: "success" | "loading" | "failed" | "idle";
 }
@@ -19,6 +23,10 @@ const initialState: postInterface = {
   comments: [],
   status: "idle",
   repliedcomments: [],
+  likes: [],
+  bookmark: [],
+  view: 'none',
+  reshared: [],
   editCommentStatus: "idle",
 };
 
@@ -97,6 +105,33 @@ export const getAllRepliesForComment = createAsyncThunk("/post/allrepliesforComm
 export const likeComment = createAsyncThunk("/post/likeaComment", async (comments: any) => {
   try {
     const res = await api.likeAComment(comments);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+export const getLikesforaPost = createAsyncThunk("/post/getlikeforpost", async (postId: any) => {
+  try {
+    const res = await api.getLikesForAPost(postId);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+export const getBookmarkforaPost = createAsyncThunk("/post/getbookmarkforpost", async (postId: any) => {
+  try {
+    const res = await api.getBookmarkForAPost(postId);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+export const getresharedforaPost = createAsyncThunk("/post/getresharedforpost", async (postId: any) => {
+  try {
+    const res = await api.getresharedForAPost(postId);
     return res;
   } catch (error) {
     console.log(error);
@@ -387,6 +422,45 @@ export const postSlice = createSlice({
         }
       })
       .addCase(replyComment.rejected, (state, action) => {
+        state.status = "failed";
+      })
+      .addCase(getLikesforaPost.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(getLikesforaPost.fulfilled, (state, action) => {
+        if (action.payload !== undefined) {
+          state.status = "success";
+          state.view = 'likes';
+           state.likes= action.payload;
+        }
+      })
+      .addCase(getLikesforaPost.rejected, (state, action) => {
+        state.status = "failed";
+      })
+      .addCase(getBookmarkforaPost.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(getBookmarkforaPost.fulfilled, (state, action) => {
+        if (action.payload !== undefined) {
+          state.status = "success";
+          state.view = 'bookmark';
+           state.bookmark=action.payload;
+        }
+      })
+      .addCase(getBookmarkforaPost.rejected, (state, action) => {
+        state.status = "failed";
+      })
+      .addCase(getresharedforaPost.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(getresharedforaPost.fulfilled, (state, action) => {
+        if (action.payload !== undefined) {
+          state.status = "success";
+          state.view = 'reshare';
+           state.reshared=action.payload;
+        }
+      })
+      .addCase(getresharedforaPost.rejected, (state, action) => {
         state.status = "failed";
       })
       

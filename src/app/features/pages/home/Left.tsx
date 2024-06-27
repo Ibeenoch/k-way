@@ -9,6 +9,7 @@ import { ReactComponent as GlobalTrend } from '../../../../assets/globeTrend.svg
 import { ReactComponent as Bell } from '../../../../assets/notificationLogo.svg';
 import { ReactComponent as VerifyMark } from '../../../../assets/verifyChecker.svg';
 import { ReactComponent as CompanyLogo } from '../../../../assets/companylogo.svg';
+import { ReactComponent as EditLogo } from '../../../../assets/editLogo.svg';
 
 
 const Left = () => {
@@ -87,26 +88,28 @@ const dispatch = useAppDispatch();
     navigate(`/profile/${getUser && getUser._doc && getUser._doc._id}`)
   }
 
+  const editProfile = (userId: string) => {
+    navigate(`/profile/create/${userId}`)
+  }
+
   return (
     <div className='p-2 sticky top-0'>
       <div className='flex flex-col rounded-tl-3xl justify-center bg-white p-6'>
-        <div className='mx-auto pb-4'>
-          <Link to='/' >
+        <div  className='mx-auto pb-4'>
         <CompanyLogo className='w-12 h-12' />
-          </Link>
         </div>
         <div className='flex gap-2 items-center justify-center'>
         <div className='rounded-full bg-sky-500 cursor-pointer w-18 h-18'></div>
         {
          getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url && (
-            <img onClick={viewProfile} className='rounded-full border border-purple-500 w-[100px] h-[100px] cursor-pointer -ml-4' src={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url} alt="" />
+            <img onClick={viewProfile} className='rounded-full border fixed-size object-center border-purple-500 w-[100px] h-[100px] cursor-pointer -ml-4' src={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url} alt="" />
 
           ) 
         }
         </div>
 
         {
-          getUser && getUser._doc && getUser._doc && (
+          getUser && getUser._doc && getUser._doc.fullname && (
             <>
             
            
@@ -135,6 +138,17 @@ const dispatch = useAppDispatch();
           </div>
         </div>
           </>
+          )
+        }
+
+        {
+          getUser && getUser._doc && !getUser._doc.fullname && (
+            <>
+            <div onClick={() =>editProfile(getUser && getUser._doc && getUser._doc._id)} className='flex gap-2 justify-center items-center rounded-2xl cursor-pointer group hover:bg-white border hover:border-black sm:mx-2 lg:mx-8 py-2 bg-black'>
+              <h2 className='text-white text-[11px] font-semibold text-center group-hover:text-black'>Edit Profile</h2> 
+              <EditLogo className='w-4 h-4 stroke-white group-hover:stroke-black' />
+            </div>
+            </>
           )
         }
       </div>

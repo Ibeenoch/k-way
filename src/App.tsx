@@ -20,6 +20,7 @@ import ChangePassword from "./app/features/pages/auth/ChangePassword";
 import ReplyComment from "./app/features/pages/home/ReplyComment";
 import EditComment from "./app/features/pages/home/EditComment";
 import SinglePost from "./app/features/pages/singlePost/SinglePost";
+import ViewPerson from "./app/features/pages/home/ViewPerson";
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,18 @@ const router = createBrowserRouter([
   {
     path: "/post/:id",
     element: <SinglePost />,
+  },
+  {
+    path: "/post/like/:postId",
+    element: <ViewPerson />,
+  },
+  {
+    path: "/post/bookmark/:postId",
+    element: <ViewPerson />,
+  },
+  {
+    path: "/post/reshare/:postId",
+    element: <ViewPerson />,
   },
   {
     path: "/profile/:id",

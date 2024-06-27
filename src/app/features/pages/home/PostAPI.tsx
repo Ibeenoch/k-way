@@ -247,3 +247,30 @@ export const allCommentsforaPost = async(id: any) => {
     console.log(error);
   }
 }
+
+export const getLikesForAPost = async(userId: any) => {
+  try {
+    const res = await axios.get(`${API}/post/getlikes/${userId}`);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getBookmarkForAPost = async(userId: any) => {
+  try {
+    const res = await axios.get(`${API}/post/getbookmark/${userId}`);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getresharedForAPost = async(userId: any) => {
+  try {
+    const res = await axios.get(`${API}/post/getreshare/${userId}`);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
