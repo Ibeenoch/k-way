@@ -13,6 +13,8 @@ export interface userState {
   otherperson: any;
   profile: any;
   users: any;
+  followers: any[];
+  following: any[];
   active: string;
   profileType: 'local' | 'foreign';
   status: "success" | "loading" | "failed" | "idle";
@@ -23,6 +25,8 @@ const initialState: userState = {
   otherperson: otherUser ? otherUser : {},
   users: allUser ? allUser : [],
   profile: profile ? profile : {},
+  followers: [],
+  following: [],
   active: 'home',
   status: "idle",
   profileType: 'local',
@@ -183,7 +187,10 @@ export const authSlice = createSlice({
     },
     setActivePage: (state, action: PayloadAction<string>) => {
       state.active = action.payload;
-    }
+    },
+    setProfileType: (state, action: PayloadAction<'local' | 'foreign'>) => {
+      state.profileType = action.payload;
+    },
   },
 
   extraReducers(builder) {
@@ -276,8 +283,7 @@ export const authSlice = createSlice({
         if(action.payload !== undefined){
           state.status = "success";
           state.user = action.payload;
-          localStorage.setItem('user', JSON.stringify(action.payload.mine));
-          localStorage.setItem('otheruser', JSON.stringify(action.payload.user));
+          localStorage.setItem('user', JSON.stringify(action.payload));
          };
       })
       .addCase(userFollowers.rejected, (state, action) => {
@@ -290,9 +296,7 @@ export const authSlice = createSlice({
         if(action.payload !== undefined){
           state.status = "success";
           state.user = action.payload;
-          localStorage.setItem('user', JSON.stringify(action.payload.mine));
-          localStorage.setItem('otheruser', JSON.stringify(action.payload.user));
-         
+          localStorage.setItem('user', JSON.stringify(action.payload));         
          };
       })
       .addCase(userFollowing.rejected, (state, action) => {
@@ -304,8 +308,8 @@ export const authSlice = createSlice({
       .addCase(getFollowing.fulfilled, (state, action) => {
         if(action.payload !== undefined){
           state.status = "success";
-          state.user = action.payload;
-          localStorage.setItem('user', JSON.stringify(action.payload));
+          state.following = action.payload;
+          localStorage.setItem('following', JSON.stringify(action.payload.following));
          };
       })
       .addCase(getFollowing.rejected, (state, action) => {
@@ -317,8 +321,8 @@ export const authSlice = createSlice({
       .addCase(getFollowers.fulfilled, (state, action) => {
         if(action.payload !== undefined){
           state.status = "success";
-          state.user = action.payload;
-          localStorage.setItem('user', JSON.stringify(action.payload));
+          state.followers = action.payload;
+          localStorage.setItem('followers', JSON.stringify(action.payload.followers));
          };
       })
       .addCase(getFollowers.rejected, (state, action) => {
@@ -367,7 +371,7 @@ export const authSlice = createSlice({
   },
 });
 
-export const { logout, setActivePage } = authSlice.actions;
+export const { logout, setActivePage, setProfileType } = authSlice.actions;
 
 export const selectUser = (state: RootState) => state.auth;
 

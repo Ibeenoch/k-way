@@ -3,7 +3,7 @@ import pics from "../../../../images/images-74.jpeg";
 import { PlusIcon, HeartIcon,  } from "@heroicons/react/24/outline";
 import EmojiPicker from "emoji-picker-react";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
-import { getAUser, getAllUser, getOtherUser, selectUser, userFollowers, userFollowing } from "../auth/authSlice";
+import { getAUser, getAllUser, getOtherUser, selectUser, setProfileType, userFollowers, userFollowing } from "../auth/authSlice";
 import { allCommentForAPost, bookmarkPost, commentOnPost, createPost, deletePost, getAPost, getAllPosts, getBookmarkforaPost, getLikesforaPost, getresharedforaPost, likePost, openpostForm, rePost, resetEditCommentStatus, selectPost, updatePost } from "./PostSlice";
 import toast, { Toast } from 'react-hot-toast'
 import { io, Socket } from 'socket.io-client'
@@ -559,7 +559,21 @@ const handleTouchEnd = (e : React.TouchEvent<HTMLDivElement>) => {
   const viewUserProfile = (userId: string) => {
     dispatch(getOtherUser(userId)).then((res: any) => {
       if(res && res.payload !== undefined){
-        navigate(`/profile/${userId}`)
+        if(getUser === null){
+          dispatch(setProfileType('foreign'));
+          navigate(`/profile/${userId}`);
+        } else{ 
+          const userId = getUser && getUser._doc && getUser._doc._id;
+          if(res && res.payload && res.payload._doc && res.payload._doc._id === userId){
+          console.log('type profile local ', res.payload._doc._id)
+          dispatch(setProfileType('local'))
+          navigate(`/profile/${userId}`);
+        }else{
+          console.log('type foreign profile ', res.payload._doc._id)
+          dispatch(setProfileType('foreign'))
+          navigate(`/profile/${userId}`);
+        }
+        }
       }
     })
   }
@@ -923,7 +937,7 @@ const viewNextImage = () => {
         post.reShared &&  (
           <>
           <div className="flex border-b border-b-gray-300 pb-4">
-           <ImgLazyLoad className="w-8 h-8 rounded-full cursor-pointer" src={post && post.reShare && post.reShare[0] && post.reShare[0].user  && post.reShare[0].user.profilePhoto && post.reShare[0].user.profilePhoto.url} alt=""/>
+           <img className="w-8 h-8 rounded-full cursor-pointer" src={post && post.reShare && post.reShare[0] && post.reShare[0].user  && post.reShare[0].user.profilePhoto && post.reShare[0].user.profilePhoto.url} alt=""/>
             <p className="text-black dark:text-white text-xs font-medium px-1">{post && post.reShare && post.reShare[0]  && post.reShare[0].user  && post.reShare[0].user.fullname}</p>
             <p className="text-gray-500 text-xs font-semibold px-3">Reshared this post</p>
           </div>

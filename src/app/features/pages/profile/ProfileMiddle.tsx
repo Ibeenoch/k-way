@@ -32,9 +32,10 @@ const ProfileMiddle = () => {
     const [showfollowers, setShowFollowers] = useState<boolean>(false);
     const [showfollowing, setShowFollowing] = useState<boolean>(false);
     const [inputStr, setInputStr] = useState<string>("");
+    const { profileType } = useAppSelector(selectUser)
   
     const videoUrl = `${process.env.PUBLIC_URL}/video.mp4`;
-    const otheruser = JSON.parse(localStorage.getItem('otheruser') as any);
+    const otheruser = profileType === 'local' ? JSON.parse(localStorage.getItem('user') as any) : JSON.parse(localStorage.getItem('otheruser') as any);
 
     const fetchFeeds = () => {
       dispatch(getAllPosts()).then((res: any) => {

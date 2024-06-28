@@ -2,14 +2,16 @@ import React, { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../hooks';
 import { selectPost } from './PostSlice';
 import { useNavigate } from 'react-router-dom';
-import { userFollowing } from '../auth/authSlice';
+import { selectUser, setProfileType, userFollowing } from '../auth/authSlice';
 import { ReactComponent as ArrowBackLogo } from '../../../../assets/arrowBack.svg'
 
 const ViewPerson = () => {
     const getUser = JSON.parse(localStorage.getItem('user') as any);
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const { likes, bookmark, reshared, view } = useAppSelector(selectPost)
+    const { likes, bookmark, reshared, view } = useAppSelector(selectPost);
+    const { user, otherperson } = useAppSelector(selectUser);
+
     useEffect(() => {
         document.body.classList.add('bg-black');
 
@@ -19,16 +21,35 @@ const ViewPerson = () => {
     }, []);
 
     const viewProfile = (userId: string) => {
-        navigate(`/profile/${userId}`);
-      }
+        if(getUser === null){
+            dispatch(setProfileType('foreign'));
+            navigate(`/profile/${userId}`);
+            return;
+        };
+        const me = getUser && getUser._doc && getUser._doc._id;
+        if( userId === me){
+            dispatch(setProfileType('local'));
+            navigate(`/profile/${userId}`);
+        }else{
+            console.log('foreign check')
+            dispatch(setProfileType('foreign'));
+            navigate(`/profile/${userId}`); 
+        }
+
+    }
 
       const handleFollow = (userId: string) => {
         if(!getUser){
             navigate('/login');
         }
-        const findUser = getUser.find((p: any) => p._id === userId );
-         const token = findUser && findUser.token;
-         const follow = { token, userId };
+        
+         const token = getUser && getUser.token;
+         const me = getUser && getUser._doc && getUser._doc._id;
+         if(me === userId){
+            console.log('the same user');
+            return;
+         }
+         const follow = { token, auserId: userId };
          dispatch(userFollowing(follow)).then((res: any) => {
             console.log('started following ', res)
          });
@@ -37,7 +58,9 @@ const ViewPerson = () => {
     const handleGoBack = () => {
         navigate(-1);
       }
-
+// if(user){
+//     console.log('me the user ', user && user.mine && user.mine._doc && user.mine._doc._id, ' the other person ', otherperson && otherperson._doc && otherperson._doc._id );
+// }
   return (
     <div className='bg-black'>
          <div onClick={handleGoBack} className='bg-white sm:bg-transparent sm:fixed flex gap-3 py-2 cursor-pointer'>
@@ -45,7 +68,7 @@ const ViewPerson = () => {
         <h2 className='text-xs font-medium text-black sm:text-white'>Back to Post Feeds</h2>
         </div>
 
-      <div className='sm:mx-[25%] bg-white'>
+      <div className='sm:mx-[25%] bg-white h-screen'>
         <h2 className='text-black font-bold text-sm text-center p-1 border-b border-gray-300'>Post { view === 'likes' ? 'Liked' : view === 'bookmark' ? 'Bookmark' : view === 'reshare' ? 'Reshared' : 'none'} By</h2>
         {
           view === 'likes' &&  likes && likes.length > 0 ? likes.map((person: any) => (
@@ -66,7 +89,9 @@ const ViewPerson = () => {
             </div>
             </div>
             
-            <button onClick={() => handleFollow(person && person._id)} className='text-xs px-4 py-1 bg-black dark:bg-white rounded-full text-white dark:text-black transform-transition duration-100 hover:scale-110'>{person && person.followers && person.followers.includes(getUser && getUser._doc && getUser._doc._id) ? 'Unfollow' : 'Follow'} </button>
+            <button onClick={() => handleFollow(person && person._id)} className='text-xs px-4 py-1 bg-black dark:bg-white rounded-full text-white dark:text-black transform-transition duration-100 hover:scale-110'>
+                {user && user.mine && user.mine._doc && user.mine._doc.following && user.mine._doc.following.includes(person._id) ? 'Unfollow' : 'Follow'} 
+            </button>
           
           </div>
         ))
@@ -87,7 +112,9 @@ const ViewPerson = () => {
         </div>
         </div>
         
-        <button onClick={() => handleFollow(person && person._id)} className='text-xs px-4 py-1 bg-black dark:bg-white rounded-full text-white dark:text-black transform-transition duration-100 hover:scale-110'>{person && person.followers && person.followers.includes(getUser && getUser._doc && getUser._doc._id) ? 'Unfollow' : 'Follow'} </button>
+        <button onClick={() => handleFollow(person && person._id)} className='text-xs px-4 py-1 bg-black dark:bg-white rounded-full text-white dark:text-black transform-transition duration-100 hover:scale-110'>
+        {user && user.mine && user.mine._doc && user.mine._doc.following && user.mine._doc.following.includes(person._id) ? 'Unfollow' : 'Follow'}  
+        </button>
       
       </div>
     )) 
@@ -109,7 +136,9 @@ const ViewPerson = () => {
     </div>
     </div>
     
-    <button onClick={() => handleFollow(person && person._id)} className='text-xs px-4 py-1 bg-black dark:bg-white rounded-full text-white dark:text-black transform-transition duration-100 hover:scale-110'>{person && person.followers && person.followers.includes(getUser && getUser._doc && getUser._doc._id) ? 'Unfollow' : 'Follow'} </button>
+    <button onClick={() => handleFollow(person && person._id)} className='text-xs px-4 py-1 bg-black dark:bg-white rounded-full text-white dark:text-black transform-transition duration-100 hover:scale-110'>
+    {user && user.mine && user.mine._doc && user.mine._doc.following && user.mine._doc.following.includes(person._id) ? 'Unfollow' : 'Follow'}  
+    </button>
   
   </div>
 )) : (

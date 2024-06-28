@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../hooks';
-import { getAUser, selectUser, setActivePage } from '../auth/authSlice';
+import { getAUser, selectUser, setActivePage, setProfileType } from '../auth/authSlice';
 import { AppContext, useAppContext } from '../home/homeContext'
 import { ReactComponent as Home } from '../../../../assets/homelogo.svg';
 import { ReactComponent as Envelope } from '../../../../assets/messageLogo.svg';
@@ -52,7 +52,7 @@ const Left = () => {
   }
 
   const trendsActive = () => {
-    dispatch(setActivePage('trend'))
+    dispatch(setActivePage('trend'));
     navigate('/trendlist')
   }
 
@@ -63,7 +63,7 @@ const Left = () => {
       navigate('/login');
       return;
     }
-    
+    dispatch(setProfileType('local'));
     navigate(`/profile/${getUser && getUser._doc && getUser._doc._id}`)
   }
 

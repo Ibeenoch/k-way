@@ -1,6 +1,6 @@
 import { useContext, useEffect } from "react";
 import { useAppDispatch } from "../../../hooks";
-import { getAllUser, userFollowing } from "../auth/authSlice";
+import { getAllUser, setProfileType, userFollowing } from "../auth/authSlice";
 import { useAppContext } from "./homeContext";
 import { useNavigate } from "react-router-dom";
 
@@ -29,17 +29,29 @@ useEffect(() => {
 }, []);
 
 const viewProfile = (userId: string) => {
-
-  if(userId === getAUser && getAUser._doc  && getAUser._doc._id || userId === getAUser._id){
-    navigate(`/profile/create/${userId}`);
-    return;
-  };
+  // check if i am not logged in
+if(!getAUser){
+  navigate(`/profile/${userId}`);
+}
+// if i am logged in
+const me = getAUser && getAUser._doc  && getAUser._doc._id;
+  
   const findPerson = getUsers.users.find((u: any) => u._id === userId);
-  if(!findPerson.fullname || findPerson.fullname === ''){
-    return;
+  if(findPerson._id === me._id){
+    if(!findPerson.fullname || findPerson.fullname === ''){
+      navigate(`/profile/create/${userId}`);
+      return;
+    }else{
+      dispatch(setProfileType('local'));
+      navigate(`/profile/${userId}`);
+      return;
+    };
   }else{
+    dispatch(setProfileType('foreign'));
     navigate(`/profile/${userId}`);
-  }
+    return;
+};
+
 }
 
 return (
