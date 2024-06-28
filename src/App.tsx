@@ -116,6 +116,7 @@ function App() {
     
       <div className="App">
         <RouterProvider router={router} />
+        
         <Toaster toastOptions={{
           error: {
             style: {

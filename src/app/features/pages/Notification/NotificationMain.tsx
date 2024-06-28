@@ -1,4 +1,5 @@
-import { HeartIcon } from '@heroicons/react/24/outline'
+import { HeartIcon } from '@heroicons/react/24/outline';
+import NavBar from '../mobilenav/NavBar';
 
 const NotificationMain = () => {
   return (
@@ -49,7 +50,7 @@ const NotificationMain = () => {
         </svg>
         </div>
       </div>
-      
+      <NavBar />
     </div>
   )
 }

@@ -12,6 +12,7 @@ export interface postInterface {
   likes: any[];
   bookmark: any[];
   reshared: any[];
+  openPostForm: boolean;
   view: 'likes' | 'bookmark' | 'reshare' | 'none'
   status: "success" | "loading" | "failed" | "idle";
   editCommentStatus: "success" | "loading" | "failed" | "idle";
@@ -25,6 +26,7 @@ const initialState: postInterface = {
   repliedcomments: [],
   likes: [],
   bookmark: [],
+  openPostForm: false,
   view: 'none',
   reshared: [],
   editCommentStatus: "idle",
@@ -212,6 +214,10 @@ export const postSlice = createSlice({
     resetEditCommentStatus: (state) => {
        state.editCommentStatus = 'idle';
     },
+    openpostForm: (state, action: PayloadAction<boolean>) => {
+       state.openPostForm = action.payload;
+    },
+   
   },
 
   extraReducers(builder) {
@@ -467,7 +473,7 @@ export const postSlice = createSlice({
   },
 });
 
-export const { logout, resetEditCommentStatus } = postSlice.actions;
+export const { logout, resetEditCommentStatus, openpostForm } = postSlice.actions;
 
 export const selectPost = (state: RootState) => state.posts;
 

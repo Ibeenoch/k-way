@@ -4,10 +4,11 @@ import { PlusIcon, HeartIcon,  } from "@heroicons/react/24/outline";
 import EmojiPicker from "emoji-picker-react";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { getAUser, getAllUser, getOtherUser, selectUser, userFollowers, userFollowing } from "../auth/authSlice";
-import { allCommentForAPost, bookmarkPost, commentOnPost, createPost, deletePost, getAPost, getAllPosts, getBookmarkforaPost, getLikesforaPost, getresharedforaPost, likePost, rePost, resetEditCommentStatus, selectPost, updatePost } from "./PostSlice";
+import { allCommentForAPost, bookmarkPost, commentOnPost, createPost, deletePost, getAPost, getAllPosts, getBookmarkforaPost, getLikesforaPost, getresharedforaPost, likePost, openpostForm, rePost, resetEditCommentStatus, selectPost, updatePost } from "./PostSlice";
 import toast, { Toast } from 'react-hot-toast'
 import { io, Socket } from 'socket.io-client'
 import { useNavigate, useParams } from "react-router-dom";
+import NavBar from "../mobilenav/NavBar";
 import ImgLazyLoad from "../lazyLoad/ImgLazyLoad";
 import { ReactComponent as GlobalTrendLogo } from '../../../../assets/globeTrend.svg';
 import { ReactComponent as LikeLogo } from '../../../../assets/like.svg';
@@ -32,7 +33,9 @@ import { ReactComponent as TrashLogo } from '../../../../assets/trashLogo.svg';
 import { ReactComponent as ProcessingLogo } from '../../../../assets/processingLogo.svg';
 import { ReactComponent as ArrowDownLogo } from '../../../../assets/arrowDownLogo.svg';
 import { ReactComponent as PlusLogo } from '../../../../assets/plusLogo.svg';
-import { ReactComponent as ThreeDotVerticalLogo } from '../../../../assets/threeDotVerticalLogo.svg';
+import { ReactComponent as SearchLogo } from '../../../../assets/searchBar.svg';
+import { ReactComponent as HomeLogo } from '../../../../assets/homelogo.svg';
+import { ReactComponent as BellLogo } from '../../../../assets/notificationLogo.svg';
 import { formatCreatedAt } from "../../../../utils/timeformat";
 import { useAppContext } from "./homeContext";
 
@@ -55,6 +58,11 @@ const Middle = () => {
   const [postModal, setPostModal] = useState<boolean>(false);
   const [isPosting, setIsPosting] = useState<boolean>(false);
   const [isUpdated, setIsUpdated] = useState<boolean>(false);
+  const [isHome, setisHome] = useState<boolean>(false);
+  const [isTrend, setIsTrend] = useState<boolean>(false);
+  const [isNotify, setisnotify] = useState<boolean>(false);
+  const [ispost, setispost] = useState<boolean>(false);
+  const [isprofile, setisProfile] = useState<boolean>(false);
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
   const [commemtClicked, setCommentClicked] = useState<string>('');
   const [isCommenting, setIsCommenting] = useState<boolean>(false);
@@ -73,7 +81,7 @@ const Middle = () => {
   const [toRefresh, setToRefresh] = useState<boolean>(false);
 
   const { profile } = useAppSelector(selectUser);
-  const { posts, comments } = useAppSelector(selectPost);
+  const { posts, comments, openPostForm } = useAppSelector(selectPost);
 
   const fileRef = useRef<HTMLInputElement>(null);
   const [fileInput, setFileInput] = useState<File[]>([]);
@@ -456,7 +464,10 @@ const handleTouchEnd = (e : React.TouchEvent<HTMLDivElement>) => {
 
   const showPostModal = () => {
     setPostModal(true);
-   
+   setisHome(false);
+   setIsTrend(false);
+   setisnotify(false);
+   setispost(true);
   };
 
   const handleEditIcon = (commentId: string, postId: string) => {
@@ -474,6 +485,7 @@ const handleTouchEnd = (e : React.TouchEvent<HTMLDivElement>) => {
 
   const hidePostModal = () => {
     setPostModal(false);
+    dispatch(openpostForm(false));
   };
 
   const showFullScreen = () => {
@@ -560,6 +572,50 @@ const handleTouchEnd = (e : React.TouchEvent<HTMLDivElement>) => {
     setCurrentPostId(id);
     setPersonalPost(post);
   };
+  
+const goHome = () => {
+  setisHome(true);
+  setIsTrend(false);
+  setisnotify(false);
+  setisProfile(false);
+  setispost(false);
+  localStorage.setItem('pageactive', JSON.stringify('homepage'));
+  navigate('/');
+};
+
+const goTrend = () => {
+  setisHome(false);
+  setIsTrend(true);
+  setisnotify(false);
+  setisProfile(false);
+  setispost(false);
+  localStorage.setItem('pageactive', JSON.stringify('trendpage'))
+  navigate('/trends');
+};
+
+const goNotify = () => {
+  setisHome(false);
+  setIsTrend(false);
+  setisnotify(true);
+  setisProfile(false);
+  setispost(false);
+  localStorage.setItem('pageactive', JSON.stringify('notifypage'));
+  navigate('/notification');
+};
+
+const goProfile = () => {
+  setisHome(false);
+  setIsTrend(false);
+  setisnotify(false);
+  setisProfile(true);
+  setispost(false);
+  localStorage.setItem('pageactive', JSON.stringify('profilepage'));
+  if(!getUser)return;
+  const userId = getUser && getUser._doc && getUser._doc._id;
+  navigate(`/profile/${userId}`);
+};
+
+
 
   useEffect(() => {
     if(hideMobileMenu){
@@ -665,7 +721,7 @@ const viewNextImage = () => {
       </h1>
       {/* stories */}
       <div className="my-4">
-        <div className="flex max-w-full overflow-x-auto">
+        <div className="flex max-w-full overflow-x-auto scrollbar-hide">
           {/* add a story  */}
           <div  onClick={viewProfile} className="relative inline-block mx-1 flex-none">
           {
@@ -692,6 +748,33 @@ const viewNextImage = () => {
           </div>
           <div className="flex gap-2 ">
             {/* view stories  */}
+
+            <div className="flex-none text-center">
+              <img
+                className="w-20 h-20 rounded-full border-2 border-purple-500 cursor-pointer"
+                src={`${process.env.PUBLIC_URL}/images/images-74.jpeg`}
+                alt=""
+              />
+              <p className="text-[10px] text-black dark:text-white">Jone. D</p>
+            </div>
+
+            <div className="flex-none text-center">
+              <img
+                className="w-20 h-20 rounded-full border-2 border-purple-500 cursor-pointer"
+                src={`${process.env.PUBLIC_URL}/images/images-74.jpeg`}
+                alt=""
+              />
+              <p className="text-[10px] text-black dark:text-white">Jone. D</p>
+            </div>
+
+            <div className="flex-none text-center">
+              <img
+                className="w-20 h-20 rounded-full border-2 border-purple-500 cursor-pointer"
+                src={`${process.env.PUBLIC_URL}/images/images-74.jpeg`}
+                alt=""
+              />
+              <p className="text-[10px] text-black dark:text-white">Jone. D</p>
+            </div>
 
             <div className="flex-none text-center">
               <img
@@ -819,7 +902,7 @@ const viewNextImage = () => {
         </div>
       ) : (
         <div className="hidden sm:block sm:fixed sm:bottom-0 sm:right-[50%] sm:rounded-xl sm:p-3 sm:max-w-xs md:max-w-sm lg:max-w-md xl:max-w-xl">
-          <div className="sm:p-3 rounded-full bg-black border border-white">
+          <div className="sm:p-3 rounded-full bg-black hover:bg-purple-600 border border-white">
             <PlusLogo onClick={showDeskTopModal}
               className="w-7 h-7 cursor-pointer"/>
            
@@ -828,184 +911,8 @@ const viewNextImage = () => {
       )}
 
       {/* mobile post  */}
+      <NavBar />
 
-      {mobileIconModal ? (
-        <div className="fixed bottom-5 bg-gray-800 pr-3 pl-3 pb-3 w-full rounded-full sm:hidden">
-          <div className="flex justify-center pb-2 mr-5">
-            <svg
-              onClick={hideFullMobileScreen}
-              className="w-7 h-7 cursor-pointer fill-white"
-              style={{ strokeWidth: 4 }}
-              xmlns="http://www.w3.org/2000/svg"
-              version="1.1"
-              width="256"
-              height="256"
-              viewBox="0 0 256 256"
-            >
-              <defs></defs>
-              <g transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)">
-                <path
-                  d="M 90 24.25 c 0 -0.896 -0.342 -1.792 -1.025 -2.475 c -1.366 -1.367 -3.583 -1.367 -4.949 0 L 45 60.8 L 5.975 21.775 c -1.367 -1.367 -3.583 -1.367 -4.95 0 c -1.366 1.367 -1.366 3.583 0 4.95 l 41.5 41.5 c 1.366 1.367 3.583 1.367 4.949 0 l 41.5 -41.5 C 89.658 26.042 90 25.146 90 24.25 z"
-                  stroke-linecap="round"
-                />
-              </g>
-            </svg>
-          </div>
-
-          <div className="flex gap-2 justify-around items-center">
-            <svg
-              className="w-8 h-8 fill-white stroke-white"
-              version="1.1"
-              xmlns="http://www.w3.org/2000/svg"
-              x="0px"
-              y="0px"
-              viewBox="0 0 256 256"
-              enable-background="new 0 0 256 256"
-            >
-              <metadata>
-                {" "}
-                Svg Vector Icons : http://www.onlinewebfonts.com/icon{" "}
-              </metadata>
-              <g>
-                <g>
-                  <g>
-                    <path d="M125.9,10.6c-2.1,1.2-98.3,94.9-98.6,96.1c-0.2,0.6-0.2,29-0.2,63l0.2,61.9l1.4,2.9c1.9,4.1,5.5,7.8,9.6,9.8l3.4,1.6H128h86.3l2.9-1.3c5.3-2.5,9.3-7.2,10.9-12.7c0.7-2.5,0.8-9.6,0.8-63.8c0-33.6-0.2-61.3-0.3-61.8c-0.5-1.2-97.3-95-98.8-95.7C128.1,9.8,127.2,9.8,125.9,10.6z M173.9,66.4l45.3,43.9l-0.1,59.6l-0.2,59.6l-1.2,2c-0.7,1.1-2.2,2.6-3.3,3.3l-2.1,1.4l-22.2,0.2l-22.2,0.2v-44v-43.9H128H88.1v43.9v43.9H66.5c-20,0-21.9-0.1-23.8-1c-2.6-1.1-4.7-3.5-5.4-6.1c-0.3-1.2-0.5-21.8-0.5-60.5v-58.6l45.4-44c24.9-24.2,45.6-44,45.9-43.9C128.3,22.4,149,42.3,173.9,66.4z M158,197.4v39H128H97.9v-39v-39H128H158L158,197.4L158,197.4z" />
-                  </g>
-                </g>
-              </g>
-            </svg>
-
-            <svg
-              className="w-8 h-8 fill-white stroke-white"
-              version="1.1"
-              xmlns="http://www.w3.org/2000/svg"
-              x="0px"
-              y="0px"
-              viewBox="0 0 256 256"
-              enable-background="new 0 0 256 256"
-            >
-              <metadata>
-                {" "}
-                Svg Vector Icons : http://www.onlinewebfonts.com/icon{" "}
-              </metadata>
-              <g>
-                <g>
-                  <g>
-                    <path d="M96.1,10.5c-18.4,1.9-36,9.2-50.7,21.1c-4.1,3.3-12.3,11.7-15.2,15.5c-3.9,5-7.8,11.4-10.4,16.6C3.7,96.9,7.6,135,30.2,164.6c2.9,3.9,11.2,12.3,15.2,15.5c34.5,27.8,82.4,28.8,117.6,2.4l5.2-3.9l33.4,33.4c36.3,36.2,34.3,34.5,38.6,33.7c2.2-0.4,5.1-3.4,5.5-5.5c0.8-4.2,2.4-2.3-33.7-38.6l-33.4-33.4l3.9-5.2c26.4-35.2,25.4-83.2-2.4-117.6c-3.3-4.1-11.7-12.3-15.5-15.2C144.7,15,120.4,8,96.1,10.5z M116,25.4c9.6,1.2,17.5,3.6,25.9,7.9c40,20,56.4,68.8,36.5,108.5c-14,27.7-42,45.1-72.6,45.1c-27,0-52.4-13.7-67.6-36.5C18.7,121.3,20.7,82,42.9,54.7c2.7-3.3,9.4-9.9,12.7-12.5C72.2,28.9,95,22.6,116,25.4z" />
-                  </g>
-                </g>
-              </g>
-            </svg>
-
-            <div
-              onClick={showPostModal}
-              className="p-4 bg-black border border-white rounded-full"
-            >
-              <svg
-                className="w-8 h-8 fill-white stroke-white"
-                version="1.1"
-                xmlns="http://www.w3.org/2000/svg"
-                x="0px"
-                y="0px"
-                viewBox="0 0 256 256"
-                enable-background="new 0 0 256 256"
-              >
-                <metadata>
-                  {" "}
-                  Svg Vector Icons : http://www.onlinewebfonts.com/icon{" "}
-                </metadata>
-                <g>
-                  <g>
-                    <g>
-                      <path d="M124.1,10.8c-1,0.6-2.6,1.9-3.4,3l-1.5,2L119,67.4l-0.1,51.6H68c-56.6,0-53.2-0.2-56.4,3.9c-2.2,2.9-2.2,7.6,0,10.5c3.1,4.1-0.3,3.9,56.4,3.9h50.9V188c0,56.6-0.2,53.2,3.9,56.4c2.9,2.2,7.6,2.2,10.5,0c4.1-3.1,3.9,0.3,3.9-56.4v-50.9H188c56.6,0,53.2,0.2,56.4-3.9c2.2-2.9,2.2-7.6,0-10.5c-3.1-4.1,0.3-3.9-56.4-3.9h-50.9V68c0-56.5,0.2-53.2-3.8-56.3C130.8,9.9,126.8,9.4,124.1,10.8z" />
-                    </g>
-                  </g>
-                </g>
-              </svg>
-            </div>
-
-            <svg
-              className="w-12 h-12 fill-white stroke-white"
-              version="1.1"
-              xmlns="http://www.w3.org/2000/svg"
-              x="0px"
-              y="0px"
-              viewBox="0 0 256 256"
-              enable-background="new 0 0 256 256"
-            >
-              <metadata>
-                {" "}
-                Svg Vector Icons : http://www.onlinewebfonts.com/icon{" "}
-              </metadata>
-              <g>
-                <g>
-                  <path d="M152.4,138.1c0,0-0.9-0.2-2.7-0.5c-1.5,5.4-11.3,9.5-23.1,9.5c-11.4,0-20.9-3.9-22.9-9c-44.1,10.9-40.9,51.9-40.9,51.9c64.5,19.8,130.7,0,130.7,0S196.6,148.9,152.4,138.1z" />
-                  <path
-                    fill="white"
-                    d="M128,136.1c16.6,0,30.1-15.7,30.1-35.2c0-25.8-13.5-35.2-30.1-35.2c-16.6,0-30.1,9.3-30.1,35.2C97.9,120.4,111.4,136.1,128,136.1z"
-                  />
-                  <path
-                    fill="white"
-                    d="M190.8,116.5c14,0,25.4-13.3,25.4-29.7c0-21.8-11.4-29.7-25.4-29.7c-14,0-25.4,7.9-25.4,29.7C165.4,103.2,176.8,116.5,190.8,116.5z"
-                  />
-                  <path
-                    fill="white"
-                    d="M211.4,118.1c0,0-0.8-0.2-2.3-0.5c-1.3,4.6-9.5,8-19.5,8c-9.7,0-17.7-3.3-19.4-7.6c-3.4,0.8-6.5,1.9-9.2,3.1c-1.7,3.6-3.9,6.9-6.4,9.8c25.8,6.5,38.1,23,43.3,38.2c28-1.2,48.2-7.2,48.2-7.2S248.7,127.3,211.4,118.1z"
-                  />
-                  <path
-                    fill="white"
-                    d="M101.5,131c-2.5-2.9-4.7-6.1-6.4-9.7c-2.8-1.2-5.9-2.3-9.3-3.1c0,0-0.8-0.2-2.3-0.5c-1.3,4.6-9.5,8-19.5,8c-9.7,0-17.7-3.3-19.4-7.6C7.3,127.3,10,162,10,162c16.4,5.1,33,7,48.1,7.3C63.3,154.1,75.6,137.5,101.5,131z"
-                  />
-                  <path
-                    fill="white"
-                    d="M65.2,116.5c14,0,25.4-13.3,25.4-29.7c0-21.8-11.4-29.7-25.4-29.7S39.8,65,39.8,86.8C39.8,103.2,51.2,116.5,65.2,116.5z"
-                  />
-                </g>
-              </g>
-            </svg>
-
-            <img
-              src={`${process.env.PUBLIC_URL}/images/images-74.jpeg`}
-              className="w-10 h-10 rounded-full cursor-pointer border border-purple-500"
-              alt=""
-            />
-          </div>
-        </div>
-      ) : (
-        <div
-          onClick={showFullMobileScreen}
-          className="fixed bottom-0 left-[40%] sm:hidden cursor-pointer"
-        >
-          <div className="flex justify-around items-center">
-            {/* bg-[#dcfe5f] */}
-            <div className="p-4 bg-black border border-white rounded-full">
-              <svg
-                className="w-8 h-8 fill-white stroke-white"
-                version="1.1"
-                xmlns="http://www.w3.org/2000/svg"
-                x="0px"
-                y="0px"
-                viewBox="0 0 256 256"
-                enable-background="new 0 0 256 256"
-              >
-                <metadata>
-                  {" "}
-                  Svg Vector Icons : http://www.onlinewebfonts.com/icon{" "}
-                </metadata>
-                <g>
-                  <g>
-                    <g>
-                      <path d="M124.1,10.8c-1,0.6-2.6,1.9-3.4,3l-1.5,2L119,67.4l-0.1,51.6H68c-56.6,0-53.2-0.2-56.4,3.9c-2.2,2.9-2.2,7.6,0,10.5c3.1,4.1-0.3,3.9,56.4,3.9h50.9V188c0,56.6-0.2,53.2,3.9,56.4c2.9,2.2,7.6,2.2,10.5,0c4.1-3.1,3.9,0.3,3.9-56.4v-50.9H188c56.6,0,53.2,0.2,56.4-3.9c2.2-2.9,2.2-7.6,0-10.5c-3.1-4.1,0.3-3.9-56.4-3.9h-50.9V68c0-56.5,0.2-53.2-3.8-56.3C130.8,9.9,126.8,9.4,124.1,10.8z" />
-                    </g>
-                  </g>
-                </g>
-              </svg>
-            </div>
-          </div>
-        </div>
-      )}
-
-     
       <div className="pb-[150px] sm:pb-[100px]">
       {/* feeds */}
         {
@@ -1024,7 +931,7 @@ const viewNextImage = () => {
         ) 
        }
         <div className="flex items-center gap-2 w-full">
-          <ImgLazyLoad onClick={() => viewUserProfile(post && post.owner && post.owner._id)} className="w-8 h-8 rounded-full cursor-pointer" key={index} src={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.url} alt='' />
+          <img onClick={() => viewUserProfile(post && post.owner && post.owner._id)} className="w-8 h-8 rounded-full cursor-pointer" key={index} src={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.url} alt='' />
           <div  className="w-full cursor-pointer flex items-center justify-between gap-1">
             <div  onClick={() => goToPost(post._id)} className="flex items-center">
               <div className="mt-3">
@@ -1051,7 +958,7 @@ const viewNextImage = () => {
                   } absolute shadow-xl shadow-purple-80 z-10 top-0 -right-[10px] w-[150px] h-auto rounded-3xl mx-auto bg-white  p-2`}
                 >
                   {
-                  getUser !== undefined && getUser && getUser._doc && getUser._doc._id  ===   post && post.owner && post.owner._id ? (
+                  getUser !== undefined && getUser && getUser._doc && getUser._doc._id  === post.owner._id ? (
                       <>
                     <div onClick={() =>handleEditPost(post._id)} className="flex gap-2 px-2 cursor-pointer items-center pt-4">
                       <EditLogo  className="stroke-black w-3 h-3"/>
@@ -1101,8 +1008,12 @@ const viewNextImage = () => {
         </div>
         {/* post text  */}
         <div onClick={() => goToPost(post._id)} className="ml-9">
-          <p className="text-xs text-black dark:text-white">
-            {post.content}
+          <p className="text-[11px] text-gray-600">
+            {post.content.length > 200 ? (
+             <>
+             <p className="text-justify text-wrap text-[11px] text-gray-600">{post.content.slice(0, 500)} <strong className="cursor-pointer text-gray-600 text-xs">...read more</strong></p>
+             </> 
+               ) : post.content}
           </p>
         </div>
 
@@ -1506,7 +1417,7 @@ const viewNextImage = () => {
       {/* post form modal  */}
       <div
         className={`${
-          postModal ? "flex" : "hidden"
+          postModal || openPostForm  ? "flex" : "hidden"
         } fixed top-0 left-0 bg-black sm:px-[30%]  w-full h-full justify-center items-center`}
       >
         <div className={`w-full h-full  bg-white`}>

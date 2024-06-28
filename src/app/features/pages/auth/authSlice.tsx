@@ -13,6 +13,8 @@ export interface userState {
   otherperson: any;
   profile: any;
   users: any;
+  active: string;
+  profileType: 'local' | 'foreign';
   status: "success" | "loading" | "failed" | "idle";
 }
 
@@ -21,7 +23,9 @@ const initialState: userState = {
   otherperson: otherUser ? otherUser : {},
   users: allUser ? allUser : [],
   profile: profile ? profile : {},
+  active: 'home',
   status: "idle",
+  profileType: 'local',
 };
 
 export const registerUser = createAsyncThunk("/user/new", async (user: any) => {
@@ -177,6 +181,9 @@ export const authSlice = createSlice({
     logout: (state) => {
       return initialState;
     },
+    setActivePage: (state, action: PayloadAction<string>) => {
+      state.active = action.payload;
+    }
   },
 
   extraReducers(builder) {
@@ -360,7 +367,7 @@ export const authSlice = createSlice({
   },
 });
 
-export const { logout } = authSlice.actions;
+export const { logout, setActivePage } = authSlice.actions;
 
 export const selectUser = (state: RootState) => state.auth;
 

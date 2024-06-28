@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../hooks';
-import { getAUser, selectUser } from '../auth/authSlice';
+import { getAUser, selectUser, setActivePage } from '../auth/authSlice';
 import { AppContext, useAppContext } from '../home/homeContext'
 import { ReactComponent as Home } from '../../../../assets/homelogo.svg';
 import { ReactComponent as Envelope } from '../../../../assets/messageLogo.svg';
@@ -13,22 +13,22 @@ import { ReactComponent as EditLogo } from '../../../../assets/editLogo.svg';
 
 
 const Left = () => {
+  const dispatch = useAppDispatch();
   const [isNews, setIsNews] = useState<boolean>(true);
   const [isMessage, setIsMessage] = useState<boolean>(false);
   const [isNotification, setisNotifications] = useState<boolean>(false);
   const [isTrends, setIsTrends] = useState<boolean>(false);
   const [isMedia, setIsMedia] = useState<boolean>(false);
   const navigate = useNavigate();
-  const { profile } = useAppSelector(selectUser);
+  const { active } = useAppSelector(selectUser);
   const getUser = JSON.parse(localStorage.getItem('user') as any);
   const { refresh, toggleRefresh } = useAppContext();
+
   const newsFeedActive = () => {
-    localStorage.setItem('active', JSON.stringify('newsActive'));
-    setIsNews(true); setIsMessage(false); setisNotifications(false); setIsTrends(false); setIsMedia(false);
+    dispatch(setActivePage('home'))
     navigate('/');
   };
 
-const dispatch = useAppDispatch();
  useEffect(() => {
   if(refresh){
     if(!getUser)return;
@@ -39,52 +39,31 @@ const dispatch = useAppDispatch();
   }
  }, [refresh]);
     console.log('to refresh ', refresh);
-
-    useEffect(() => {
-      const activePage =  JSON.parse( localStorage.getItem('active') as any);
-      if(activePage === 'newsActive'){
-         newsFeedActive();
-      }else if( activePage === 'messageActive'){
-         messageActive();
-      }else if( activePage === 'notificationActive'){
-         notificationActive();
-      }else if( activePage === 'trendsActive'){
-         trendsActive();
-      }else{
-         console.log('none');
-      }
-     
-    }, [])
-  
+ 
 
   const messageActive = () => {
-    localStorage.setItem('active', JSON.stringify('messageActive'));
-    setIsNews(false); setIsMessage(true); setisNotifications(false); setIsTrends(false); setIsMedia(false);
+    dispatch(setActivePage('message'))
     navigate('/message')
   }
 
   const notificationActive = () => {
-    localStorage.setItem('active', JSON.stringify('notificationActive'));
-    setIsNews(false); setIsMessage(false); setisNotifications(true); setIsTrends(false); setIsMedia(false);
+    dispatch(setActivePage('notification'))
     navigate('/notification')
   }
 
   const trendsActive = () => {
-    localStorage.setItem('active', JSON.stringify('trendsActive'));
-    setIsNews(false); setIsMessage(false); setisNotifications(false); setIsTrends(true); setIsMedia(false);
+    dispatch(setActivePage('trend'))
     navigate('/trendlist')
   }
 
-  const mediaActive = () => {
-    localStorage.setItem('active', JSON.stringify('mediaActive'));
-    setIsNews(false); setIsMessage(false); setisNotifications(false); setIsTrends(false); setIsMedia(true);
-  }
+ 
 
   const viewProfile = () => {
     if(getUser === null){
       navigate('/login');
       return;
     }
+    
     navigate(`/profile/${getUser && getUser._doc && getUser._doc._id}`)
   }
 
@@ -155,40 +134,40 @@ const dispatch = useAppDispatch();
        {/* nav icons destop  */}
       <div className='flex flex-col pt-4 bg-white dark:bg-dark p-2'>
         
-        <div onClick={newsFeedActive} className={`group flex cursor-pointer justify-between p-2 text-black ${isNews ? 'border-r-2 border-r-purple-500': 'border-0' } group-hover:text-purple`}>
+        <div onClick={newsFeedActive} className={`group flex cursor-pointer justify-between p-2 text-black ${ active === 'home' ? 'border-r-2 border-r-purple-500': 'border-0' } group-hover:text-purple`}>
           <div className='flex gap-1 items-center'>
-           <Home className={`w-4 h-4 group-hover:fill-purple-500 ${isNews ? 'fill-purple-500 dark:fill-purple-500': 'fill-black'}`}/>
-          <p className={`text-xs font-semibold group-hover:text-purple-500 ${isNews ? 'text-purple-500 dark:text-purple-500': 'text-black'}`}> News Feed</p>
+           <Home className={`w-4 h-4 group-hover:fill-purple-500 ${active === 'home' ? 'fill-purple-500 dark:fill-purple-500': 'fill-black'}`}/>
+          <p className={`text-xs font-semibold group-hover:text-purple-500 ${active === 'home' ? 'text-purple-500 dark:text-purple-500': 'text-black'}`}> News Feed</p>
           </div>
         <div></div>
         </div>
         
-        <div onClick={messageActive} className={`group flex cursor-pointer justify-between p-2 text-black ${isMessage ? 'border-r-2 border-r-purple-500': 'border-0' } group-hover:text-purple`}>
+        <div onClick={messageActive} className={`group flex cursor-pointer justify-between p-2 text-black ${active === 'message' ? 'border-r-2 border-r-purple-500': 'border-0' } group-hover:text-purple`}>
           <div className='flex gap-1 items-center'>
-            <Envelope className={`w-4 h-4 group-hover:fill-purple-500 ${isMessage ? 'fill-purple-500 stroke-purple-500 dark:fill-purple-500': 'fill-black'}`} />
-          <p className={`text-xs font-semibold group-hover:text-purple-500 ${isMessage ? 'text-purple-500': 'text-black'}`}> Messages</p>
+            <Envelope className={`w-4 h-4 group-hover:fill-purple-500 ${active === 'message' ? 'fill-purple-500 stroke-purple-500 dark:fill-purple-500': 'fill-black'}`} />
+          <p className={`text-xs font-semibold group-hover:text-purple-500 ${active === 'message' ? 'text-purple-500': 'text-black'}`}> Messages</p>
           </div>
-        <div className={`group-hover:text-purple-500 group-hover:rounded-full group-hover:bg-purple-500 ${isMessage ? 'bg-purple-500 border-purple-500 text-white': 'text-black dark:text-white border border-black'} font-semibold group-hover:border group-hover:border-purple-500 group-hover:bg-white p-1 group-hover:text-black w-4 h-4 flex items-center justify-center text-[9px] rounded-full`}>
+        <div className={`group-hover:text-purple-500 group-hover:rounded-full group-hover:bg-purple-500 ${active === 'message' ? 'bg-purple-500 border-purple-500 text-white': 'text-black dark:text-white border border-black'} font-semibold group-hover:border group-hover:border-purple-500 group-hover:bg-white p-1 group-hover:text-black w-4 h-4 flex items-center justify-center text-[9px] rounded-full`}>
           2
         </div>
         </div>
         
-        <div onClick={notificationActive} className={`group flex cursor-pointer justify-between p-2 text-black ${isNotification ? 'border-r-2 border-r-purple-500': 'border-0' } group-hover:text-purple`}>
+        <div onClick={notificationActive} className={`group flex cursor-pointer justify-between p-2 text-black ${active === 'notification' ? 'border-r-2 border-r-purple-500': 'border-0' } group-hover:text-purple`}>
         <div className='flex gap-1 items-center'>
-          <Bell className={`w-5 h-5 group-hover:fill-purple-500 ${isNotification ? 'fill-purple-500 dark:fill-purple-500': 'fill-black'}`}/>
+          <Bell className={`w-5 h-5 group-hover:fill-purple-500 ${active === 'notification' ? 'fill-purple-500 dark:fill-purple-500': 'fill-black'}`}/>
       
-      <p className={`text-xs font-semibold group-hover:text-purple-500 ${isNotification ? 'text-purple-500': 'text-black'}`}> Notification</p>
+      <p className={`text-xs font-semibold group-hover:text-purple-500 ${active === 'notification' ? 'text-purple-500': 'text-black'}`}> Notification</p>
       </div>
-        <div className={`group-hover:text-purple-500 group-hover:rounded-full group-hover:bg-purple-500 ${isNotification ? 'bg-purple-500 border-purple-500 text-white': 'text-black dark:text-white border border-black'} font-semibold group-hover:border group-hover:border-purple-500 group-hover:bg-white p-1 group-hover:text-black w-4 h-4 flex items-center justify-center text-[9px] rounded-full`}>
+        <div className={`group-hover:text-purple-500 group-hover:rounded-full group-hover:bg-purple-500 ${active === 'notification' ? 'bg-purple-500 border-purple-500 text-white': 'text-black dark:text-white border border-black'} font-semibold group-hover:border group-hover:border-purple-500 group-hover:bg-white p-1 group-hover:text-black w-4 h-4 flex items-center justify-center text-[9px] rounded-full`}>
           2
         </div>
         </div>
         
         
-        <div onClick={trendsActive} className={`group flex cursor-pointer justify-between p-2 ${isTrends ? 'text-purple-500 border-purple-500 border-r-2': 'text-black bg-transparent' } group-hover:text-purple-500`}>
+        <div onClick={trendsActive} className={`group flex cursor-pointer justify-between p-2 ${active === 'trend' ? 'text-purple-500 border-purple-500 border-r-2': 'text-black bg-transparent' } group-hover:text-purple-500`}>
           <div className='flex gap-1 items-center'>
-           <GlobalTrend  className={`w-4 h-4 group-hover:fill-purple-500 ${isTrends ? 'fill-purple-500': 'fill-black'}`} />
-          <p className={`text-xs font-semibold group-hover:text-purple-500 ${isTrends ? 'text-purple-500': 'text-black'}`}> Trends</p>
+           <GlobalTrend  className={`w-4 h-4 group-hover:fill-purple-500 ${active === 'trend' ? 'fill-purple-500': 'fill-black'}`} />
+          <p className={`text-xs font-semibold group-hover:text-purple-500 ${active === 'trend' ? 'text-purple-500': 'text-black'}`}> Trends</p>
           </div>
         <div></div>
         </div>

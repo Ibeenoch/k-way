@@ -1,5 +1,5 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from "react";
-
+import { ChangeEvent, useEffect, useRef, useState } from "react";
+import NavBar from "../mobilenav/NavBar";
 import { PlusIcon, HeartIcon } from "@heroicons/react/24/outline";
 import EmojiPicker from "emoji-picker-react";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
@@ -256,8 +256,9 @@ const ProfileMiddle = () => {
         </div>
       </div>
 
-      <div className="mx-auto flex justify-center py-4">
-        <button className="text-white bg-black hover:bg-white hover:text-black duration-200 hover:border-black hover:scale-105 rounded-2xl border border-white font-semibold text-center px-4 py-1">Follow</button>
+      <div className="mx-auto flex justify-center gap-6 py-4">
+        <button className="text-white bg-black hover:bg-purple-600 hover:text-white duration-200 hover:border-white hover:scale-105 rounded-2xl border border-white font-semibold text-center px-4 py-1">Follow</button>
+        <button className="text-white bg-black hover:bg-purple-600 hover:text-white duration-200 hover:border-white hover:scale-105 rounded-2xl border border-white font-semibold text-center px-4 py-1">Chat</button>
       </div>
 
     <div className="flex justify-around px-4 mb-4">
@@ -2370,7 +2371,7 @@ const ProfileMiddle = () => {
 
        
 
-     
+     <NavBar />
 
   </div>
   )

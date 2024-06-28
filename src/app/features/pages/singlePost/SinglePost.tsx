@@ -261,6 +261,7 @@ const viewOthersProfile = ( userId: string ) => {
 
 }
 
+
   const getConfirmation = (commentId: string) => {
     const acceptTodelete = window.confirm('Are you sure you want to trash this comment? this action cannot be undo!!!');
     if(acceptTodelete){
@@ -516,7 +517,7 @@ const viewOthersProfile = ( userId: string ) => {
             <div className="p-4">
               <div className="flex justify-between">
               <div className="flex space-x-2">
-                <img src={comment && comment.owner.profilePhoto && comment.owner.profilePhoto.url} className="w-7 h-7 rounded-full" alt="" />
+                <img onClick={() => viewOthersProfile(comment && comment.owner && comment.owner._id)} src={comment && comment.owner.profilePhoto && comment.owner.profilePhoto.url} className="w-7 h-7 rounded-full" alt="" />
                 <div className="flex flex-col space-y-1">
                   <div>
 
