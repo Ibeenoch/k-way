@@ -43,7 +43,6 @@ const Middle = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { refresh, toggleRefresh } = useAppContext();
-  // const socket: Socket = io('http://localhost:5800');
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const desktopMenuRef = useRef<HTMLDivElement>(null);
   const desktopCommentMenuRef = useRef<HTMLDivElement>(null);
@@ -79,8 +78,9 @@ const Middle = () => {
   const [touchend, setTouchEnd] = useState<number>();
   const [displayProfileImage, setDisplayProfileImage] = useState<string>('');
   const [toRefresh, setToRefresh] = useState<boolean>(false);
+  const [isOpenStories, setIsOpenStories] = useState<boolean>(false);
 
-  const { profile, users, } = useAppSelector(selectUser);
+  const { users, } = useAppSelector(selectUser);
   const { posts, comments, openPostForm, whichPost, stories, story } = useAppSelector(selectPost);
 
   const fileRef = useRef<HTMLInputElement>(null);
@@ -324,18 +324,7 @@ const viewWhoResharedPost = (e: React.MouseEvent<HTMLDivElement>, postId: string
   })
 };
 
-useEffect(() => {
-  // socket.on('connection', (data) => {
-  //   console.log('data liked post  ', data);
-  //   socket.on('postLiked', (data) => {
-  //     console.log('data liked post  ', data);
-  //   })
-  // })
 
-  // socket.on('postLiked', (data) => {
-  //   console.log('data liked post  ', data);
-  // })
-}, [])
 
 const viewAProfile = (userId: string) => {
   navigate(`/profile/${userId}`);
@@ -751,9 +740,14 @@ const viewNextImage = () => {
     showPostModal();
   };
   
+  const openStoriesModal = () => {
+    
+  }
+
   const viewStories = (userId: string) => {
     dispatch(getAllUserStories(userId)).then((res: any) => {
       console.log('this are the status of the user ', res)
+      
     })
   }
 

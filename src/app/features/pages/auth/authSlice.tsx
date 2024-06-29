@@ -11,7 +11,7 @@ const allUser = JSON.parse(localStorage.getItem("alluser") as any);
 export interface userState {
   user: any;
   otherperson: any;
-  profile: any;
+  notification: any;
   users: any;
   followers: any[];
   following: any[];
@@ -24,7 +24,7 @@ const initialState: userState = {
   user: authUser ? authUser : {},
   otherperson: otherUser ? otherUser : {},
   users: allUser ? allUser : [],
-  profile: profile ? profile : {},
+  notification: [],
   followers: [],
   following: [],
   active: 'home',
@@ -190,6 +190,9 @@ export const authSlice = createSlice({
     },
     setProfileType: (state, action: PayloadAction<'local' | 'foreign'>) => {
       state.profileType = action.payload;
+    },
+    updateNotification: (state, action: PayloadAction<any>) => {
+      state.notification.push(action.payload);
     },
   },
 
@@ -371,7 +374,7 @@ export const authSlice = createSlice({
   },
 });
 
-export const { logout, setActivePage, setProfileType } = authSlice.actions;
+export const { logout, setActivePage, setProfileType, updateNotification } = authSlice.actions;
 
 export const selectUser = (state: RootState) => state.auth;
 

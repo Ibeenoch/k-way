@@ -1,7 +1,14 @@
 import { HeartIcon } from '@heroicons/react/24/outline';
 import NavBar from '../mobilenav/NavBar';
+import { useAppSelector } from '../../../hooks';
+import { selectUser } from '../auth/authSlice';
 
 const NotificationMain = () => {
+  const { notification } = useAppSelector(selectUser);
+
+  if(notification){
+    console.log('my notication ', notification);
+  }
   return (
     <div className='p-4'>
 
