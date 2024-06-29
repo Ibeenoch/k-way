@@ -15,8 +15,11 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../hooks';
 import ImgLazyLoad from '../lazyLoad/ImgLazyLoad';
 import { HeartIcon } from '@heroicons/react/24/outline';
+import { addNotification, getAllUser,  } from '../auth/authSlice'
+import { io, Socket } from 'socket.io-client'
 
 const ReplyComment = () => {
+  const socket: Socket = io('http://localhost:5800');
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -96,6 +99,19 @@ useEffect(() => {
 const viewPersonProfile = (id: string) => {
   navigate(`/profile/${id}`);
 }
+
+useEffect(() => {
+  const handlecommentReplied = (data: any) => {
+    console.log('data commentReplied post ', data);
+    dispatch(addNotification(data));
+  };
+
+  socket.on('commentReplied', handlecommentReplied);
+
+  return () => {
+    socket.off('commentReplied', handlecommentReplied);
+  };
+}, [socket]);
 
   const showCommentMenuBar = (id: string) => {
     setCommentClicked(id);

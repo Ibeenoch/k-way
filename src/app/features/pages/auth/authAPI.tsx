@@ -145,6 +145,46 @@ export const getFollowers = async (userId: any) => {
    }
 };
 
+export const getAllNotificationForAUser = async (note: any) => {
+  try {
+      const userId = note.userId;
+      const token = note.token;
+console.log('sending note ', note)
+      const option = {
+        headers : {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      };
+
+      const res = await axios.get(`${API}/notification/${userId}`, option);
+      return res.data;
+    
+   } catch (error) {
+    console.log(error)
+   }
+};
+
+export const markAllNotificationForAUser = async (note: any) => {
+  try {
+      const userId = note.userId;
+      const token = note.token;
+console.log('sending note ', note)
+      const option = {
+        headers : {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      };
+
+      const res = await axios.put(`${API}/notification/${userId}`, note, option);
+      return res.data;
+    
+   } catch (error) {
+    console.log(error)
+   }
+};
+
 export const getAUser = async (userId: any) => {
   try {
 

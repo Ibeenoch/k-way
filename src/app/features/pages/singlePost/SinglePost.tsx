@@ -30,9 +30,13 @@ import { allCommentForAPost, bookmarkPost, commentOnPost, deleteComment, deleteP
 import { useNavigate, useParams } from "react-router-dom";
 import EmojiPicker from "emoji-picker-react";
 import { HeartIcon } from "@heroicons/react/24/outline";
+import { addNotification, getAllUser,  } from '../auth/authSlice'
+import { io, Socket } from 'socket.io-client'
+
 
 
 const SinglePost = () => {
+  const socket: Socket = io('http://localhost:5800');
     const desktopMenuRef = useRef<HTMLDivElement>(null);
     const getUser = JSON.parse(localStorage.getItem('user') as any);
     const [desktopMenu, setDesktopMenu] = useState<boolean>(false);
@@ -195,6 +199,32 @@ const handleBookmark = async (postId: string) => {
     })
   };
   
+  useEffect(() => {
+    const handlepostComment = (data: any) => {
+      console.log('data postComment post ', data);
+      dispatch(addNotification(data));
+    };
+  
+    socket.on('postComment', handlepostComment);
+  
+    return () => {
+      socket.off('postComment', handlepostComment);
+    };
+  }, [socket]);
+
+  useEffect(() => {
+    const handlecommentLiked = (data: any) => {
+      console.log('data commentLiked post ', data);
+      dispatch(addNotification(data));
+    };
+  
+    socket.on('commentLiked', handlecommentLiked);
+  
+    return () => {
+      socket.off('commentLiked', handlecommentLiked);
+    };
+  }, [socket]);
+
 
   const handleEditIcon = (commentId: string, postId: string) => {
     navigate(`/edit/${postId}/${commentId}`);

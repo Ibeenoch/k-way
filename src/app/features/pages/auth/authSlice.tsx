@@ -12,6 +12,7 @@ export interface userState {
   user: any;
   otherperson: any;
   notification: any;
+  unViewednotificationCount: number;
   users: any;
   followers: any[];
   following: any[];
@@ -27,10 +28,38 @@ const initialState: userState = {
   notification: [],
   followers: [],
   following: [],
+  unViewednotificationCount: 0,
   active: 'home',
   status: "idle",
   profileType: 'local',
 };
+
+export const addNotification = createAsyncThunk("/user/addnotification", async (note: any) => {
+  try {
+    const data = await note;
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+export const getAllNotificationForAUser = createAsyncThunk("/user/ausernotifications", async (note: any) => {
+  try {
+    const data = await api.getAllNotificationForAUser(note);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+export const markAllNotificationForAUser = createAsyncThunk("/user/markausernotifications", async (note: any) => {
+  try {
+    const data = await api.markAllNotificationForAUser(note);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 export const registerUser = createAsyncThunk("/user/new", async (user: any) => {
   try {
@@ -191,9 +220,7 @@ export const authSlice = createSlice({
     setProfileType: (state, action: PayloadAction<'local' | 'foreign'>) => {
       state.profileType = action.payload;
     },
-    updateNotification: (state, action: PayloadAction<any>) => {
-      state.notification.push(action.payload);
-    },
+  
   },
 
   extraReducers(builder) {
@@ -258,6 +285,17 @@ export const authSlice = createSlice({
       .addCase(userVerification.rejected, (state, action) => {
         state.status = "failed";
       })
+      .addCase(addNotification.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(addNotification.fulfilled, (state, action) => {
+        if (action.payload !== undefined) {
+          Array.isArray(state.notification) ? state.notification.push(action.payload) : state.notification = action.payload;
+        }
+      })
+      .addCase(addNotification.rejected, (state, action) => {
+        state.status = "failed";
+      })
       .addCase(resetPassword.pending, (state, action) => {
         state.status = "loading";
       })
@@ -318,6 +356,32 @@ export const authSlice = createSlice({
       .addCase(getFollowing.rejected, (state, action) => {
         state.status = "failed";
       })
+      .addCase(getAllNotificationForAUser.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(getAllNotificationForAUser.fulfilled, (state, action) => {
+        if(action.payload !== undefined){
+          state.status = "success";
+          state.notification = action.payload.notifications;
+          state.unViewednotificationCount = action.payload.count;
+          localStorage.setItem('notification', JSON.stringify(action.payload.notifications));
+         };
+      })
+      .addCase(getAllNotificationForAUser.rejected, (state, action) => {
+        state.status = "failed";
+      })
+      .addCase(markAllNotificationForAUser.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(markAllNotificationForAUser.fulfilled, (state, action) => {
+        if(action.payload !== undefined){
+          state.status = "success";
+          state.unViewednotificationCount = action.payload.count;
+         };
+      })
+      .addCase(markAllNotificationForAUser.rejected, (state, action) => {
+        state.status = "failed";
+      })
       .addCase(getFollowers.pending, (state, action) => {
         state.status = "loading";
       })
@@ -374,7 +438,7 @@ export const authSlice = createSlice({
   },
 });
 
-export const { logout, setActivePage, setProfileType, updateNotification } = authSlice.actions;
+export const { logout, setActivePage, setProfileType } = authSlice.actions;
 
 export const selectUser = (state: RootState) => state.auth;
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../hooks';
-import { getAUser, selectUser, setActivePage, setProfileType } from '../auth/authSlice';
+import { getAUser, getAllNotificationForAUser, markAllNotificationForAUser, selectUser, setActivePage, setProfileType } from '../auth/authSlice';
 import { AppContext, useAppContext } from '../home/homeContext'
 import { ReactComponent as Home } from '../../../../assets/homelogo.svg';
 import { ReactComponent as Envelope } from '../../../../assets/messageLogo.svg';
@@ -23,6 +23,7 @@ const Left = () => {
   const { active } = useAppSelector(selectUser);
   const getUser = JSON.parse(localStorage.getItem('user') as any);
   const { refresh, toggleRefresh } = useAppContext();
+  const { notification, unViewednotificationCount } = useAppSelector(selectUser);
 
   const newsFeedActive = () => {
     dispatch(setActivePage('home'))
@@ -47,8 +48,15 @@ const Left = () => {
   }
 
   const notificationActive = () => {
-    dispatch(setActivePage('notification'))
-    navigate('/notification')
+    dispatch(setActivePage('notification'));
+    const notifications = JSON.parse(localStorage.getItem('notification') as any);
+    const userId = notification && notification[0] && notification[0].receiver && notification[0].receiver._id;
+    const token = getUser && getUser.token;
+    const note = { userId, token };
+    dispatch(markAllNotificationForAUser(note)).then((res: any) => {
+      console.log('allres ', res);
+      navigate('/notification')
+    })
   }
 
   const trendsActive = () => {
@@ -154,13 +162,18 @@ const Left = () => {
         
         <div onClick={notificationActive} className={`group flex cursor-pointer justify-between p-2 text-black ${active === 'notification' ? 'border-r-2 border-r-purple-500': 'border-0' } group-hover:text-purple`}>
         <div className='flex gap-1 items-center'>
-          <Bell className={`w-5 h-5 group-hover:fill-purple-500 ${active === 'notification' ? 'fill-purple-500 dark:fill-purple-500': 'fill-black'}`}/>
+          <Bell className={`w-5 h-5 -ml-1 group-hover:fill-purple-500 ${active === 'notification' ? 'fill-purple-500 dark:fill-purple-500': 'fill-black'}`}/>
       
       <p className={`text-xs font-semibold group-hover:text-purple-500 ${active === 'notification' ? 'text-purple-500': 'text-black'}`}> Notification</p>
       </div>
-        <div className={`group-hover:text-purple-500 group-hover:rounded-full group-hover:bg-purple-500 ${active === 'notification' ? 'bg-purple-500 border-purple-500 text-white': 'text-black dark:text-white border border-black'} font-semibold group-hover:border group-hover:border-purple-500 group-hover:bg-white p-1 group-hover:text-black w-4 h-4 flex items-center justify-center text-[9px] rounded-full`}>
-          2
+      {
+        unViewednotificationCount && unViewednotificationCount > 0 ? (
+        <div className={`group-hover:text-purple-500 group-hover:rounded-full group-hover:bg-purple-500 ${active === 'notification' ? 'bg-purple-500 border-purple-500 text-white' : unViewednotificationCount > 0 ? 'bg-purple-500 border-purple-500 text-white' : 'text-black dark:text-white border border-black'} font-semibold group-hover:border group-hover:border-purple-500 group-hover:bg-white p-1 group-hover:text-black w-4 h-4 flex items-center justify-center text-[9px] rounded-full`}>
+          { unViewednotificationCount && unViewednotificationCount}
         </div>
+        
+        ) : (<></> )
+      }  
         </div>
         
         
