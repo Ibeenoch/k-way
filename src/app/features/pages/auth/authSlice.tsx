@@ -308,7 +308,7 @@ export const authSlice = createSlice({
       .addCase(getFollowing.fulfilled, (state, action) => {
         if(action.payload !== undefined){
           state.status = "success";
-          state.following = action.payload;
+          state.following = action.payload.following;
           localStorage.setItem('following', JSON.stringify(action.payload.following));
          };
       })
@@ -321,7 +321,7 @@ export const authSlice = createSlice({
       .addCase(getFollowers.fulfilled, (state, action) => {
         if(action.payload !== undefined){
           state.status = "success";
-          state.followers = action.payload;
+          state.followers = action.payload.followers;
           localStorage.setItem('followers', JSON.stringify(action.payload.followers));
          };
       })

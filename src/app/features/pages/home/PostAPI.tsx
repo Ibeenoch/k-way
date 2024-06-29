@@ -18,6 +18,23 @@ export const createpost = async(post: any) => {
   }
 }
 
+export const createstory = async(story: any) => {
+  try {
+    const token = story.token;
+    const data = story.postData;
+    const option = {
+      headers: {
+        'Content-type': 'multipart/form-data',
+        'authorization': `Bearer ${token}`
+      }
+    }
+    const res = await axios.post(`${API}/story/create`, data, option);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export const likepost = async(post: any) => {
   try {
     const token = post.token;
@@ -115,6 +132,24 @@ export const deletepost = async(post: any) => {
 export const fetchAllPosts = async() => {
   try {
     const res = await axios.get(`${API}/post/all`);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export const fetchAvailableStories = async() => {
+  try {
+    const res = await axios.get(`${API}/story/available`);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export const fetchUserStories = async(userId: string) => {
+  try {
+    const res = await axios.get(`${API}/story/all/${userId}`);
     return res.data;
   } catch (error) {
     console.log(error);

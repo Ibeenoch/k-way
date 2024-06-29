@@ -6,13 +6,17 @@ import * as api from './PostAPI'
 
 export interface postInterface {
   posts: any;
+  stories: any;
+  viewstories: any;
   post: any;
+  story: any;
   comments: any;
   repliedcomments: any[];
   likes: any[];
   bookmark: any[];
   reshared: any[];
   openPostForm: boolean;
+  whichPost: 'story' | 'post';
   view: 'likes' | 'bookmark' | 'reshare' | 'none'
   status: "success" | "loading" | "failed" | "idle";
   editCommentStatus: "success" | "loading" | "failed" | "idle";
@@ -20,13 +24,17 @@ export interface postInterface {
 
 const initialState: postInterface = {
   posts: [],
+  stories: [],
+  viewstories: [],
   post: {},
+  story: {},
   comments: [],
   status: "idle",
   repliedcomments: [],
   likes: [],
   bookmark: [],
   openPostForm: false,
+  whichPost: 'post',
   view: 'none',
   reshared: [],
   editCommentStatus: "idle",
@@ -35,6 +43,15 @@ const initialState: postInterface = {
 export const createPost = createAsyncThunk("/post/new", async (post: any) => {
   try {
     const res = await api.createpost(post);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+export const createStory = createAsyncThunk("/story/new", async (story: any) => {
+  try {
+    const res = await api.createstory(story);
     return res;
   } catch (error) {
     console.log(error);
@@ -89,6 +106,24 @@ export const deletePost = createAsyncThunk("/post/delete", async (post: any) => 
 export const getAllPosts = createAsyncThunk("/post/all", async () => {
   try {
     const res = await api.fetchAllPosts();
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+export const getAvailableStories = createAsyncThunk("/story/available", async () => {
+  try {
+    const res = await api.fetchAvailableStories();
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+export const getAllUserStories = createAsyncThunk("/story/userstories", async (userId: string) => {
+  try {
+    const res = await api.fetchUserStories(userId);
     return res;
   } catch (error) {
     console.log(error);
@@ -217,6 +252,9 @@ export const postSlice = createSlice({
     openpostForm: (state, action: PayloadAction<boolean>) => {
        state.openPostForm = action.payload;
     },
+    setWhichPost: (state, action: PayloadAction<'story' | 'post'>) => {
+       state.whichPost = action.payload;
+    },
    
   },
 
@@ -233,6 +271,19 @@ export const postSlice = createSlice({
         }
       })
       .addCase(createPost.rejected, (state, action) => {
+        state.status = "failed";
+      })
+      .addCase(createStory.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(createStory.fulfilled, (state, action) => {
+        if (action.payload !== undefined && action.payload._id) {
+          state.status = "success";
+          console.log('created post ', action.payload)
+          state.story.push(action.payload);
+        }
+      })
+      .addCase(createStory.rejected, (state, action) => {
         state.status = "failed";
       })
       .addCase(updatePost.pending, (state, action) => {
@@ -315,6 +366,30 @@ export const postSlice = createSlice({
         }
       })
       .addCase(getAllPosts.rejected, (state, action) => {
+        state.status = "failed";
+      })
+      .addCase(getAvailableStories.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(getAvailableStories.fulfilled, (state, action) => {
+        if (action.payload !== undefined) {
+          state.status = "success";
+          state.stories = action.payload;
+        }
+      })
+      .addCase(getAvailableStories.rejected, (state, action) => {
+        state.status = "failed";
+      })
+      .addCase(getAllUserStories.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(getAllUserStories.fulfilled, (state, action) => {
+        if (action.payload !== undefined) {
+          state.status = "success";
+          state.viewstories = action.payload;
+        }
+      })
+      .addCase(getAllUserStories.rejected, (state, action) => {
         state.status = "failed";
       })
       .addCase(getAllRepliesForComment.pending, (state, action) => {
@@ -473,7 +548,7 @@ export const postSlice = createSlice({
   },
 });
 
-export const { logout, resetEditCommentStatus, openpostForm } = postSlice.actions;
+export const { logout, resetEditCommentStatus, openpostForm, setWhichPost } = postSlice.actions;
 
 export const selectPost = (state: RootState) => state.posts;
 

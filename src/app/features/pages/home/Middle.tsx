@@ -4,7 +4,7 @@ import { PlusIcon, HeartIcon,  } from "@heroicons/react/24/outline";
 import EmojiPicker from "emoji-picker-react";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { getAUser, getAllUser, getOtherUser, selectUser, setProfileType, userFollowers, userFollowing } from "../auth/authSlice";
-import { allCommentForAPost, bookmarkPost, commentOnPost, createPost, deletePost, getAPost, getAllPosts, getBookmarkforaPost, getLikesforaPost, getresharedforaPost, likePost, openpostForm, rePost, resetEditCommentStatus, selectPost, updatePost } from "./PostSlice";
+import { allCommentForAPost, bookmarkPost, commentOnPost, createPost, createStory, deletePost, getAPost, getAllPosts, getAllUserStories, getAvailableStories, getBookmarkforaPost, getLikesforaPost, getresharedforaPost, likePost, openpostForm, rePost, resetEditCommentStatus, selectPost, setWhichPost, updatePost } from "./PostSlice";
 import toast, { Toast } from 'react-hot-toast'
 import { io, Socket } from 'socket.io-client'
 import { useNavigate, useParams } from "react-router-dom";
@@ -80,8 +80,8 @@ const Middle = () => {
   const [displayProfileImage, setDisplayProfileImage] = useState<string>('');
   const [toRefresh, setToRefresh] = useState<boolean>(false);
 
-  const { profile } = useAppSelector(selectUser);
-  const { posts, comments, openPostForm } = useAppSelector(selectPost);
+  const { profile, users, } = useAppSelector(selectUser);
+  const { posts, comments, openPostForm, whichPost, stories, story } = useAppSelector(selectPost);
 
   const fileRef = useRef<HTMLInputElement>(null);
   const [fileInput, setFileInput] = useState<File[]>([]);
@@ -241,6 +241,23 @@ if(id){
   setImageInput([]);
 
   if(post){
+    if( whichPost === 'story'){
+
+      dispatch(createStory(post)).then((res: any) => {
+        if(res && res.payload !== undefined){
+           dispatch(getAvailableStories()).then((res: any) => {
+            console.log('available status ', res);
+            toggleRefresh();
+            setIsPosting(false);
+            hidePostModal();
+            console.log('use it ');
+            navigate('/');
+            window.scrollTo(0, document.documentElement.scrollHeight);
+        });
+        }
+       
+      });
+    }else{
     dispatch(createPost(post)).then((res: any) => {
       if(res.payload !== undefined){
          dispatch(getAllPosts()).then((res: any) => {
@@ -253,7 +270,9 @@ if(id){
       });
       }
      
-    })
+    });
+  
+  }
   }
 }
 }
@@ -727,6 +746,16 @@ const viewNextImage = () => {
     }
   };
 
+  const handleStory = () => {
+    dispatch(setWhichPost('story'));
+    showPostModal();
+  };
+  
+  const viewStories = (userId: string) => {
+    dispatch(getAllUserStories(userId)).then((res: any) => {
+      console.log('this are the status of the user ', res)
+    })
+  }
 
   return (
     <div className="mt-10 max-w-md sm:max-w-full">
@@ -737,7 +766,7 @@ const viewNextImage = () => {
       <div className="my-4">
         <div className="flex max-w-full overflow-x-auto scrollbar-hide">
           {/* add a story  */}
-          <div  onClick={viewProfile} className="relative inline-block mx-1 flex-none">
+          <div  onClick={handleStory} className="relative inline-block mx-1 flex-none">
           {
          getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url && (
             <img className="w-20 h-20 border-2 opacity-60 border-purple-500 rounded-full cursor-pointer" src={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url} alt="" />
@@ -762,78 +791,21 @@ const viewNextImage = () => {
           </div>
           <div className="flex gap-2 ">
             {/* view stories  */}
+            {
+              stories && stories.length > 0 && stories.map((story: any) => (
+                <div onClick={() =>viewStories(story && story.owner && story.owner._id)} className="flex-none text-center">
+                <img
+                  className="w-20 h-20 rounded-full border-2 border-purple-500 cursor-pointer"
+                  src={story && story.owner && story.owner.profilePhoto && story.owner.profilePhoto.url}
+                  alt=""
+                />
+                <p className="text-[10px] text-black dark:text-white">{story && story.owner && story.owner.fullname}</p>
+              </div>
 
-            <div className="flex-none text-center">
-              <img
-                className="w-20 h-20 rounded-full border-2 border-purple-500 cursor-pointer"
-                src={`${process.env.PUBLIC_URL}/images/images-74.jpeg`}
-                alt=""
-              />
-              <p className="text-[10px] text-black dark:text-white">Jone. D</p>
-            </div>
+              ))
+            }
+           
 
-            <div className="flex-none text-center">
-              <img
-                className="w-20 h-20 rounded-full border-2 border-purple-500 cursor-pointer"
-                src={`${process.env.PUBLIC_URL}/images/images-74.jpeg`}
-                alt=""
-              />
-              <p className="text-[10px] text-black dark:text-white">Jone. D</p>
-            </div>
-
-            <div className="flex-none text-center">
-              <img
-                className="w-20 h-20 rounded-full border-2 border-purple-500 cursor-pointer"
-                src={`${process.env.PUBLIC_URL}/images/images-74.jpeg`}
-                alt=""
-              />
-              <p className="text-[10px] text-black dark:text-white">Jone. D</p>
-            </div>
-
-            <div className="flex-none text-center">
-              <img
-                className="w-20 h-20 rounded-full border-2 border-purple-500 cursor-pointer"
-                src={`${process.env.PUBLIC_URL}/images/images-74.jpeg`}
-                alt=""
-              />
-              <p className="text-[10px] text-black dark:text-white">Jone. D</p>
-            </div>
-
-            <div className="flex-none text-center">
-              <img
-                className="w-20 h-20 rounded-full border-2 border-purple-500 cursor-pointer"
-                src={`${process.env.PUBLIC_URL}/images/ladies 7.png`}
-                alt=""
-              />
-              <p className="text-[10px] text-black dark:text-white">Anata. K</p>
-            </div>
-
-            <div className="flex-none text-center">
-              <img
-                className="w-20 h-20 rounded-full border-2 border-purple-500 cursor-pointer"
-                src={`${process.env.PUBLIC_URL}/images/ladies 6.png`}
-                alt=""
-              />
-              <p className="text-[10px] text-black dark:text-white">Hana. D</p>
-            </div>
-
-            <div className="flex-none text-center">
-              <img
-                className="w-20 h-20 rounded-full border-2 border-purple-500 cursor-pointer"
-                src={`${process.env.PUBLIC_URL}/images/images-73.jpeg`}
-                alt=""
-              />
-              <p className="text-[10px] text-black dark:text-white">Doris. k</p>
-            </div>
-
-            <div className="flex-none text-center">
-              <img
-                className="w-20 h-20 rounded-full border-2 border-purple-500 cursor-pointer"
-                src={`${process.env.PUBLIC_URL}/images/ladies 8.png`}
-                alt=""
-              />
-              <p className="text-[10px] text-black dark:text-white">Betta. l</p>
-            </div>
           </div>
         </div>
       </div>
@@ -1025,7 +997,7 @@ const viewNextImage = () => {
           <p className="text-[11px] text-gray-600">
             {post.content.length > 200 ? (
              <>
-             <p className="text-justify text-wrap text-[11px] text-gray-600">{post.content.slice(0, 500)} <strong className="cursor-pointer text-gray-600 text-xs">...read more</strong></p>
+             <p className="text-justify text-wrap text-[11px] text-gray-600">{post.content.slice(0, 500)} <strong className="cursor-pointer text-purple-600 text-xs">read more</strong></p>
              </> 
                ) : post.content}
           </p>
@@ -1450,7 +1422,7 @@ const viewNextImage = () => {
             name=""
             id=""
             className="bg-white resize-none flex-none w-full h-[85vh] text-xs border-none focus:ring-0"
-            placeholder="make a post"
+            placeholder={`${ whichPost === 'post' ? 'share a post' : 'share a story'} `}
           ></textarea>
 
           <div className="flex justify-between items-center p-2">

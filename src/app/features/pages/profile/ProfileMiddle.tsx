@@ -32,17 +32,20 @@ const ProfileMiddle = () => {
     const [showfollowers, setShowFollowers] = useState<boolean>(false);
     const [showfollowing, setShowFollowing] = useState<boolean>(false);
     const [inputStr, setInputStr] = useState<string>("");
-    const { profileType } = useAppSelector(selectUser)
+    const { profileType, followers, following } = useAppSelector(selectUser)
   
     const videoUrl = `${process.env.PUBLIC_URL}/video.mp4`;
     const otheruser = profileType === 'local' ? JSON.parse(localStorage.getItem('user') as any) : JSON.parse(localStorage.getItem('otheruser') as any);
-
+    const me = otheruser && otheruser._doc && otheruser._doc._id;
     const fetchFeeds = () => {
       dispatch(getAllPosts()).then((res: any) => {
         console.log('all posts fetched ', res);
       })
     };
 
+    if(followers){
+      console.log('this are my folowers ', followers)
+    }
     const activateFeed = () => {
         setShowFeed(true);
         setShowupload(false);
@@ -2249,122 +2252,52 @@ const ProfileMiddle = () => {
         </div>
             </>
         ) : 
-        showfollowers ? (
-            <>
-             {/* followers  */}
+        showfollowers && followers && followers.length > 0 ? followers.map((follower: any, index: number) => (
+          <>
+          {/* followers  */}
 
-        <div className='w-full bg-white dark:bg-black mt-4 rounded-3xl p-4'>
-          <h1 className='text-black dark-text-white font-bold text-md'>Suggestions</h1>
-          {/* people */}
+     <div key={index} className='w-full bg-white dark:bg-black mt-4 rounded-3xl p-4'>
+       {/* people */}
 
-          <div className='flex justify-between items-center my-2 px-4'>
-            <div className='flex gap-2'>
-              <img className='w-9 h-9 rounded-full' src={`${process.env.PUBLIC_URL}/images/ladies 8.png`} alt="" />
-            <div>
-              <h1 className='text-sm text-black dark:text-white font-semibold'>Chioma Ada</h1>
-              <p className='text-xs text-gray-600'>@chiada</p>
-            </div>
-            </div>
-            
-            <button className='text-xs px-4 py-1 bg-black dark:bg-white rounded-full text-white dark:text-black transform-transition duration-100 hover:scale-110'>Follow</button>
-          </div>
+       <div className='flex justify-between items-center my-2 px-4'>
+         <div className='flex gap-2'>
+           <img className='w-9 h-9 rounded-full' src={follower && follower.profilePhoto && follower.profilePhoto.url} alt="" />
+         <div>
+           <h1 className='text-sm text-black dark:text-white font-semibold'>{follower && follower.fullname}</h1>
+           <p className='text-xs text-gray-600'>@{follower && follower.handle}</p>
+         </div>
+         </div>
+         
+         <button className='text-xs px-4 py-1 bg-black dark:bg-white rounded-full text-white dark:text-black transform-transition duration-100 hover:scale-110'>{
+        follower && follower.following && follower.following.includes(me) ? 'Unfollow' : 'Follow'
+        }</button>
+       </div>
+   </div>
+         </>
+        )) :
+        showfollowing && following && following.length > 0 ? following.map((follow: any, index: number) => (
+          <>
+          {/* followers  */}
 
-          <div className='flex justify-between items-center my-2 px-4'>
-            <div className='flex gap-2'>
-              <img className='w-9 h-9 rounded-full' src={`${process.env.PUBLIC_URL}/images/ladies 7.png`} alt="" />
-            <div>
-              <h1 className='text-sm text-black dark:text-white font-semibold'>Ade Yomi</h1>
-              <p className='text-xs text-gray-600'>@adeyomi</p>
-            </div>
-            </div>
-            
-            <button className='text-xs px-4 py-1 bg-black dark:bg-white rounded-full text-white dark:text-black transform-transition duration-100 hover:scale-110'>Follow</button>
-          </div>
+     <div key={index} className='w-full bg-white dark:bg-black mt-4 rounded-3xl p-4'>
+       {/* people */}
 
-          <div className='flex justify-between items-center my-2 px-4'>
-            <div className='flex gap-2'>
-              <img className='w-9 h-9 rounded-full' src={`${process.env.PUBLIC_URL}/images/ladies 6.png`} alt="" />
-            <div>
-              <h1 className='text-sm text-black dark:text-white font-semibold'>Tola Femi</h1>
-              <p className='text-xs text-gray-600'>@_tolafemi</p>
-            </div>
-            </div>
-            
-            <button className='text-xs px-4 py-1 bg-black dark:bg-white rounded-full text-white dark:text-black transform-transition duration-100 hover:scale-110'>Follow</button>
-          </div>
-
-          <div className='flex justify-between items-center my-2 px-4'>
-            <div className='flex gap-2'>
-              <img className='w-9 h-9 rounded-full' src={`${process.env.PUBLIC_URL}/images/user.png`} alt="" />
-            <div>
-              <h1 className='text-sm text-black dark:text-white font-semibold'>Tom Figi</h1>
-              <p className='text-xs text-gray-600'>@tomfigi</p>
-            </div>
-            </div>
-            
-            <button className='text-xs px-4 py-1 bg-black dark:bg-white rounded-full text-white dark:text-black transform-transition duration-100 hover:scale-110'>Follow</button>
-          </div>
-      </div>
-            </>
-        ) :
-        showfollowing ? (
-            <>
-             {/* following  */}
-
-      <div className='w-full bg-white dark:bg-black mt-4 rounded-3xl p-4'>
-          <h1 className='text-black dark-text-white font-bold text-md'>Suggestions</h1>
-          {/* people */}
-
-          <div className='flex justify-between items-center my-2 px-4'>
-            <div className='flex gap-2'>
-              <img className='w-9 h-9 rounded-full' src={`${process.env.PUBLIC_URL}/images/ladies 8.png`} alt="" />
-            <div>
-              <h1 className='text-sm text-black dark:text-white font-semibold'>Chioma Ada</h1>
-              <p className='text-xs text-gray-600'>@chiada</p>
-            </div>
-            </div>
-            
-            <button className='text-xs px-4 py-1 bg-black dark:bg-white rounded-full text-white dark:text-black transform-transition duration-100 hover:scale-110'>Follow</button>
-          </div>
-
-          <div className='flex justify-between items-center my-2 px-4'>
-            <div className='flex gap-2'>
-              <img className='w-9 h-9 rounded-full' src={`${process.env.PUBLIC_URL}/images/ladies 7.png`} alt="" />
-            <div>
-              <h1 className='text-sm text-black dark:text-white font-semibold'>Ade Yomi</h1>
-              <p className='text-xs text-gray-600'>@adeyomi</p>
-            </div>
-            </div>
-            
-            <button className='text-xs px-4 py-1 bg-black dark:bg-white rounded-full text-white dark:text-black transform-transition duration-100 hover:scale-110'>Follow</button>
-          </div>
-
-          <div className='flex justify-between items-center my-2 px-4'>
-            <div className='flex gap-2'>
-              <img className='w-9 h-9 rounded-full' src={`${process.env.PUBLIC_URL}/images/ladies 6.png`} alt="" />
-            <div>
-              <h1 className='text-sm text-black dark:text-white font-semibold'>Tola Femi</h1>
-              <p className='text-xs text-gray-600'>@_tolafemi</p>
-            </div>
-            </div>
-            
-            <button className='text-xs px-4 py-1 bg-black dark:bg-white rounded-full text-white dark:text-black transform-transition duration-100 hover:scale-110'>Follow</button>
-          </div>
-
-          <div className='flex justify-between items-center my-2 px-4'>
-            <div className='flex gap-2'>
-              <img className='w-9 h-9 rounded-full' src={`${process.env.PUBLIC_URL}/images/user.png`} alt="" />
-            <div>
-              <h1 className='text-sm text-black dark:text-white font-semibold'>Tom Figi</h1>
-              <p className='text-xs text-gray-600'>@tomfigi</p>
-            </div>
-            </div>
-            
-            <button className='text-xs px-4 py-1 bg-black dark:bg-white rounded-full text-white dark:text-black transform-transition duration-100 hover:scale-110'>Follow</button>
-          </div>
-      </div>
-            </>
-        ) : 
+       <div className='flex justify-between items-center my-2 px-4'>
+         <div className='flex gap-2'>
+           <img className='w-9 h-9 rounded-full' src={follow && follow.profilePhoto && follow.profilePhoto.url} alt="" />
+         <div>
+           <h1 className='text-sm text-black dark:text-white font-semibold'>{follow && follow.fullname}</h1>
+           <p className='text-xs text-gray-600'>@{follow && follow.handle}</p>
+         </div>
+         </div>
+         
+         <button className='text-xs px-4 py-1 bg-black dark:bg-white rounded-full text-white dark:text-black transform-transition duration-100 hover:scale-110'>{
+        follow && follow.followers && follow.followers.includes(me) ? 'Unfollow' : 'Follow'
+        }</button>
+       </div>
+   </div>
+         </>
+        )) : 
         (
             <></>
          )
