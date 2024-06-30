@@ -12,6 +12,7 @@ export interface userState {
   user: any;
   otherperson: any;
   notification: any;
+  chat: any;
   unViewednotificationCount: number;
   users: any;
   followers: any[];
@@ -26,6 +27,7 @@ const initialState: userState = {
   otherperson: otherUser ? otherUser : {},
   users: allUser ? allUser : [],
   notification: [],
+  chat: [],
   followers: [],
   following: [],
   unViewednotificationCount: 0,
@@ -206,6 +208,17 @@ export const getAllUser = createAsyncThunk(
   }
 );
 
+export const fetchChat = createAsyncThunk(
+  "/user/fetchChat", async (data: any) => {
+    try {
+      const res = await api.fecthAllPrevChatForTwoUsers(data);
+      return res;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
 
 export const authSlice = createSlice({
   name: "user",
@@ -219,6 +232,9 @@ export const authSlice = createSlice({
     },
     setProfileType: (state, action: PayloadAction<'local' | 'foreign'>) => {
       state.profileType = action.payload;
+    },
+    addChat: (state, action: PayloadAction<any>) => {
+      Array.isArray(state.chat) ? state.chat.push(action.payload) : state.chat = [action.payload];
     },
   
   },
@@ -283,6 +299,18 @@ export const authSlice = createSlice({
         }
       })
       .addCase(userVerification.rejected, (state, action) => {
+        state.status = "failed";
+      })
+      .addCase(fetchChat.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(fetchChat.fulfilled, (state, action) => {
+        if (action.payload !== undefined) {
+          state.status = "success";
+          state.chat = action.payload;
+        }
+      })
+      .addCase(fetchChat.rejected, (state, action) => {
         state.status = "failed";
       })
       .addCase(addNotification.pending, (state, action) => {
@@ -427,8 +455,8 @@ export const authSlice = createSlice({
       .addCase(getAllUser.fulfilled, (state, action) => {
         if(action.payload !== undefined){
           state.status = "success";
-          state.users = action.payload;
-          localStorage.setItem('alluser', JSON.stringify(action.payload));
+          state.users = action.payload.users;
+          localStorage.setItem('alluser', JSON.stringify(action.payload.users));
          };
       })
       .addCase(getAllUser.rejected, (state, action) => {
@@ -438,7 +466,7 @@ export const authSlice = createSlice({
   },
 });
 
-export const { logout, setActivePage, setProfileType } = authSlice.actions;
+export const { logout, setActivePage, setProfileType, addChat } = authSlice.actions;
 
 export const selectUser = (state: RootState) => state.auth;
 

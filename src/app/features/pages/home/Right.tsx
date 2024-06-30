@@ -199,7 +199,7 @@ return (
           <h1 className='text-black dark-text-white font-bold text-md'>Suggestions</h1>
           {/* people */}
         {
-          getUsers  && getUsers.users && getUsers.users.length > 0 && getUsers.users.map((person: any) => (       
+          getUsers  && getUsers && getUsers.length > 0 && getUsers.map((person: any) => (       
           <div className='flex justify-between items-center my-2 px-4'>
             <div onClick={() =>viewProfile(person._id)} className='flex gap-2 cursor-pointer'>
               {
@@ -215,7 +215,7 @@ return (
             </div>
             </div>
             
-            <button onClick={() => handleFollow(person && person._id)} className='text-xs px-4 py-1 bg-black dark:bg-white rounded-full text-white dark:text-black transform-transition duration-100 hover:scale-110'>
+            <button onClick={() => handleFollow(person && person._id)} className='text-xs px-4 py-1 bg-black rounded-full text-white hover:bg-purple-600 transform-transition duration-100 hover:scale-110'>
           {getAUser && getAUser._doc && getAUser._doc.following && getAUser._doc.following.includes(person._id) ? 'Unfollow' : 'Follow'} 
             </button>
           </div>

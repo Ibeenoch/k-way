@@ -15,7 +15,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../hooks';
 import ImgLazyLoad from '../lazyLoad/ImgLazyLoad';
 import { HeartIcon } from '@heroicons/react/24/outline';
-import { addNotification, getAllUser,  } from '../auth/authSlice'
+import { addNotification, getAllUser, getOtherUser,  } from '../auth/authSlice'
 import { io, Socket } from 'socket.io-client'
 
 const ReplyComment = () => {
@@ -97,7 +97,13 @@ useEffect(() => {
 }, [findReply]);
 
 const viewPersonProfile = (id: string) => {
-  navigate(`/profile/${id}`);
+  dispatch(getOtherUser(id)).then((res: any) => {
+    if(res && res.payload !== undefined){
+      const myId = res && res.payload && res.payload._doc && res.payload._doc._id;
+      navigate(`/profile/${myId}`);
+      window.scrollTo(0, 0);
+    }
+  })
 }
 
 useEffect(() => {
@@ -164,7 +170,7 @@ const getConfirmation = (commentId: string) => {
         <div className="fixed max-w-[100%] sm:max-w-[38%] bottom-0 pt-2 border border-gray-400 rounded-xl">
             <div className="flex bg-gray-100 items-center max-h-[30px] p-2 mb-1 rounded-xl">
             <div onClick={() => viewPersonProfile(getUser._doc._id)}>
-            <ImgLazyLoad
+            <img
               src={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url }
               className="block w-7 h-7 rounded-full cursor-pointer"
               alt={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.public_id }

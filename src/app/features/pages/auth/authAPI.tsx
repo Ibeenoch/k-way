@@ -86,6 +86,24 @@ export const updateProfile = async (data: any) => {
    }
 };
 
+export const fecthAllPrevChatForTwoUsers = async (data: any) => {
+  try {
+    const token = data.token;
+    const chatId = data.chatId;
+
+    const option = {
+      headers : {
+        'Authorization': `Bearer ${token}`
+      }
+    }
+      const res = await axios.get(`${API}/chat/all/${chatId}`, option);
+      return res.data;
+    
+   } catch (error) {
+    console.log(error)
+   }
+};
+
 export const userFollowers = async (followers: any) => {
   try {
     const { userId, token } = followers;

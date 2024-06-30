@@ -1,17 +1,17 @@
 
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch } from '../../../hooks';
-import { getOtherUser } from '../auth/authSlice';
+import { fetchChat, getOtherUser } from '../auth/authSlice';
+import { Socket, io } from 'socket.io-client';
+
+
 
 const MessageList = () => {
-    const navigate = useNavigate();
-    const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const socket: Socket = io('http://localhost:5800');
     const getUsers = JSON.parse(localStorage.getItem('alluser') as any);
     const getAUser = JSON.parse(localStorage.getItem('user') as any);
-
-    const gotoChatRoom = () => {
-        navigate('/chatroom');
-    }
 
     const viewProfile = (userId: string) => {
       // check if i am not logged in
@@ -37,7 +37,15 @@ const MessageList = () => {
     };
 
     const beginChat = (userId: string, myId: string) => {
-      navigate(`/chatroom/${userId}/${myId}`)
+      const chatId = `chat_${myId}`
+      socket.emit('joinChat', chatId);
+      const token = getAUser && getAUser.token;
+      const data = { token, chatId };
+      dispatch(fetchChat(data)).then((res: any) => {
+        if(res && res.payload !== undefined){
+          navigate(`/chatroom/${userId}/${myId}`)
+        }
+      })
     }
 
     const me = getAUser && getAUser._doc && getAUser._doc._id;
@@ -69,7 +77,7 @@ const MessageList = () => {
                 </div>
                 </div>
             
-                <button onClick={() => beginChat(person && person._id, me)}  className='text-xs px-4 py-1 bg-black dark:bg-white rounded-full text-white dark:text-black transform-transition duration-100 hover:scale-110'>
+                <button onClick={() => beginChat(person && person._id, me)}  className='text-xs px-4 py-1 bg-black rounded-full text-white hover:bg-purple-600 transform-transition duration-100 hover:scale-110'>
                   Message
                 </button>
                 
