@@ -1,6 +1,6 @@
 import { useContext, useEffect } from "react";
-import { useAppDispatch } from "../../../hooks";
-import { getAllUser, setProfileType, userFollowing } from "../auth/authSlice";
+import { useAppDispatch, useAppSelector } from "../../../hooks";
+import { getAllUser, getOtherUser, selectUser, setProfileType, userFollowing } from "../auth/authSlice";
 import { useAppContext } from "./homeContext";
 import { useNavigate } from "react-router-dom";
 
@@ -37,22 +37,22 @@ if(!getAUser){
 const me = getAUser && getAUser._doc  && getAUser._doc._id;
   
   const findPerson = getUsers.users.find((u: any) => u._id === userId);
-  if(findPerson._id === me._id){
     if(!findPerson.fullname || findPerson.fullname === ''){
       navigate(`/profile/create/${userId}`);
       return;
     }else{
-      dispatch(setProfileType('local'));
-      navigate(`/profile/${userId}`);
-      return;
+     dispatch(getOtherUser(findPerson && findPerson._id)).then((res: any) => {
+      if(res && res.payload !== undefined){
+        const myId = res && res.payload && res.payload._doc && res.payload._doc._id;
+        navigate(`/profile/${myId}`);
+        window.scrollTo(0, 0);
+      }
+     })
     };
-  }else{
-    dispatch(setProfileType('foreign'));
-    navigate(`/profile/${userId}`);
-    return;
-};
+  
 
 }
+
 
 return (
     <div className='p-4 top-0 overflow-y-auto'>
@@ -215,7 +215,9 @@ return (
             </div>
             </div>
             
-            <button onClick={() => handleFollow(person && person._id)} className='text-xs px-4 py-1 bg-black dark:bg-white rounded-full text-white dark:text-black transform-transition duration-100 hover:scale-110'>{person && person.followers && person.followers.includes(getAUser && getAUser._doc && getAUser._doc._id) ? 'Unfollow' : 'Follow'} </button>
+            <button onClick={() => handleFollow(person && person._id)} className='text-xs px-4 py-1 bg-black dark:bg-white rounded-full text-white dark:text-black transform-transition duration-100 hover:scale-110'>
+          {getAUser && getAUser._doc && getAUser._doc.following && getAUser._doc.following.includes(person._id) ? 'Unfollow' : 'Follow'} 
+            </button>
           </div>
           ))
           }

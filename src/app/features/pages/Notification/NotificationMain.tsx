@@ -53,6 +53,11 @@ const NotificationMain = () => {
               <CommentLogo fill='purple' className='w-5 h-5'/>
               </>
              )
+             : note && note.message && note.message.includes('followed') ? (
+              <>
+              <FollowerLogo fill='purple' className='w-5 h-5'/>
+              </>
+             )
              : (
               <>
               <ReplyLogo  fill='purple' className='w-5 h-5'/>

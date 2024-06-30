@@ -1078,7 +1078,7 @@ const viewNextImage = () => {
             </div>
             
             <button onClick={() => handleFollowing(post && post.owner && post.owner._id)} className='text-xs px-4 py-1 bg-black z-40 dark:bg-white rounded-full border border-white text-white dark:text-black transform-transition duration-100 hover:scale-110'>
-              { post && post.owner && post.owner.followers && post.owner.followers.includes(getUser && getUser._doc && getUser._doc._id.toString()) ? 'UnFollow' : "Follow" }
+              { getUser && getUser._doc && getUser._doc.following  && getUser._doc.following.includes(post.owner._id) ? 'UnFollow' : "Follow" }
             </button>
           </div>
 

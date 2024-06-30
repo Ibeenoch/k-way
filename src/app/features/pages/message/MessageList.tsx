@@ -1,69 +1,84 @@
 
 import { useNavigate } from 'react-router-dom'
+import { useAppDispatch } from '../../../hooks';
+import { getOtherUser } from '../auth/authSlice';
 
 const MessageList = () => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+    const getUsers = JSON.parse(localStorage.getItem('alluser') as any);
+    const getAUser = JSON.parse(localStorage.getItem('user') as any);
+
     const gotoChatRoom = () => {
         navigate('/chatroom');
     }
+
+    const viewProfile = (userId: string) => {
+      // check if i am not logged in
+    if(!getAUser){
+      navigate(`/profile/${userId}`);
+    }
+    // if i am logged in
+    const me = getAUser && getAUser._doc  && getAUser._doc._id;
+      
+      const findPerson = getUsers.users.find((u: any) => u._id === userId);
+        if(!findPerson.fullname || findPerson.fullname === ''){
+          navigate(`/profile/create/${userId}`);
+          return;
+        }else{
+         dispatch(getOtherUser(findPerson && findPerson._id)).then((res: any) => {
+          if(res && res.payload !== undefined){
+            const myId = res && res.payload && res.payload._doc && res.payload._doc._id;
+            navigate(`/profile/${myId}`);
+            window.scrollTo(0, 0);
+          }
+         })
+        };
+    };
+
+    const beginChat = (userId: string, myId: string) => {
+      navigate(`/chatroom/${userId}/${myId}`)
+    }
+
+    const me = getAUser && getAUser._doc && getAUser._doc._id;
+
   return (
     <div>
       
       <div className='w-full bg-white dark:bg-black mt-4 rounded-3xl p-4'>
-          <h1 className='text-black dark-text-white font-bold text-md'>Chat Room</h1>
+          <h1 className='text-black dark-text-white font-bold text-md'>Message Yoour Friends</h1>
           {/* people */}
-
-          <div onClick={gotoChatRoom} className='flex border-b border-gray-400 my-2 cursor-pointer justify-between items-center my-2 px-4'>
-            <div className='flex gap-2'>
-              <img className='w-9 h-9 rounded-full' src={`${process.env.PUBLIC_URL}/images/ladies 8.png`} alt="" />
-            <div className='flex flex-col item-center'>
-              <h1 className='text-sm text-black dark:text-white font-semibold flex items-center'>Chioma Ada <p className='text-xs text-gray-600'>@chiada</p> </h1>
-              
-              <p className='text-xs text-gray-600 max-w-xs'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius debitis iste unde in atque consequatur.</p>
-
-            </div>
-            </div>
-
-            <div className='flex flex-col items-center pb-2 gap-3'>
-                <p className='text-gray-500 text-[12px]'>10:34am</p>
-                <div className='w-4 h-4 rounded-full bg-sky-500 text-[8px] flex items-center justify-center text-white'>1</div>
-            </div>
-          </div>
-
-          <div onClick={gotoChatRoom} className='flex border-b border-gray-400 my-2 cursor-pointer justify-between items-center my-2 px-4'>
-            <div className='flex gap-2'>
-              <img className='w-9 h-9 rounded-full' src={`${process.env.PUBLIC_URL}/images/ladies 7.png`} alt="" />
-            <div className='flex flex-col item-center'>
-              <h1 className='text-sm text-black dark:text-white font-semibold flex items-center'>Chioma Ada <p className='text-xs text-gray-600'>@chiada</p> </h1>
-              
-              <p className='text-xs text-gray-600 max-w-xs'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius debitis iste unde in atque consequatur.</p>
-
-            </div>
-            </div>
-
-            <div className='flex flex-col items-center pb-2 gap-3'>
-                <p className='text-gray-500 text-[12px]'>10:34am</p>
-                <div className='w-4 h-4 rounded-full bg-sky-500 text-[8px] flex items-center justify-center text-white'>5</div>
-            </div>
-          </div>
-
-          <div onClick={gotoChatRoom} className='flex border-b border-gray-400 my-2 cursor-pointer justify-between items-center my-2 px-4'>
-            <div className='flex gap-2'>
-              <img className='w-9 h-9 rounded-full' src={`${process.env.PUBLIC_URL}/images/ladies 7.png`} alt="" />
-            <div className='flex flex-col item-center'>
-              <h1 className='text-sm text-black dark:text-white font-semibold flex items-center'>Chioma Ada <p className='text-xs text-gray-600'>@chiada</p> </h1>
-              
-              <p className='text-xs text-gray-600 max-w-xs'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius debitis iste unde in atque consequatur.</p>
-
-            </div>
-            </div>
-
-            <div className='flex flex-col items-center pb-2 gap-3'>
-                <p className='text-gray-500 text-[12px]'>10:34am</p>
-                <div className='w-4 h-4 rounded-full bg-sky-500 text-[8px] flex items-center justify-center text-white'>2</div>
-            </div>
-          </div>
-
+        {
+          getUsers  && getUsers.users && getUsers.users.length > 0 && getUsers.users.map((person: any) => (       
+           <>
+                {
+                  person && person._id !== me && (
+    
+            <div className='flex justify-between items-center my-2 px-4'>
+                <div onClick={() =>viewProfile(person._id)} className='flex gap-2 cursor-pointer'>
+                  {
+                    person && person.profilePhoto && person.profilePhoto.url ? (
+                      <img className='w-9 h-9 rounded-full' src={person && person.profilePhoto && person.profilePhoto.url} alt="" />
+                    ) : (
+                      <img className='w-9 h-9 rounded-full' src={`${process.env.PUBLIC_URL}/images/user.png`} alt="" />
+                    )
+                  }
+                <div>
+                  <h1 className='text-sm text-black dark:text-white font-semibold'>{person && person.fullname ?  person.fullname : 'anonymous'}</h1>
+                  <p className='text-xs text-gray-600'>@{person && person.handle ?  person.handle : 'anonymous'}</p>
+                </div>
+                </div>
+            
+                <button onClick={() => beginChat(person && person._id, me)}  className='text-xs px-4 py-1 bg-black dark:bg-white rounded-full text-white dark:text-black transform-transition duration-100 hover:scale-110'>
+                  Message
+                </button>
+                
+              </div>  
+                  )
+                } 
+          </>
+          ))
+          }
       </div>
     </div>
   )

@@ -14,6 +14,14 @@ const Home = () => {
   const getUser = JSON.parse(localStorage.getItem('user') as any);
 
   useEffect(() => {
+    dispatch(getAllUser()).then((res) => {
+      if(res && res.payload !== undefined){
+        console.log('tehh');
+      }
+    })
+  }, [userUpdated])
+
+  useEffect(() => {
     const handlePostLiked = (data: any) => {
       console.log('data liked post ', data);
       dispatch(addNotification(data)).then((res: any) => {
