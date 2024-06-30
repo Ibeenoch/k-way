@@ -16,7 +16,7 @@ const getUser = JSON.parse(localStorage.getItem('user') as any);
 const [isCommenting, setIsCommenting] = useState<boolean>(false);
 const [comment, setComment] = useState<string>("");
 const [commentErr, setCommentErr] = useState<string>("");
-const { userId, myId } = useParams();
+const { userId, myId, chatId } = useParams();
 const { chat, users } = useAppSelector(selectUser);
 const others = users && Array.isArray(users) && users.find((u: any) => u._id === userId );
 
@@ -34,6 +34,7 @@ useEffect(() => {
     console.log('all are ', res)
   })
 }, [])
+console.log(comment);
 
 const viewPersonProfile = (id: string) => {
   dispatch(getOtherUser(id)).then((res: any) => {
@@ -46,14 +47,14 @@ const viewPersonProfile = (id: string) => {
 }
 
 const handleChatSubmit = () => {
-  const message = { message: comment, chatId: `chat_${myId}`, sender: myId, receiver: userId };
+  const message = { message: comment, chatId, sender: myId, receiver: userId };
   socket.emit('sendMessage', message);
+  console.log(message);
   setComment('');
   
 }
 
 useEffect(() => {
-  const chatId = `chat_${myId}`
   socket.emit('joinChat', chatId);
   const token = getUser && getUser.token;
   const data = { token, chatId };

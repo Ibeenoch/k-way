@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../hooks';
-import { getAUser, getAllNotificationForAUser, getOtherUser, markAllNotificationForAUser, selectUser, setActivePage, setProfileType } from '../auth/authSlice';
+import { getAUser, getAllNotificationForAUser, getAllUser, getOtherUser, markAllNotificationForAUser, selectUser, setActivePage, setProfileType } from '../auth/authSlice';
 import { AppContext, useAppContext } from '../home/homeContext'
 import { ReactComponent as Home } from '../../../../assets/homelogo.svg';
 import { ReactComponent as Envelope } from '../../../../assets/messageLogo.svg';
@@ -10,6 +10,7 @@ import { ReactComponent as Bell } from '../../../../assets/notificationLogo.svg'
 import { ReactComponent as VerifyMark } from '../../../../assets/verifyChecker.svg';
 import { ReactComponent as CompanyLogo } from '../../../../assets/companylogo.svg';
 import { ReactComponent as EditLogo } from '../../../../assets/editLogo.svg';
+import { ReactComponent as LoginLogo } from '../../../../assets/login.svg';
 
 
 const Left = () => {
@@ -43,19 +44,29 @@ const Left = () => {
  
 
   const messageActive = () => {
-    dispatch(setActivePage('message'))
-    navigate('/message')
+    dispatch(setActivePage('message'));
+    dispatch(getAllUser()).then((res: any) => {
+      if(res && res.payload !== undefined){
+        console.log('llll ', res);
+        navigate('/message');
+      }
+    } )
   }
 
   const notificationActive = () => {
     dispatch(setActivePage('notification'));
     const notifications = JSON.parse(localStorage.getItem('notification') as any);
-    const userId = notification && notification[0] && notification[0].receiver && notification[0].receiver._id;
+    const userId = getUser && getUser._doc && getUser._doc._id;
     const token = getUser && getUser.token;
     const note = { userId, token };
     dispatch(markAllNotificationForAUser(note)).then((res: any) => {
-      console.log('allres ', res);
-      navigate('/notification')
+      
+      dispatch(getAllNotificationForAUser(note)).then((res: any) => {
+        console.log('get not ', res);
+        if(res && res.payload !== undefined){
+          navigate('/notification');
+        }
+      })
     })
   }
 
@@ -64,7 +75,10 @@ const Left = () => {
     navigate('/trendlist')
   }
 
- 
+  console.log('getuser ', getUser);
+ const loginUser = () => {
+  navigate('/login');
+ }
 
   const viewProfile = () => {
     if(getUser === null){
@@ -146,8 +160,16 @@ const Left = () => {
             </>
           )
         }
+        {
+           getUser === null && (
+            <div onClick={loginUser} className='flex gap-2 justify-center items-center rounded-2xl cursor-pointer group hover:bg-white border hover:border-black sm:mx-2 lg:mx-8 py-2 bg-black'>
+            <LoginLogo className='w-5 h-5 stroke-white group-hover:stroke-black' />
+            <h2 className='text-white text-[11px] font-semibold text-center group-hover:text-black'>Login</h2> 
+          </div>
+          )
+        }
       </div>
-       {/* nav icons destop  */}
+       {/* nav icons desktop  */}
       <div className='flex flex-col pt-4 bg-white dark:bg-dark p-2'>
         
         <div onClick={newsFeedActive} className={`group flex cursor-pointer justify-between p-2 text-black ${ active === 'home' ? 'border-r-2 border-r-purple-500': 'border-0' } group-hover:text-purple`}>

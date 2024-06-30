@@ -15,6 +15,7 @@ export interface userState {
   chat: any;
   unViewednotificationCount: number;
   users: any;
+  chatId: string;
   followers: any[];
   following: any[];
   active: string;
@@ -29,6 +30,7 @@ const initialState: userState = {
   notification: [],
   chat: [],
   followers: [],
+  chatId: '',
   following: [],
   unViewednotificationCount: 0,
   active: 'home',
@@ -117,6 +119,16 @@ export const emailPasswordLink = createAsyncThunk(
   async (data: any) => {
     try {
       const res = await api.passwordRecovery(data);
+      return res;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
+export const findChatIdForTwoUsers = createAsyncThunk( "/user/chatidfortwouser",  async (data: any) => {
+    try {
+      const res = await api.findChatIdForTwoUsers(data);
       return res;
     } catch (error) {
       console.log(error);
@@ -258,6 +270,7 @@ export const authSlice = createSlice({
         state.status = "loading";
       })
       .addCase(loginUser.fulfilled, (state, action) => {
+        console.log('loin ', action.payload);
         if (action.payload !== undefined && action.payload._doc) {
           state.status = "success";
           state.user = action.payload;
@@ -460,6 +473,18 @@ export const authSlice = createSlice({
          };
       })
       .addCase(getAllUser.rejected, (state, action) => {
+        state.status = "failed";
+      })
+      .addCase(findChatIdForTwoUsers.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(findChatIdForTwoUsers.fulfilled, (state, action) => {
+        if(action.payload !== undefined){
+          state.status = "success";
+          state.chatId = action.payload;
+         };
+      })
+      .addCase(findChatIdForTwoUsers.rejected, (state, action) => {
         state.status = "failed";
       })
       

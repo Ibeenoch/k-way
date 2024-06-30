@@ -1,7 +1,7 @@
 
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch } from '../../../hooks';
-import { fetchChat, getOtherUser } from '../auth/authSlice';
+import { fetchChat, findChatIdForTwoUsers, getOtherUser } from '../auth/authSlice';
 import { Socket, io } from 'socket.io-client';
 
 
@@ -37,15 +37,31 @@ const MessageList = () => {
     };
 
     const beginChat = (userId: string, myId: string) => {
-      const chatId = `chat_${myId}`
-      socket.emit('joinChat', chatId);
+    
       const token = getAUser && getAUser.token;
-      const data = { token, chatId };
-      dispatch(fetchChat(data)).then((res: any) => {
+      
+      const findChatid = { token, userId, myId}
+
+      dispatch(findChatIdForTwoUsers(findChatid)).then((res: any) => {
+        console.log('the chatId is ', res, res.payload);
         if(res && res.payload !== undefined){
-          navigate(`/chatroom/${userId}/${myId}`)
+          const chatId = res && res.payload
+        socket.emit('joinChat', chatId);
+        const data = { token, chatId };
+        dispatch(fetchChat(data)).then((res: any) => {
+          if(res && res.payload !== undefined){
+            navigate(`/chatroom/${userId}/${myId}/${chatId}`)
+          }
+        });
+
         }
+        
+
       })
+
+      
+
+
     }
 
     const me = getAUser && getAUser._doc && getAUser._doc._id;
@@ -57,7 +73,7 @@ const MessageList = () => {
           <h1 className='text-black dark-text-white font-bold text-md'>Message Yoour Friends</h1>
           {/* people */}
         {
-          getUsers  && getUsers.users && getUsers.users.length > 0 && getUsers.users.map((person: any) => (       
+          getUsers  && getUsers && getUsers.length > 0 && getUsers.map((person: any) => (       
            <>
                 {
                   person && person._id !== me && (
