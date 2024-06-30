@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../hooks';
-import { getAUser, getAllNotificationForAUser, markAllNotificationForAUser, selectUser, setActivePage, setProfileType } from '../auth/authSlice';
+import { getAUser, getAllNotificationForAUser, getOtherUser, markAllNotificationForAUser, selectUser, setActivePage, setProfileType } from '../auth/authSlice';
 import { AppContext, useAppContext } from '../home/homeContext'
 import { ReactComponent as Home } from '../../../../assets/homelogo.svg';
 import { ReactComponent as Envelope } from '../../../../assets/messageLogo.svg';
@@ -72,7 +72,15 @@ const Left = () => {
       return;
     }
     dispatch(setProfileType('local'));
-    navigate(`/profile/${getUser && getUser._doc && getUser._doc._id}`)
+    const userId = getUser && getUser._doc && getUser._doc._id;
+    dispatch(getOtherUser(userId)).then((res) => {
+      console.log(' other user ', res);
+      if(res && res.payload !== undefined){
+        const myId = res && res.payload && res.payload._doc && res.payload._doc._id;
+        navigate(`/profile/${myId}`);
+      }
+    })
+    
   }
 
   const editProfile = (userId: string) => {

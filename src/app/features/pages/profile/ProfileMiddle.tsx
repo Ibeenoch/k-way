@@ -1,14 +1,16 @@
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import NavBar from "../mobilenav/NavBar";
-import { PlusIcon, HeartIcon } from "@heroicons/react/24/outline";
+import { HeartIcon } from "@heroicons/react/24/outline";
 import EmojiPicker from "emoji-picker-react";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
-import { selectUser } from "../auth/authSlice";
+import { addNotification, getAllNotificationForAUser, selectUser, setProfileType, userFollowers } from "../auth/authSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import { getAllPosts } from "../home/PostSlice";
 import { getFollowers, getFollowing } from "../auth/authSlice";
+import { io, Socket } from 'socket.io-client'
 
 const ProfileMiddle = () => {
+  const socket: Socket = io('http://localhost:5800');
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { id } = useParams();
@@ -32,11 +34,12 @@ const ProfileMiddle = () => {
     const [showfollowers, setShowFollowers] = useState<boolean>(false);
     const [showfollowing, setShowFollowing] = useState<boolean>(false);
     const [inputStr, setInputStr] = useState<string>("");
-    const { profileType, followers, following } = useAppSelector(selectUser)
+    const { user, followers, following, otherperson, } = useAppSelector(selectUser)
   
     const videoUrl = `${process.env.PUBLIC_URL}/video.mp4`;
-    const otheruser = profileType === 'local' ? JSON.parse(localStorage.getItem('user') as any) : JSON.parse(localStorage.getItem('otheruser') as any);
-    const me = otheruser && otheruser._doc && otheruser._doc._id;
+    const userStored = JSON.parse(localStorage.getItem('user') as any);
+   
+    const me = userStored && userStored._doc && userStored._doc._id;
     const fetchFeeds = () => {
       dispatch(getAllPosts()).then((res: any) => {
         console.log('all posts fetched ', res);
@@ -122,12 +125,50 @@ const ProfileMiddle = () => {
     const showDeskTopModal = () => {
       setdeskTopModal(true);
     };
+
+    const logoutUser = () => {
+      localStorage.clear();
+      navigate('/login');
+    }
   
     const onEmojiClick = (emojiObject: any) => {
       console.log("events emoji ", emojiObject);
       setInputStr((prev) => prev + emojiObject.emoji);
       setShowEmojiPicker(false);
     };
+
+    const handleFollow = () => {
+      const token = userStored && userStored.token;
+      const userId = otherperson && otherperson._doc && otherperson._doc._id;
+      const follow = { token, userId };
+      dispatch(setProfileType('local'));
+      dispatch(userFollowers(follow)).then((res: any) => {
+        console.log('fllow ', res)
+      })
+    };
+
+    useEffect(() => {
+      const handlefollowed = (data: any) => {
+        console.log('data followed post ', data);
+        dispatch(addNotification(data)).then((res: any) => {
+          console.log('ress    ', res)
+          const userId = res && res.payload && res.payload.receiver;
+          const token = userStored && userStored.token;;
+  
+          const note = { userId, token }
+  
+          dispatch(getAllNotificationForAUser(note)).then((res: any) => {
+            console.log('all note ', res)
+          })
+        });
+      };
+    
+      socket.on('followed', handlefollowed);
+    
+      return () => {
+        socket.off('followed', handlefollowed);
+      };
+    }, [socket]);
   
     const handlechange = (e: ChangeEvent<HTMLInputElement>) => {
       setInputStr(e.target.value);
@@ -191,14 +232,16 @@ const ProfileMiddle = () => {
     }, [])
   
     const editProfile = () => {
-      if(otheruser && otheruser._doc && otheruser._doc._id === id ){
-        navigate(`/profile/create/${otheruser && otheruser._doc && otheruser._doc._id}`);
+      if(otherperson && otherperson._doc && otherperson._doc._id === id ){
+        navigate(`/profile/create/${otherperson && otherperson._doc && otherperson._doc._id}`);
       }
     }
 
-    if(otheruser && otheruser._doc && !otheruser._doc.fullname){
-      navigate(`/profile/create/${otheruser && otheruser._doc && otheruser._doc._id}`);
+    if(otherperson && otherperson._doc && !otherperson._doc.fullname){
+      navigate(`/profile/create/${otherperson && otherperson._doc && otherperson._doc._id}`);
     }
+   const firstUser =  otherperson && otherperson._doc && otherperson._doc._id;
+   const secondUser = userStored && userStored._doc && userStored._doc._id;
 
   return (
     <div className="mt-10 max-w-md sm:max-w-full">
@@ -207,10 +250,10 @@ const ProfileMiddle = () => {
         <div className='flex gap-2 items-center'>
         <div className='rounded-full bg-sky-500 cursor-pointer w-18 h-18'></div>
         {
-          otheruser && otheruser._doc && otheruser._doc.profilePhoto && otheruser._doc.profilePhoto.url ? (
+          otherperson && otherperson._doc && otherperson._doc.profilePhoto && otherperson._doc.profilePhoto.url ? (
             <>
             <div className="relative">
-            <img className='rounded-full w-[250px] h-[250px] cursor-pointer -ml-4' src={otheruser && otheruser._doc && otheruser._doc.profilePhoto && otheruser._doc.profilePhoto.url} alt="" />
+            <img className='rounded-full w-[250px] h-[250px] cursor-pointer -ml-4' src={otherperson && otherperson._doc && otherperson._doc.profilePhoto && otherperson._doc.profilePhoto.url} alt="" />
              <div onClick={editProfile} className="absolute bottom-0 right-9 cursor-pointer">
                 <svg className="w-5 h-5" fill="none"  stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
               </div> 
@@ -235,35 +278,45 @@ const ProfileMiddle = () => {
         <div className='flex flex-col text-center justify-center'>
             <div className="flex gap-1 justify-center items-center pt-2">
             <svg fill="none" className="w-5 h-5" viewBox="0 0 24 24"  xmlns="http://www.w3.org/2000/svg"><path d="m21.5609 10.7386-1.36-1.58001c-.26-.3-.47-.86-.47-1.26v-1.7c0-1.06-.87-1.93-1.93-1.93h-1.7c-.39 0-.96-.21-1.26-.47l-1.58-1.36c-.69-.59-1.82-.59-2.52 0l-1.57004 1.37c-.3.25-.87.46-1.26.46h-1.73c-1.06 0-1.93.87-1.93 1.93v1.71c0 .39-.21.95-.46 1.25l-1.35 1.59001c-.58.69-.58 1.81 0 2.5l1.35 1.59c.25.3.46.86.46 1.25v1.71c0 1.06.87 1.93 1.93 1.93h1.73c.39 0 .96.21 1.26.47l1.58004 1.36c.69.59 1.82.59 2.52 0l1.58-1.36c.3-.26.86-.47 1.26-.47h1.7c1.06 0 1.93-.87 1.93-1.93v-1.7c0-.39.21-.96.47-1.26l1.36-1.58c.58-.69.58-1.83-.01-2.52zm-5.4-.63-4.83 4.83c-.14.14-.33.22-.53.22s-.39-.08-.53-.22l-2.42004-2.42c-.29-.29-.29-.77 0-1.06s.77-.29 1.06 0l1.89004 1.89 4.3-4.30001c.29-.29.77-.29 1.06 0s.29.77 0 1.06001z" fill="purple"/></svg>
-            <h1 className='text-black font-bold  cursor-pointer text-md'>{otheruser && otheruser._doc && otheruser._doc.fullname}</h1>
+            <h1 className='text-black font-bold  cursor-pointer text-md'>{otherperson && otherperson._doc && otherperson._doc.fullname}</h1>
             </div>
-            <p className='text-gray-500 text-xs'>@{otheruser && otheruser._doc && otheruser._doc.handle}</p>
-            <p className='text-gray-500 text-xs'>{otheruser && otheruser._doc && otheruser._doc.profession}</p>
-            <p className='text-gray-500 text-xs'>{otheruser && otheruser._doc && otheruser._doc.address}</p>
-            <p className='text-gray-500 text-xs'>{otheruser && otheruser._doc && otheruser._doc.dateOfBirth}</p>
-            <p className='text-gray-500 text-xs max-w-sm'>{otheruser && otheruser._doc && otheruser._doc.bio}</p>
+            <p className='text-gray-500 text-xs'>@{otherperson && otherperson._doc && otherperson._doc.handle}</p>
+            <p className='text-gray-500 text-xs'>{otherperson && otherperson._doc && otherperson._doc.profession}</p>
+            <p className='text-gray-500 text-xs'>{otherperson && otherperson._doc && otherperson._doc.address}</p>
+            <p className='text-gray-500 text-xs'>{otherperson && otherperson._doc && otherperson._doc.dateOfBirth}</p>
+            <p className='text-gray-500 text-xs max-w-sm'>{otherperson && otherperson._doc && otherperson._doc.bio}</p>
         </div>
 
         <div className='flex gap-1 mt-3'>
           <div className='flex flex-col justify-center px-3 border-r-2 border-gray-400'>
-            <h1 className='text-black dark:text-white text-center font-semibold text-sm'>{otheruser && otheruser._doc && otheruser._doc.followers && otheruser._doc.followers.length  }</h1>
+            <h1 className='text-black dark:text-white text-center font-semibold text-sm'>{otherperson && otherperson._doc && otherperson._doc.followers && otherperson._doc.followers.length  }</h1>
             <p className='text-xs text-gray-400'>Followers</p>
           </div>
           <div className='flex flex-col justify-center px-3 border-r-2 border-gray-400'>
-            <h1 className='text-black dark:text-white text-center font-semibold text-sm'>{otheruser && otheruser._doc && otheruser._doc.following && otheruser._doc.following.length }</h1>
+            <h1 className='text-black dark:text-white text-center font-semibold text-sm'>{otherperson && otherperson._doc && otherperson._doc.following && otherperson._doc.following.length }</h1>
             <p className='text-xs text-gray-400'>Following</p>
           </div>
           <div className='flex flex-col justify-center px-3'>
-            <h1 className='text-black dark:text-white text-center font-semibold text-sm'>{otheruser && otheruser._doc && otheruser._doc.posts && otheruser._doc.posts.length }</h1>
+            <h1 className='text-black dark:text-white text-center font-semibold text-sm'>{otherperson && otherperson._doc && otherperson._doc.posts && otherperson._doc.posts.length }</h1>
             <p className='text-xs text-gray-400'>Posts</p>
           </div>
         </div>
       </div>
 
-      <div className="mx-auto flex justify-center gap-6 py-4">
-        <button className="text-white bg-black hover:bg-purple-600 hover:text-white duration-200 hover:border-white hover:scale-105 rounded-2xl border border-white font-semibold text-center px-4 py-1">Follow</button>
+        { firstUser !== secondUser ? (
+      <div className="mx-auto flex justify-center gap-6 py-4 bg-white">
+        <button onClick={handleFollow} className="text-white bg-black hover:bg-purple-600 hover:text-white duration-200 hover:border-white hover:scale-105 rounded-2xl border border-white font-semibold text-center px-4 py-1">{
+      user && user._doc && user._doc.following &&  user._doc.following.includes(otherperson && otherperson._doc && otherperson._doc._id) ? 'Unfollow' : 'Follow'
+      }
+      </button>
         <button className="text-white bg-black hover:bg-purple-600 hover:text-white duration-200 hover:border-white hover:scale-105 rounded-2xl border border-white font-semibold text-center px-4 py-1">Chat</button>
-      </div>
+      </div>    
+          ) : (
+            <div className="mx-auto flex justify-center gap-6 py-4 bg-white">
+            <button onClick={logoutUser} className="text-white bg-black hover:bg-purple-600 hover:text-white duration-200 hover:border-white hover:scale-105 rounded-2xl border border-white font-semibold text-center px-4 py-1">Logout</button>
+          </div> 
+          )
+        }
 
     <div className="flex justify-around px-4 mb-4">
     <h1 onClick={activateFeed} className={`text-lg cursor-pointer font-bold ${showfeed ? 'text-purple-500 border-b-2 border-purple-500': 'text-black' }  dark:text-white pl-4`}>

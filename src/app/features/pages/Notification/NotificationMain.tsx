@@ -35,7 +35,7 @@ const NotificationMain = () => {
         {
             note && note.message && note.message.includes('liked') ? (
               <>
-               <HeartIcon fill='red' stroke='red' className='w-5 h-5' />
+               <HeartIcon fill='purple' stroke='purple' className='w-5 h-5' />
               </>
             )
              : note && note.message && note.message.includes('bookmark') ? (

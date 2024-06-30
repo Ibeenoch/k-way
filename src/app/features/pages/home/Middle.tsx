@@ -327,7 +327,15 @@ const viewWhoResharedPost = (e: React.MouseEvent<HTMLDivElement>, postId: string
 
 
 const viewAProfile = (userId: string) => {
-  navigate(`/profile/${userId}`);
+
+  dispatch(getOtherUser(userId)).then((res) => {
+    console.log(' other user ', res);
+    if(res && res.payload !== undefined){
+      const myId = res && res.payload && res.payload._doc && res.payload._doc._id;
+      navigate(`/profile/${myId}`);
+      window.scrollTo(0, 0);
+    }
+  })
 };
 
 const handleBookmark = async (postId: string) => {
@@ -903,7 +911,7 @@ const viewNextImage = () => {
         post.reShared &&  (
           <>
           <div className="flex border-b border-b-gray-300 pb-4">
-           <img className="w-8 h-8 rounded-full cursor-pointer" src={post && post.reShare && post.reShare[0] && post.reShare[0].user  && post.reShare[0].user.profilePhoto && post.reShare[0].user.profilePhoto.url} alt=""/>
+           <img onClick={() => viewAProfile(post && post.reShare && post.reShare[0] && post.reShare[0].user && post.reShare[0].user._id)} className="w-8 h-8 rounded-full cursor-pointer" src={post && post.reShare && post.reShare[0] && post.reShare[0].user  && post.reShare[0].user.profilePhoto && post.reShare[0].user.profilePhoto.url} alt=""/>
             <p className="text-black dark:text-white text-xs font-medium px-1">{post && post.reShare && post.reShare[0]  && post.reShare[0].user  && post.reShare[0].user.fullname}</p>
             <p className="text-gray-500 text-xs font-semibold px-3">Reshared this post</p>
           </div>

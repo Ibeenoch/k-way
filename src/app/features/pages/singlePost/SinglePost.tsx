@@ -30,7 +30,7 @@ import { allCommentForAPost, bookmarkPost, commentOnPost, deleteComment, deleteP
 import { useNavigate, useParams } from "react-router-dom";
 import EmojiPicker from "emoji-picker-react";
 import { HeartIcon } from "@heroicons/react/24/outline";
-import { addNotification, getAllUser,  } from '../auth/authSlice'
+import { addNotification, getAllUser, getOtherUser,  } from '../auth/authSlice'
 import { io, Socket } from 'socket.io-client'
 
 
@@ -278,17 +278,29 @@ const handleBookmark = async (postId: string) => {
     setMobileModal(true);
   };
 
-const navigateToProfile = () => {
-  if(getUser && getUser._doc  && getUser._doc.fullname){
-    navigate(`/profile/${getUser && getUser._doc && getUser._doc._id}`)
+const navigateToProfile = (userId: string) => {
+  if(getUser && getUser._doc  && getUser._doc.fullname !== ''){
+
+    dispatch(getOtherUser(userId)).then((res: any) => {
+      if(res && res.payload !== undefined){
+        const myId = res && res.payload && res.payload._doc && res.payload._doc._id;
+        navigate(`/profile/${myId}`);
+        window.scrollTo(0, 0);
+      }
+    });
+
   }else{
-    navigate(`/profile/create/${getUser && getUser._doc && getUser._doc._id}`)
+    navigate(`/profile/create/${userId}`);
   }
 };
 
 const viewOthersProfile = ( userId: string ) => {
-  navigate(`/profile/${userId}`);
-
+  dispatch(getOtherUser(userId)).then((res: any) => {
+    if(res && res.payload !== undefined){
+      const myId = res && res.payload && res.payload._doc && res.payload._doc._id;
+      navigate(`/profile/${myId}`);
+    }
+  });
 }
 
 
@@ -323,18 +335,19 @@ const viewOthersProfile = ( userId: string ) => {
     navigate(-1);
   }
 
+  const postOwner = post && post.owner && post.owner._id;
   return (
-    <div className="bg-black h-full">
+    <div className="bg-black h-screen">
         <div onClick={handleGoBack} className='bg-white sm:bg-transparent sm:fixed flex gap-3 py-2 cursor-pointer'>
           <BackArrowLogo  className='w-4 h-4 cursor-pointer sm:fill-white fill-black' />
         <h2 className='text-xs font-medium text-black sm:text-white'>Back to Post Feeds</h2>
         </div>
 
-    <div className="sm:mx-[25%]">
+    <div className="sm:mx-[25%] bg-white h-screen">
          <div  className="p-3 max-w-full bg-white dark-bg-gray-700 border border-gray-400">
          
         <div className="flex items-center gap-2 w-full">
-          <ImgLazyLoad onClick={() => viewOthersProfile(post && post.owner && post.owner.public_id)} className="w-8 h-8 rounded-full cursor-pointer" src={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.url} alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
+          <img onClick={() => viewOthersProfile(post && post.owner && post.owner._id)} className="w-8 h-8 rounded-full cursor-pointer" src={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.url} alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
           <div className="w-full flex items-center justify-between gap-1">
             <div className="flex items-center">
               <div className="mt-3">
@@ -360,8 +373,10 @@ const viewOthersProfile = ( userId: string ) => {
                     desktopMenu && post._id === postClicked ? "sm:block" : "sm:hidden"
                   } absolute shadow-xl shadow-purple-80 z-10 top-0 -right-[10px] w-[150px] h-auto rounded-3xl mx-auto bg-white  p-2`}
                 >
-                   <>
-                    <div onClick={() =>handleEditPost(post._id)} className="flex gap-2 px-2 cursor-pointer items-center pt-4">
+                  {
+                    getUser && getUser._doc && getUser._doc._id === postOwner ? (
+                      <>
+                       <div onClick={() =>handleEditPost(post._id)} className="flex gap-2 px-2 cursor-pointer items-center pt-4">
                       <EditLogo  className="stroke-black w-3 h-3"/>
                       <p className="text-black text-[10px]">Edit Post</p>
                     </div>
@@ -369,7 +384,9 @@ const viewOthersProfile = ( userId: string ) => {
                       <TrashLogo className="fill-black stroke-black w-5 h-5"/>
                       <p className="text-black text-[10px]">Delete Post</p>
                     </div>
-                     
+                      </>
+                    ) : (
+                      <>
                        <div className="flex gap-2 cursor-pointer items-center pt-4">
                     <AddContactLogo  className="fill-black stroke-black w-3 h-3"/>
                     <p className="text-black text-[10px]">Follow @texilola😎</p>
@@ -390,6 +407,9 @@ const viewOthersProfile = ( userId: string ) => {
                     <p className="text-black text-[10px]">Mute @texilola😎</p>
                   </div>
                       </>
+                    )
+                  }
+                  
                 </div>
               </div>
             </div>
@@ -638,17 +658,17 @@ const viewOthersProfile = ( userId: string ) => {
 
 
         <div className="fixed max-w-[100%] sm:max-w-[50%] pt-2 bottom-0 rounded-xl">
-            <div className="flex bg-white items-center max-h-[30px] p-2 mb-1 rounded-xl">
-            <ImgLazyLoad onClick={navigateToProfile}
+            <div className="flex bg-white border border-gray-300 items-center max-h-[30px] py-6 px-2 rounded-xl">
+            <img onClick={() => navigateToProfile(getUser && getUser._doc && getUser._doc._id)}
               src={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url }
-              className="block w-7 h-7 rounded-full"
+              className="block w-7 h-7 rounded-full cursor-pointer"
               alt={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.public_id }
             />
             <input
               type="text"
               onChange={(e) => (setComment(e.target.value))}
               value={comment}
-              className="block text-xs w-[700px] h-[30px] p-3 bg-gray-100 border-0 focus:ring-0 focus:ring-inset focus:ring-none"
+              className="block text-xs w-[700px] h-[30px] p-3 bg-white border-0 focus:ring-0 focus:ring-inset focus:ring-none"
               placeholder="Comment on this post"
               name=""
               id=""

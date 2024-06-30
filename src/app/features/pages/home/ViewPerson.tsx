@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../hooks';
 import { selectPost } from './PostSlice';
 import { useNavigate } from 'react-router-dom';
-import { selectUser, setProfileType, userFollowing } from '../auth/authSlice';
+import { getOtherUser, selectUser, setProfileType, userFollowing } from '../auth/authSlice';
 import { ReactComponent as ArrowBackLogo } from '../../../../assets/arrowBack.svg'
 
 const ViewPerson = () => {
@@ -21,21 +21,13 @@ const ViewPerson = () => {
     }, []);
 
     const viewProfile = (userId: string) => {
-        if(getUser === null){
-            dispatch(setProfileType('foreign'));
-            navigate(`/profile/${userId}`);
-            return;
-        };
-        const me = getUser && getUser._doc && getUser._doc._id;
-        if( userId === me){
-            dispatch(setProfileType('local'));
-            navigate(`/profile/${userId}`);
-        }else{
-            console.log('foreign check')
-            dispatch(setProfileType('foreign'));
-            navigate(`/profile/${userId}`); 
-        }
-
+        dispatch(getOtherUser(userId)).then((res: any) => {
+          if(res && res.payload !== undefined){
+            const myId = res && res.payload && res.payload._doc && res.payload._doc._id;
+            navigate(`/profile/${myId}`);
+            window.scrollTo(0, 0);
+          }
+        })
     }
 
       const handleFollow = (userId: string) => {

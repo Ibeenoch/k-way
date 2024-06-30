@@ -39,7 +39,17 @@ const Home = () => {
   useEffect(() => {
     const handlepostBookmarked = (data: any) => {
       console.log('data postBookmarked post ', data);
-      dispatch(addNotification(data));
+      dispatch(addNotification(data)).then((res: any) => {
+        console.log('ress    ', res)
+        const userId = res && res.payload && res.payload.receiver;
+        const token = getUser && getUser.token;
+
+        const note = { userId, token }
+
+        dispatch(getAllNotificationForAUser(note)).then((res: any) => {
+          console.log('all note ', res)
+        })
+      });
     };
   
     socket.on('postBookmarked', handlepostBookmarked);
@@ -52,7 +62,17 @@ const Home = () => {
   useEffect(() => {
     const handlepostReshared = (data: any) => {
       console.log('data postReshared post ', data);
-      dispatch(addNotification(data));
+      dispatch(addNotification(data)).then((res: any) => {
+        console.log('ress    ', res)
+        const userId = res && res.payload && res.payload.receiver;
+        const token = getUser && getUser.token;
+
+        const note = { userId, token }
+
+        dispatch(getAllNotificationForAUser(note)).then((res: any) => {
+          console.log('all note ', res)
+        })
+      });
     };
   
     socket.on('postReshared', handlepostReshared);
@@ -62,18 +82,7 @@ const Home = () => {
     };
   }, [socket]);
   
-  useEffect(() => {
-    const handlefollowed = (data: any) => {
-      console.log('data followed post ', data);
-      dispatch(addNotification(data));
-    };
-  
-    socket.on('followed', handlefollowed);
-  
-    return () => {
-      socket.off('followed', handlefollowed);
-    };
-  }, [socket]);
+
 
 
   return (
