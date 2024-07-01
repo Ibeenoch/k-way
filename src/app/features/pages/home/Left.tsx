@@ -24,7 +24,7 @@ const Left = () => {
   const { active } = useAppSelector(selectUser);
   const getUser = JSON.parse(localStorage.getItem('user') as any);
   const { refresh, toggleRefresh } = useAppContext();
-  const { notification, unViewednotificationCount } = useAppSelector(selectUser);
+  const { notification, unViewednotificationCount, unreadChatCount } = useAppSelector(selectUser);
 
   const newsFeedActive = () => {
     dispatch(setActivePage('home'))
@@ -185,9 +185,14 @@ const Left = () => {
             <Envelope className={`w-4 h-4 group-hover:fill-purple-500 ${active === 'message' ? 'fill-purple-500 stroke-purple-500 dark:fill-purple-500': 'fill-black'}`} />
           <p className={`text-xs font-semibold group-hover:text-purple-500 ${active === 'message' ? 'text-purple-500': 'text-black'}`}> Messages</p>
           </div>
-        <div className={`group-hover:text-purple-500 group-hover:rounded-full group-hover:bg-purple-500 ${active === 'message' ? 'bg-purple-500 border-purple-500 text-white': 'text-black dark:text-white border border-black'} font-semibold group-hover:border group-hover:border-purple-500 group-hover:bg-white p-1 group-hover:text-black w-4 h-4 flex items-center justify-center text-[9px] rounded-full`}>
-          2
-        </div>
+          {
+            unreadChatCount > 0 && (
+            <div className={`group-hover:text-purple-500 group-hover:rounded-full group-hover:bg-purple-500 ${active === 'message' ? 'bg-purple-500 border-purple-500 text-white': 'text-black dark:text-white border border-black'} font-semibold group-hover:border group-hover:border-purple-500 group-hover:bg-white p-1 group-hover:text-black w-4 h-4 flex items-center justify-center text-[9px] rounded-full`}>
+              {unreadChatCount}
+            </div>  
+            )
+          }
+        
         </div>
         
         <div onClick={notificationActive} className={`group flex cursor-pointer justify-between p-2 text-black ${active === 'notification' ? 'border-r-2 border-r-purple-500': 'border-0' } group-hover:text-purple`}>

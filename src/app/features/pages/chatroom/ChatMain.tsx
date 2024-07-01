@@ -1,6 +1,6 @@
 import { HeartIcon } from '@heroicons/react/24/outline'
 import { useAppDispatch, useAppSelector } from '../../../hooks'
-import { addChat, fetchChat, getAllUser, getOtherUser, selectUser } from '../auth/authSlice';
+import { addChat, fetchChat, getAllUser, getOtherUser, markreadChatBtwTwoUsers, selectUser } from '../auth/authSlice';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { ReactComponent as ProcessingLogo } from '../../../../assets/processingLogo.svg';
@@ -55,11 +55,18 @@ const handleChatSubmit = () => {
 }
 
 useEffect(() => {
+  const token = getUser && getUser.token;
+  const data = { chatId, token };
+  dispatch(markreadChatBtwTwoUsers(data)).then((res:any) => {
+    console.log('marked all chat ', res);
+  })
+}, []);
+
+useEffect(() => {
   socket.emit('joinChat', chatId);
   const token = getUser && getUser.token;
   const data = { token, chatId };
  
-
   socket.on('receivedMessage', (newMessage) => {
     dispatch(addChat(newMessage));
     dispatch(fetchChat(data)).then((res: any) => {
@@ -74,7 +81,7 @@ useEffect(() => {
 }, [userId, dispatch])
 
   return (
-    <div>
+    <div className='bg-white h-screen'>
       
     <div className='p-4'>
       <div className='flex justify-between pb-2 border-b border-gray-400 items-center'>
@@ -91,14 +98,14 @@ useEffect(() => {
         chat && Array.isArray(chat) && chat.map((message) => (
 
     <div key={message && message._id}>
-          <div className='flex justify-center text-xs'> {formatCreatedAt(message && message.createdAt)} </div>
+          <div className='flex justify-center text-[8px] items-center'> <div className='border-b border-gray-200 w-[40%]'></div> {formatCreatedAt(message && message.createdAt)} <div className='border-b w-[40%] border-gray-200'></div> </div>
           {
             message && message.sender && message.sender._id === myId ? (
              <div className='flex items-center gap-1 mb-2'>
           <img src={ message && message.sender && message.sender.profilePhoto && message.sender.profilePhoto.url } className='w-4 h-4 rounded-full' alt="" />
           <div className='p-2 rounded-tl-lg rounded-tr-lg rounded-br-lg flex-none bg-gray-400'>
             <p className='text-black text-xs sm:max-w-xs max-w-[180px]'>{message && message.message}</p>
-            <p className='text-xs text-black'>{formatCreatedAt(message && message.createdAt)}</p>
+            <p className='text-[8px] text-black'>{formatCreatedAt(message && message.createdAt)}</p>
           </div>
           </div>  
             ) : (
@@ -108,10 +115,10 @@ useEffect(() => {
       <div className='flex items-center gap-1'>
       <div className='p-2 rounded-tl-lg rounded-tr-lg rounded-bl-lg flex-none bg-gray-400'>
         <p className='text-black text-xs sm:max-w-xs max-w-[180px]'>{message && message.message}</p>
-        <p className='text-xs text-black'>{formatCreatedAt(message && message.createdAt)}</p>
+        <p className='text-[8px] text-black'>{formatCreatedAt(message && message.createdAt)}</p>
       </div>
 
-      <img  src={ message && message.receiver && message.receiver.profilePhoto && message.receiver.profilePhoto.url  } className='w-4 h-4 rounded-full' alt="" />
+      <img  src={ message && message.sender && message.sender.profilePhoto && message.sender.profilePhoto.url  } className='w-4 h-4 rounded-full' alt="" />
       
       </div>
       </div>

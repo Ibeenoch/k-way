@@ -28,7 +28,7 @@ const NotificationMain = () => {
         notification && notification.length > 0 && Array.isArray(notification) && notification.map((note: any) => (
         <>
           {
-            note && note.receiver && note.receiver !== myId && (
+            note && note.sender && note.sender && note.sender._id !== myId && (
               
               <div key={note._id} className='flex justify-between p-4 border-b border-gray-300'>
             <div className='flex gap-4 pb-2 w-full'>
@@ -45,7 +45,7 @@ const NotificationMain = () => {
                 )
                 : note && note.message && note.message.includes('bookmark') ? (
                   <>
-                  <BookmarkLogo fill='purple' stroke='white' className='w-5 h-5'/>
+                  <BookmarkLogo fill='purple' stroke='purple' className='w-5 h-5 fill-purple-600'/>
                   </>
                 )
                 : note && note.message && note.message.includes('reshared') ? (

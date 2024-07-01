@@ -12,6 +12,7 @@ export interface userState {
   user: any;
   otherperson: any;
   notification: any;
+  unreadChatCount: number;
   chat: any;
   unViewednotificationCount: number;
   users: any;
@@ -30,6 +31,7 @@ const initialState: userState = {
   notification: [],
   chat: [],
   followers: [],
+  unreadChatCount: 0,
   chatId: '',
   following: [],
   unViewednotificationCount: 0,
@@ -59,6 +61,15 @@ export const getAllNotificationForAUser = createAsyncThunk("/user/ausernotificat
 export const markAllNotificationForAUser = createAsyncThunk("/user/markausernotifications", async (note: any) => {
   try {
     const data = await api.markAllNotificationForAUser(note);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+export const markreadChatBtwTwoUsers = createAsyncThunk("/user/markauserchat", async (note: any) => {
+  try {
+    const data = await api.markreadChatBtwTwoUsers(note);
     return data;
   } catch (error) {
     console.log(error);
@@ -320,7 +331,8 @@ export const authSlice = createSlice({
       .addCase(fetchChat.fulfilled, (state, action) => {
         if (action.payload !== undefined) {
           state.status = "success";
-          state.chat = action.payload;
+          state.chat = action.payload.chats;
+          state.unreadChatCount = action.payload.count;
         }
       })
       .addCase(fetchChat.rejected, (state, action) => {
@@ -485,6 +497,18 @@ export const authSlice = createSlice({
          };
       })
       .addCase(findChatIdForTwoUsers.rejected, (state, action) => {
+        state.status = "failed";
+      })
+      .addCase(markreadChatBtwTwoUsers.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(markreadChatBtwTwoUsers.fulfilled, (state, action) => {
+        if(action.payload !== undefined){
+          state.status = "success";
+          state.unreadChatCount = action.payload;
+         };
+      })
+      .addCase(markreadChatBtwTwoUsers.rejected, (state, action) => {
         state.status = "failed";
       })
       

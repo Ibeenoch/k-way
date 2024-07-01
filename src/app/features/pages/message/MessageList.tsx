@@ -70,7 +70,7 @@ const MessageList = () => {
     <div>
       
       <div className='w-full bg-white dark:bg-black mt-4 rounded-3xl p-4'>
-          <h1 className='text-black dark-text-white font-bold text-md'>Message Yoour Friends</h1>
+          <h1 className='text-black dark-text-white font-bold text-md'>Message Your Friends</h1>
           {/* people */}
         {
           getUsers  && getUsers && getUsers.length > 0 && getUsers.map((person: any) => (       

@@ -205,6 +205,26 @@ export const findChatIdForTwoUsers = async (note: any) => {
    }
 };
 
+export const markreadChatBtwTwoUsers = async (note: any) => {
+  try {
+      const chatId = note.chatId;
+      const token = note.token;
+console.log('sending note ', note)
+      const option = {
+        headers : {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      };
+
+      const res = await axios.put(`${API}/chat/${chatId}`, note, option);
+      return res.data;
+    
+   } catch (error) {
+    console.log(error)
+   }
+};
+
 export const markAllNotificationForAUser = async (note: any) => {
   try {
       const userId = note.userId;
