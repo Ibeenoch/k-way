@@ -167,6 +167,7 @@ export const getAllNotificationForAUser = async (note: any) => {
   try {
       const userId = note.userId;
       const token = note.token;
+      const postId = note.postId;
 console.log('sending note ', note)
       const option = {
         headers : {
@@ -175,7 +176,7 @@ console.log('sending note ', note)
         }
       };
 
-      const res = await axios.get(`${API}/notification/${userId}`, option);
+      const res = await axios.get(`${API}/notification/${userId}/${postId}`, option);
       return res.data;
     
    } catch (error) {
@@ -229,6 +230,7 @@ export const markAllNotificationForAUser = async (note: any) => {
   try {
       const userId = note.userId;
       const token = note.token;
+      const postId = note.postId;
 console.log('sending note ', note)
       const option = {
         headers : {
@@ -237,7 +239,7 @@ console.log('sending note ', note)
         }
       };
 
-      const res = await axios.put(`${API}/notification/${userId}`, note, option);
+      const res = await axios.put(`${API}/notification/${userId}/${postId}`, note, option);
       return res.data;
     
    } catch (error) {

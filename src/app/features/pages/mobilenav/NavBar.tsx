@@ -6,7 +6,7 @@ import { ReactComponent as BellLogo } from '../../../../assets/notificationLogo.
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../hooks';
 import { openpostForm, selectPost } from '../home/PostSlice';
-import { getOtherUser, selectUser, setActivePage } from '../auth/authSlice';
+import { getAllNotificationForAUser, getOtherUser, markAllNotificationForAUser, selectUser, setActivePage } from '../auth/authSlice';
 
 
 const NavBar = () => {
@@ -20,8 +20,9 @@ const NavBar = () => {
     const getUser = JSON.parse(localStorage.getItem('user') as any);
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const { active } = useAppSelector(selectUser);
+    const { active, unViewednotificationCount, whoToNotify } = useAppSelector(selectUser);
     
+    const me = getUser && getUser._doc && getUser._doc._id;
 
     const showFullMobileScreen = () => {
         setMobileIconModal(true);
@@ -60,7 +61,19 @@ const goTrend = () => {
     setisProfile(false);
     setispost(false);
     dispatch(setActivePage('notification'));
-    navigate('/notification');
+    const userId = getUser && getUser._doc && getUser._doc._id;
+    const token = getUser && getUser.token;
+    const note = { userId, token };
+    console.log('ksl')
+    dispatch(markAllNotificationForAUser(note)).then((res: any) => {
+      
+      dispatch(getAllNotificationForAUser(note)).then((res: any) => {
+        console.log('get not ', res);
+        if(res && res.payload !== undefined){
+          navigate('/notification');
+        }
+      })
+    })
   };
   
   const goProfile = () => {
@@ -80,31 +93,6 @@ const goTrend = () => {
     })
   };
   
-  
-  
-  // useEffect(() => {
-  //   const getPageActive = JSON.parse(localStorage.getItem('pageactive') as any);
-  
-  //   switch(getPageActive){
-  //     case 'homepage':
-  //       goHome();
-  //       break;
-  //     case 'trendpage':
-  //       goTrend();
-  //       break;
-  //     case 'notifypage':
-  //       goNotify();
-  //       break;
-  //     case 'profilepage':
-  //       goProfile();
-  //       break;
-      
-  //       default:
-  //         goHome();
-  //         break;
-  //   }
-  // }, []);
-
   
   const showPostModal = () => {
     setPostModal(true);
@@ -132,9 +120,17 @@ const goTrend = () => {
             <div onClick={showPostModal} className={` ${active === 'post' ? 'bg-purple-600 p-4 border-2 border-white rounded-full' : 'p-4 bg-black border-2 border-white rounded-full'} `} >
                <PlusIcon className="w-9 h-9 stroke-2 fill-white stroke-white"/>
             </div>
-
+            <div className='relative flex items-center'>
               <BellLogo onClick={goNotify} className={`w-11 h-11 ${active === 'notification' ? 'stroke-purple-600' : 'stroke-white'} `} />
-
+             {
+              whoToNotify === me && unViewednotificationCount && unViewednotificationCount > 0 && (
+              <div className='text-white bg-purple-600 rounded-full absolute px-2 py-[0.8px] top-0 right-0 text-sm font-semibold'>
+              { whoToNotify === me && unViewednotificationCount && unViewednotificationCount} 
+              </div> 
+              )
+             }
+              
+            </div>
             <img
             onClick={goProfile}
               src={ getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url ? getUser._doc.profilePhoto.url : `${process.env.PUBLIC_URL}/images/images-74.jpeg`}

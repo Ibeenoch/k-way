@@ -12,13 +12,13 @@ import { ReactComponent as ReshareLogo } from '../../../../assets/retweet.svg'
 import { useNavigate } from 'react-router-dom';
 
 const NotificationMain = () => {
-  const { notification } = useAppSelector(selectUser);
+  const { notifications } = useAppSelector(selectUser);
   const getUser = JSON.parse(localStorage.getItem('user') as any);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  if(notification){
-    console.log('my notication ', notification);
+  if(notifications){
+    console.log('my notication ', notifications);
   }
   const myId = getUser && getUser._doc && getUser._doc._id;
   const viewUser = (userId: string) => {
@@ -28,7 +28,7 @@ const NotificationMain = () => {
         navigate(`/profile/${myId}`);
       }
     })
-  }
+  };
   return (
     <div className='p-4'>
 
@@ -36,7 +36,7 @@ const NotificationMain = () => {
       {/* feeds  */}
       
       {
-        notification && notification.length > 0 && Array.isArray(notification) && notification.map((note: any) => (
+        notifications && notifications.length > 0 && Array.isArray(notifications) && notifications.map((note: any) => (
         <>
           {
             note && note.sender && note.sender && note.sender._id !== myId && (

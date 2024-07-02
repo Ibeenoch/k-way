@@ -8,6 +8,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getAllPosts } from "../home/PostSlice";
 import { getFollowers, getFollowing } from "../auth/authSlice";
 import { socket } from '../../../../index'
+import { ReactComponent as LogoutLogo } from '../../../../assets/logout.svg';
+import { ReactComponent as BackLogo } from '../../../../assets/arrowBack.svg';
 
 const ProfileMiddle = () => {
   const navigate = useNavigate();
@@ -248,10 +250,20 @@ const ProfileMiddle = () => {
    const firstUser =  otherperson && otherperson._doc && otherperson._doc._id;
    const secondUser = userStored && userStored._doc && userStored._doc._id;
 
+   const handleGoBack = () => {
+    navigate(-1);
+  };
+
   return (
-    <div className="mt-10 max-w-md sm:max-w-full">
-               
+    <div className="mt-10 max-w-md sm:max-w-full bg-white">
+      
+      <div onClick={handleGoBack} className=' sm:fixed flex gap-3 py-2 cursor-pointer'>
+          <BackLogo  className='w-4 h-4 cursor-pointer stroke-2 sm:fill-white fill-black' />
+        <h2 className='text-xs font-medium text-black sm:text-white'>Go Back</h2>
+        </div>
+
       <div className='flex flex-col rounded-tl-3xl justify-center items-center bg-white p-6'>
+        
         <div className='flex gap-2 items-center'>
         <div className='rounded-full bg-sky-500 cursor-pointer w-18 h-18'></div>
         {
@@ -318,7 +330,7 @@ const ProfileMiddle = () => {
       </div>    
           ) : (
             <div className="mx-auto flex justify-center gap-6 py-4 bg-white">
-            <button onClick={logoutUser} className="text-white bg-black hover:bg-purple-600 hover:text-white duration-200 hover:border-white hover:scale-105 rounded-2xl border border-white font-semibold text-center px-4 py-1">Logout</button>
+            <button onClick={logoutUser} className="text-white bg-black hover:bg-purple-600 hover:text-white duration-200 hover:scale-105 rounded-2xl border border-white font-semibold text-center px-4 py-1 flex gap-0 items-center"> <LogoutLogo className="w-5 h-5 stroke-white fill-none" /> <p>Logout</p></button>
           </div> 
           )
         }

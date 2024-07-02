@@ -27,9 +27,10 @@ const Home = () => {
       dispatch(addNotification(data)).then((res: any) => {
         console.log('ress    ', res)
         const userId = res && res.payload && res.payload.receiver;
+        const postId = res && res.payload && res.payload.post;
         const token = getUser && getUser.token;
 
-        const note = { userId, token }
+        const note = { userId, token, postId };
 
         dispatch(getAllNotificationForAUser(note)).then((res: any) => {
           console.log('all note ', res)
@@ -50,9 +51,10 @@ const Home = () => {
       dispatch(addNotification(data)).then((res: any) => {
         console.log('ress    ', res)
         const userId = res && res.payload && res.payload.receiver;
+        const postId = res && res.payload && res.payload.post;
         const token = getUser && getUser.token;
 
-        const note = { userId, token }
+        const note = { userId, token, postId }
 
         dispatch(getAllNotificationForAUser(note)).then((res: any) => {
           console.log('all note ', res)
@@ -73,9 +75,10 @@ const Home = () => {
       dispatch(addNotification(data)).then((res: any) => {
         console.log('ress    ', res)
         const userId = res && res.payload && res.payload.receiver;
+        const postId = res && res.payload && res.payload.post;
         const token = getUser && getUser.token;
 
-        const note = { userId, token }
+        const note = { userId, token, postId }
 
         dispatch(getAllNotificationForAUser(note)).then((res: any) => {
           console.log('all note ', res)

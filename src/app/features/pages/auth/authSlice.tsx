@@ -12,6 +12,7 @@ export interface userState {
   user: any;
   otherperson: any;
   notification: any;
+  notifications: any;
   unreadChatCount: number;
   chat: any;
   whoToNotify: string;
@@ -30,6 +31,7 @@ const initialState: userState = {
   otherperson: otherUser ? otherUser : {},
   users: allUser ? allUser : [],
   notification: [],
+  notifications: [],
   chat: [],
   followers: [],
   unreadChatCount: 0,
@@ -345,7 +347,7 @@ export const authSlice = createSlice({
       })
       .addCase(addNotification.fulfilled, (state, action) => {
         if (action.payload !== undefined) {
-          Array.isArray(state.notification) ? state.notification.push(action.payload) : state.notification = action.payload;
+           state.notification = action.payload;
         }
       })
       .addCase(addNotification.rejected, (state, action) => {
@@ -417,7 +419,7 @@ export const authSlice = createSlice({
       .addCase(getAllNotificationForAUser.fulfilled, (state, action) => {
         if(action.payload !== undefined){
           state.status = "success";
-          state.notification = action.payload.notifications;
+          state.notifications = action.payload.notifications;
           state.unViewednotificationCount = action.payload.count;
           state.whoToNotify = action.payload.toWho;
           localStorage.setItem('notification', JSON.stringify(action.payload.notifications));

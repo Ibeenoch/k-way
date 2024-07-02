@@ -25,7 +25,7 @@ const Left = () => {
   const { active } = useAppSelector(selectUser);
   const getUser = JSON.parse(localStorage.getItem('user') as any);
   const { refresh, toggleRefresh } = useAppContext();
-  const { notification, unViewednotificationCount, unreadChatCount, whoToNotify } = useAppSelector(selectUser);
+  const { notifications, notification, unViewednotificationCount, unreadChatCount, whoToNotify } = useAppSelector(selectUser);
 
   const newsFeedActive = () => {
     dispatch(setActivePage('home'));
@@ -35,6 +35,7 @@ const Left = () => {
       }
     })
   };
+  
 
  useEffect(() => {
   if(refresh){
@@ -60,10 +61,11 @@ const Left = () => {
 
   const notificationActive = () => {
     dispatch(setActivePage('notification'));
-    const notifications = JSON.parse(localStorage.getItem('notification') as any);
+    const postId = notification && notification.post;
+    console.log('post id for notification ', postId);
     const userId = getUser && getUser._doc && getUser._doc._id;
     const token = getUser && getUser.token;
-    const note = { userId, token };
+    const note = { userId, token, postId };
     dispatch(markAllNotificationForAUser(note)).then((res: any) => {
       
       dispatch(getAllNotificationForAUser(note)).then((res: any) => {
