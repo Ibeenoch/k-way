@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { getAUser, getAllUser, getOtherUser, selectUser, setProfileType, userFollowers, userFollowing } from "../auth/authSlice";
 import { allCommentForAPost, bookmarkPost, commentOnPost, createPost, createStory, deletePost, getAPost, getAllPosts, getAllUserStories, getAvailableStories, getBookmarkforaPost, getLikesforaPost, getresharedforaPost, likePost, openpostForm, rePost, resetEditCommentStatus, selectPost, setWhichPost, updatePost } from "./PostSlice";
 import toast, { Toast } from 'react-hot-toast'
-import { io, Socket } from 'socket.io-client'
+import { socket } from '../../../../index'
 import { useNavigate, useParams } from "react-router-dom";
 import NavBar from "../mobilenav/NavBar";
 import ImgLazyLoad from "../lazyLoad/ImgLazyLoad";
@@ -77,6 +77,7 @@ const Middle = () => {
   const [touchstart, setTouchStart] = useState<number>();
   const [touchend, setTouchEnd] = useState<number>();
   const [displayProfileImage, setDisplayProfileImage] = useState<string>('');
+  const [videoUrl, setVideoUrl] = useState<string>('');
   const [toRefresh, setToRefresh] = useState<boolean>(false);
   const [isOpenStories, setIsOpenStories] = useState<boolean>(false);
 
@@ -143,6 +144,9 @@ const Middle = () => {
     }
   }
 
+  const viewPost = (postId: string) => {
+    navigate(`/post/${postId}`);
+  }
 
  const getPrivacy = (e: ChangeEvent<HTMLSelectElement>) => {
   setPrivacy(e.target.value)
@@ -252,7 +256,7 @@ if(id){
             hidePostModal();
             console.log('use it ');
             navigate('/');
-            window.scrollTo(0, document.documentElement.scrollHeight);
+            window.scrollTo(0, 0);
         });
         }
        
@@ -266,7 +270,7 @@ if(id){
           hidePostModal();
           console.log('use it ');
           navigate('/');
-          window.scrollTo(0, document.documentElement.scrollHeight);
+          window.scrollTo(0, 0);
       });
       }
      
@@ -283,6 +287,10 @@ const handleLike = async (postId: string) => {
     navigate('/login');
     return;
   };
+  const findpost = posts.find((p: any) => p._id === postId);
+  const postOwnerId = findpost && findpost.owner && findpost.owner._id;
+  console.log('post ownerid ', postOwnerId, findpost);
+  // socket.emit('joinNotificationRoom', postOwnerId);
   const token = getUser && getUser.token;
   const userId =  getUser && getUser._doc._id;
   const postLike = {
@@ -290,7 +298,10 @@ const handleLike = async (postId: string) => {
     userId,
     postId
   };
-  dispatch(likePost(postLike));
+  dispatch(likePost(postLike)).then((res: any) => {
+    console.log('like post ', res)
+    setPersonalPost(res && res.payload && res.payload);
+  })
 };
 
 const viewWhoLikePost = (e: React.MouseEvent<HTMLDivElement>, postId: string) => {
@@ -343,6 +354,11 @@ const handleBookmark = async (postId: string) => {
     navigate('/login');
     return;
   };
+  const findpost = posts.find((p: any) => p._id === postId);
+  const postOwnerId = findpost && findpost.owner && findpost.owner._id;
+  console.log('post bookmark ownerid ', postOwnerId, findpost);
+  // socket.emit('joinNotificationRoom', postOwnerId);
+
   const token = getUser && getUser.token;
   const userId =  getUser && getUser._doc._id;
   const postBooked = {
@@ -350,7 +366,11 @@ const handleBookmark = async (postId: string) => {
     userId,
     postId
   };
-  dispatch(bookmarkPost(postBooked));
+  dispatch(bookmarkPost(postBooked)).then((res: any) => {
+    if(res && res.payload !== undefined){
+      setPersonalPost(res && res.payload && res.payload);
+    }
+  });
 };
 
 const handleReShare = async (postId: string) => {
@@ -358,6 +378,11 @@ const handleReShare = async (postId: string) => {
     navigate('/login');
     return;
   };
+  const findpost = posts.find((p: any) => p._id === postId);
+  const postOwnerId = findpost && findpost.owner && findpost.owner._id;
+  console.log('post reshared ownerid ', postOwnerId, findpost);
+  // socket.emit('joinNotificationRoom', postOwnerId);
+
   const token = getUser && getUser.token;
   const userId =  getUser && getUser._doc._id;
   const postReshare = {
@@ -365,7 +390,9 @@ const handleReShare = async (postId: string) => {
     userId,
     postId
   };
-  dispatch(rePost(postReshare));
+  dispatch(rePost(postReshare)).then((res: any) => {
+    console.log('reshared post ', res)
+  });
 };
 
 const goToPost = async (id: string) => {
@@ -419,7 +446,7 @@ const handleTouchEnd = (e : React.TouchEvent<HTMLDivElement>) => {
  
 }
 
-  const videoUrl = `${process.env.PUBLIC_URL}/video.mp4`;
+  
 
 
  const handleCommentSubmit = (postId: string) => {
@@ -504,8 +531,12 @@ const handleTouchEnd = (e : React.TouchEvent<HTMLDivElement>) => {
     dispatch(openpostForm(false));
   };
 
-  const showFullScreen = () => {
+  const showFullScreen = (id: string, video: string): void => {
     setFullVideoScreen(true);
+    setVideoUrl(video);
+    const findPost = posts.find((p: any) => p._id === id);
+    console.log('personal post currently ', findPost);
+    setPersonalPost(findPost);
   };
 
   const hideFullScreen = () => {
@@ -840,7 +871,7 @@ const viewNextImage = () => {
               className="hidden sm:block sm:text-xs sm:w-[700px] sm:h-[30px] sm:bg-white sm:border-0"
               placeholder="Share something"
               name=""
-              id=""
+              id="text"
               required
             />
             <button
@@ -1170,30 +1201,30 @@ const viewNextImage = () => {
           <div className="flex flex-col items-center">
             <div className="flex flex-col cursor-pointer justify-end items-center pr-4">
               <div className="p-2 w-8 h-8 bg-red-500 mt-2 rounded-full flex justify-center items-center">
-                <HeartIcon onClick={() =>handleLike(post._id)} color="white" className="w-12 h-12 fill-white" />
+                <HeartIcon onClick={() =>handleLike(personalPost._id)} color="white" className="w-12 h-12 fill-white" />
               </div>
-              <p className="text-xs text-white">{post && post.likes && post.likes.length}</p>
+              <p className="text-xs text-white">{personalPost && personalPost.likes && personalPost.likes.length}</p>
             </div>
 
             <div className="flex flex-col cursor-pointer justify-end items-center pr-4">
-              <div  onClick={() =>handleReShare(post._id)}  className="p-2 w-9 h-9 bg-sky-500 mt-2 rounded-full flex justify-center items-center">
+              <div  onClick={() =>handleReShare(personalPost._id)}  className="p-2 w-9 h-9 bg-sky-500 mt-2 rounded-full flex justify-center items-center">
                <ReplyLogo className="w-15 h-15 fill-white stroke-white" />
               </div>
-              <p className="text-xs text-white">{post && post.reShare && post.reShare.length}</p>
+              <p className="text-xs text-white">{personalPost && personalPost.reShare && personalPost.reShare.length}</p>
             </div>
 
-            <div  onClick={() => goToPost(post._id)} className="flex flex-col cursor-pointer justify-end items-center pr-4">
+            <div  onClick={() => goToPost(personalPost._id)} className="flex flex-col cursor-pointer justify-end items-center pr-4">
               <div  className="p-2 w-8 h-8 bg-sky-500 mt-2 rounded-full flex justify-center items-center">
                <CommentLogo className="w-4 h-4 fill-white stroke-white" />
               </div>
-              <p className="text-xs text-white">{post && post.comments && post.comments.length}</p>
+              <p className="text-xs text-white">{personalPost && personalPost.comments && personalPost.comments.length}</p>
             </div>
 
             <div className="flex flex-col cursor-pointer justify-end items-center pr-4">
             <div className="p-2 w-8 h-8 bg-sky-500 mt-2 rounded-full flex justify-center items-center">
-               <BookMarkLogo  onClick={() =>handleBookmark(post._id)} className="w-4 h-4 fill-white stroke-white" />
+               <BookMarkLogo  onClick={() =>handleBookmark(personalPost._id)} className="w-4 h-4 fill-white stroke-white" />
               </div>
-              <p className="text-xs text-white">{post && post.bookmark && post.bookmark.length}</p>
+              <p className="text-xs text-white">{personalPost && personalPost.bookmark && personalPost.bookmark.length}</p>
             </div>
           </div>
         </div>
@@ -1205,48 +1236,18 @@ const viewNextImage = () => {
             className="w-4 h-4 fill-white cursor-pointer"/>
         </div>
 
-        {/* people comments  */}
-        <div className="absolute bottom-16 left-3  flex flex-col">
-          <div className="flex gap-4">
-            <img src={`${process.env.PUBLIC_URL}/images/ladies 8.png`} className="w-9 h-9 rounded-full" alt="" />
-            <div>
-              <h1 className="text-md font-bold text-white">Harmony Waves</h1>
-              <p className="text-sm text-white">
-                Omg, the dress is so pretty😍
-              </p>
-            </div>
-          </div>
-
-          <div className="flex gap-4">
-            <img src={`${process.env.PUBLIC_URL}/images/ladies 8.png`} className="w-9 h-9 rounded-full" alt="" />
-            <div>
-              <h1 className="text-md font-bold text-white">Harmony Waves</h1>
-              <p className="text-sm text-white">
-                Omg, the dress is so pretty😍
-              </p>
-            </div>
-          </div>
-
-          <div className="flex gap-4">
-            <img src={`${process.env.PUBLIC_URL}/images/ladies 8.png`} className="w-9 h-9 rounded-full" alt="" />
-            <div>
-              <h1 className="text-md font-bold text-white">Harmony Waves</h1>
-              <p className="text-sm text-white">
-                Omg, the dress is so pretty😍
-              </p>
-            </div>
-          </div>
-        </div>
+       
 
         {/* add your comment  */}
 
         <div className="fixed bottom-0 flex border border-white rounded-xl">
              <input
+             onClick={() =>viewPost(personalPost && personalPost._id)}
                   type="text"
                   className="rounded-md border-0 bg-transparent w-[70vw] sm:left-[25%] sm:w-[42vw] mx-auto left-0 py-2 text-white shadow-sm placeholder:text-white  sm:text-xs"
-                  placeholder="start typing here"
-                  name=""
-                  id=""
+                  placeholder="comment here"
+                  name="video"
+                  id="video"
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
                 /> 
@@ -1254,7 +1255,7 @@ const viewNextImage = () => {
                 {
               isCommenting ? (
                 <>
-               <div className='flex items-center'><ProcessingLogo className="w-5 h-5 fill-white" /> <p className='text-[9px] text-white'> Commenting...</p></div> 
+               <div className='flex items-center'><ProcessingLogo className="w-5 h-5 fill-white" /> <p className='text-[9px] text-white'> Posting...</p></div> 
                </>
               ) : (
                 <SendLogo className="w-6 h-6 fill-white" />
@@ -1334,7 +1335,7 @@ const viewNextImage = () => {
         ) : post && post.video ? (
           <div  className="rounded-3xl cursor-pointer overflow-hidden z-20">
             <video
-              onClick={showFullScreen}
+              onClick={() => showFullScreen(post && post._id, post && post.video && post.video.url)}
               className="w-full cursor-pointer object-cover h-[200px]"
               controls
               muted
@@ -1421,8 +1422,8 @@ const viewNextImage = () => {
           <textarea
             onChange={handlechange}
             value={content}
-            name=""
-            id=""
+            name="content"
+            id="content"
             className="bg-white resize-none flex-none w-full h-[85vh] text-xs border-none focus:ring-0"
             placeholder={`${ whichPost === 'post' ? 'share a post' : 'share a story'} `}
           ></textarea>

@@ -14,6 +14,7 @@ export interface userState {
   notification: any;
   unreadChatCount: number;
   chat: any;
+  whoToNotify: string;
   unViewednotificationCount: number;
   users: any;
   chatId: string;
@@ -32,6 +33,7 @@ const initialState: userState = {
   chat: [],
   followers: [],
   unreadChatCount: 0,
+  whoToNotify: '',
   chatId: '',
   following: [],
   unViewednotificationCount: 0,
@@ -417,6 +419,7 @@ export const authSlice = createSlice({
           state.status = "success";
           state.notification = action.payload.notifications;
           state.unViewednotificationCount = action.payload.count;
+          state.whoToNotify = action.payload.toWho;
           localStorage.setItem('notification', JSON.stringify(action.payload.notifications));
          };
       })

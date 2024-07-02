@@ -70,7 +70,8 @@ useEffect(() => {
   socket.on('receivedMessage', (newMessage) => {
     dispatch(addChat(newMessage));
     dispatch(fetchChat(data)).then((res: any) => {
-      console.log('the chat history res ', res)
+      console.log('the chat history res ', res);
+      window.scrollTo(0, document.documentElement.scrollHeight);
     })
   });
 
@@ -93,15 +94,15 @@ useEffect(() => {
 
         <div></div>
       </div>
-
+    <div className='pb-10 bg-white'>
       {
         chat && Array.isArray(chat) && chat.map((message) => (
 
-    <div key={message && message._id}>
+    <div key={message && message._id} className=''>
           <div className='flex justify-center text-[8px] items-center'> <div className='border-b border-gray-200 w-[40%]'></div> {formatCreatedAt(message && message.createdAt)} <div className='border-b w-[40%] border-gray-200'></div> </div>
           {
             message && message.sender && message.sender._id === myId ? (
-             <div className='flex items-center gap-1 mb-2'>
+             <div className='flex items-center mb-[1px]'>
           <img src={ message && message.sender && message.sender.profilePhoto && message.sender.profilePhoto.url } className='w-4 h-4 rounded-full' alt="" />
           <div className='p-2 rounded-tl-lg rounded-tr-lg rounded-br-lg flex-none bg-gray-400'>
             <p className='text-black text-xs sm:max-w-xs max-w-[180px]'>{message && message.message}</p>
@@ -109,7 +110,7 @@ useEffect(() => {
           </div>
           </div>  
             ) : (
-              <div className='flex justify-between mb-2'>
+              <div className='flex justify-between mb-[1px]'>
         <div></div>
 
       <div className='flex items-center gap-1'>
@@ -131,7 +132,7 @@ useEffect(() => {
     </div>
       ))
       }
-      
+    </div>
       
       <div className="fixed max-w-[100%] bg-white sm:max-w-[38%] bottom-0 pt-2 border border-gray-400 rounded-xl">
             <div className="flex bg-white items-center max-h-[38px] p-2 mb-1 rounded-xl">

@@ -55,7 +55,7 @@ const me = getAUser && getAUser._doc  && getAUser._doc._id;
 
 
 return (
-    <div className='p-4 top-0 overflow-y-auto'>
+    <div className='sticky -z-10 p-4 top-0 overflow-y-auto'>
       <div className='w-full bg-white dark:bg-black dark:text-white rounded-3xl p-4'>
 
       <div className='flex justify-between my-2 items-center px-4'>

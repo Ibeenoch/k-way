@@ -5,21 +5,21 @@ import Right from '../home/Right'
 import { useAppDispatch } from '../../../hooks'
 import { getAUser } from '../auth/authAPI'
 import { addNotification, getAllNotificationForAUser, getAllUser,  } from '../auth/authSlice'
-import { io, Socket } from 'socket.io-client'
+import { getAllPosts } from './PostSlice';
+import { socket } from '../../../../index'
 
 const Home = () => {
   const dispatch = useAppDispatch();
   const [userUpdated, setUserUpdated] = useState<boolean>(false);
-  const socket: Socket = io('http://localhost:5800');
   const getUser = JSON.parse(localStorage.getItem('user') as any);
 
   useEffect(() => {
-    dispatch(getAllUser()).then((res) => {
-      if(res && res.payload !== undefined){
-        console.log('tehh');
-      }
-    })
-  }, [userUpdated])
+    dispatch(getAllUser())
+  }, [userUpdated, dispatch])
+
+  useEffect(() => {
+    dispatch(getAllPosts())
+  }, [userUpdated, dispatch])
 
   useEffect(() => {
     const handlePostLiked = (data: any) => {

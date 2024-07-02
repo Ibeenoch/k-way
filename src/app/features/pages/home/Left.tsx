@@ -11,6 +11,7 @@ import { ReactComponent as VerifyMark } from '../../../../assets/verifyChecker.s
 import { ReactComponent as CompanyLogo } from '../../../../assets/companylogo.svg';
 import { ReactComponent as EditLogo } from '../../../../assets/editLogo.svg';
 import { ReactComponent as LoginLogo } from '../../../../assets/login.svg';
+import { getAllPosts } from './PostSlice';
 
 
 const Left = () => {
@@ -24,11 +25,15 @@ const Left = () => {
   const { active } = useAppSelector(selectUser);
   const getUser = JSON.parse(localStorage.getItem('user') as any);
   const { refresh, toggleRefresh } = useAppContext();
-  const { notification, unViewednotificationCount, unreadChatCount } = useAppSelector(selectUser);
+  const { notification, unViewednotificationCount, unreadChatCount, whoToNotify } = useAppSelector(selectUser);
 
   const newsFeedActive = () => {
-    dispatch(setActivePage('home'))
-    navigate('/');
+    dispatch(setActivePage('home'));
+    dispatch(getAllPosts()).then((res: any) => {
+      if(res && res.payload !== undefined){
+        navigate('/');
+      }
+    })
   };
 
  useEffect(() => {
@@ -100,7 +105,7 @@ const Left = () => {
   const editProfile = (userId: string) => {
     navigate(`/profile/create/${userId}`)
   }
-
+const me = getUser && getUser._doc && getUser._doc._id;
   return (
     <div className='p-2 sticky top-0'>
       <div className='flex flex-col rounded-tl-3xl justify-center bg-white p-6'>
@@ -202,9 +207,9 @@ const Left = () => {
       <p className={`text-xs font-semibold group-hover:text-purple-500 ${active === 'notification' ? 'text-purple-500': 'text-black'}`}> Notification</p>
       </div>
       {
-        unViewednotificationCount && unViewednotificationCount > 0 ? (
+       whoToNotify === me && unViewednotificationCount && unViewednotificationCount > 0 ? (
         <div className={`group-hover:text-purple-500 group-hover:rounded-full group-hover:bg-purple-500 ${active === 'notification' ? 'bg-purple-500 border-purple-500 text-white' : unViewednotificationCount > 0 ? 'bg-purple-500 border-purple-500 text-white' : 'text-black dark:text-white border border-black'} font-semibold group-hover:border group-hover:border-purple-500 group-hover:bg-white p-1 group-hover:text-black w-4 h-4 flex items-center justify-center text-[9px] rounded-full`}>
-          { unViewednotificationCount && unViewednotificationCount}
+          { whoToNotify === me && unViewednotificationCount && unViewednotificationCount}
         </div>
         
         ) : (<></> )

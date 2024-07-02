@@ -6,7 +6,7 @@ import { ReactComponent as BellLogo } from '../../../../assets/notificationLogo.
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../hooks';
 import { openpostForm, selectPost } from '../home/PostSlice';
-import { selectUser, setActivePage } from '../auth/authSlice';
+import { getOtherUser, selectUser, setActivePage } from '../auth/authSlice';
 
 
 const NavBar = () => {
@@ -72,7 +72,12 @@ const goTrend = () => {
     dispatch(setActivePage('profile'));
     if(!getUser)return;
     const userId = getUser && getUser._doc && getUser._doc._id;
-    navigate(`/profile/${userId}`);
+    dispatch(getOtherUser(userId)).then((res: any) => {
+      if(res && res.payload !== undefined){
+        const myId = res && res.payload && res.payload._doc && res.payload._doc._id;
+        navigate(`/profile/${myId}`);
+      }
+    })
   };
   
   

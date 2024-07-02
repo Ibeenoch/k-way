@@ -31,12 +31,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import EmojiPicker from "emoji-picker-react";
 import { HeartIcon } from "@heroicons/react/24/outline";
 import { addNotification, getAllUser, getOtherUser,  } from '../auth/authSlice'
-import { io, Socket } from 'socket.io-client'
+import { socket } from '../../../../index'
 
 
 
 const SinglePost = () => {
-  const socket: Socket = io('http://localhost:5800');
     const desktopMenuRef = useRef<HTMLDivElement>(null);
     const getUser = JSON.parse(localStorage.getItem('user') as any);
     const [desktopMenu, setDesktopMenu] = useState<boolean>(false);
@@ -138,6 +137,7 @@ const SinglePost = () => {
 
           
   const handleReplyComent = async (commentId: string) => {
+    
     dispatch(getAllRepliesForComment(commentId)).then((res: any) => {
         if(res && res.payload !== undefined){
             console.log('replies comments ', res.payload)
@@ -264,13 +264,13 @@ const handleBookmark = async (postId: string) => {
     setDesktopCommentMenu(false);
   };
 
-  useEffect(() => {
-    document.body.classList.add('bg-black');
+  // useEffect(() => {
+  //   document.body.classList.add('bg-black');
 
-    return() => {
-        document.body.classList.remove('bg-black');
-    };
-  }, [])
+  //   return() => {
+  //       document.body.classList.remove('bg-black');
+  //   };
+  // }, [])
 
   const showMobileModal = (img: any, id: any) => {
 
@@ -337,13 +337,13 @@ const viewOthersProfile = ( userId: string ) => {
 
   const postOwner = post && post.owner && post.owner._id;
   return (
-    <div className="bg-black h-screen">
-        <div onClick={handleGoBack} className='bg-white sm:bg-transparent sm:fixed flex gap-3 py-2 cursor-pointer'>
+    <div className="min-h-screen">
+        <div onClick={handleGoBack} className=' sm:fixed flex gap-3 py-2 cursor-pointer'>
           <BackArrowLogo  className='w-4 h-4 cursor-pointer sm:fill-white fill-black' />
         <h2 className='text-xs font-medium text-black sm:text-white'>Back to Post Feeds</h2>
         </div>
 
-    <div className="sm:mx-[25%] bg-white h-screen">
+    <div className="sm:mx-[25%] h-screen">
          <div  className="p-3 max-w-full bg-white dark-bg-gray-700 border border-gray-400">
          
         <div className="flex items-center gap-2 w-full">

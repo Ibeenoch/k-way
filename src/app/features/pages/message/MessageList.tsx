@@ -2,14 +2,13 @@
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch } from '../../../hooks';
 import { fetchChat, findChatIdForTwoUsers, getOtherUser } from '../auth/authSlice';
-import { Socket, io } from 'socket.io-client';
+import { socket } from '../../../../index'
 
 
 
 const MessageList = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const socket: Socket = io('http://localhost:5800');
     const getUsers = JSON.parse(localStorage.getItem('alluser') as any);
     const getAUser = JSON.parse(localStorage.getItem('user') as any);
 
@@ -66,6 +65,15 @@ const MessageList = () => {
 
     const me = getAUser && getAUser._doc && getAUser._doc._id;
 
+    const viewUser = (userId: string) => {
+      dispatch(getOtherUser(userId)).then((res) => {
+        if(res && res.payload !== undefined){
+          const myId = res && res.payload && res.payload._doc && res.payload._doc._id;
+          navigate(`/profile/${myId}`);
+        }
+      })
+    };
+
   return (
     <div>
       
@@ -82,7 +90,7 @@ const MessageList = () => {
                 <div onClick={() =>viewProfile(person._id)} className='flex gap-2 cursor-pointer'>
                   {
                     person && person.profilePhoto && person.profilePhoto.url ? (
-                      <img className='w-9 h-9 rounded-full' src={person && person.profilePhoto && person.profilePhoto.url} alt="" />
+                      <img onClick={() => viewUser(person && person._id)} className='w-9 h-9 rounded-full' src={person && person.profilePhoto && person.profilePhoto.url} alt="" />
                     ) : (
                       <img className='w-9 h-9 rounded-full' src={`${process.env.PUBLIC_URL}/images/user.png`} alt="" />
                     )

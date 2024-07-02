@@ -7,10 +7,9 @@ import { addNotification, getAllNotificationForAUser, selectUser, setProfileType
 import { useNavigate, useParams } from "react-router-dom";
 import { getAllPosts } from "../home/PostSlice";
 import { getFollowers, getFollowing } from "../auth/authSlice";
-import { io, Socket } from 'socket.io-client'
+import { socket } from '../../../../index'
 
 const ProfileMiddle = () => {
-  const socket: Socket = io('http://localhost:5800');
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { id } = useParams();
@@ -225,6 +224,12 @@ const ProfileMiddle = () => {
     //   navigate(`/profile/${otheruser && otheruser._doc && otheruser._doc._id}`)
     // }
 
+    const handleChat = () => {
+      const getUser = JSON.parse(localStorage.getItem('user') as any);
+      const me = getUser && getUser._doc && getUser._doc._id;
+      const token = getUser && getUser.token;
+
+    }
   
 
     useEffect(() => {
@@ -309,7 +314,7 @@ const ProfileMiddle = () => {
       user && user._doc && user._doc.following &&  user._doc.following.includes(otherperson && otherperson._doc && otherperson._doc._id) ? 'Unfollow' : 'Follow'
       }
       </button>
-        <button className="text-white bg-black hover:bg-purple-600 hover:text-white duration-200 hover:border-white hover:scale-105 rounded-2xl border border-white font-semibold text-center px-4 py-1">Chat</button>
+        <button onClick={handleChat} className="text-white bg-black hover:bg-purple-600 hover:text-white duration-200 hover:border-white hover:scale-105 rounded-2xl border border-white font-semibold text-center px-4 py-1">Chat</button>
       </div>    
           ) : (
             <div className="mx-auto flex justify-center gap-6 py-4 bg-white">

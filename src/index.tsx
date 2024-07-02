@@ -8,11 +8,14 @@ import './index.css';
 import { PersistGate } from 'redux-persist/integration/react'
 import { persistStore } from 'redux-persist'
 import { AppProvider } from './app/features/pages/home/homeContext';
+import { io, Socket } from 'socket.io-client'
+
+export const socket: Socket = io('http://localhost:5800');
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
 
-export var persistor = persistStore(store)
+export var persistor = persistStore(store);
 
 root.render(
   <React.StrictMode>
