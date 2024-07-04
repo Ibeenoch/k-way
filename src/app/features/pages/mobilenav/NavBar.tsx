@@ -17,6 +17,7 @@ const NavBar = () => {
     const [ispost, setispost] = useState<boolean>(false);
     const [isprofile, setisProfile] = useState<boolean>(false);
     const [postModal, setPostModal] = useState<boolean>(false);
+    const [isScrolling, setIsScrolling] = useState<boolean>(false);
     const getUser = JSON.parse(localStorage.getItem('user') as any);
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
@@ -104,12 +105,22 @@ const goTrend = () => {
    dispatch(setActivePage('post'))
   };
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolling(true);
+    }
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
 
   return (
     <div>
       
       {mobileIconModal ? (
-        <div className="fixed bottom-0 bg-black pr-3 pl-3 py-2 w-full rounded-full sm:hidden">
+        <div className={`fixed ${postModal ? 'z-0' : 'z-40'} bottom-0 bg-black pr-3 pl-3 py-2 w-full rounded-full sm:hidden`} >
 
           <div className="flex gap-2 justify-around items-center">
             <HomeLogo onClick={goHome} className={`w-9 h-9 ${ active === 'home' ? 'stroke-purple-600 fill-purple-600' : 'stroke-white fill-white' } `} />
@@ -142,32 +153,11 @@ const goTrend = () => {
       ) : (
         <div
           onClick={showFullMobileScreen}
-          className="fixed bottom-0 left-[40%] sm:hidden cursor-pointer"
+          className="fixed bottom-0 left-5 sm:hidden cursor-pointer"
         >
           <div className="flex justify-around items-center">
-            {/* bg-[#dcfe5f] */}
             <div className="p-4 bg-black border border-white rounded-full">
-              <svg
-                className="w-8 h-8 fill-white stroke-white"
-                version="1.1"
-                xmlns="http://www.w3.org/2000/svg"
-                x="0px"
-                y="0px"
-                viewBox="0 0 256 256"
-                enable-background="new 0 0 256 256"
-              >
-                <metadata>
-                  {" "}
-                  Svg Vector Icons : http://www.onlinewebfonts.com/icon{" "}
-                </metadata>
-                <g>
-                  <g>
-                    <g>
-                      <path d="M124.1,10.8c-1,0.6-2.6,1.9-3.4,3l-1.5,2L119,67.4l-0.1,51.6H68c-56.6,0-53.2-0.2-56.4,3.9c-2.2,2.9-2.2,7.6,0,10.5c3.1,4.1-0.3,3.9,56.4,3.9h50.9V188c0,56.6-0.2,53.2,3.9,56.4c2.9,2.2,7.6,2.2,10.5,0c4.1-3.1,3.9,0.3,3.9-56.4v-50.9H188c56.6,0,53.2,0.2,56.4-3.9c2.2-2.9,2.2-7.6,0-10.5c-3.1-4.1,0.3-3.9-56.4-3.9h-50.9V68c0-56.5,0.2-53.2-3.8-56.3C130.8,9.9,126.8,9.4,124.1,10.8z" />
-                    </g>
-                  </g>
-                </g>
-              </svg>
+             <PlusIcon  className="w-8 h-8 fill-white stroke-white"/>
             </div>
           </div>
         </div>

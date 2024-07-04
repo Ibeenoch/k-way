@@ -258,6 +258,16 @@ export const getAUser = async (userId: any) => {
    }
 };
 
+export const searchUser = async (searchWord: string) => {
+  try {
+      const res = await axios.get(`${API}/user/searchuser?searchWord=${searchWord}`, );
+      return res.data;
+    
+   } catch (error) {
+    console.log(error)
+   }
+};
+
 export const getAllUser = async () => {
   try {
 

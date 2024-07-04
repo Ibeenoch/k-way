@@ -18,6 +18,7 @@ export interface userState {
   whoToNotify: string;
   unViewednotificationCount: number;
   users: any;
+  searchUsers: any;
   chatId: string;
   followers: any[];
   following: any[];
@@ -30,6 +31,7 @@ const initialState: userState = {
   user: authUser ? authUser : {},
   otherperson: otherUser ? otherUser : {},
   users: allUser ? allUser : [],
+  searchUsers: [],
   notification: [],
   notifications: [],
   chat: [],
@@ -216,6 +218,18 @@ export const getAUser = createAsyncThunk(
   async (data: any) => {
     try {
       const res = await api.getAUser(data);
+      return res;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
+export const searchUser = createAsyncThunk(
+  "/user/search",
+  async (word: string) => {
+    try {
+      const res = await api.searchUser(word);
       return res;
     } catch (error) {
       console.log(error);
@@ -490,6 +504,18 @@ export const authSlice = createSlice({
          };
       })
       .addCase(getAllUser.rejected, (state, action) => {
+        state.status = "failed";
+      })
+      .addCase(searchUser.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(searchUser.fulfilled, (state, action) => {
+        if(action.payload !== undefined){
+          state.status = "success";
+          state.searchUsers = action.payload;
+         };
+      })
+      .addCase(searchUser.rejected, (state, action) => {
         state.status = "failed";
       })
       .addCase(findChatIdForTwoUsers.pending, (state, action) => {

@@ -1,26 +1,27 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom/client";
+import React, { lazy, Suspense } from "react";
+import ReactDOM from "react-dom/client";
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import { Toaster, ToastOptions } from "react-hot-toast"
-import Home from "./app/features/pages/home/Home";
-import Profile from "./app/features/pages/profile/Profile";
-import Notification from "./app/features/pages/Notification/Notification";
-import ChatRoom from "./app/features/pages/chatroom/ChatRoom";
-import Message from "./app/features/pages/message/Message";
-import Trend from "./app/features/pages/trendlist/Trend";
-import Trends from "./app/features/pages/trendmain/Trends";
-import SignUp from "./app/features/pages/auth/SignUp";
-import Login from "./app/features/pages/auth/Login";
-import ProfileForm from "./app/features/pages/auth/ProfileForm";
-import Verification from "./app/features/pages/auth/Verification";
-import PasswordRecovery from "./app/features/pages/auth/PasswordRecovery";
-import ChangePassword from "./app/features/pages/auth/ChangePassword";
-import ReplyComment from "./app/features/pages/home/ReplyComment";
-import EditComment from "./app/features/pages/home/EditComment";
-import SinglePost from "./app/features/pages/singlePost/SinglePost";
-import ViewPerson from "./app/features/pages/home/ViewPerson";
+const Home = lazy(() => import("./app/features/pages/home/Home"));
+const Profile = lazy(() => import("./app/features/pages/profile/Profile"));
+const Notification = lazy(() => import("./app/features/pages/Notification/Notification"));
+const ChatRoom = lazy(() => import("./app/features/pages/chatroom/ChatRoom"));
+const Message = lazy(() => import("./app/features/pages/message/Message"));
+const Trend = lazy(() => import("./app/features/pages/trendlist/Trend"));
+const Trends = lazy(() => import("./app/features/pages/trendmain/Trends"));
+const SignUp = lazy(() => import("./app/features/pages/auth/SignUp"));
+const Login = lazy(() => import("./app/features/pages/auth/Login"));
+const ProfileForm = lazy(() => import("./app/features/pages/auth/ProfileForm"));
+const Verification = lazy(() => import("./app/features/pages/auth/Verification"));
+const PasswordRecovery = lazy(() => import("./app/features/pages/auth/PasswordRecovery"));
+const ChangePassword = lazy(() => import("./app/features/pages/auth/ChangePassword"));
+const ReplyComment = lazy(() => import("./app/features/pages/home/ReplyComment"));
+const EditComment = lazy(() => import("./app/features/pages/home/EditComment"));
+const SinglePost = lazy(() => import("./app/features/pages/singlePost/SinglePost"));
+const ViewPerson = lazy(() => import("./app/features/pages/home/ViewPerson"));
+
 
 const router = createBrowserRouter([
   {
@@ -115,8 +116,9 @@ function App() {
   return (
     
       <div className="App">
+        <Suspense>
         <RouterProvider router={router} />
-        
+        </Suspense>
         <Toaster toastOptions={{
           error: {
             style: {

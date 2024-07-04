@@ -571,15 +571,11 @@ const handleTouchEnd = (e : React.TouchEvent<HTMLDivElement>) => {
     setcontent(e.target.value);
   };
 
-  const hideMobileMenu = (e: MouseEvent) => {
-    if (
-      mobileMenuRef.current &&
-      !mobileMenuRef.current.contains(e.target as Node)
-    ) {
-      
-      setMenu(false);
-    }
-  };
+    const handleClickInside = (e: React.MouseEvent) => {
+      e.stopPropagation();
+      setMenu(true)
+  }
+
 
   const hideDeskTopMenu = (e: MouseEvent) => {
    if (
@@ -678,17 +674,20 @@ const goProfile = () => {
 
 
 
+
   useEffect(() => {
-    if(hideMobileMenu){
-      document.addEventListener("mousedown", hideMobileMenu);
-    }else{
-      document.addEventListener("mousedown", hideMobileMenu);
-        };
+   const hideMobileMenu = (e: MouseEvent) => {
+    if ( mobileMenuRef.current && !mobileMenuRef.current.contains(e.currentTarget as Node)) {
+      setMenu(false);
+    }
+  };
+        
+    document.addEventListener("mousedown", hideMobileMenu);
 
     return () => {
       document.removeEventListener("mousedown", hideMobileMenu);
     };
-  }, [hideMobileMenu]);
+  }, [mobileMenuRef]);
 
   useEffect(() => {
     if(hideDeskTopMenu){
@@ -1042,40 +1041,40 @@ const viewNextImage = () => {
         id="mobilemenu"
         className={`fixed ${
           menu && post._id === postClicked ? "block" : "hidden"
-        } bottom-0 bg-white p-5 w-full h-auto rounded-tl-3xl rounded-tr-3xl sm:hidden`}
+        } bottom-0 left-0 bg-white pt-10 pl-5 pr-5 pb-5 z-40 w-full h-[40%] rounded-tl-3xl rounded-tr-3xl sm:hidden`}
       >
          {
            getUser !== undefined && getUser && getUser._doc && getUser._doc._id  ===   post && post.owner && post.owner._id ? (
                       <>
-                    <div onClick={() =>handleEditPost(post._id)} className="flex gap-2 px-2 cursor-pointer items-center pt-4">
+                    <div onClick={() =>handleEditPost(post._id)} className="flex gap-2 px-2 cursor-pointer items-center py-4">
                       <EditLogo  className="stroke-black w-4 h-4"/>
-                      <p className="text-black text-md">Edit Post</p>
+                      <p className="text-black text-lg">Edit Post</p>
                     </div>
-                    <div  onClick={() =>handleDeletePost(post._id)} className="flex gap-2 cursor-pointer items-center pt-4">
+                    <div  onClick={() =>handleDeletePost(post._id)} className="flex gap-2 px-2 cursor-pointer items-center py-4">
                       <TrashLogo className="fill-black stroke-black w-6 h-6"/>
-                      <p className="text-black text-md">Delete Post</p>
+                      <p className="text-black text-lg">Delete Post</p>
                     </div>
                       </>
                     ) : (
                       <>
-                       <div className="flex gap-2 cursor-pointer items-center pt-4">
+                       <div className="flex gap-2 cursor-pointer items-center px-2 py-4">
                     <AddContactLogo  className="fill-black stroke-black w-5 h-5"/>
-                    <p className="text-black text-md">Follow @texilola😎</p>
+                    <p className="text-black text-lg">Follow @texilola😎</p>
                   </div>
 
-                  <div className="flex gap-2 items-center pt-4  cursor-pointer">
+                  <div className="flex gap-2 items-center px-2 py-4  cursor-pointer">
                     <BlockContactLogo  className="fill-black stroke-black w-5 h-5"/>
-                    <p className="text-black text-md">Block @texilola😎</p>
+                    <p className="text-black text-lg">Block @texilola😎</p>
                   </div>
 
-                  <div className="flex gap-2 items-center cursor-pointer pt-4">
+                  <div className="flex gap-2 items-center cursor-pointer px-2 py-4">
                     <ReportContactLogo  className="fill-black stroke-black w-5 h-5"/>
-                    <p className="text-black text-md">Report Post</p>
+                    <p className="text-black text-lg">Report Post</p>
                   </div>
 
-                  <div className="flex gap-2 cursor-pointer items-center pt-4">
+                  <div className="flex gap-2 cursor-pointer items-center px-2 py-4">
                     <MuteContactLogo   className="fill-black stroke-black w-5 h-5"/>
-                    <p className="text-black text-md">Mute @texilola😎</p>
+                    <p className="text-black text-lg">Mute @texilola😎</p>
                   </div>
                       </>
                     )

@@ -129,6 +129,24 @@ export const deletepost = async(post: any) => {
   }
 }
 
+export const searchForPost = async(searchWord: string) => {
+  try {
+    const res = await axios.get(`${API}/post/searchpost?searchWord=${searchWord}`);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export const fetchAllPostsForAUser = async(userId: string) => {
+  try {
+    const res = await axios.get(`${API}/post/user/${userId}`);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export const fetchAllPosts = async() => {
   try {
     const res = await axios.get(`${API}/post/all`);
