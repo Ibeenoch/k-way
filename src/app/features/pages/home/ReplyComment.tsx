@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { allCommentForAPost, commentOnPost, deleteComment, getAllRepliesForComment, likeReplyComment, replyComment, selectPost } from './PostSlice';
+import { allCommentForAPost, commentOnPost, deleteComment, deleteRepliedComment, getAllRepliesForComment, likeReplyComment, replyComment, selectPost } from './PostSlice';
 
 import { ReactComponent as CommentLogo } from '../../../../assets/comment.svg';
 import { ReactComponent as ReplyLogo } from '../../../../assets/replyLogo.svg';
@@ -141,17 +141,18 @@ const handleGoBack = () => {
 }
 
 const handleEditIcon = (commentId: string, postId: string) => {
-  navigate(`/edit/${postId}/${commentId}`);
+  navigate(`/edit/${commentId}`);
 }
 
-const getConfirmation = (commentId: string) => {
+const getConfirmation = (theCommentId: string) => {
   const acceptTodelete = window.confirm('Are you sure you want to trash this comment? this action cannot be undo!!!');
   if(acceptTodelete){
       const token = getUser && getUser.token;
+      const repliedId = theCommentId;
       const comments = {
-          commentId,  token
+          commentId,  token, repliedId
       }
-      dispatch(deleteComment(comments)).then((res: any) => {
+      dispatch(deleteRepliedComment(comments)).then((res: any) => {
           console.log('deleted comment ', res)
       })
   }
@@ -163,9 +164,9 @@ const getConfirmation = (commentId: string) => {
         {/* desktop comment modal  */}
        <div className='sm:mx-[30%] bg-white h-screen p-3'>
         
-        <div className='flex gap-3'>
-          <BackArrowLogo onClick={handleGoBack} className='w-4 h-4 cursor-pointer' />
-        <h2 className='text-xs font-medium text-black'>Reply Comment</h2>
+        <div onClick={handleGoBack} className='flex gap-3'>
+          <BackArrowLogo className='w-4 h-4 cursor-pointer' />
+        <h2 className='text-xs font-medium text-black cursor-pointer'>Reply Comment</h2>
         </div>
         <div className="fixed max-w-[100%] sm:max-w-[38%] bottom-0 pt-2 border border-gray-400 rounded-xl">
             <div className="flex bg-gray-100 items-center max-h-[30px] p-2 mb-1 rounded-xl">

@@ -263,6 +263,24 @@ export const deleteComment = async(comments: any) => {
   }
 }
 
+export const deleteRepliedComment = async(comments: any) => {
+  try {
+    const repliedId = comments.repliedId;
+    const commentId = comments.commentId;
+    const token = comments.token;
+
+    const option = {
+      headers: {
+        'authorization': `Bearer ${token}`
+      }
+    };
+    const res = await axios.delete(`${API}/post/deleterepliedcomment/${repliedId}/${commentId}`, option);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export const replyComment = async(comments: any) => {
   try {
     

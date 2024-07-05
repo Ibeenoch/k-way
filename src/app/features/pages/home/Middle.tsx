@@ -665,7 +665,6 @@ const handleTouchEnd = (e : React.TouchEvent<HTMLDivElement>) => {
           if(stories[clickedStatusIndex + 1]){
             let user = stories[clickedStatusIndex + 1];
             let userAId = user._id;
-            console.log('stories  ', stories[clickedStatusIndex + 1], userAId );
             viewStories(userAId, clickedStatusIndex + 1);
             setStartShowingIndex(0);
           }else{

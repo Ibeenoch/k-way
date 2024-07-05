@@ -250,6 +250,15 @@ export const deleteComment = createAsyncThunk("/post/deletecomment", async (comm
   }
 });
 
+export const deleteRepliedComment = createAsyncThunk("/post/deletereplycomment", async (comments: any) => {
+  try {
+    const res = await api.deleteRepliedComment(comments);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 export const allCommentForAPost = createAsyncThunk("/post/allcomment", async (comments: any) => {
   try {
     const res = await api.allCommentsforaPost(comments);
@@ -462,6 +471,20 @@ export const postSlice = createSlice({
         }
       })
       .addCase(getAllRepliesForComment.rejected, (state, action) => {
+        state.status = "failed";
+      })
+      .addCase(deleteRepliedComment.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(deleteRepliedComment.fulfilled, (state, action) => {
+        if (action.payload !== undefined) {
+          state.status = "success";
+          const index = state.repliedcomments.findIndex((c: any) => c._id === action.payload);
+          console.log('index replies ', index);
+          state.repliedcomments.splice(index, 1)
+        }
+      })
+      .addCase(deleteRepliedComment.rejected, (state, action) => {
         state.status = "failed";
       })
       .addCase(getAPost.pending, (state, action) => {

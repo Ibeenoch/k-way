@@ -264,13 +264,6 @@ const handleBookmark = async (postId: string) => {
     setDesktopCommentMenu(false);
   };
 
-  // useEffect(() => {
-  //   document.body.classList.add('bg-black');
-
-  //   return() => {
-  //       document.body.classList.remove('bg-black');
-  //   };
-  // }, [])
 
   const showMobileModal = (img: any, id: any) => {
 
@@ -338,7 +331,7 @@ const viewOthersProfile = ( userId: string ) => {
   const postOwner = post && post.owner && post.owner._id;
   return (
     <div className="min-h-screen">
-        <div onClick={handleGoBack} className=' sm:fixed flex gap-3 py-2 cursor-pointer'>
+        <div onClick={handleGoBack} className=' sm:fixed flex gap-3 bg-white p-2 cursor-pointer'>
           <BackArrowLogo  className='w-4 h-4 cursor-pointer sm:fill-white fill-black' />
         <h2 className='text-xs font-medium text-black sm:text-white'>Back to Post Feeds</h2>
         </div>
@@ -517,7 +510,7 @@ const viewOthersProfile = ( userId: string ) => {
             <p className="text-[8px] text-gray-600">{post.bookmark.length}</p>
           </div>
 
-          <p className="text-[10px] mt-3 text-gray-600">{post.comments.length} comments</p>
+          <p className="text-[10px] mt-3 text-gray-600 cursor-pointer">{post.comments.length} comments</p>
         </div>
         {/* icons */}
         <div className="flex justify-between items-center">
@@ -559,7 +552,7 @@ const viewOthersProfile = ( userId: string ) => {
       
 
             {/* view other people comments  */}
-            
+            <div className="bg-white h-screen">
             {
               comments && comments.length > 0 && Array.isArray(comments) ? (
                 comments.map((comment) => (
@@ -652,10 +645,12 @@ const viewOthersProfile = ( userId: string ) => {
             </div>
                 ))
               ) : (
-                <> <p className="text-gray-600 text-center pb-4 text-[10px] bg-white pt-4 px-2">No comment has been added</p></>
+                <div className="h-screen bg-white"> 
+                <p className="text-gray-600 text-center pb-4 text-[10px] bg-white pt-4 px-2">No comment has been added</p>
+                </div>
               )
             }
-
+          </div>
 
         <div className="fixed max-w-[100%] sm:max-w-[50%] pt-2 bottom-0 rounded-xl">
             <div className="flex bg-white border border-gray-300 items-center max-h-[30px] py-6 px-2 rounded-xl">

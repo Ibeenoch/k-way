@@ -3,27 +3,23 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../hooks';
 import { commentOnPost, editComment, selectPost } from './PostSlice';
 import ImgLazyLoad from '../lazyLoad/ImgLazyLoad';
-import EmojiPicker from 'emoji-picker-react';
 import { ReactComponent as ProcessingLogo } from '../../../../assets/processingLogo.svg';
 import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 
 
 
-const EditComment = () => {
+const EditReplyComment = () => {
     const [isCommenting, setIsCommenting] = useState<boolean>(false);
     const [commentErr, setCommentErr] = useState<string>("");
     const [comment, setComment] = useState<string>("");
     const getUser = JSON.parse(localStorage.getItem('user') as any);
-    const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);
     const [content, setcontent] = useState<string>("");
-    const { comments, } = useAppSelector(selectPost)
+    const { comments, repliedcomments } = useAppSelector(selectPost)
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
-    const { commentId, postId } = useParams();
-    if(comments){
-        console.log(comments, typeof commentId)
-    }
+    const { commentId } = useParams();
+   
 
     const handleCommentSubmit = () => {
         setIsCommenting(true);
@@ -51,14 +47,9 @@ const EditComment = () => {
         })
       }
 
-      const onEmojiClick = (emojiObject: any) => {
-        console.log("events emoji ", emojiObject);
-        setcontent((prev) => prev + emojiObject.emoji);
-        setShowEmojiPicker(false);
-      };
       const populateComment = () => {
-        const findComment = comments.find((c: any) => c._id.toString() === commentId );
-        console.log('findcomment ', findComment);
+        const findComment = repliedcomments.find((c: any) => c._id.toString() === commentId );
+        console.log('findrepliedcomment ', findComment, repliedcomments);
         setComment(findComment.content);
       }
 
@@ -121,4 +112,4 @@ const EditComment = () => {
   )
 }
 
-export default EditComment
+export default EditReplyComment

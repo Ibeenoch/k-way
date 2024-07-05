@@ -5,6 +5,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import { Toaster, ToastOptions } from "react-hot-toast"
 import { ReactComponent as LoadingLogo } from './assets/loading.svg';
+import EditReplyComment from "./app/features/pages/home/EditReplyComment";
 const Home = lazy(() => import("./app/features/pages/home/Home"));
 const Profile = lazy(() => import("./app/features/pages/profile/Profile"));
 const Notification = lazy(() => import("./app/features/pages/Notification/Notification"));
@@ -109,6 +110,10 @@ const router = createBrowserRouter([
   {
     path: "/edit/:postId/:commentId",
     element: <EditComment />,
+  },
+  {
+    path: "/edit/:commentId",
+    element: <EditReplyComment />,
   },
  
 ]);
