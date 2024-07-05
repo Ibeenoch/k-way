@@ -110,6 +110,7 @@ const Left = () => {
     navigate(`/profile/create/${userId}`)
   }
 const me = getUser && getUser._doc && getUser._doc._id;
+
   return (
     <div className='p-2 sticky top-0'>
       <div className='flex flex-col rounded-tl-3xl justify-center bg-white p-6'>
@@ -179,7 +180,7 @@ const me = getUser && getUser._doc && getUser._doc._id;
         }
       </div>
        {/* nav icons desktop  */}
-      <div className='flex flex-col pt-4 bg-white dark:bg-dark p-2'>
+      <div className='flex flex-col pt-4 bg-white dark:bg-dark pt-2 pl-2 pr-2 pb-[150px]'>
         
         <div onClick={newsFeedActive} className={`group flex cursor-pointer justify-between p-2 text-black ${ active === 'home' ? 'border-r-2 border-r-purple-500': 'border-0' } group-hover:text-purple`}>
           <div className='flex gap-1 items-center'>

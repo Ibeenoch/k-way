@@ -134,7 +134,7 @@ useEffect(() => {
       }
     </div>
       
-      <div className="fixed max-w-[100%] bg-white sm:max-w-[38%] bottom-0 pt-2 border border-gray-400 rounded-xl">
+      <div className="fixed max-w-[100%] bg-white sm:max-w-[38%] bottom-0 left-0 sm:left-auto pt-2 border border-gray-400 rounded-xl">
             <div className="flex bg-white items-center max-h-[38px] p-2 mb-1 rounded-xl">
             <img 
               onClick={() => viewPersonProfile(getUser._doc._id)}

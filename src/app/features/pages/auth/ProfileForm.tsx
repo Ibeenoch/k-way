@@ -161,7 +161,13 @@ console.log('image upload ', image)
             <form className="space-y-6" onSubmit={handleProfile} >
               <div className="flex-none mx-auto w-full relative">
                 {/* image upload  */}
-                <ProfileImageLogo  className="w-16 h-16"/>
+                {
+                  getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url ? (
+                    <img  className="w-16 h-16 rounded-full border border-purple-600" src={`${getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url}`} alt="" />
+                  ) : (
+                    <ProfileImageLogo  className="w-16 h-16"/>
+                  )
+                }
                 <div className="absolute bg-white rounded-full ml-11 -mt-3 cursor-pointer">
                   <CameraLogo onClick={openImgFile} className="w-5 h-5 fill-none" />
                 </div>

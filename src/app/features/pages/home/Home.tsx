@@ -2,16 +2,21 @@ import React, { useEffect, useState } from 'react'
 import Left from './Left'
 import Middle from '../home/Middle'
 import Right from '../home/Right'
-import { useAppDispatch } from '../../../hooks'
+import { useAppDispatch, useAppSelector } from '../../../hooks'
 import { getAUser } from '../auth/authAPI'
-import { addNotification, getAllNotificationForAUser, getAllUser,  } from '../auth/authSlice'
-import { getAllPosts } from './PostSlice';
+import { addNotification, getAllNotificationForAUser, getAllUser, selectUser,  } from '../auth/authSlice'
+import { getAllPosts, selectPost } from './PostSlice';
 import { socket } from '../../../../index'
+import Loading from '../../../Loading'
 
 const Home = () => {
   const dispatch = useAppDispatch();
   const [userUpdated, setUserUpdated] = useState<boolean>(false);
   const getUser = JSON.parse(localStorage.getItem('user') as any);
+  const { status } = useAppSelector(selectPost);
+  const {  } = useAppSelector(selectUser);
+
+ 
 
   useEffect(() => {
     dispatch(getAllUser())
@@ -93,6 +98,7 @@ const Home = () => {
     };
   }, [socket]);
   
+
 
 
 

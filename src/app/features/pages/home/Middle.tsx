@@ -97,6 +97,8 @@ const Middle = () => {
   const [imageUploaded, setImageUploaded] = useState<boolean>(false);
   const [isImageUploaded, setIsImageUploaded] = useState<boolean>(false);
   const [toggleControls, setToggleControls] = useState<boolean>(false);
+  const [clickedStatusIndex, setClickedStatusIndex] = useState<number>(0);
+  const [statusViewerId, setStatusViewerId] = useState<string>('');
   const [postId, setPostId] = useState<string>('');
   const [personalPost, setPersonalPost] = useState<any>();
   const getUser = JSON.parse(localStorage.getItem('user') as any);
@@ -228,7 +230,6 @@ if(id){
       if(res.payload !== undefined){
       setIsUpdated(true);
       hidePostModal();
-      console.log('use it ');
       navigate('/');
       window.scrollTo(0, document.documentElement.scrollHeight);
      }
@@ -252,7 +253,6 @@ if(id){
       dispatch(createStory(post)).then((res: any) => {
         if(res && res.payload !== undefined){
            dispatch(getAvailableStories()).then((res: any) => {
-            console.log('available status ', res);
             toggleRefresh();
             setIsPosting(false);
             hidePostModal();
@@ -410,6 +410,11 @@ const goToPost = async (id: string) => {
  
 }
 
+useEffect(() => {
+  dispatch(getAvailableStories()).then((res: any) => {
+    console.log('story availiable ', res);
+  })
+}, [])
 
 const toggleImageControls = () => {
 setToggleControls((prev) => !prev);
@@ -530,6 +535,8 @@ const handleTouchEnd = (e : React.TouchEvent<HTMLDivElement>) => {
   const hidePostModal = () => {
     setPostModal(false);
     dispatch(openpostForm(false));
+    dispatch(updateViewingStatus(false));
+    dispatch(setWhichPost('post'));
   };
 
   const showFullScreen = (id: string, video: string): void => {
@@ -640,7 +647,9 @@ const handleTouchEnd = (e : React.TouchEvent<HTMLDivElement>) => {
 
   }
 
-  const viewStories = (userId: string) => {
+  const viewStories = (userId: string, index: number) => {
+    setClickedStatusIndex(index);
+    setStatusViewerId(userId); // get the other person userId
     setStoryActive(true);
     dispatch(getAllUserStories(userId)).then((res: any) => {
       if(res && res.payload !== undefined){
@@ -652,11 +661,21 @@ const handleTouchEnd = (e : React.TouchEvent<HTMLDivElement>) => {
   useEffect(() => {
       if(storyActive){
         if(startShowingIndex === viewstories.length ){
-          hideMobileModal();
-          setStoryActive(false);
-          setStartShowingIndex(0);
-          dispatch(updateViewingStatus(false));
-          return;
+
+          if(stories[clickedStatusIndex + 1]){
+            let user = stories[clickedStatusIndex + 1];
+            let userAId = user._id;
+            console.log('stories  ', stories[clickedStatusIndex + 1], userAId );
+            viewStories(userAId, clickedStatusIndex + 1);
+            setStartShowingIndex(0);
+          }else{
+            hideMobileModal();
+            setStoryActive(false);
+            setStartShowingIndex(0);
+            dispatch(updateViewingStatus(false));
+            return;
+          }
+          
         }else{
        let imageInterval = setInterval(() => {
       setStartShowingIndex( startShowingIndex + 1)
@@ -670,69 +689,6 @@ const handleTouchEnd = (e : React.TouchEvent<HTMLDivElement>) => {
   }, [storyActive, startShowingIndex]);
 
   console.log(startShowingIndex, 'story active ', storyActive)
-
-  // useEffect(() => {
-  //   if (storyActive) {
-  //     const imageInterval = setInterval(() => {
-  //       setStartShowingIndex((prev: number) => {
-  //         const nextIndex = prev + 1;
-  //         if (nextIndex >= viewstories.length) {
-  //           clearInterval(imageInterval);
-  //           return prev;
-  //         }
-  //         setDisplayImage(viewstories[nextIndex]);
-  //         return nextIndex;
-  //       });
-  //     }, 4000);
-  
-  //     return () => clearInterval(imageInterval);
-  //   }
-  // }, [storyActive, viewstories]);
-  
-  
-const goHome = () => {
-  setisHome(true);
-  setIsTrend(false);
-  setisnotify(false);
-  setisProfile(false);
-  setispost(false);
-  localStorage.setItem('pageactive', JSON.stringify('homepage'));
-  navigate('/');
-};
-
-const goTrend = () => {
-  setisHome(false);
-  setIsTrend(true);
-  setisnotify(false);
-  setisProfile(false);
-  setispost(false);
-  localStorage.setItem('pageactive', JSON.stringify('trendpage'))
-  navigate('/trends');
-};
-
-const goNotify = () => {
-  setisHome(false);
-  setIsTrend(false);
-  setisnotify(true);
-  setisProfile(false);
-  setispost(false);
-  localStorage.setItem('pageactive', JSON.stringify('notifypage'));
-  navigate('/notification');
-};
-
-const goProfile = () => {
-  setisHome(false);
-  setIsTrend(false);
-  setisnotify(false);
-  setisProfile(true);
-  setispost(false);
-  localStorage.setItem('pageactive', JSON.stringify('profilepage'));
-  if(!getUser)return;
-  const userId = getUser && getUser._doc && getUser._doc._id;
-  navigate(`/profile/${userId}`);
-};
-
-
 
 
   useEffect(() => {
@@ -876,8 +832,8 @@ const viewNextImage = () => {
           <div className="flex gap-2 ">
             {/* view stories  */}
             {
-              stories && stories.length > 0 && stories.map((story: any) => (
-                <div onClick={() =>viewStories(story && story._id)} className="flex-none text-center">
+              stories && stories.length > 0 && stories.map((story: any, index: number) => (
+                <div onClick={() =>viewStories(story && story._id, index)} className="flex-none text-center">
                 <img
                   className="w-20 h-20 rounded-full border-2 border-purple-500 cursor-pointer"
                   src={story && story && story.profilePhoto && story.profilePhoto.url}

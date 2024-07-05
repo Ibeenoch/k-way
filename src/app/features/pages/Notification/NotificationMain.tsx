@@ -9,17 +9,17 @@ import { ReactComponent as CommentLogo } from '../../../../assets/comment.svg'
 import { ReactComponent as BookmarkLogo } from '../../../../assets/bookmark.svg'
 import { ReactComponent as FollowerLogo } from '../../../../assets/follower.svg'
 import { ReactComponent as ReshareLogo } from '../../../../assets/retweet.svg'
+import { ReactComponent as LoadingLogo } from '../../../../assets/loading.svg'
 import { useNavigate } from 'react-router-dom';
+import Loading from '../../../Loading';
 
 const NotificationMain = () => {
-  const { notifications } = useAppSelector(selectUser);
+  const { notifications, status } = useAppSelector(selectUser);
   const getUser = JSON.parse(localStorage.getItem('user') as any);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  if(notifications){
-    console.log('my notication ', notifications);
-  }
+
   const myId = getUser && getUser._doc && getUser._doc._id;
   const viewUser = (userId: string) => {
     dispatch(getOtherUser(userId)).then((res) => {

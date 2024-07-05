@@ -11,7 +11,7 @@ const Right = () => {
   const getAUser = JSON.parse(localStorage.getItem('user') as any);
   const { refresh, toggleRefresh } = useAppContext();
   const dispatch = useAppDispatch();
-  const { trendingPost } = useAppSelector(selectPost)
+  const { trendingPost, viewingStory, whichPost } = useAppSelector(selectPost)
   const navigate = useNavigate();
 
   const handleFollow = (userId: string) => {
@@ -63,8 +63,8 @@ const viewTrend = (trend: string) => {
 
 
 return (
-    <div className='sticky z-0 p-4 top-0 overflow-y-auto'>
-      <div className='w-full bg-white dark:bg-black dark:text-white rounded-3xl p-4'>
+    <div className={`sticky ${viewingStory || whichPost === 'story' ? '-z-10' : 'z-0'}  p-4 top-0 overflow-y-auto`}>
+      <div className='w-full bg-white dark:bg-black dark:text-white rounded-tr-3xl rounded-tl-3xl p-4 border-b border-gray-200'>
 
       <div className='flex justify-between my-2 items-center px-4'>
         <div>
@@ -98,7 +98,7 @@ return (
   }
       </div>
 
-      <div className='w-full bg-white dark:bg-black mt-4 rounded-3xl p-4'>
+      <div className='w-full bg-white dark:bg-black p-4'>
           <h1 className='text-black dark-text-white font-bold text-md'>Suggestions</h1>
           {/* people */}
         {
