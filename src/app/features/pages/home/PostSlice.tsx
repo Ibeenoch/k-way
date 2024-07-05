@@ -9,9 +9,13 @@ export interface PostInterface {
   searchPosts: any[];
   usersPosts: any[];
   stories: any[];
+  storyOwner: any;
   viewstories: any[];
+  trendingPost: any[];
   post: any;
   story: any;
+  currentSearch: string;
+  viewingStory: boolean;
   comments: any[];
   repliedcomments: any[];
   likes: any[];
@@ -27,14 +31,18 @@ export interface PostInterface {
 const initialState: PostInterface = {
   posts: [],
   searchPosts: [],
+  trendingPost: [],
   usersPosts: [],
   stories: [],
   viewstories: [],
   post: {},
   story: {},
+  storyOwner: {},
   comments: [],
   status: "idle",
   repliedcomments: [],
+  viewingStory: false,
+  currentSearch: '',
   likes: [],
   bookmark: [],
   openPostForm: false,
@@ -145,7 +153,7 @@ export const getAllUserPosts = createAsyncThunk("/story/userposts", async (userI
 
 export const getAllUserStories = createAsyncThunk("/story/userstories", async (userId: string) => {
   try {
-    const res = await api.fetchUserStories(userId);
+    const res = await api.fetchAllUserStories(userId);
     return res;
   } catch (error) {
     console.log(error);
@@ -260,6 +268,15 @@ export const replyComment = createAsyncThunk("/post/replycomment", async (commen
   }
 });
 
+export const topPostTrending = createAsyncThunk("/post/trending", async () => {
+  try {
+    const res = await api.postTrending();
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 
 export const postSlice = createSlice({
   name: "posts",
@@ -276,6 +293,15 @@ export const postSlice = createSlice({
     },
     setWhichPost: (state, action: PayloadAction<'story' | 'post'>) => {
        state.whichPost = action.payload;
+    },
+    resetSearchPost: (state) => {
+       state.searchPosts = [];
+    },
+    currentSearchTrend: (state, action: PayloadAction<string>) => {
+       state.currentSearch = action.payload;
+    },
+    updateViewingStatus: (state, action: PayloadAction<boolean>) => {
+       state.viewingStory = action.payload;
     },
    
   },
@@ -301,8 +327,7 @@ export const postSlice = createSlice({
       .addCase(createStory.fulfilled, (state, action) => {
         if (action.payload !== undefined && action.payload._id) {
           state.status = "success";
-          console.log('created post ', action.payload)
-          state.story.push(action.payload);
+          state.story = action.payload;
         }
       })
       .addCase(createStory.rejected, (state, action) => {
@@ -420,7 +445,8 @@ export const postSlice = createSlice({
       .addCase(getAllUserStories.fulfilled, (state, action) => {
         if (action.payload !== undefined) {
           state.status = "success";
-          state.viewstories = action.payload;
+          state.viewstories = action.payload.photoUrls;
+          state.storyOwner = action.payload.owner;
         }
       })
       .addCase(getAllUserStories.rejected, (state, action) => {
@@ -590,11 +616,22 @@ export const postSlice = createSlice({
       .addCase(getresharedforaPost.rejected, (state, action) => {
         state.status = "failed";
       })
+      .addCase(topPostTrending.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(topPostTrending.fulfilled, (state, action) => {
+        if (action.payload !== undefined) {
+           state.trendingPost = action.payload;
+        }
+      })
+      .addCase(topPostTrending.rejected, (state, action) => {
+        state.status = "failed";
+      })
       
   },
 });
 
-export const { logout, resetEditCommentStatus, openpostForm, setWhichPost } = postSlice.actions;
+export const { logout, resetEditCommentStatus, openpostForm, setWhichPost, updateViewingStatus, resetSearchPost, currentSearchTrend } = postSlice.actions;
 
 export const selectPost = (state: RootState) => state.posts;
 

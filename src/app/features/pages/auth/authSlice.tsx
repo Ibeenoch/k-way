@@ -16,9 +16,11 @@ export interface userState {
   unreadChatCount: number;
   chat: any;
   whoToNotify: string;
+  viewingProfile: boolean;
   unViewednotificationCount: number;
   users: any;
   searchUsers: any;
+  trendingUser: any;
   chatId: string;
   followers: any[];
   following: any[];
@@ -32,6 +34,7 @@ const initialState: userState = {
   otherperson: otherUser ? otherUser : {},
   users: allUser ? allUser : [],
   searchUsers: [],
+  trendingUser: [],
   notification: [],
   notifications: [],
   chat: [],
@@ -39,6 +42,7 @@ const initialState: userState = {
   unreadChatCount: 0,
   whoToNotify: '',
   chatId: '',
+  viewingProfile: false,
   following: [],
   unViewednotificationCount: 0,
   active: 'home',
@@ -237,6 +241,18 @@ export const searchUser = createAsyncThunk(
   }
 );
 
+export const topUserTrending = createAsyncThunk(
+  "/user/trending",
+  async () => {
+    try {
+      const res = await api.userTrending();
+      return res;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
 export const getAllUser = createAsyncThunk(
   "/user/all",
   async () => {
@@ -276,6 +292,12 @@ export const authSlice = createSlice({
     },
     addChat: (state, action: PayloadAction<any>) => {
       Array.isArray(state.chat) ? state.chat.push(action.payload) : state.chat = [action.payload];
+    },
+    resetSearchUser: (state) => {
+      state.searchUsers = [];
+    },
+    setIsVewingProfile: (state, action: PayloadAction<boolean>) => {
+      state.viewingProfile = action.payload;
     },
   
   },
@@ -530,6 +552,18 @@ export const authSlice = createSlice({
       .addCase(findChatIdForTwoUsers.rejected, (state, action) => {
         state.status = "failed";
       })
+      .addCase(topUserTrending.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(topUserTrending.fulfilled, (state, action) => {
+        if(action.payload !== undefined){
+          state.status = "success";
+          state.trendingUser = action.payload;
+         };
+      })
+      .addCase(topUserTrending.rejected, (state, action) => {
+        state.status = "failed";
+      })
       .addCase(markreadChatBtwTwoUsers.pending, (state, action) => {
         state.status = "loading";
       })
@@ -546,7 +580,7 @@ export const authSlice = createSlice({
   },
 });
 
-export const { logout, setActivePage, setProfileType, addChat } = authSlice.actions;
+export const { logout, setActivePage, setProfileType, addChat, resetSearchUser, setIsVewingProfile } = authSlice.actions;
 
 export const selectUser = (state: RootState) => state.auth;
 

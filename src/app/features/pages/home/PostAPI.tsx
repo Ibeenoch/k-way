@@ -138,6 +138,15 @@ export const searchForPost = async(searchWord: string) => {
   }
 }
 
+export const postTrending = async() => {
+  try {
+    const res = await axios.get(`${API}/post/trending`);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export const fetchAllPostsForAUser = async(userId: string) => {
   try {
     const res = await axios.get(`${API}/post/user/${userId}`);
@@ -155,6 +164,16 @@ export const fetchAllPosts = async() => {
     console.log(error);
   }
 }
+
+export const fetchAllUserStories = async(userId: string) => {
+  try {
+    const res = await axios.get(`${API}/story/all/${userId}`);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 
 export const fetchAvailableStories = async() => {
   try {

@@ -258,6 +258,17 @@ export const getAUser = async (userId: any) => {
    }
 };
 
+export const userTrending = async () => {
+  try {
+
+      const res = await axios.get(`${API}/user/trending`, );
+      return res.data;
+    
+   } catch (error) {
+    console.log(error)
+   }
+};
+
 export const searchUser = async (searchWord: string) => {
   try {
       const res = await axios.get(`${API}/user/searchuser?searchWord=${searchWord}`, );

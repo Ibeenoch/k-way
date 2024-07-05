@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../hooks';
-import { getAUser, getAllNotificationForAUser, getAllUser, getOtherUser, markAllNotificationForAUser, selectUser, setActivePage, setProfileType } from '../auth/authSlice';
+import { getAUser, getAllNotificationForAUser, getAllUser, getOtherUser, markAllNotificationForAUser, resetSearchUser, selectUser, setActivePage, setProfileType } from '../auth/authSlice';
 import { AppContext, useAppContext } from '../home/homeContext'
 import { ReactComponent as Home } from '../../../../assets/homelogo.svg';
 import { ReactComponent as Envelope } from '../../../../assets/messageLogo.svg';
@@ -11,7 +11,7 @@ import { ReactComponent as VerifyMark } from '../../../../assets/verifyChecker.s
 import { ReactComponent as CompanyLogo } from '../../../../assets/companylogo.svg';
 import { ReactComponent as EditLogo } from '../../../../assets/editLogo.svg';
 import { ReactComponent as LoginLogo } from '../../../../assets/login.svg';
-import { getAllPosts } from './PostSlice';
+import { getAllPosts, resetSearchPost } from './PostSlice';
 
 
 const Left = () => {
@@ -79,7 +79,9 @@ const Left = () => {
 
   const trendsActive = () => {
     dispatch(setActivePage('trend'));
-    navigate('/trendlist')
+    dispatch(resetSearchPost());
+    dispatch(resetSearchUser());
+    navigate('/trends');
   }
 
   console.log('getuser ', getUser);

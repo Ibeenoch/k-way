@@ -4,7 +4,7 @@ import { PlusIcon, HeartIcon,  } from "@heroicons/react/24/outline";
 import EmojiPicker from "emoji-picker-react";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { getAUser, getAllUser, getOtherUser, selectUser, setProfileType, userFollowers, userFollowing } from "../auth/authSlice";
-import { allCommentForAPost, bookmarkPost, commentOnPost, createPost, createStory, deletePost, getAPost, getAllPosts, getAllUserStories, getAvailableStories, getBookmarkforaPost, getLikesforaPost, getresharedforaPost, likePost, openpostForm, rePost, resetEditCommentStatus, selectPost, setWhichPost, updatePost } from "./PostSlice";
+import { allCommentForAPost, bookmarkPost, commentOnPost, createPost, createStory, deletePost, getAPost, getAllPosts, getAllUserStories, getAvailableStories, getBookmarkforaPost, getLikesforaPost, getresharedforaPost, likePost, openpostForm, rePost, resetEditCommentStatus, selectPost, setWhichPost, updatePost, updateViewingStatus } from "./PostSlice";
 import toast, { Toast } from 'react-hot-toast'
 import { socket } from '../../../../index'
 import { useNavigate, useParams } from "react-router-dom";
@@ -74,15 +74,17 @@ const Middle = () => {
   const [currentPostId, setCurrentPostId] = useState<string>("");
   const [privacy, setPrivacy] = useState<string>('public');
   const [displayImage, setDisplayImage] = useState<string>('');
+  const [storyActive, setStoryActive] = useState<boolean>(false);
   const [touchstart, setTouchStart] = useState<number>();
   const [touchend, setTouchEnd] = useState<number>();
   const [displayProfileImage, setDisplayProfileImage] = useState<string>('');
   const [videoUrl, setVideoUrl] = useState<string>('');
   const [toRefresh, setToRefresh] = useState<boolean>(false);
   const [isOpenStories, setIsOpenStories] = useState<boolean>(false);
+  const [startShowingIndex, setStartShowingIndex] = useState<any>(1);
 
   const { users, } = useAppSelector(selectUser);
-  const { posts, comments, openPostForm, whichPost, stories, story } = useAppSelector(selectPost);
+  const { posts, comments, openPostForm, whichPost, stories, story, viewstories, storyOwner } = useAppSelector(selectPost);
 
   const fileRef = useRef<HTMLInputElement>(null);
   const [fileInput, setFileInput] = useState<File[]>([]);
@@ -254,7 +256,6 @@ if(id){
             toggleRefresh();
             setIsPosting(false);
             hidePostModal();
-            console.log('use it ');
             navigate('/');
             window.scrollTo(0, 0);
         });
@@ -629,6 +630,65 @@ const handleTouchEnd = (e : React.TouchEvent<HTMLDivElement>) => {
     setCurrentPostId(id);
     setPersonalPost(post);
   };
+
+  const showStoriesModal = () => {
+    dispatch(updateViewingStatus(true))
+    const imageIndex = viewstories[0]
+    setDisplayImage(imageIndex);
+    setMobileModal(true);
+
+
+  }
+
+  const viewStories = (userId: string) => {
+    setStoryActive(true);
+    dispatch(getAllUserStories(userId)).then((res: any) => {
+      if(res && res.payload !== undefined){
+        showStoriesModal();
+      }
+    })
+  };
+
+  useEffect(() => {
+      if(storyActive){
+        if(startShowingIndex === viewstories.length ){
+          hideMobileModal();
+          setStoryActive(false);
+          setStartShowingIndex(0);
+          dispatch(updateViewingStatus(false));
+          return;
+        }else{
+       let imageInterval = setInterval(() => {
+      setStartShowingIndex( startShowingIndex + 1)
+      setDisplayImage(viewstories[startShowingIndex])
+    }, 3000)
+   
+    return () => clearInterval(imageInterval)   
+        }
+    
+    }
+  }, [storyActive, startShowingIndex]);
+
+  console.log(startShowingIndex, 'story active ', storyActive)
+
+  // useEffect(() => {
+  //   if (storyActive) {
+  //     const imageInterval = setInterval(() => {
+  //       setStartShowingIndex((prev: number) => {
+  //         const nextIndex = prev + 1;
+  //         if (nextIndex >= viewstories.length) {
+  //           clearInterval(imageInterval);
+  //           return prev;
+  //         }
+  //         setDisplayImage(viewstories[nextIndex]);
+  //         return nextIndex;
+  //       });
+  //     }, 4000);
+  
+  //     return () => clearInterval(imageInterval);
+  //   }
+  // }, [storyActive, viewstories]);
+  
   
 const goHome = () => {
   setisHome(true);
@@ -778,16 +838,8 @@ const viewNextImage = () => {
     showPostModal();
   };
   
-  const openStoriesModal = () => {
-    
-  }
 
-  const viewStories = (userId: string) => {
-    dispatch(getAllUserStories(userId)).then((res: any) => {
-      console.log('this are the status of the user ', res)
-      
-    })
-  }
+
 
   return (
     <div className="mt-10 max-w-md sm:max-w-full">
@@ -825,13 +877,13 @@ const viewNextImage = () => {
             {/* view stories  */}
             {
               stories && stories.length > 0 && stories.map((story: any) => (
-                <div onClick={() =>viewStories(story && story.owner && story.owner._id)} className="flex-none text-center">
+                <div onClick={() =>viewStories(story && story._id)} className="flex-none text-center">
                 <img
                   className="w-20 h-20 rounded-full border-2 border-purple-500 cursor-pointer"
-                  src={story && story.owner && story.owner.profilePhoto && story.owner.profilePhoto.url}
+                  src={story && story && story.profilePhoto && story.profilePhoto.url}
                   alt=""
                 />
-                <p className="text-[10px] text-black dark:text-white">{story && story.owner && story.owner.fullname}</p>
+                <p className="text-[10px] text-black dark:text-white">{story && story.fullname}</p>
               </div>
 
               ))
@@ -940,7 +992,7 @@ const viewNextImage = () => {
        {
         post.reShared &&  (
           <>
-          <div className="flex border-b border-b-gray-300 pb-4">
+          <div className="flex items-center border-b border-b-gray-300 pb-4">
            <img onClick={() => viewAProfile(post && post.reShare && post.reShare[0] && post.reShare[0].user && post.reShare[0].user._id)} className="w-8 h-8 rounded-full cursor-pointer" src={post && post.reShare && post.reShare[0] && post.reShare[0].user  && post.reShare[0].user.profilePhoto && post.reShare[0].user.profilePhoto.url} alt=""/>
             <p className="text-black dark:text-white text-xs font-medium px-1">{post && post.reShare && post.reShare[0]  && post.reShare[0].user  && post.reShare[0].user.fullname}</p>
             <p className="text-gray-500 text-xs font-semibold px-3">Reshared this post</p>
@@ -1100,16 +1152,21 @@ const viewNextImage = () => {
 
           <div className={`${toggleControls ? 'flex': 'hidden'} justify-between items-center z-14 my-2 px-4`}>
             <div className='flex gap-2'>
-              <img onClick={() => viewAProfile(personalPost && personalPost.owner && personalPost.owner._id )} className='w-9 h-9 rounded-full cursor-pointer z-40' src={displayProfileImage} alt="" />
+              <img onClick={() => viewAProfile(storyActive ? storyOwner && storyOwner._id : personalPost && personalPost.owner && personalPost.owner._id )} className='w-9 h-9 rounded-full cursor-pointer z-40' src={storyActive ? storyOwner && storyOwner.profilePhoto && storyOwner.profilePhoto.url : displayProfileImage} alt="" />
             <div className="z-40">
-              <h1 className='text-sm text-white font-semibold'>{personalPost && personalPost.owner && personalPost.owner.fullname}</h1>
-              <p className='text-xs text-gray-300'>@{personalPost && personalPost.owner && personalPost.owner.handle}</p>
+              <h1 className='text-sm text-white font-semibold'>{storyActive ? storyOwner && storyOwner.fullname : personalPost && personalPost.owner && personalPost.owner.fullname}</h1>
+              <p className='text-xs text-gray-300'>@{storyActive ? storyOwner && storyOwner.handle : personalPost && personalPost.owner && personalPost.owner.handle}</p>
             </div>
             </div>
-            
+
+          {
+            !storyActive && (
             <button onClick={() => handleFollowing(post && post.owner && post.owner._id)} className='text-xs px-4 py-1 bg-black z-40 dark:bg-white rounded-full border border-white text-white dark:text-black transform-transition duration-100 hover:scale-110'>
               { getUser && getUser._doc && getUser._doc.following  && getUser._doc.following.includes(post.owner._id) ? 'UnFollow' : "Follow" }
             </button>
+            )
+          }  
+            
           </div>
 
          
@@ -1121,7 +1178,7 @@ const viewNextImage = () => {
              
               className="max-w-[600px] cursor-pointer z-40"
               src={displayImage}
-              alt=""
+              alt="displayimage"
             />
             </div>
 

@@ -1,7 +1,7 @@
 import NavBar from "../mobilenav/NavBar";
 import { HeartIcon } from "@heroicons/react/24/outline";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
-import {  getAllUser, getOtherUser, setProfileType, userFollowing, getFollowers, getFollowing, addNotification, getAllNotificationForAUser, selectUser, userFollowers } from "../auth/authSlice";
+import {  getAllUser, getOtherUser, setProfileType, userFollowing, getFollowers, getFollowing, addNotification, getAllNotificationForAUser, selectUser, userFollowers, setIsVewingProfile } from "../auth/authSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import { socket } from '../../../../index'
 import { ReactComponent as LogoutLogo } from '../../../../assets/logout.svg';
@@ -79,7 +79,7 @@ const ProfileMiddle = () => {
   
     const [searchWord, setSearchWord] = useState('');
     const { posts, searchPosts, usersPosts } = useAppSelector(selectPost);
-    const { users, } = useAppSelector(selectUser);
+    const { viewingProfile } = useAppSelector(selectUser);
   
   
     const viewTrendsPage = () => {
@@ -645,6 +645,7 @@ const ProfileMiddle = () => {
     };
   
     const hideMobileModal = () => {
+      dispatch(setIsVewingProfile(false));
       setMobileModal(false);
     };
   
@@ -695,6 +696,13 @@ const ProfileMiddle = () => {
     navigate(-1);
   };
 
+
+  const handleViewImage = (img: string, id: string) => {
+    dispatch(setIsVewingProfile(true))
+    setDisplayImage(img);
+    setDisplayImage(img);
+    setMobileModal(true);
+}
   return (
     <div className="mt-10 max-w-md sm:max-w-full bg-white">
       
@@ -711,10 +719,10 @@ const ProfileMiddle = () => {
           otherperson && otherperson._doc && otherperson._doc.profilePhoto && otherperson._doc.profilePhoto.url ? (
             <>
             <div className="relative">
-            <img className='rounded-full w-[250px] h-[250px] cursor-pointer -ml-4' src={otherperson && otherperson._doc && otherperson._doc.profilePhoto && otherperson._doc.profilePhoto.url} alt="" />
+            <img onClick={() => handleViewImage(otherperson && otherperson._doc && otherperson._doc.profilePhoto && otherperson._doc.profilePhoto.url, otherperson && otherperson._doc && otherperson._doc._id)} className='rounded-full w-[250px] h-[250px] cursor-pointer -ml-4' src={otherperson && otherperson._doc && otherperson._doc.profilePhoto && otherperson._doc.profilePhoto.url} alt="" />
              <div onClick={editProfile} className="absolute bottom-0 right-9 cursor-pointer">
-                <svg className="w-5 h-5" fill="none"  stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-              </div> 
+             <EditLogo className="w-5 h-5"/>              
+             </div> 
             </div>
             
             </>
@@ -723,7 +731,7 @@ const ProfileMiddle = () => {
             <div className="relative">
              <img className='rounded-full w-[250px] h-[250px] cursor-pointer -ml-4' src={`${process.env.PUBLIC_URL}/images/user.png`} alt="" />
              <div onClick={editProfile} className="absolute bottom-0 right-9 cursor-pointer">
-                <svg className="w-5 h-5" fill="none"  stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              <EditLogo className="w-5 h-5"/>
               </div> 
             </div>
             
@@ -735,7 +743,7 @@ const ProfileMiddle = () => {
 
         <div className='flex flex-col text-center justify-center'>
             <div className="flex gap-1 justify-center items-center pt-2">
-            <svg fill="none" className="w-5 h-5" viewBox="0 0 24 24"  xmlns="http://www.w3.org/2000/svg"><path d="m21.5609 10.7386-1.36-1.58001c-.26-.3-.47-.86-.47-1.26v-1.7c0-1.06-.87-1.93-1.93-1.93h-1.7c-.39 0-.96-.21-1.26-.47l-1.58-1.36c-.69-.59-1.82-.59-2.52 0l-1.57004 1.37c-.3.25-.87.46-1.26.46h-1.73c-1.06 0-1.93.87-1.93 1.93v1.71c0 .39-.21.95-.46 1.25l-1.35 1.59001c-.58.69-.58 1.81 0 2.5l1.35 1.59c.25.3.46.86.46 1.25v1.71c0 1.06.87 1.93 1.93 1.93h1.73c.39 0 .96.21 1.26.47l1.58004 1.36c.69.59 1.82.59 2.52 0l1.58-1.36c.3-.26.86-.47 1.26-.47h1.7c1.06 0 1.93-.87 1.93-1.93v-1.7c0-.39.21-.96.47-1.26l1.36-1.58c.58-.69.58-1.83-.01-2.52zm-5.4-.63-4.83 4.83c-.14.14-.33.22-.53.22s-.39-.08-.53-.22l-2.42004-2.42c-.29-.29-.29-.77 0-1.06s.77-.29 1.06 0l1.89004 1.89 4.3-4.30001c.29-.29.77-.29 1.06 0s.29.77 0 1.06001z" fill="purple"/></svg>
+              <VerifyMarkLogo className="w-7 h-7 fill-purple-600"/>
             <h1 className='text-black font-bold  cursor-pointer text-md'>{otherperson && otherperson._doc && otherperson._doc.fullname}</h1>
             </div>
             <p className='text-gray-500 text-xs'>@{otherperson && otherperson._doc && otherperson._doc.handle}</p>
@@ -957,7 +965,9 @@ const ProfileMiddle = () => {
               {/* cancel or close  */}
               <CancelLogo onClick={hideMobileModal}  className={`${toggleControls ? 'block': 'hidden'} w-3 h-3 fill-white z-40 mt-4 mr-4 cursor-pointer`} />
             </div>
-            
+
+         {
+          !viewingProfile && (
             <div className={`${toggleControls ? 'flex': 'hidden'} justify-between items-center z-14 my-2 px-4`}>
               <div className='flex gap-2'>
                 <img onClick={() => viewAProfile(personalPost && personalPost.owner && personalPost.owner._id )} className='w-9 h-9 rounded-full cursor-pointer z-40' src={displayProfileImage} alt="" />
@@ -971,6 +981,8 @@ const ProfileMiddle = () => {
                 { getUser && getUser._doc && getUser._doc.following  && getUser._doc.following.includes(post.owner._id) ? 'UnFollow' : "Follow" }
               </button>
             </div>
+              )
+            } 
             
             
             
@@ -986,6 +998,10 @@ const ProfileMiddle = () => {
               </div>
             
               {/* show image  */}
+              {
+                !viewingProfile && (
+
+              <>
             <div className={`hidden sm:z-[20px] sm:px-[10%] ${ toggleControls ? 'sm:fixed' : 'sm:hidden'} inset-0 sm:flex justify-between items-center`}>
               <ArrowPreviousLogo onClick={() => viewPrevImage()} className="w-9 h-9 fill-white cursor-pointer" /> 
               <ArrowNextLogo  onClick={() =>viewNextImage()} className="w-9 h-9 fill-white cursor-pointer" />
@@ -1037,6 +1053,9 @@ const ProfileMiddle = () => {
               }  
                   </button>
                   </div>
+                </> 
+                 )
+              }
             </div>
             </div>
             </div>

@@ -3,12 +3,15 @@ import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { getAllUser, getOtherUser, selectUser, setProfileType, userFollowing } from "../auth/authSlice";
 import { useAppContext } from "./homeContext";
 import { useNavigate } from "react-router-dom";
+import { currentSearchTrend, selectPost } from "./PostSlice";
+import { ReactComponent as MenuLogo } from '../../../../assets/threeDot.svg'
 
 const Right = () => {
   const getUsers = JSON.parse(localStorage.getItem('alluser') as any);
   const getAUser = JSON.parse(localStorage.getItem('user') as any);
   const { refresh, toggleRefresh } = useAppContext();
   const dispatch = useAppDispatch();
+  const { trendingPost } = useAppSelector(selectPost)
   const navigate = useNavigate();
 
   const handleFollow = (userId: string) => {
@@ -53,9 +56,14 @@ const me = getAUser && getAUser._doc  && getAUser._doc._id;
 
 }
 
+const viewTrend = (trend: string) => {
+  dispatch(currentSearchTrend(trend));
+  navigate('/trendlist')
+}
+
 
 return (
-    <div className='sticky -z-10 p-4 top-0 overflow-y-auto'>
+    <div className='sticky z-0 p-4 top-0 overflow-y-auto'>
       <div className='w-full bg-white dark:bg-black dark:text-white rounded-3xl p-4'>
 
       <div className='flex justify-between my-2 items-center px-4'>
@@ -74,125 +82,20 @@ return (
         <h1 className='text-gray-400 pl-4 text-xs'>Trending in Nigeria</h1>
         {/* trends  */}
         
-      <div className='flex justify-between my-2 items-center px-4'>
-        <div>
-          <h1 className='text-black text-sm dark:text-white font-semibold'>#Liverpool</h1>
-          <p className='text-gray-400 text-xs'>157.3k posts</p>
-        </div>
+        {
+    trendingPost && Array.isArray(trendingPost) && trendingPost.map((trend: any) => (
+<div onClick={() =>viewTrend(trend._id)} className='flex cursor-pointer justify-between my-2 items-center px-4'>
+  <div>
+    <h1 className='text-black text-sm dark:text-white font-semibold'>#{trend._id}</h1>
+    <p className='text-gray-400 text-xs'>{trend.count} posts</p>
+  </div>
 
-        <div>
-        <svg className='w-[12px] h-[12px] fill-black dark:fill-white stroke-black dark:stroke-white ' version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" 
-                viewBox="0 0 342.382 342.382"
-                >
-              <g>
-                <g>
-                  <g>
-                    <path d="M45.225,125.972C20.284,125.972,0,146.256,0,171.191c0,24.94,20.284,45.219,45.225,45.219
-                      c24.926,0,45.219-20.278,45.219-45.219C90.444,146.256,70.151,125.972,45.225,125.972z"/>
-                  </g>
-                  <g>
-                    <path d="M173.409,125.972c-24.938,0-45.225,20.284-45.225,45.219c0,24.94,20.287,45.219,45.225,45.219
-                      c24.936,0,45.226-20.278,45.226-45.219C218.635,146.256,198.345,125.972,173.409,125.972z"/>
-                  </g>
-                  <g>
-                    <path d="M297.165,125.972c-24.932,0-45.222,20.284-45.222,45.219c0,24.94,20.29,45.219,45.222,45.219
-                      c24.926,0,45.217-20.278,45.217-45.219C342.382,146.256,322.091,125.972,297.165,125.972z"/>
-                  </g>
-                </g>
-              </g>
-              </svg>
-        </div>
-      </div>
-        
-      <div className='flex justify-between my-2 items-center px-4'>
-        <div>
-          <h1 className='text-black text-sm dark:text-white font-semibold'>#Messi</h1>
-          <p className='text-gray-400 text-xs'>223.5k posts</p>
-        </div>
-
-        <div>
-        <svg className='w-[12px] h-[12px] fill-black dark:fill-white stroke-black dark:stroke-white ' version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" 
-                viewBox="0 0 342.382 342.382"
-                >
-              <g>
-                <g>
-                  <g>
-                    <path d="M45.225,125.972C20.284,125.972,0,146.256,0,171.191c0,24.94,20.284,45.219,45.225,45.219
-                      c24.926,0,45.219-20.278,45.219-45.219C90.444,146.256,70.151,125.972,45.225,125.972z"/>
-                  </g>
-                  <g>
-                    <path d="M173.409,125.972c-24.938,0-45.225,20.284-45.225,45.219c0,24.94,20.287,45.219,45.225,45.219
-                      c24.936,0,45.226-20.278,45.226-45.219C218.635,146.256,198.345,125.972,173.409,125.972z"/>
-                  </g>
-                  <g>
-                    <path d="M297.165,125.972c-24.932,0-45.222,20.284-45.222,45.219c0,24.94,20.29,45.219,45.222,45.219
-                      c24.926,0,45.217-20.278,45.217-45.219C342.382,146.256,322.091,125.972,297.165,125.972z"/>
-                  </g>
-                </g>
-              </g>
-              </svg>
-        </div>
-      </div>
-        
-      <div className='flex justify-between my-2 items-center px-4'>
-        <div>
-          <h1 className='text-black text-sm dark:text-white font-semibold'>#Drake</h1>
-          <p className='text-gray-400 text-xs'>187.7k posts</p>
-        </div>
-
-        <div>
-        <svg className='w-[12px] h-[12px] fill-black dark:fill-white stroke-black dark:stroke-white ' version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" 
-                viewBox="0 0 342.382 342.382"
-                >
-              <g>
-                <g>
-                  <g>
-                    <path d="M45.225,125.972C20.284,125.972,0,146.256,0,171.191c0,24.94,20.284,45.219,45.225,45.219
-                      c24.926,0,45.219-20.278,45.219-45.219C90.444,146.256,70.151,125.972,45.225,125.972z"/>
-                  </g>
-                  <g>
-                    <path d="M173.409,125.972c-24.938,0-45.225,20.284-45.225,45.219c0,24.94,20.287,45.219,45.225,45.219
-                      c24.936,0,45.226-20.278,45.226-45.219C218.635,146.256,198.345,125.972,173.409,125.972z"/>
-                  </g>
-                  <g>
-                    <path d="M297.165,125.972c-24.932,0-45.222,20.284-45.222,45.219c0,24.94,20.29,45.219,45.222,45.219
-                      c24.926,0,45.217-20.278,45.217-45.219C342.382,146.256,322.091,125.972,297.165,125.972z"/>
-                  </g>
-                </g>
-              </g>
-              </svg>
-        </div>
-      </div>
-        
-      <div className='flex justify-between my-2 items-center px-4'>
-        <div>
-          <h1 className='text-black text-sm dark:text-white font-semibold'>#Minions</h1>
-          <p className='text-gray-400 text-xs'>97.7k posts</p>
-        </div>
-
-        <div>
-        <svg className='w-[12px] h-[12px] fill-black dark:fill-white stroke-black dark:stroke-white ' version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" 
-                viewBox="0 0 342.382 342.382"
-                >
-              <g>
-                <g>
-                  <g>
-                    <path d="M45.225,125.972C20.284,125.972,0,146.256,0,171.191c0,24.94,20.284,45.219,45.225,45.219
-                      c24.926,0,45.219-20.278,45.219-45.219C90.444,146.256,70.151,125.972,45.225,125.972z"/>
-                  </g>
-                  <g>
-                    <path d="M173.409,125.972c-24.938,0-45.225,20.284-45.225,45.219c0,24.94,20.287,45.219,45.225,45.219
-                      c24.936,0,45.226-20.278,45.226-45.219C218.635,146.256,198.345,125.972,173.409,125.972z"/>
-                  </g>
-                  <g>
-                    <path d="M297.165,125.972c-24.932,0-45.222,20.284-45.222,45.219c0,24.94,20.29,45.219,45.222,45.219
-                      c24.926,0,45.217-20.278,45.217-45.219C342.382,146.256,322.091,125.972,297.165,125.972z"/>
-                  </g>
-                </g>
-              </g>
-              </svg>
-        </div>
-      </div>
+  <div>
+    <MenuLogo  className='w-[12px] h-[12px] fill-black dark:fill-white stroke-black dark:stroke-white'/>
+  </div>
+</div>
+    ))
+  }
       </div>
 
       <div className='w-full bg-white dark:bg-black mt-4 rounded-3xl p-4'>

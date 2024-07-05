@@ -3,10 +3,10 @@ import { ReactComponent as SearchLogo } from '../../../../assets/searchBar.svg';
 import { ReactComponent as SettingLogo } from '../../../../assets/setting.svg';
 import './trend.css';
 import { useNavigate, useParams } from 'react-router-dom'
-import { searchForPost } from '../home/PostSlice';
+import { resetSearchPost, searchForPost } from '../home/PostSlice';
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import { HeartIcon,  } from "@heroicons/react/24/outline";
-import { getAllUser, getOtherUser, searchUser, selectUser, setProfileType, userFollowing } from "../auth/authSlice";
+import { getAllUser, getOtherUser, resetSearchUser, searchUser, selectUser, setProfileType, userFollowing } from "../auth/authSlice";
 import { allCommentForAPost, bookmarkPost, commentOnPost, deletePost, getAPost, getAllPosts, getBookmarkforaPost, getLikesforaPost, getresharedforaPost, likePost, rePost, selectPost,  } from "../home/PostSlice";
 import { ReactComponent as LikeLogo } from '../../../../assets/like.svg';
 import { ReactComponent as VerifyMarkLogo } from '../../../../assets/verifyChecker.svg';
@@ -59,10 +59,9 @@ const TrendList = () => {
   const [videoUrl, setVideoUrl] = useState<string>('');
   const [toRefresh, setToRefresh] = useState<boolean>(false);
   const [searchuser, setSearchuser] = useState<boolean>(false);
-
-  const [searchWord, setSearchWord] = useState('');
-  const { posts, searchPosts } = useAppSelector(selectPost);
+  const { posts, searchPosts, currentSearch } = useAppSelector(selectPost);
   const { users, searchUsers } = useAppSelector(selectUser);
+  const [searchWord, setSearchWord] = useState(currentSearch ? currentSearch : '');
 
 
   const viewTrendsPage = () => {
@@ -109,6 +108,12 @@ const TrendList = () => {
    const thesearchUser = () => {
     setSearchuser(true)
    };
+
+   useEffect(() => {
+    if(currentSearch){
+      handleTheSearch();
+    }
+   }, [currentSearch])
 
   const [toggleControls, setToggleControls] = useState<boolean>(false);
   const [personalPost, setPersonalPost] = useState<any>();
@@ -487,6 +492,11 @@ const me = getUser && getUser._doc  && getUser._doc._id;
      const follow = { token, userId };
      dispatch(userFollowing(follow))
    };
+
+   useEffect(() => {
+    dispatch(resetSearchPost());
+    dispatch(resetSearchUser());
+   }, [])
  
 const viewPrevImage = () => {
   const findPost = posts.find((p: any) => p._id === currentPostId);
@@ -555,49 +565,6 @@ const viewNextImage = () => {
   </button>
 </div>
 </form>
-
-<div className='flex justify-between my-2 items-center px-4'>
-  <div>
-    <h1 className='text-black text-sm dark:text-white font-semibold'>Currently Trending</h1>
-  </div>
-
-  <div>
-    <SettingLogo className='w-[12px] h-[12px] fill-black dark:fill-white stroke-black dark:stroke-white' />
-  </div>
-</div>
-
-  <h1 className='text-gray-400 pl-4 text-xs'>Trending in Nigeria</h1>
-  {/* trends  */}
-  
-<div onClick={viewTrendsPage}  className='cursor-pointer flex justify-between my-2 items-center px-4'>
-  <div>
-    <h1 className='text-black text-sm dark:text-white font-semibold'>#Liverpool</h1>
-    <p className='text-gray-400 text-xs'>157.3k posts</p>
-  </div>
-
-  <div>
-  <svg className='w-[12px] h-[12px] fill-black dark:fill-white stroke-black dark:stroke-white ' version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" 
-          viewBox="0 0 342.382 342.382"
-          >
-        <g>
-          <g>
-            <g>
-              <path d="M45.225,125.972C20.284,125.972,0,146.256,0,171.191c0,24.94,20.284,45.219,45.225,45.219
-                c24.926,0,45.219-20.278,45.219-45.219C90.444,146.256,70.151,125.972,45.225,125.972z"/>
-            </g>
-            <g>
-              <path d="M173.409,125.972c-24.938,0-45.225,20.284-45.225,45.219c0,24.94,20.287,45.219,45.225,45.219
-                c24.936,0,45.226-20.278,45.226-45.219C218.635,146.256,198.345,125.972,173.409,125.972z"/>
-            </g>
-            <g>
-              <path d="M297.165,125.972c-24.932,0-45.222,20.284-45.222,45.219c0,24.94,20.29,45.219,45.222,45.219
-                c24.926,0,45.217-20.278,45.217-45.219C342.382,146.256,322.091,125.972,297.165,125.972z"/>
-            </g>
-          </g>
-        </g>
-        </svg>
-  </div>
-</div>
 
 <div className='flex items-center justify-around gap-3'>
       <p onClick={thesearchPost} className={` px-12 font-semibold cursor-pointer tracking-widest text-md ${searchuser ? 'text-black' : 'border-b-[3px] border-purple-600 text-purple-600'} `} >Post</p>

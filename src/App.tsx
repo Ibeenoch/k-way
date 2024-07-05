@@ -4,6 +4,7 @@ import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import { Toaster, ToastOptions } from "react-hot-toast"
+import { ReactComponent as LoadingLogo } from './assets/loading.svg';
 const Home = lazy(() => import("./app/features/pages/home/Home"));
 const Profile = lazy(() => import("./app/features/pages/profile/Profile"));
 const Notification = lazy(() => import("./app/features/pages/Notification/Notification"));
@@ -116,7 +117,7 @@ function App() {
   return (
     
       <div className="App">
-        <Suspense>
+        <Suspense fallback={<div className="flex items-center justify-center h-screen w-full"> <LoadingLogo className="w-14 h-14" /> </div>}>
         <RouterProvider router={router} />
         </Suspense>
         <Toaster toastOptions={{
