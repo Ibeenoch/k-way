@@ -1,9 +1,8 @@
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { getAllUser, getOtherUser, userFollowing } from "../auth/authSlice";
 import { useNavigate } from "react-router-dom";
 import { currentSearchTrend, selectPost } from "./PostSlice";
-import { ReactComponent as MenuLogo } from '../../../../assets/threeDot.svg'
 
 const Right = () => {
   const getUsers = JSON.parse(localStorage.getItem('alluser') as any);
@@ -56,7 +55,7 @@ const viewTrend = (trend: string) => {
 
 
 return (
-    <div className={`sticky ${viewingStory || whichPost === 'story' ? '-z-10' : 'z-0'}  p-4 top-0 overflow-y-auto`}>
+    <div className={`sticky ${viewingStory || whichPost === 'story' || whichPost === 'post' ? '-z-10' : 'z-0'}  p-4 top-0 overflow-y-auto`}>
       <div className='w-full bg-white dark:bg-black dark:text-white rounded-tr-3xl rounded-tl-3xl p-4 border-b border-gray-200'>
 
       <div className='flex justify-between my-2 items-center px-4'>
@@ -83,8 +82,8 @@ return (
     <p className='text-gray-400 text-xs'>{trend.count} posts</p>
   </div>
 
-  <div>
-    <MenuLogo  className='w-[12px] h-[12px] fill-black dark:fill-white stroke-black dark:stroke-white'/>
+  <div onClick={() =>viewTrend(trend._id)}>
+    <button className='text-[11px] text-purple-600 border border-purple-600 hover:border-purple-600 font-bold hover:bg-purple-600 hover:text-white px-4 py-1 rounded-2xl bg-white'> View </button>
   </div>
 </div>
     ))
@@ -112,7 +111,7 @@ return (
             </div>
             
             <button onClick={() => handleFollow(person && person._id)} className='text-xs px-4 py-1 bg-black rounded-full text-white hover:bg-purple-600 transform-transition duration-100 hover:scale-110'>
-          {getAUser && getAUser._doc && getAUser._doc.following && getAUser._doc.following.includes(person._id) ? 'Unfollow' : 'Follow'} 
+          {getAUser && getAUser._doc && getAUser._doc.following && getAUser._doc.following.includes(person._id) ? 'Following' : 'Follow'} 
             </button>
           </div>
           ))

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../hooks';
 import { selectPost } from './PostSlice';
 import { useNavigate } from 'react-router-dom';
@@ -10,15 +10,7 @@ const ViewPerson = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const { likes, bookmark, reshared, view } = useAppSelector(selectPost);
-    const { user, otherperson } = useAppSelector(selectUser);
-
-    useEffect(() => {
-        document.body.classList.add('bg-black');
-
-        return() => {
-            document.body.classList.remove('bg-black')
-        };
-    }, []);
+    const { user,  } = useAppSelector(selectUser);
 
     const viewProfile = (userId: string) => {
         dispatch(getOtherUser(userId)).then((res: any) => {
@@ -38,23 +30,18 @@ const ViewPerson = () => {
          const token = getUser && getUser.token;
          const me = getUser && getUser._doc && getUser._doc._id;
          if(me === userId){
-            console.log('the same user');
             return;
          }
          const follow = { token, auserId: userId };
-         dispatch(userFollowing(follow)).then((res: any) => {
-            console.log('started following ', res)
-         });
+         dispatch(userFollowing(follow))
        };
      
     const handleGoBack = () => {
         navigate(-1);
       }
-// if(user){
-//     console.log('me the user ', user && user.mine && user.mine._doc && user.mine._doc._id, ' the other person ', otherperson && otherperson._doc && otherperson._doc._id );
-// }
+
   return (
-    <div className='bg-black'>
+    <div className=''>
          <div onClick={handleGoBack} className='bg-white sm:bg-transparent sm:fixed flex gap-3 py-2 cursor-pointer'>
           <ArrowBackLogo  className='w-4 h-4 cursor-pointer sm:fill-white fill-black' />
         <h2 className='text-xs font-medium text-black sm:text-white'>Back to Post Feeds</h2>

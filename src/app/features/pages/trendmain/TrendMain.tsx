@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react'
-import { ReactComponent as SettingLogo } from '../../../../assets/setting.svg'
+import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../hooks'
 import { currentSearchTrend, selectPost, topPostTrending } from '../home/PostSlice'
 import { selectUser, topUserTrending } from '../auth/authSlice'
 import { useNavigate } from 'react-router-dom'
 import { ArrowLeftIcon } from '@heroicons/react/24/outline'
+import NavBar from '../mobilenav/NavBar'
 
 const TrendMain = () => {
   const dispatch = useAppDispatch();
@@ -59,14 +59,14 @@ const TrendMain = () => {
   
   {
     trendingPost && Array.isArray(trendingPost) && trendingPost.map((trend: any) => (
-<div onClick={() =>viewTrend(trend._id)} className='flex cursor-pointer justify-between my-2 items-center px-4'>
+<div onClick={() =>viewTrend(trend._id)} className='flex cursor-pointer border-b border-gray-200 justify-between my-2 items-center px-4'>
   <div>
     <h1 className='text-black text-sm dark:text-white font-semibold'>#{trend._id}</h1>
     <p className='text-gray-400 text-xs'>{trend.count} posts</p>
   </div>
 
-  <div>
-    <SettingLogo  className='w-[12px] h-[12px] fill-black dark:fill-white stroke-black dark:stroke-white'/>
+  <div onClick={() =>viewTrend(trend._id)}>
+    <button className='text-[11px] text-purple-600 border border-purple-600 hover:border-purple-600 font-bold hover:bg-purple-600 hover:text-white px-4 py-1 rounded-2xl bg-white'> View </button>
   </div>
 </div>
     ))
@@ -74,6 +74,7 @@ const TrendMain = () => {
   
 
 </div>
+<NavBar />
     </div>
   )
 }

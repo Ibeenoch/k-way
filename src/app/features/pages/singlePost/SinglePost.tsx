@@ -1,6 +1,4 @@
 
-import ImgLazyLoad from "../lazyLoad/ImgLazyLoad";
-import { ReactComponent as GlobalTrendLogo } from '../../../../assets/globeTrend.svg';
 import { ReactComponent as LikeLogo } from '../../../../assets/like.svg';
 import { ReactComponent as VerifyMarkLogo } from '../../../../assets/verifyChecker.svg';
 import { ReactComponent as CommentLogo } from '../../../../assets/comment.svg';
@@ -12,25 +10,20 @@ import { ReactComponent as BlockContactLogo } from '../../../../assets/blockCont
 import { ReactComponent as ReportContactLogo } from '../../../../assets/reportContact.svg';
 import { ReactComponent as AddContactLogo } from '../../../../assets/addContact.svg';
 import { ReactComponent as MuteContactLogo } from '../../../../assets/muteContact.svg';
-import { ReactComponent as VideoLogo } from '../../../../assets/videoLogo.svg';
-import { ReactComponent as ImageLogo } from '../../../../assets/imagesLogo.svg';
 import { ReactComponent as CancelLogo } from '../../../../assets/cancelLogo.svg';
 import { ReactComponent as EditLogo } from '../../../../assets/editLogo.svg';
 import { ReactComponent as TrashLogo } from '../../../../assets/trashLogo.svg';
 import { ReactComponent as SendLogo } from '../../../../assets/sendLogo.svg';
 import { ReactComponent as BackArrowLogo } from '../../../../assets/arrowBack.svg';
 import { ReactComponent as ProcessingLogo } from '../../../../assets/processingLogo.svg';
-import { ReactComponent as ArrowDownLogo } from '../../../../assets/arrowDownLogo.svg';
-import { ReactComponent as PlusLogo } from '../../../../assets/plusLogo.svg';
 import { ReactComponent as ThreeDotVerticalLogo } from '../../../../assets/threeDotVerticalLogo.svg';
 import { formatCreatedAt } from "../../../../utils/timeformat";
 import { useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { allCommentForAPost, bookmarkPost, commentOnPost, deleteComment, deletePost, getAPost, getAllRepliesForComment, likeComment, likePost, rePost, selectPost } from "../home/PostSlice";
 import { useNavigate, useParams } from "react-router-dom";
-import EmojiPicker from "emoji-picker-react";
 import { HeartIcon } from "@heroicons/react/24/outline";
-import { addNotification, getAllUser, getOtherUser,  } from '../auth/authSlice'
+import { addNotification, getOtherUser,  } from '../auth/authSlice'
 import { socket } from '../../../../index'
 
 
@@ -368,9 +361,9 @@ const viewOthersProfile = ( userId: string ) => {
   const postOwner = post && post.owner && post.owner._id;
   return (
     <div className="min-h-screen">
-        <div onClick={handleGoBack} className={`sm:fixed flex gap-3 ${commentmenu || menu  ? 'bg-gray-200' : 'bg-white'} p-2 cursor-pointer`} >
-          <BackArrowLogo  className='w-4 h-4 cursor-pointer sm:fill-white fill-black' />
-        <h2 className='text-xs font-medium text-black sm:text-white'>Back to Post Feeds</h2>
+        <div onClick={handleGoBack} className={`flex sm:mx-[25%] gap-3 ${commentmenu || menu  ? 'bg-gray-200' : 'bg-white'} p-2 cursor-pointer`} >
+          <BackArrowLogo  className='w-4 h-4 cursor-pointer fill-black' />
+        <h2 className='text-xs font-medium text-black'>Back to Post Feeds</h2>
         </div>
 
     <div className={`${commentmenu  || menu ? 'bg-gray-200' : 'bg-white'} sm:mx-[25%] h-screen`} >
@@ -503,58 +496,58 @@ const viewOthersProfile = ( userId: string ) => {
         <div className="mt-2 pl-9">
           { post && post.photos && post.photos.length === 1 ? (
             <div className="rounded-3xl overflow-hidden">
-          <ImgLazyLoad onClick={() => showMobileModal(post && post.photos[0] && post.photos[0].url, post && post._id)}
+          <img onClick={() => showMobileModal(post && post.photos[0] && post.photos[0].url, post && post._id)}
                 className="w-[520px] h-[310px] cursor-pointer"
                 src={post && post.photos[0] && post.photos[0].url}
                alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
             </div>
           ) : post && post.photos && post.photos.length === 2 ? (
             <div className="flex rounded-3xl overflow-hidden">
-               <ImgLazyLoad onClick={() => showMobileModal(post && post.photos[0] && post.photos[0].url, post && post._id)}
+               <img onClick={() => showMobileModal(post && post.photos[0] && post.photos[0].url, post && post._id)}
                 className="w-[258px] h-[293px] border-r-2 border-white cursor-pointer"
                 src={post && post.photos[0] && post.photos[0].url}
                alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
                
-               <ImgLazyLoad onClick={() => showMobileModal(post && post.photos[1] && post.photos[1].url, post && post._id)}
+               <img onClick={() => showMobileModal(post && post.photos[1] && post.photos[1].url, post && post._id)}
                  className="w-[258px] h-[293px] border-l-2 border-white cursor-pointer"
                  src={post && post.photos[1] && post.photos[1].url}
                alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
             </div>
           ) : post && post.photos && post.photos.length === 3 ? (
             <div className="flex rounded-3xl overflow-hidden">
-               <ImgLazyLoad onClick={() => showMobileModal(post && post.photos[0] && post.photos[0].url, post && post._id)}
+               <img onClick={() => showMobileModal(post && post.photos[0] && post.photos[0].url, post && post._id)}
                  className="w-[258] h-[292px] border-r-2 border-r-white cursor-pointer"
                  src={post && post.photos[0] && post.photos[0].url}
                alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
 
-               <ImgLazyLoad onClick={() => showMobileModal(post && post.photos[1] && post.photos[1].url, post && post._id)}
+               <img onClick={() => showMobileModal(post && post.photos[1] && post.photos[1].url, post && post._id)}
                  className="w-full h-[292px] border-b-2 border-l-2 border-b-white cursor-pointer"
                  src={post && post.photos[1] && post.photos[1].url}
                alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
 
-               <ImgLazyLoad onClick={() => showMobileModal(post && post.photos[2] && post.photos[2].url, post && post._id)}
+               <img onClick={() => showMobileModal(post && post.photos[2] && post.photos[2].url, post && post._id)}
                  className="w-full h-[292px]  border-l-2  bordder-t-2 border-white cursor-pointer"
                  src={post && post.photos[2] && post.photos[2].url}
                alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
             </div>
           ) :   post && post.photos && post.photos.length === 4 ? (
             <div className="grid grid-cols-2 rounded-3xl overflow-hidden">
-              <ImgLazyLoad onClick={() => showMobileModal(post && post.photos[0] && post.photos[0].url, post && post._id)}
+              <img onClick={() => showMobileModal(post && post.photos[0] && post.photos[0].url, post && post._id)}
                  className="w-[259px] h-[144px]  border-r-2 border-b-2 border-white cursor-pointer"
                  src={post && post.photos[0] && post.photos[0].url}
                alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
 
-               <ImgLazyLoad onClick={() => showMobileModal(post && post.photos[1] && post.photos[1].url, post && post._id)}
+               <img onClick={() => showMobileModal(post && post.photos[1] && post.photos[1].url, post && post._id)}
                   className="w-[259px] h-[144px] border-l-2 border-b-2 border-white cursor-pointer"
                   src={post && post.photos[1] && post.photos[1].url}
                alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
 
-               <ImgLazyLoad onClick={() => showMobileModal(post && post.photos[2] && post.photos[2].url, post && post._id)}
+               <img onClick={() => showMobileModal(post && post.photos[2] && post.photos[2].url, post && post._id)}
                  className="w-[259px] h-[144px] border-t-2 border-r-2 border-white cursor-pointer"
                  src={post && post.photos[2] && post.photos[2].url}
                alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
 
-               <ImgLazyLoad onClick={() => showMobileModal(post && post.photos[3] && post.photos[3].url, post && post._id)}
+               <img onClick={() => showMobileModal(post && post.photos[3] && post.photos[3].url, post && post._id)}
                  className="w-[259px] h-[144px] border-t-2 border-l-2 border-white cursor-pointer"
                  src={post && post.photos[3] && post.photos[3].url}
                alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
@@ -650,9 +643,10 @@ const viewOthersProfile = ( userId: string ) => {
 
                  <div className="flex gap-1 items-center"> 
                   <p className="text-xs font-medium text-black">{comment && comment.owner && comment.owner.fullname}  </p>
-                 <p className="text-gray-400 text-[9px]">{formatCreatedAt(comment && comment.createdAt)}</p> 
-                  </div>
                   <p className="text-[9px] text-gray-600">@{comment && comment.owner && comment.owner.handle} </p>
+                 <p className="text-gray-400 text-[9px]">. {formatCreatedAt(comment && comment.createdAt)}</p> 
+                  </div>
+                  <p className="text-[10px] text-gray-600 flex items-center">Replying to <p className="text-[11px] text-purple-600"> &nbsp; @{post && post.owner && post.owner.handle}</p> </p>
                   </div>
                   <p className="text-[10px] text-black dark:text-white">{comment && comment.content}</p>
                    <div className="flex gap-2 items-center">
@@ -713,8 +707,8 @@ const viewOthersProfile = ( userId: string ) => {
                     </>
                   ) : (
                     <>
-                     <div className="flex gap-2 group items-center cursor-pointer pt-4">
-                  <ReplyLogo className="w-5 h-5  group-hover:stroke-purple-600" />
+                     <div onClick={() => handleReplyComent(comment._id)} className="flex gap-2 group items-center cursor-pointer pt-1">
+                  <ReplyLogo  className="w-5 h-5  group-hover:stroke-purple-600" />
                   <p className="text-black text-[10px] group-hover:text-purple-600">Reply Comment</p>
                 </div>
                     </>
@@ -752,7 +746,7 @@ const viewOthersProfile = ( userId: string ) => {
                     </>
                   ) : (
                     <>
-                     <div className="flex gap-2 group items-center cursor-pointer pt-4">
+                     <div onClick={() => handleReplyComent(comment._id)} className="flex gap-2 group items-center cursor-pointer pt-1">
                   <ReplyLogo className="w-6 h-6  group-hover:stroke-purple-600" />
                   <p className="text-black text-[15px] group-hover:text-purple-600">Reply Comment</p>
                 </div>

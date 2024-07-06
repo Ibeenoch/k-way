@@ -1,7 +1,7 @@
 import NavBar from "../mobilenav/NavBar";
 import { HeartIcon } from "@heroicons/react/24/outline";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
-import {  getAllUser, getOtherUser, setProfileType, userFollowing, getFollowers, getFollowing, addNotification, getAllNotificationForAUser, selectUser, userFollowers, setIsVewingProfile } from "../auth/authSlice";
+import {  getAllUser, getOtherUser, setProfileType, userFollowing, getFollowers, getFollowing, addNotification, getAllNotificationForAUser, selectUser, userFollowers, setIsVewingProfile, findChatIdForTwoUsers, fetchChat } from "../auth/authSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import { socket } from '../../../../index'
 import { ReactComponent as LogoutLogo } from '../../../../assets/logout.svg';
@@ -666,10 +666,28 @@ const ProfileMiddle = () => {
 
    
 
-    const handleChat = () => {
+    const handleChat = (userId: string) => {
       const getUser = JSON.parse(localStorage.getItem('user') as any);
-      const me = getUser && getUser._doc && getUser._doc._id;
+      const myId = getUser && getUser._doc && getUser._doc._id;
       const token = getUser && getUser.token;
+      const findChatid = { token, userId, myId}
+
+      dispatch(findChatIdForTwoUsers(findChatid)).then((res: any) => {
+        console.log('the chatId is ', res, res.payload);
+        if(res && res.payload !== undefined){
+          const chatId = res && res.payload
+        socket.emit('joinChat', chatId);
+        const data = { token, chatId };
+        dispatch(fetchChat(data)).then((res: any) => {
+          if(res && res.payload !== undefined){
+            navigate(`/chatroom/${userId}/${myId}/${chatId}`)
+          }
+        });
+
+        }
+        
+
+      })
 
     }
   
@@ -689,6 +707,8 @@ const ProfileMiddle = () => {
     }
    const firstUser =  otherperson && otherperson._doc && otherperson._doc._id;
    const secondUser = userStored && userStored._doc && userStored._doc._id;
+   const checkmyFollower = getUser && getUser._doc && getUser._doc.followers && getUser._doc.followers.includes(firstUser);
+   console.log('is my follower ', checkmyFollower)
 
    const handleGoBack = () => {
     navigate(-1);
@@ -702,12 +722,12 @@ const ProfileMiddle = () => {
     setMobileModal(true);
 }
   return (
-    <div className="sm:mt-10 max-w-md sm:max-w-full bg-white">
+    <div className="sm:mt-10 max-w-md sm:max-w-full bg-white rounded-tl-3xl rounded-tr-3xl">
       
-      <div onClick={handleGoBack} className=' sm:fixed flex gap-2 p-2 cursor-pointer'>
-          <BackLogo  className='w-4 h-4 cursor-pointer stroke-[4px] sm:fill-white fill-black' />
-        <h2 className='text-xs font-semibold text-black sm:text-white'>Go Back</h2>
-        </div>
+      <div onClick={handleGoBack} className=' sm:flex flex gap-2 p-2 sm:p-4 cursor-pointer'>
+          <BackLogo  className='w-4 h-4 cursor-pointer stroke-[4px] fill-black' />
+        <h2 className='text-xs font-semibold text-black'>Go Back</h2>
+      </div>
 
       <div className='flex flex-col rounded-tl-3xl justify-center items-center bg-white p-6'>
         
@@ -738,6 +758,15 @@ const ProfileMiddle = () => {
         }      
          
         </div>
+        {
+        firstUser !== secondUser && checkmyFollower && (
+          <div className="flex justify-center mt-2">
+
+          <p className="text-gray-800 text-[11px] bg-purple-50 rounded-xl px-2 sm:py-2">Follows you</p>
+          </div>
+        )
+      }
+
 
         <div className='flex flex-col text-center justify-center'>
             <div className="flex gap-1 justify-center items-center pt-2">
@@ -766,14 +795,14 @@ const ProfileMiddle = () => {
           </div>
         </div>
       </div>
-
+     
         { firstUser !== secondUser ? (
       <div className="mx-auto flex justify-center gap-6 py-4 bg-white">
         <button onClick={handleFollow} className="text-white bg-black hover:bg-purple-600 hover:text-white duration-200 hover:border-white hover:scale-105 rounded-2xl border border-white font-semibold text-center px-4 py-1">{
-      user && user._doc && user._doc.following &&  user._doc.following.includes(otherperson && otherperson._doc && otherperson._doc._id) ? 'Unfollow' : 'Follow'
+      user && user._doc && user._doc.following &&  user._doc.following.includes(otherperson && otherperson._doc && otherperson._doc._id) ? 'Following' : 'Follow'
       }
       </button>
-        <button onClick={handleChat} className="text-white bg-black hover:bg-purple-600 hover:text-white duration-200 hover:border-white hover:scale-105 rounded-2xl border border-white font-semibold text-center px-4 py-1">Chat</button>
+        <button onClick={() =>handleChat(otherperson && otherperson._doc && otherperson._doc._id)} className="text-white bg-black hover:bg-purple-600 hover:text-white duration-200 hover:border-white hover:scale-105 rounded-2xl border border-white font-semibold text-center px-4 py-1">Chat</button>
       </div>    
           ) : (
             <div className="mx-auto flex justify-center gap-6 py-4 bg-white">
@@ -781,6 +810,8 @@ const ProfileMiddle = () => {
           </div> 
           )
         }
+
+ 
 
     <div className="flex justify-around px-2 mb-4">
     <h1 onClick={activateFeed} className={`text-lg cursor-pointer font-bold ${showfeed ? 'text-purple-500 border-b-2 border-purple-500': 'text-black' }  dark:text-white pl-3`}>

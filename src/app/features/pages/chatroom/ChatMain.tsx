@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { ReactComponent as ProcessingLogo } from '../../../../assets/processingLogo.svg';
 import { ReactComponent as SendLogo } from '../../../../assets/sendLogo.svg';
+import { ReactComponent as BackArrowLogo } from '../../../../assets/arrowBack.svg';
 import { Socket, io } from 'socket.io-client';
 import { formatCreatedAt } from '../../../../utils/timeformat';
 
@@ -79,12 +80,21 @@ useEffect(() => {
    socket.off('receivedMessage');
 } 
 
-}, [userId, dispatch])
+}, [userId, dispatch]);
+
+const handleGoBack = () => {
+  navigate(-1);
+}
 
   return (
     <div className='bg-white h-screen'>
+
+<div onClick={handleGoBack} className={`flex sm:mx-[25%] gap-3 bg-white p-2 cursor-pointer`} >
+          <BackArrowLogo  className='w-4 h-4 cursor-pointer fill-black' />
+        <h2 className='text-xs font-medium text-black'>Back</h2>
+        </div>
       
-    <div className='p-4'>
+    <div className='pb-4 pl-4 pr-4'>
       <div className='flex justify-between pb-2 border-b border-gray-400 items-center'>
         <div className='flex gap-1 items-center'>
           <img src={others && others.profilePhoto && others.profilePhoto.url} className='w-7 h-7 rounded-full' alt="" />
@@ -102,7 +112,7 @@ useEffect(() => {
           <div className='flex justify-center text-[8px] items-center'> <div className='border-b border-gray-200 w-[40%]'></div> {formatCreatedAt(message && message.createdAt)} <div className='border-b w-[40%] border-gray-200'></div> </div>
           {
             message && message.sender && message.sender._id === myId ? (
-             <div className='flex items-center mb-[1px]'>
+             <div className='flex gap-1 items-center mb-[1px]'>
           <img src={ message && message.sender && message.sender.profilePhoto && message.sender.profilePhoto.url } className='w-4 h-4 rounded-full' alt="" />
           <div className='p-2 rounded-tl-lg rounded-tr-lg rounded-br-lg flex-none bg-gray-400'>
             <p className='text-black text-xs sm:max-w-xs max-w-[180px]'>{message && message.message}</p>

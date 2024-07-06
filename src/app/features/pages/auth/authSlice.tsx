@@ -26,8 +26,10 @@ export interface userState {
   following: any[];
   notificationCountHistory: any[];
   active: string;
+  isNotificationLoading: boolean;
   profileType: 'local' | 'foreign';
   status: "success" | "loading" | "failed" | "idle";
+  notificationStatus: "success" | "loading" | "failed" | "idle";
 }
 
 const initialState: userState = {
@@ -49,7 +51,9 @@ const initialState: userState = {
   unViewednotificationCount: 0,
   active: 'home',
   status: "idle",
+  notificationStatus: "idle",
   profileType: 'local',
+  isNotificationLoading: false
 };
 
 export const addNotification = createAsyncThunk("/user/addnotification", async (note: any) => {
@@ -304,6 +308,9 @@ export const authSlice = createSlice({
     addCountHistory: (state, action: PayloadAction<number>) => {
       state.notificationCountHistory.push(action.payload);
     },
+    checkIfNoteIsLoading: (state, action: PayloadAction<boolean>) => {
+      state.isNotificationLoading = action.payload;
+    },
   
   },
 
@@ -384,7 +391,7 @@ export const authSlice = createSlice({
         state.status = "failed";
       })
       .addCase(addNotification.pending, (state, action) => {
-        state.status = "loading";
+
       })
       .addCase(addNotification.fulfilled, (state, action) => {
         if (action.payload !== undefined) {
@@ -455,11 +462,11 @@ export const authSlice = createSlice({
         state.status = "failed";
       })
       .addCase(getAllNotificationForAUser.pending, (state, action) => {
-        state.status = "loading";
+        state.notificationStatus = "loading";
       })
       .addCase(getAllNotificationForAUser.fulfilled, (state, action) => {
         if(action.payload !== undefined){
-          state.status = "success";
+          state.notificationStatus = "success";
           state.notifications = action.payload.notifications;
           state.unViewednotificationCount = action.payload.count;
           state.whoToNotify = action.payload.toWho;
@@ -467,19 +474,19 @@ export const authSlice = createSlice({
          };
       })
       .addCase(getAllNotificationForAUser.rejected, (state, action) => {
-        state.status = "failed";
+        state.notificationStatus = "failed";
       })
       .addCase(markAllNotificationForAUser.pending, (state, action) => {
-        state.status = "loading";
+        state.notificationStatus = "loading";
       })
       .addCase(markAllNotificationForAUser.fulfilled, (state, action) => {
         if(action.payload !== undefined){
-          state.status = "success";
+          state.notificationStatus = "success";
           state.unViewednotificationCount = action.payload.count;
          };
       })
       .addCase(markAllNotificationForAUser.rejected, (state, action) => {
-        state.status = "failed";
+        state.notificationStatus = "failed";
       })
       .addCase(getFollowers.pending, (state, action) => {
         state.status = "loading";
@@ -585,7 +592,7 @@ export const authSlice = createSlice({
   },
 });
 
-export const { logout, setActivePage, setProfileType, addChat, resetSearchUser, setIsVewingProfile, addCountHistory } = authSlice.actions;
+export const { logout, setActivePage, setProfileType, addChat, resetSearchUser, setIsVewingProfile, checkIfNoteIsLoading, addCountHistory } = authSlice.actions;
 
 export const selectUser = (state: RootState) => state.auth;
 

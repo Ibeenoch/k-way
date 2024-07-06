@@ -1,15 +1,11 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
-import pics from "../../../../images/images-74.jpeg";
 import { PlusIcon, HeartIcon,  } from "@heroicons/react/24/outline";
 import EmojiPicker from "emoji-picker-react";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
-import { getAUser, getAllUser, getOtherUser, selectUser, setProfileType, userFollowers, userFollowing } from "../auth/authSlice";
+import { getAllUser, getOtherUser, selectUser, setProfileType, userFollowers, userFollowing } from "../auth/authSlice";
 import { allCommentForAPost, bookmarkPost, commentOnPost, createPost, createStory, deletePost, getAPost, getAllPosts, getAllUserStories, getAvailableStories, getBookmarkforaPost, getLikesforaPost, getresharedforaPost, likePost, openpostForm, rePost, resetEditCommentStatus, selectPost, setWhichPost, updatePost, updateViewingStatus } from "./PostSlice";
-import toast, { Toast } from 'react-hot-toast'
-import { socket } from '../../../../index'
 import { useNavigate, useParams } from "react-router-dom";
 import NavBar from "../mobilenav/NavBar";
-import ImgLazyLoad from "../lazyLoad/ImgLazyLoad";
 import { ReactComponent as GlobalTrendLogo } from '../../../../assets/globeTrend.svg';
 import { ReactComponent as LikeLogo } from '../../../../assets/like.svg';
 import { ReactComponent as VerifyMarkLogo } from '../../../../assets/verifyChecker.svg';
@@ -34,8 +30,6 @@ import { ReactComponent as ProcessingLogo } from '../../../../assets/processingL
 import { ReactComponent as ArrowDownLogo } from '../../../../assets/arrowDownLogo.svg';
 import { ReactComponent as PlusLogo } from '../../../../assets/plusLogo.svg';
 import { ReactComponent as UndoLogo } from '../../../../assets/undo.svg';
-import { ReactComponent as HomeLogo } from '../../../../assets/homelogo.svg';
-import { ReactComponent as BellLogo } from '../../../../assets/notificationLogo.svg';
 import { formatCreatedAt } from "../../../../utils/timeformat";
 import { useAppContext } from "./homeContext";
 
@@ -162,10 +156,7 @@ const Middle = () => {
     navigate('/login');
     return;
   };
-  // if(getUser._doc._id === auserId){
-  //   console.log('the same ', getUser._doc._id, ' and ', auserId);
-  //   return;
-  // }
+
   const token = getUser && getUser.token;
   const follow = { token, auserId };
   dispatch(userFollowing(follow)).then((res: any) => {
@@ -175,16 +166,6 @@ const Middle = () => {
       })
     }
   })
- };
-
- const handleFollower = (userId: string) => {
-  if(getUser === null){
-    navigate('login');
-    return;
-  };
-  const token = getUser && getUser.token;
-  const follow = { token, userId };
-  dispatch(userFollowers(follow));
  };
 
 
@@ -291,7 +272,6 @@ const handleLike = async (postId: string) => {
   const findpost = posts.find((p: any) => p._id === postId);
   const postOwnerId = findpost && findpost.owner && findpost.owner._id;
   console.log('post ownerid ', postOwnerId, findpost);
-  // socket.emit('joinNotificationRoom', postOwnerId);
   const token = getUser && getUser.token;
   const userId =  getUser && getUser._doc._id;
   const postLike = {
@@ -402,6 +382,7 @@ const goToPost = async (id: string) => {
       dispatch(allCommentForAPost(id)).then((res: any) => {
         if(res && res.payload !== undefined){
           navigate(`/post/${id}`);
+          window.scrollTo(0, 0);
         }
       })
        
@@ -499,17 +480,6 @@ const handleTouchEnd = (e : React.TouchEvent<HTMLDivElement>) => {
     getPost(currentPostId);
   }, [toRefresh]);
 
-  const hideComment = () => {
-    setCommentModal(false)
-  }
-
-  const showMobileComment = () => {
-    setMobileCommentModal(true)
-  }
-
-  const hideMobileComment = () => {
-    setMobileCommentModal(false)
-  }
 
   const me = getUser && getUser._doc && getUser._doc._id;
 
@@ -553,13 +523,7 @@ const handleTouchEnd = (e : React.TouchEvent<HTMLDivElement>) => {
     setFullVideoScreen(false);
   };
 
-  const showFullMobileScreen = () => {
-    setMobileIconModal(true);
-  };
 
-  const hideFullMobileScreen = () => {
-    setMobileIconModal(false);
-  };
   const handleDesktopPost = () => {
     setdeskTopModal(false);
   };
@@ -577,14 +541,7 @@ const handleTouchEnd = (e : React.TouchEvent<HTMLDivElement>) => {
   const handlechange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setcontent(e.target.value);
   };
-  const handleInputchange = (e: ChangeEvent<HTMLInputElement>) => {
-    setcontent(e.target.value);
-  };
 
-    const handleClickInside = (e: React.MouseEvent) => {
-      e.stopPropagation();
-      setMenu(true)
-  }
 
 
   const hideDeskTopMenu = (e: MouseEvent) => {
@@ -596,14 +553,6 @@ const handleTouchEnd = (e : React.TouchEvent<HTMLDivElement>) => {
     }
   };
 
-  const handleReplyComent = async (commentId: string) => {
-    if(getUser === null){
-      navigate('/login');
-      return;
-    };
-    const userId = getUser._doc._id;
-    navigate(`/reply/comment/${commentId}/${userId}`)
-  }
 
   const hideMobileModal = () => {
     setMobileModal(false);
@@ -691,27 +640,26 @@ const handleTouchEnd = (e : React.TouchEvent<HTMLDivElement>) => {
 
   console.log(startShowingIndex, 'story active ', storyActive)
 
-
-  useEffect(() => {
    const hideMobileMenu = (e: MouseEvent) => {
-    if ( mobileMenuRef.current && !mobileMenuRef.current.contains(e.currentTarget as Node)) {
+    if ( mobileMenuRef.current && !mobileMenuRef.current.contains(e.target as Node)) {
+      console.log('the tagert ', e.target, e.currentTarget,  mobileMenuRef.current);
       setMenu(false);
     }
   };
-        
-    document.addEventListener("mousedown", hideMobileMenu);
+
+  useEffect(() => {
+document.addEventListener("mousedown", hideMobileMenu);
 
     return () => {
       document.removeEventListener("mousedown", hideMobileMenu);
     };
   }, [mobileMenuRef]);
 
+
   useEffect(() => {
     if(hideDeskTopMenu){
       document.addEventListener("mousedown", hideDeskTopMenu);
-    }else{
-      document.addEventListener("mousedown", hideDeskTopMenu);
-        };
+    }
 
     return () => {
       document.removeEventListener("mousedown", hideDeskTopMenu);
@@ -812,8 +760,8 @@ const viewNextImage = () => {
 
 
   return (
-    <div className="mt-10 max-w-md sm:max-w-full">
-      <h1 className="text-md font-bold text-black dark:text-white pl-4">
+    <div className="mt-10 bg-white rounded-t-3xl max-w-md sm:max-w-full">
+      <h1 className="text-md font-bold text-black pt-3 dark:text-white pl-4">
         Stories
       </h1>
       {/* stories */}
@@ -958,7 +906,7 @@ const viewNextImage = () => {
         {
 
           posts && Array.isArray(posts) && posts.map((post: any, index: number) => (       
-      <div key={index} className="rounded-full my-1 p-3 max-w-full bg-white dark-bg-gray-700 border border-gray-400 rounded-lg">
+      <div key={index} className={`rounded-full my-1 p-3 max-w-full ${ desktopMenu || menu ? 'bg-gray-200' : 'bg-white'} dark-bg-gray-700 border border-gray-400 rounded-lg`} >
        {
         post.reShared &&  (
           <div className="flex justify-between px-2 items-center">

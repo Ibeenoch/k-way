@@ -1,20 +1,18 @@
-import React, { useEffect, useState } from 'react'
-import Left from './Left'
-import Middle from '../home/Middle'
-import Right from '../home/Right'
+import React, { useEffect, useState, lazy, Suspense } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../hooks'
-import { getAUser } from '../auth/authAPI'
 import { addNotification, getAllNotificationForAUser, getAllUser, selectUser,  } from '../auth/authSlice'
 import { getAllPosts, selectPost } from './PostSlice';
 import { socket } from '../../../../index'
-import Loading from '../../../Loading'
+import Loading from '../../../Loading';
+const Left = lazy(() =>import('./Left'));
+const Middle = lazy(() =>import('../home/Middle'));
+const Right = lazy(() =>import('../home/Right'));
 
 const Home = () => {
   const dispatch = useAppDispatch();
   const [userUpdated, setUserUpdated] = useState<boolean>(false);
   const getUser = JSON.parse(localStorage.getItem('user') as any);
   const { status } = useAppSelector(selectPost);
-  const {  } = useAppSelector(selectUser);
 
  
 
@@ -105,13 +103,19 @@ const Home = () => {
   return (
     <div className='grid grid-cols-1 sm:grid-cols-9 md:grid-cols-9'>
       <div className='hidden sm:block sm:col-start-1 sm:col-end-3 md:col-start-1 md:col-end-3'>
+       <Suspense fallback={<Loading />}>
         <Left />
+       </Suspense>
       </div>
       <div className='sm:col-start-3 sm:col-end-7 md:col-start-3 md:col-end-7'>
+      <Suspense fallback={<Loading />}>
         <Middle/>
+        </Suspense>
       </div>
       <div className='hidden sm:block sm:col-start-7 sm:col-end-10 md:col-start-7 md:col-end-10'>
+      <Suspense fallback={<Loading />}>
         <Right />
+      </Suspense>
       </div>
     </div>
   )

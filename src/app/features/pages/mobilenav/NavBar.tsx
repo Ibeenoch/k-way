@@ -21,7 +21,7 @@ const NavBar = () => {
     const getUser = JSON.parse(localStorage.getItem('user') as any);
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const { active, unViewednotificationCount, whoToNotify, viewingProfile } = useAppSelector(selectUser);
+    const { active, unViewednotificationCount, whoToNotify, viewingProfile, notification } = useAppSelector(selectUser);
     const { viewingStory } = useAppSelector(selectPost);
     
     const me = getUser && getUser._doc && getUser._doc._id;
@@ -63,10 +63,12 @@ const goTrend = () => {
     setisProfile(false);
     setispost(false);
     dispatch(setActivePage('notification'));
+    const postId = notification && notification.post;
+    console.log('post id for notification ', postId);
     const userId = getUser && getUser._doc && getUser._doc._id;
     const token = getUser && getUser.token;
-    const note = { userId, token };
-    console.log('ksl')
+    const note = { userId, token, postId };
+
     dispatch(markAllNotificationForAUser(note)).then((res: any) => {
       
       dispatch(getAllNotificationForAUser(note)).then((res: any) => {
@@ -97,6 +99,7 @@ const goTrend = () => {
   
   
   const showPostModal = () => {
+    navigate('/');
     setPostModal(true);
    setisHome(false);
    setIsTrend(false);

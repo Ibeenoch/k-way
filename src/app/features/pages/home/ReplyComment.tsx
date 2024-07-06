@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { allCommentForAPost, commentOnPost, deleteComment, deleteRepliedComment, getAllRepliesForComment, likeReplyComment, replyComment, selectPost } from './PostSlice';
+import  { useEffect, useRef, useState } from 'react'
+import { deleteRepliedComment, getAllRepliesForComment, likeReplyComment, replyComment, selectPost } from './PostSlice';
 
 import { ReactComponent as CommentLogo } from '../../../../assets/comment.svg';
 import { ReactComponent as ReplyLogo } from '../../../../assets/replyLogo.svg';
@@ -13,13 +13,11 @@ import { ReactComponent as SendLogo } from '../../../../assets/sendLogo.svg';
 import { formatCreatedAt } from "../../../../utils/timeformat";
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../hooks';
-import ImgLazyLoad from '../lazyLoad/ImgLazyLoad';
 import { HeartIcon } from '@heroicons/react/24/outline';
 import { addNotification, getAllUser, getOtherUser,  } from '../auth/authSlice'
-import { io, Socket } from 'socket.io-client'
+import { socket } from '../../../..';
 
 const ReplyComment = () => {
-  const socket: Socket = io('http://localhost:5800');
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();

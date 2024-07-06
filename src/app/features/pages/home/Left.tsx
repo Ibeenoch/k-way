@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../hooks';
-import { addCountHistory, getAUser, getAllNotificationForAUser, getAllUser, getOtherUser, markAllNotificationForAUser, resetSearchUser, selectUser, setActivePage, setProfileType } from '../auth/authSlice';
-import { AppContext, useAppContext } from '../home/homeContext'
+import { addCountHistory, checkIfNoteIsLoading, getAUser, getAllNotificationForAUser, getAllUser, getOtherUser, markAllNotificationForAUser, resetSearchUser, selectUser, setActivePage, setProfileType } from '../auth/authSlice';
+import { useAppContext } from '../home/homeContext'
 import { ReactComponent as Home } from '../../../../assets/homelogo.svg';
 import { ReactComponent as Envelope } from '../../../../assets/messageLogo.svg';
 import { ReactComponent as GlobalTrend } from '../../../../assets/globeTrend.svg';
@@ -63,21 +63,11 @@ const Left = () => {
   }
 
   const notificationActive = () => {
+    dispatch(checkIfNoteIsLoading(true));
     dispatch(setActivePage('notification'));
-    const postId = notification && notification.post;
-    console.log('post id for notification ', postId);
-    const userId = getUser && getUser._doc && getUser._doc._id;
-    const token = getUser && getUser.token;
-    const note = { userId, token, postId };
-    dispatch(markAllNotificationForAUser(note)).then((res: any) => {
-      
-      dispatch(getAllNotificationForAUser(note)).then((res: any) => {
-        console.log('get notification ', res);
-        if(res && res.payload !== undefined){
-          navigate('/notification');
-        }
-      })
-    })
+    navigate('/notification');
+   
+   
   }
 
   const trendsActive = () => {
@@ -99,7 +89,7 @@ const Left = () => {
     }
     dispatch(setProfileType('local'));
     const userId = getUser && getUser._doc && getUser._doc._id;
-    dispatch(getOtherUser(userId)).then((res) => {
+    dispatch(getOtherUser(userId)).then((res: any) => {
       console.log(' other user ', res);
       if(res && res.payload !== undefined){
         const myId = res && res.payload && res.payload._doc && res.payload._doc._id;

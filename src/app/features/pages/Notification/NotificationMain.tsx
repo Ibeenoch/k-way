@@ -1,20 +1,19 @@
 import { HeartIcon } from '@heroicons/react/24/outline';
 import NavBar from '../mobilenav/NavBar';
 import { useAppDispatch, useAppSelector } from '../../../hooks';
-import { getOtherUser, selectUser } from '../auth/authSlice';
-import momemt from 'moment';
+import { checkIfNoteIsLoading, getAllNotificationForAUser, getOtherUser, markAllNotificationForAUser, selectUser } from '../auth/authSlice';
 import { formatCreatedAt } from '../../../../utils/timeformat';
 import { ReactComponent as ReplyLogo } from '../../../../assets/replyLogo.svg'
 import { ReactComponent as CommentLogo } from '../../../../assets/comment.svg'
 import { ReactComponent as BookmarkLogo } from '../../../../assets/bookmark.svg'
 import { ReactComponent as FollowerLogo } from '../../../../assets/follower.svg'
 import { ReactComponent as ReshareLogo } from '../../../../assets/retweet.svg'
-import { ReactComponent as LoadingLogo } from '../../../../assets/loading.svg'
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import Loading from '../../../Loading';
 
 const NotificationMain = () => {
-  const { notifications, status } = useAppSelector(selectUser);
+  const { notifications, notification, isNotificationLoading } = useAppSelector(selectUser);
   const getUser = JSON.parse(localStorage.getItem('user') as any);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -29,8 +28,28 @@ const NotificationMain = () => {
       }
     })
   };
+
+  useEffect(() => {
+    dispatch(checkIfNoteIsLoading(false))
+    const postId = notification && notification.post;
+    console.log('post id for notification ', postId);
+    const userId = getUser && getUser._doc && getUser._doc._id;
+    const token = getUser && getUser.token;
+    const note = { userId, token, postId };
+
+    dispatch(getAllNotificationForAUser(note)).then((res: any) => {
+      console.log('get notification ', res);
+      if(res && res.payload !== undefined){
+        dispatch(markAllNotificationForAUser(note))
+      }
+    })
+
+  }, []);
+
+ 
+
   return (
-    <div className='p-4'>
+    <div className='p-4 bg-white sm:rounded-tl-3xl sm:rounded-tr-3xl'>
 
       <h2 className='text-black font-bold border-b border-gray-300'>Notifications </h2>
       {/* feeds  */}

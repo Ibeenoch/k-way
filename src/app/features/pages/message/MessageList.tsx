@@ -58,9 +58,6 @@ const MessageList = () => {
 
       })
 
-      
-
-
     }
 
     const me = getAUser && getAUser._doc && getAUser._doc._id;
@@ -77,7 +74,7 @@ const MessageList = () => {
   return (
     <div>
       
-      <div className='w-full bg-white dark:bg-black mt-4 rounded-3xl p-4'>
+      <div className='w-full bg-white dark:bg-black h-screen mt-4 rounded-3xl p-4'>
           <h1 className='text-black dark-text-white font-bold text-md'>Message Your Friends</h1>
           {/* people */}
         {

@@ -64,15 +64,13 @@ const TrendList = () => {
   const { users, searchUsers } = useAppSelector(selectUser);
   const [searchWord, setSearchWord] = useState(currentSearch ? currentSearch : '');
 
-
-
-  const viewTrendsPage = () => {
-    navigate('/trends')
-  }
+  useEffect(() => {
+    getAllPosts();
+  }, [dispatch])
 
   useEffect(() => {
-    getAllPosts()
-  }, [dispatch])
+    setSearchWord(currentSearch)
+  }, [currentSearch])
 
  
 
@@ -80,15 +78,9 @@ const TrendList = () => {
  
   const handleTheSearch = () => {
     if(searchuser){ 
-      console.log('search key ', searchWord);
-    dispatch(searchUser(searchWord)).then((res: any) => {
-      console.log('searched user are ', res)
-    })
+    dispatch(searchUser(searchWord))
     }else{
-      console.log('search key ', searchWord);
-    dispatch(searchForPost(searchWord)).then((res: any) => {
-      console.log('searched post are ', res)
-    })
+    dispatch(searchForPost(searchWord))
     }
   
   };
