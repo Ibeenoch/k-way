@@ -71,14 +71,14 @@ const EditComment = () => {
       };
 
   return (
-    <div className='bg-black h-screen'>
+    <div className='bg-black h-screen py-6'>
         <div  className='sm:mx-[30%] p-1 bg-white h-auto p-3'>
-            <div className='flex items-center gap-3'>
-                <ArrowLeftIcon onClick={goBack} className='w-4 h-4 cursor-pointer' />
+            <div onClick={goBack} className='flex items-center gap-3 cursor-pointer'>
+                <ArrowLeftIcon className='w-4 h-4 cursor-pointer' />
             <h2 className='text-xs font-semibold text-black'>Edit Your comment</h2>
             </div>
         <div className="flex bg-gray-100 items-center max-h-[30px] p-2 rounded-xl">
-                <ImgLazyLoad
+                <img
                 src={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url }
                 className="block w-6 h-6 rounded-full"
                 alt={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.public_id }
@@ -104,7 +104,7 @@ const EditComment = () => {
 
             
 
-                <button onClick={() => handleCommentSubmit()} className="text-[9px] text-white dark-text-black bg-black dark:bg-white font-semibold rounded-2xl px-3 py-1 transform-transition duration-100 hover:scale-110">
+                <button onClick={() => handleCommentSubmit()} className="text-[9px] text-white dark-text-black bg-black dark:bg-white font-semibold rounded-2xl px-3 py-1 mt-2 transform-transition duration-100 hover:scale-110">
                 {
                 isCommenting ? (
                     <>

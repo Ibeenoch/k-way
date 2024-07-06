@@ -1,7 +1,6 @@
 import { useContext, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
-import { getAllUser, getOtherUser, selectUser, setProfileType, userFollowing } from "../auth/authSlice";
-import { useAppContext } from "./homeContext";
+import { getAllUser, getOtherUser, userFollowing } from "../auth/authSlice";
 import { useNavigate } from "react-router-dom";
 import { currentSearchTrend, selectPost } from "./PostSlice";
 import { ReactComponent as MenuLogo } from '../../../../assets/threeDot.svg'
@@ -9,27 +8,21 @@ import { ReactComponent as MenuLogo } from '../../../../assets/threeDot.svg'
 const Right = () => {
   const getUsers = JSON.parse(localStorage.getItem('alluser') as any);
   const getAUser = JSON.parse(localStorage.getItem('user') as any);
-  const { refresh, toggleRefresh } = useAppContext();
   const dispatch = useAppDispatch();
   const { trendingPost, viewingStory, whichPost } = useAppSelector(selectPost)
   const navigate = useNavigate();
 
-  const handleFollow = (userId: string) => {
-   const findUser = getUsers.find((p: any) => p._id === userId );
-    const token = findUser && findUser.token;
-    const follow = { token, userId };
-    dispatch(userFollowing(follow))
+  const handleFollow = (auserId: string) => {
+    const token = getAUser && getAUser.token;
+    const follow = { token, auserId };
+    dispatch(userFollowing(follow));
   };
 
-useEffect(() => {
-  if(refresh){
-    dispatch(getAllUser())
-  }
-}, [refresh]);
+
 
 useEffect(() => {
   dispatch(getAllUser())
-}, []);
+}, [dispatch]);
 
 const viewProfile = (userId: string) => {
   // check if i am not logged in

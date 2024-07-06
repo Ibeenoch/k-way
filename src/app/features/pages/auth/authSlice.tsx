@@ -24,6 +24,7 @@ export interface userState {
   chatId: string;
   followers: any[];
   following: any[];
+  notificationCountHistory: any[];
   active: string;
   profileType: 'local' | 'foreign';
   status: "success" | "loading" | "failed" | "idle";
@@ -37,6 +38,7 @@ const initialState: userState = {
   trendingUser: [],
   notification: [],
   notifications: [],
+  notificationCountHistory: [],
   chat: [],
   followers: [],
   unreadChatCount: 0,
@@ -298,6 +300,9 @@ export const authSlice = createSlice({
     },
     setIsVewingProfile: (state, action: PayloadAction<boolean>) => {
       state.viewingProfile = action.payload;
+    },
+    addCountHistory: (state, action: PayloadAction<number>) => {
+      state.notificationCountHistory.push(action.payload);
     },
   
   },
@@ -580,7 +585,7 @@ export const authSlice = createSlice({
   },
 });
 
-export const { logout, setActivePage, setProfileType, addChat, resetSearchUser, setIsVewingProfile } = authSlice.actions;
+export const { logout, setActivePage, setProfileType, addChat, resetSearchUser, setIsVewingProfile, addCountHistory } = authSlice.actions;
 
 export const selectUser = (state: RootState) => state.auth;
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../hooks';
-import { getAUser, getAllNotificationForAUser, getAllUser, getOtherUser, markAllNotificationForAUser, resetSearchUser, selectUser, setActivePage, setProfileType } from '../auth/authSlice';
+import { addCountHistory, getAUser, getAllNotificationForAUser, getAllUser, getOtherUser, markAllNotificationForAUser, resetSearchUser, selectUser, setActivePage, setProfileType } from '../auth/authSlice';
 import { AppContext, useAppContext } from '../home/homeContext'
 import { ReactComponent as Home } from '../../../../assets/homelogo.svg';
 import { ReactComponent as Envelope } from '../../../../assets/messageLogo.svg';
@@ -25,7 +25,7 @@ const Left = () => {
   const { active } = useAppSelector(selectUser);
   const getUser = JSON.parse(localStorage.getItem('user') as any);
   const { refresh, toggleRefresh } = useAppContext();
-  const { notifications, notification, unViewednotificationCount, unreadChatCount, whoToNotify } = useAppSelector(selectUser);
+  const { notifications, notification, unViewednotificationCount, unreadChatCount, whoToNotify, notificationCountHistory } = useAppSelector(selectUser);
 
   const newsFeedActive = () => {
     dispatch(setActivePage('home'));
@@ -36,14 +36,17 @@ const Left = () => {
     })
   };
   
+  useEffect(() => {
+    addCountHistory(unViewednotificationCount);
+
+  }, [unViewednotificationCount])
+  console.log('history ', notificationCountHistory);
 
  useEffect(() => {
   if(refresh){
     if(!getUser)return;
     const userId = getUser && getUser._doc && getUser._doc._id;
-    dispatch(getAUser(userId)).then((res: any) => {
-      console.log('logging update ', res);
-    })
+    dispatch(getAUser(userId))
   }
  }, [refresh]);
     console.log('to refresh ', refresh);
@@ -69,7 +72,7 @@ const Left = () => {
     dispatch(markAllNotificationForAUser(note)).then((res: any) => {
       
       dispatch(getAllNotificationForAUser(note)).then((res: any) => {
-        console.log('get not ', res);
+        console.log('get notification ', res);
         if(res && res.payload !== undefined){
           navigate('/notification');
         }

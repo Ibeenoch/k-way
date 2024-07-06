@@ -9,6 +9,7 @@ import { createUserProfile, getAUser, registerUser, selectUser } from "./authSli
 import { ReactComponent as CompanyLogo } from '../../../../assets/companylogo.svg';
 import { ReactComponent as ProfileImageLogo } from '../../../../assets/profileImage.svg';
 import { ReactComponent as CameraLogo } from '../../../../assets/cameraAdd.svg';
+import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 
 
 interface ProfileInterface {
@@ -140,13 +141,22 @@ console.log('image upload ', image)
     }
   };
 
+  const goBack = () => {
+    navigate(-1);
+  };
+
   return (
-    <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-1 lg:px-8">
-       <div className="shadow-lg">
+    <div className="flex min-h-full flex-1 flex-col justify-center bg-white px-6 py-1 lg:px-8">
+      <div onClick={goBack} className='flex items-center gap-2 p-2 cursor-pointer'>
+                <ArrowLeftIcon className='w-4 h-4 cursor-pointer' />
+            <h2 className='text-xs font-semibold text-black'>Go Back</h2>
+            </div>
+
+       <div className="">
           <div className="sm:mx-auto sm:w-1/2 px-4 sm:max-w-sm">
             <Link to="/">
               <div              
-                className="ml-[40%] pt-6"
+                className="ml-[40%] pt-3"
               >
                 {/* company logo  */}
                 <CompanyLogo className="w-9 h-9"/>
@@ -315,7 +325,7 @@ console.log('image upload ', image)
                 </div>
               </div>
 
-              <div>
+              <div className="pb-12">
                 <button
                   type="submit"
                   className="flex w-full justify-center rounded-md bg-gradient-to-r from-[#33348E] to-[#CC2229] px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm duration-200 hover:scale-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-500"

@@ -53,7 +53,7 @@ const goTrend = () => {
     setisProfile(false);
     setispost(false);
     dispatch(setActivePage('trend'));
-    navigate('/trendlist');
+    navigate('/trends');
   };
   
   const goNotify = () => {

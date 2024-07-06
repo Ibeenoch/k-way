@@ -33,7 +33,7 @@ import { ReactComponent as TrashLogo } from '../../../../assets/trashLogo.svg';
 import { ReactComponent as ProcessingLogo } from '../../../../assets/processingLogo.svg';
 import { ReactComponent as ArrowDownLogo } from '../../../../assets/arrowDownLogo.svg';
 import { ReactComponent as PlusLogo } from '../../../../assets/plusLogo.svg';
-import { ReactComponent as SearchLogo } from '../../../../assets/searchBar.svg';
+import { ReactComponent as UndoLogo } from '../../../../assets/undo.svg';
 import { ReactComponent as HomeLogo } from '../../../../assets/homelogo.svg';
 import { ReactComponent as BellLogo } from '../../../../assets/notificationLogo.svg';
 import { formatCreatedAt } from "../../../../utils/timeformat";
@@ -511,6 +511,8 @@ const handleTouchEnd = (e : React.TouchEvent<HTMLDivElement>) => {
     setMobileCommentModal(false)
   }
 
+  const me = getUser && getUser._doc && getUser._doc._id;
+
   const showPostModal = () => {
     setPostModal(true);
    setisHome(false);
@@ -763,6 +765,21 @@ const viewNextImage = () => {
     showPostModal()
   };
 
+  const cancelReshared = (id: string) => {
+    if(getUser === null){
+      navigate('/login');
+      return;
+    };
+    console.log('ehj ', id)
+    const getConfirmation = window.confirm("You Really want to Unshare this post?");
+    if(getConfirmation){
+    const token = getUser.token;
+    const post = { id, token };
+    dispatch(deletePost(post))
+  }
+
+  };
+
   const handleDeletePost = (id: string) => {
     if(getUser === null){
       navigate('/login');
@@ -778,8 +795,6 @@ const viewNextImage = () => {
   };
 
   
-
-
   const viewProfile = () => {
     if(getUser && getUser._doc  && getUser._doc.fullname){
       navigate(`/profile/${getUser && getUser._doc && getUser._doc._id}`)
@@ -946,13 +961,19 @@ const viewNextImage = () => {
       <div key={index} className="rounded-full my-1 p-3 max-w-full bg-white dark-bg-gray-700 border border-gray-400 rounded-lg">
        {
         post.reShared &&  (
-          <>
+          <div className="flex justify-between px-2 items-center">
           <div className="flex items-center border-b border-b-gray-300 pb-4">
            <img onClick={() => viewAProfile(post && post.reShare && post.reShare[0] && post.reShare[0].user && post.reShare[0].user._id)} className="w-8 h-8 rounded-full cursor-pointer" src={post && post.reShare && post.reShare[0] && post.reShare[0].user  && post.reShare[0].user.profilePhoto && post.reShare[0].user.profilePhoto.url} alt=""/>
             <p className="text-black dark:text-white text-xs font-medium px-1">{post && post.reShare && post.reShare[0]  && post.reShare[0].user  && post.reShare[0].user.fullname}</p>
             <p className="text-gray-500 text-xs font-semibold px-3">Reshared this post</p>
           </div>
-          </>
+
+          {
+            post && post.reShare && post.reShare[0] && post.reShare[0].user && post.reShare[0].user._id  === me && (
+              <UndoLogo onClick={() => cancelReshared(post && post._id)} className="w-3 h-3 fill-black cursor-pointer" />
+            )
+          }
+          </div>
         ) 
        }
         <div className="flex items-center gap-2 w-full">

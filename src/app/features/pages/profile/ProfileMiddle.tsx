@@ -664,9 +664,7 @@ const ProfileMiddle = () => {
       setDesktopMenu(false);
     };
 
-    // const viewProfile = () => {
-    //   navigate(`/profile/${otheruser && otheruser._doc && otheruser._doc._id}`)
-    // }
+   
 
     const handleChat = () => {
       const getUser = JSON.parse(localStorage.getItem('user') as any);
@@ -704,11 +702,11 @@ const ProfileMiddle = () => {
     setMobileModal(true);
 }
   return (
-    <div className="mt-10 max-w-md sm:max-w-full bg-white">
+    <div className="sm:mt-10 max-w-md sm:max-w-full bg-white">
       
-      <div onClick={handleGoBack} className=' sm:fixed flex gap-3 py-2 cursor-pointer'>
-          <BackLogo  className='w-4 h-4 cursor-pointer stroke-2 sm:fill-white fill-black' />
-        <h2 className='text-xs font-medium text-black sm:text-white'>Go Back</h2>
+      <div onClick={handleGoBack} className=' sm:fixed flex gap-2 p-2 cursor-pointer'>
+          <BackLogo  className='w-4 h-4 cursor-pointer stroke-[4px] sm:fill-white fill-black' />
+        <h2 className='text-xs font-semibold text-black sm:text-white'>Go Back</h2>
         </div>
 
       <div className='flex flex-col rounded-tl-3xl justify-center items-center bg-white p-6'>
@@ -784,21 +782,21 @@ const ProfileMiddle = () => {
           )
         }
 
-    <div className="flex justify-around px-4 mb-4">
-    <h1 onClick={activateFeed} className={`text-lg cursor-pointer font-bold ${showfeed ? 'text-purple-500 border-b-2 border-purple-500': 'text-black' }  dark:text-white pl-4`}>
+    <div className="flex justify-around px-2 mb-4">
+    <h1 onClick={activateFeed} className={`text-lg cursor-pointer font-bold ${showfeed ? 'text-purple-500 border-b-2 border-purple-500': 'text-black' }  dark:text-white pl-3`}>
       Feeds
     </h1>
-    <h1 onClick={activateFollowers} className={`text-lg cursor-pointer font-bold ${showfollowers ? 'text-purple-500  border-b-2 border-purple-500': 'text-black' }  dark:text-white pl-4`}>
+    <h1 onClick={activateFollowers} className={`text-lg cursor-pointer font-bold ${showfollowers ? 'text-purple-500  border-b-2 border-purple-500': 'text-black' }  dark:text-white pl-3`}>
       Followers
     </h1>
-    <h1 onClick={activateFollowing} className={`text-lg cursor-pointer font-bold ${showfollowing ? 'text-purple-500  border-b-2 border-purple-500': 'text-black' }  dark:text-white pl-4`}>
+    <h1 onClick={activateFollowing} className={`text-lg cursor-pointer font-bold ${showfollowing ? 'text-purple-500  border-b-2 border-purple-500': 'text-black' }  dark:text-white pl-3`}>
       Following
     </h1>
-    <h1 onClick={activateUpload} className={`text-lg cursor-pointer font-bold ${showupload ? 'text-purple-500  border-b-2 border-purple-500': 'text-black' }  dark:text-white pl-4`}>
+    <h1 onClick={activateUpload} className={`text-lg cursor-pointer font-bold ${showupload ? 'text-purple-500  border-b-2 border-purple-500': 'text-black' }  dark:text-white pl-3`}>
       Uploads
     </h1>
     </div>
-    
+      <div className="pb-[85px]">
         { showfeed  ? (
           <>
            {
@@ -1331,7 +1329,7 @@ const ProfileMiddle = () => {
             <></>
          )
     }
-
+    </div>
        
 
      <NavBar />

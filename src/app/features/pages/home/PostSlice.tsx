@@ -403,9 +403,10 @@ export const postSlice = createSlice({
         state.status = "loading";
       })
       .addCase(deletePost.fulfilled, (state, action) => {
-        if (action.payload !== undefined && action.payload._id) {
+        if (action.payload !== undefined) {
           state.status = "success";
-          const findIndex = state.posts.findIndex((p: any) => p._id === action.payload._id);
+          console.log('delete post id ', action.payload);
+          const findIndex = state.posts.findIndex((p: any) => p._id === action.payload);
           state.posts.splice(findIndex, 1);
         }
       })

@@ -4,12 +4,13 @@ import { useAppDispatch, useAppSelector } from '../../../hooks'
 import { currentSearchTrend, selectPost, topPostTrending } from '../home/PostSlice'
 import { selectUser, topUserTrending } from '../auth/authSlice'
 import { useNavigate } from 'react-router-dom'
+import { ArrowLeftIcon } from '@heroicons/react/24/outline'
 
 const TrendMain = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { trendingPost } = useAppSelector(selectPost);
-  const { trendingUser } = useAppSelector(selectUser);
+  const { trendingUser, } = useAppSelector(selectUser);
 
   useEffect(() => {
     dispatch(topPostTrending()).then((res: any) => {
@@ -28,9 +29,17 @@ const TrendMain = () => {
     navigate('/trendlist')
   }
 
+  const goBack = () => {
+    navigate(-1);
+  };
+
   return (
     <div>
-       <div className='w-full bg-white dark:bg-black dark:text-white rounded-3xl p-4'>
+       <div className='w-full bg-white dark:bg-black h-screen dark:text-white rounded-3xl p-4'>
+       <div onClick={goBack} className='flex items-center gap-3 cursor-pointer bg-white'>
+                <ArrowLeftIcon className='w-4 h-4 cursor-pointer' />
+            <h2 className='text-xs font-semibold text-black'>Go Back</h2>
+            </div>
 
 <div className='flex justify-between my-2 items-center px-4'>
   <div>

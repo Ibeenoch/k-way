@@ -40,12 +40,15 @@ const SinglePost = () => {
     const getUser = JSON.parse(localStorage.getItem('user') as any);
     const [desktopMenu, setDesktopMenu] = useState<boolean>(false);
     const [postClicked, setPostClicked] = useState<string>("");
+    const [commentClicked, setCommentClicked] = useState<string>("");
     const [content, setcontent] = useState<string>("");
     const [findReply, setFindReply] = useState<boolean>(false);
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const { id } = useParams();
     const [postModal, setPostModal] = useState<boolean>(false);
+    const mobileMenuRef = useRef<HTMLDivElement>(null);
+    const mobileCommentMenuRef = useRef<HTMLDivElement>(null);
     const [comment, setComment] = useState<string>("");
     const [commentErr, setCommentErr] = useState<string>("");
     const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);
@@ -54,7 +57,7 @@ const SinglePost = () => {
     const [mobileCommentModal, setMobileCommentModal] = useState<boolean>(false);
     const [isPosting, setIsPosting] = useState<boolean>(false);
     const [menu, setMenu] = useState<boolean>(false);
-    const [commemtClicked, setCommentClicked] = useState<string>('');
+    const [commentmenu, setCommentMenu] = useState<boolean>(false);
     const [desktopCommentMenu, setDesktopCommentMenu] = useState<boolean>(false);
     const desktopCommentMenuRef = useRef<HTMLDivElement>(null);
     const [postId, setPostId] = useState<string>('');
@@ -99,14 +102,48 @@ const SinglePost = () => {
         const showCommentMenuBar = (id: string) => {
             setCommentClicked(id);
             setDesktopCommentMenu(true);
+            setIsPosting(false);
+            setCommentMenu(true)
+            setCommentMenu(true);
           };
         
+  const hideMobileMenu = (e: MouseEvent) => {
+     if ( mobileMenuRef.current && !mobileMenuRef.current.contains(e.target as Node)) {
+      console.log('no post menu contain ', e.target, e.currentTarget);
+       setMenu(false);
+     }else{
 
-        const onEmojiClick = (emojiObject: any) => {
-            console.log("events emoji ", emojiObject);
-            setcontent((prev) => prev + emojiObject.emoji);
-            setShowEmojiPicker(false);
-          };
+      console.log('nthe comment contain');
+     }
+   };
+      
+  useEffect(() => {
+     document.addEventListener("mousedown", hideMobileMenu);
+ 
+     return () => {
+       document.removeEventListener("mousedown", hideMobileMenu);
+     };
+   }, [mobileMenuRef]);
+      
+ 
+    const hideMobileCommentMenu = (e: MouseEvent) => {
+     if ( mobileCommentMenuRef.current && !mobileCommentMenuRef.current.contains(e.target as Node)) {
+       console.log('no comment contain ', e.target, e.currentTarget);
+      setCommentMenu(false);
+     }else{
+
+       console.log('nthe comment contain');
+      }
+   };
+
+   useEffect(() => {       
+     document.addEventListener("mousedown", hideMobileCommentMenu);
+ 
+     return () => {
+       document.removeEventListener("mousedown", hideMobileCommentMenu);
+     };
+   }, [mobileCommentMenuRef]);
+
         
 
         const handleEditPost = (id: string) => {
@@ -331,13 +368,13 @@ const viewOthersProfile = ( userId: string ) => {
   const postOwner = post && post.owner && post.owner._id;
   return (
     <div className="min-h-screen">
-        <div onClick={handleGoBack} className=' sm:fixed flex gap-3 bg-white p-2 cursor-pointer'>
+        <div onClick={handleGoBack} className={`sm:fixed flex gap-3 ${commentmenu || menu  ? 'bg-gray-200' : 'bg-white'} p-2 cursor-pointer`} >
           <BackArrowLogo  className='w-4 h-4 cursor-pointer sm:fill-white fill-black' />
         <h2 className='text-xs font-medium text-black sm:text-white'>Back to Post Feeds</h2>
         </div>
 
-    <div className="sm:mx-[25%] h-screen">
-         <div  className="p-3 max-w-full bg-white dark-bg-gray-700 border border-gray-400">
+    <div className={`${commentmenu  || menu ? 'bg-gray-200' : 'bg-white'} sm:mx-[25%] h-screen`} >
+         <div  className={`p-3 max-w-full ${commentmenu || menu  ? 'bg-gray-200' : 'bg-white'}  dark-bg-gray-700 border border-gray-400`}>
          
         <div className="flex items-center gap-2 w-full">
           <img onClick={() => viewOthersProfile(post && post.owner && post.owner._id)} className="w-8 h-8 rounded-full cursor-pointer" src={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.url} alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
@@ -404,6 +441,53 @@ const viewOthersProfile = ( userId: string ) => {
                   }
                   
                 </div>
+
+                   {/* mobile menu  */}
+              <div
+                ref={mobileMenuRef}
+                id="mobilemenu"
+                className={`fixed ${
+                  menu && post._id === postClicked ? "block" : "hidden"
+                } bottom-0 left-0 bg-white pt-10 pl-5 pr-5 pb-5 z-40 w-full h-[40%] rounded-tl-3xl rounded-tr-3xl sm:hidden`}
+              >
+                {
+                  getUser !== undefined && getUser && getUser._doc && getUser._doc._id  ===   post && post.owner && post.owner._id ? (
+                              <>
+                            <div onClick={() =>handleEditPost(post._id)} className="flex gap-2 px-2 cursor-pointer items-center py-4">
+                              <EditLogo  className="stroke-black w-4 h-4"/>
+                              <p className="text-black text-lg">Edit Post</p>
+                            </div>
+                            <div  onClick={() =>handleDeletePost(post._id)} className="flex gap-2 px-2 cursor-pointer items-center py-4">
+                              <TrashLogo className="fill-black stroke-black w-6 h-6"/>
+                              <p className="text-black text-lg">Delete Post</p>
+                            </div>
+                              </>
+                            ) : (
+                              <>
+                              <div className="flex gap-2 cursor-pointer items-center px-2 py-4">
+                            <AddContactLogo  className="fill-black stroke-black w-5 h-5"/>
+                            <p className="text-black text-lg">Follow @texilola😎</p>
+                          </div>
+
+                          <div className="flex gap-2 items-center px-2 py-4  cursor-pointer">
+                            <BlockContactLogo  className="fill-black stroke-black w-5 h-5"/>
+                            <p className="text-black text-lg">Block @texilola😎</p>
+                          </div>
+
+                          <div className="flex gap-2 items-center cursor-pointer px-2 py-4">
+                            <ReportContactLogo  className="fill-black stroke-black w-5 h-5"/>
+                            <p className="text-black text-lg">Report Post</p>
+                          </div>
+
+                          <div className="flex gap-2 cursor-pointer items-center px-2 py-4">
+                            <MuteContactLogo   className="fill-black stroke-black w-5 h-5"/>
+                            <p className="text-black text-lg">Mute @texilola😎</p>
+                          </div>
+                              </>
+                            )
+                          }
+                
+              </div>
               </div>
             </div>
           </div>
@@ -552,11 +636,11 @@ const viewOthersProfile = ( userId: string ) => {
       
 
             {/* view other people comments  */}
-            <div className="bg-white h-screen">
+            <div className={`${commentmenu || menu ? 'bg-gray-200' : 'bg-white'} h-screen`} >
             {
               comments && comments.length > 0 && Array.isArray(comments) ? (
                 comments.map((comment) => (
-            <div className="border-b border-gray-300 bg-white">
+            <div className={`border-b border-gray-300 ${commentmenu || menu ? 'bg-gray-200' : 'bg-white'}`} >
             <div className="p-4">
               <div className="flex justify-between">
               <div className="flex space-x-2">
@@ -602,7 +686,7 @@ const viewOthersProfile = ( userId: string ) => {
                 ref={desktopCommentMenuRef}
                 id="desktopCommentMenu"
                 className={`hidden ${
-                  desktopCommentMenu && comment._id === commemtClicked ? "sm:block" : "sm:hidden"
+                  desktopCommentMenu && comment._id === commentClicked ? "sm:block" : "sm:hidden"
                 } absolute shadow-xl w-[150px] top-0 shadow-purple-80 z-10 -right-3 rounded-3xl mx-auto bg-white  h-auto p-5`}
               >
                 <div className="flex justify-end">
@@ -637,6 +721,44 @@ const viewOthersProfile = ( userId: string ) => {
                   )
                 }
                
+              </div>
+
+                {/* mobile menu  */}
+              <div
+                ref={mobileCommentMenuRef}
+                id="mobilecommentmenu"
+                className={`fixed ${
+                  commentmenu && comment._id === commentClicked ? "block" : "hidden"
+                } bottom-0 left-0 bg-white pt-10 pl-5 pr-5 pb-5 z-40 w-full h-[40%] rounded-tl-3xl rounded-tr-3xl sm:hidden`}
+              >
+                {
+                  comment && comment.owner && comment.owner._id === getUser._doc._id ? (
+                    <>
+                     <div onClick={() =>handleEditIcon(comment._id, post._id)} className="flex gap-3 group cursor-pointer items-center pl-1">
+                  <EditLogo className="stroke-black w-5 h-5 group-hover:stroke-purple-600"/>
+                  <p className="text-black text-[17px] group-hover:text-purple-600 pt-1">Edit Comment</p>
+                </div>
+
+                <div onClick={() =>getConfirmation(comment._id)} className="flex gap-1 group items-center pt-3  cursor-pointer">
+                 <TrashLogo className="fill-black stroke-black w-8 h-8 group-hover:stroke-red-600 group-hover:fill-red-600"/>
+                  <p className="text-black text-[17px] group-hover:text-red-600">Delete Comment</p>
+                </div>
+
+                <div onClick={() => handleReplyComent(comment._id)} className="flex gap-1 group items-center cursor-pointer pt-3">
+                  <ReplyLogo className="w-8 h-8  group-hover:stroke-purple-600" />
+                  <p className="text-black text-[17px] group-hover:text-purple-600">Reply Comment</p>
+                </div>
+
+                    </>
+                  ) : (
+                    <>
+                     <div className="flex gap-2 group items-center cursor-pointer pt-4">
+                  <ReplyLogo className="w-6 h-6  group-hover:stroke-purple-600" />
+                  <p className="text-black text-[15px] group-hover:text-purple-600">Reply Comment</p>
+                </div>
+                    </>
+                  )
+                }
               </div>
 
               </div>
