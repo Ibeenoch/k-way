@@ -7,6 +7,8 @@ import { allCommentForAPost, bookmarkPost, commentOnPost, createPost, createStor
 import { useNavigate, useParams } from "react-router-dom";
 import NavBar from "../mobilenav/NavBar";
 import { ReactComponent as GlobalTrendLogo } from '../../../../assets/globeTrend.svg';
+import { ReactComponent as SignalLogo } from '../../../../assets/signal.svg';
+import { ReactComponent as PlayLogo } from '../../../../assets/play.svg';
 import { ReactComponent as LikeLogo } from '../../../../assets/like.svg';
 import { ReactComponent as VerifyMarkLogo } from '../../../../assets/verifyChecker.svg';
 import { ReactComponent as CommentLogo } from '../../../../assets/comment.svg';
@@ -773,7 +775,7 @@ const viewNextImage = () => {
           <div  onClick={handleStory} className="relative inline-block mx-1 flex-none">
           {
          getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url && (
-            <img className="w-20 h-20 border-2 opacity-60 border-purple-500 rounded-full cursor-pointer" src={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url} alt="" />
+            <img className="w-[180px] h-[220px] rounded-3xl border-2 opacity-60 border-purple-500 cursor-pointer" src={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url} alt="" />
 
           ) 
         }
@@ -797,12 +799,36 @@ const viewNextImage = () => {
             {/* view stories  */}
             {
               stories && stories.length > 0 && stories.map((story: any, index: number) => (
-                <div onClick={() =>viewStories(story && story._id, index)} className="flex-none text-center">
+                <div onClick={() =>viewStories(story && story._id, index)} className="flex-none relative text-center">
                 <img
-                  className="w-20 h-20 rounded-full border-2 border-purple-500 cursor-pointer"
+                  className="w-[180px] h-[220px] rounded-3xl border-2 border-purple-500 cursor-pointer"
                   src={story && story && story.profilePhoto && story.profilePhoto.url}
                   alt=""
                 />
+                <div className="absolute top-3 left-3">
+                  <div className="flex items-center gap-2">
+                    <div className="bg-red-600 rounded-2xl flex gap-1 items-center py-1 px-2">
+                      <SignalLogo className="w-3 h-3 fill-white stroke-white" />
+                      <p className="text-white text-[9px]">Live</p>
+                    </div>
+                    <div className="bg-[#a9a9a9] bg-opacity-50 rounded-2xl flex gap-[1px] items-center py-1 px-2">
+                      <PlayLogo className="w-2 h-2 fill-white stroke-white" />
+                      <p className="text-white text-[9px]">123k</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="absolute bottom-5 left-3 bg-[#a9a9a9] bg-opacity-50 p-2 rounded-2xl">
+                  <div className="flex gap-1">
+                  <img className="w-7 h-7 rounded-full" src={story && story && story.profilePhoto && story.profilePhoto.url} alt="" />
+                  <div className="flex flex-col justify-start items-start">
+                  <h2 className="text-white font-semibold text-[10px]">{story && story.fullname}</h2>
+                  <p className="text-gray-300 text-[9px]">{story && story.followers && story.followers.length}followers</p>
+                  </div>
+                  </div>
+
+                </div>
+               
                 <p className="text-[10px] text-black dark:text-white">{story && story.fullname}</p>
               </div>
 

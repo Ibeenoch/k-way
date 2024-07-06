@@ -126,18 +126,18 @@ const goTrend = () => {
     <div>
       
       {mobileIconModal ? (
-        <div className={`fixed ${postModal || viewingStory || viewingProfile || whichPost === 'post' || whichPost === 'story'  ? 'z-0' : 'z-40'} bottom-0 bg-black pr-3 pl-3 py-2 w-full rounded-full sm:hidden`} >
+        <div className={`fixed ${postModal || viewingStory || viewingProfile || whichPost === 'post' || whichPost === 'story'  ? 'z-0' : 'z-40'} left-0 bottom-0 bg-black pr-3 pl-3 py-2 w-full rounded-full sm:hidden`} >
 
           <div className="flex gap-2 justify-around items-center">
-            <HomeLogo onClick={goHome} className={`w-9 h-9 ${ active === 'home' ? 'stroke-purple-600 fill-purple-600' : 'stroke-white fill-white' } `} />
+            <HomeLogo onClick={goHome} className={`w-7 h-7 ${ active === 'home' ? 'stroke-purple-600 fill-purple-600' : 'stroke-white fill-white' } `} />
             
-            <GlobalTrendLogo onClick={goTrend} className={`w-9 h-9 ${ active === 'trend' ? 'fill-purple-600 stroke-purple-600' : 'fill-white stroke-white'} `} />
+            <GlobalTrendLogo onClick={goTrend} className={`w-7 h-7 ${ active === 'trend' ? 'fill-purple-600 stroke-purple-600' : 'fill-white stroke-white'} `} />
 
-            <div onClick={showPostModal} className={` ${active === 'post' ? 'bg-purple-600 p-4 border-2 border-white rounded-full' : 'p-4 bg-black border-2 border-white rounded-full'} `} >
-               <PlusIcon className="w-9 h-9 stroke-2 fill-white stroke-white"/>
+            <div onClick={showPostModal} className={` ${active === 'post' ? 'bg-purple-600 p-3 border-2 border-white rounded-full' : 'p-3 bg-black border-2 border-white rounded-full'} `} >
+               <PlusIcon className="w-7 h-7 stroke-2 fill-white stroke-white"/>
             </div>
             <div className='relative flex items-center'>
-              <BellLogo onClick={goNotify} className={`w-11 h-11 ${active === 'notification' ? 'stroke-purple-600' : 'stroke-white'} `} />
+              <BellLogo onClick={goNotify} className={`w-9 h-9 ${active === 'notification' ? 'stroke-purple-600' : 'stroke-white'} `} />
              {
               whoToNotify === me && unViewednotificationCount && unViewednotificationCount > 0 && (
               <div className='text-white bg-purple-600 rounded-full absolute px-2 py-[0.8px] top-0 right-0 text-sm font-semibold'>
@@ -150,7 +150,7 @@ const goTrend = () => {
             <img
             onClick={goProfile}
               src={ getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url ? getUser._doc.profilePhoto.url : `${process.env.PUBLIC_URL}/images/images-74.jpeg`}
-              className={`w-12 h-12 rounded-full cursor-pointer border-[3px] ${ active === 'profile' ? 'border-purple-600' : 'border-white'} `}
+              className={`w-10 h-10 rounded-full cursor-pointer border-[3px] ${ active === 'profile' ? 'border-purple-600' : 'border-white'} `}
               alt=""
             />
           </div>
