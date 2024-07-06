@@ -22,6 +22,7 @@ const NavBar = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const { active, unViewednotificationCount, whoToNotify, viewingProfile, notification } = useAppSelector(selectUser);
+    const { whichPost } = useAppSelector(selectPost);
     const { viewingStory } = useAppSelector(selectPost);
     
     const me = getUser && getUser._doc && getUser._doc._id;
@@ -63,6 +64,7 @@ const goTrend = () => {
     setisProfile(false);
     setispost(false);
     dispatch(setActivePage('notification'));
+    navigate('/notification');
     const postId = notification && notification.post;
     console.log('post id for notification ', postId);
     const userId = getUser && getUser._doc && getUser._doc._id;
@@ -74,7 +76,7 @@ const goTrend = () => {
       dispatch(getAllNotificationForAUser(note)).then((res: any) => {
         console.log('get not ', res);
         if(res && res.payload !== undefined){
-          navigate('/notification');
+          
         }
       })
     })
@@ -124,12 +126,11 @@ const goTrend = () => {
     <div>
       
       {mobileIconModal ? (
-        <div className={`fixed ${postModal || viewingStory || viewingProfile  ? 'z-0' : 'z-40'} bottom-0 bg-black pr-3 pl-3 py-2 w-full rounded-full sm:hidden`} >
+        <div className={`fixed ${postModal || viewingStory || viewingProfile || whichPost === 'post' || whichPost === 'story'  ? 'z-0' : 'z-40'} bottom-0 bg-black pr-3 pl-3 py-2 w-full rounded-full sm:hidden`} >
 
           <div className="flex gap-2 justify-around items-center">
             <HomeLogo onClick={goHome} className={`w-9 h-9 ${ active === 'home' ? 'stroke-purple-600 fill-purple-600' : 'stroke-white fill-white' } `} />
             
-            {/* <SearchLogo className="w-9 h-9 fill-white stroke-white"/> */}
             <GlobalTrendLogo onClick={goTrend} className={`w-9 h-9 ${ active === 'trend' ? 'fill-purple-600 stroke-purple-600' : 'fill-white stroke-white'} `} />
 
             <div onClick={showPostModal} className={` ${active === 'post' ? 'bg-purple-600 p-4 border-2 border-white rounded-full' : 'p-4 bg-black border-2 border-white rounded-full'} `} >

@@ -1,8 +1,9 @@
 
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch } from '../../../hooks';
-import { fetchChat, findChatIdForTwoUsers, getOtherUser } from '../auth/authSlice';
+import { fetchChat, findChatIdForTwoUsers, getAllUser, getOtherUser } from '../auth/authSlice';
 import { socket } from '../../../../index'
+import { useEffect } from 'react';
 
 
 
@@ -70,6 +71,15 @@ const MessageList = () => {
         }
       })
     };
+
+    useEffect(() => {
+      dispatch(getAllUser()).then((res: any) => {
+        if(res && res.payload !== undefined){
+          console.log('llll ', res);
+          
+        }
+      } )
+    }, [])
 
   return (
     <div>

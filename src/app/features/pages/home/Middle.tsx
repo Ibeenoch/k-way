@@ -105,7 +105,7 @@ const Middle = () => {
   }
 
   useEffect(() => {
-    dispatch(getAllUser())
+    dispatch(getAllUser());
   }, []);
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -250,7 +250,6 @@ if(id){
           toggleRefresh();
           setIsPosting(false);
           hidePostModal();
-          console.log('use it ');
           navigate('/');
           window.scrollTo(0, 0);
       });
@@ -484,6 +483,7 @@ const handleTouchEnd = (e : React.TouchEvent<HTMLDivElement>) => {
   const me = getUser && getUser._doc && getUser._doc._id;
 
   const showPostModal = () => {
+    dispatch(setWhichPost('post'))
     setPostModal(true);
    setisHome(false);
    setIsTrend(false);
@@ -505,10 +505,10 @@ const handleTouchEnd = (e : React.TouchEvent<HTMLDivElement>) => {
   }, [postModal])
 
   const hidePostModal = () => {
+    dispatch(setWhichPost('none'));
     setPostModal(false);
     dispatch(openpostForm(false));
     dispatch(updateViewingStatus(false));
-    dispatch(setWhichPost('post'));
   };
 
   const showFullScreen = (id: string, video: string): void => {
@@ -556,6 +556,7 @@ const handleTouchEnd = (e : React.TouchEvent<HTMLDivElement>) => {
 
   const hideMobileModal = () => {
     setMobileModal(false);
+    dispatch(setWhichPost('none'));
   };
 
   const viewUserProfile = (userId: string) => {
@@ -581,6 +582,7 @@ const handleTouchEnd = (e : React.TouchEvent<HTMLDivElement>) => {
   }
 
   const showMobileModal = (img: any, id: any) => {
+    dispatch(setWhichPost('post'))
     const post = posts.find((item: any) => item._id === id );
     setDisplayImage(img);
     setDisplayProfileImage(post.owner.profilePhoto.url);

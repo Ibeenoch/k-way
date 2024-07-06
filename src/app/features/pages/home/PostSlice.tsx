@@ -22,7 +22,7 @@ export interface PostInterface {
   bookmark: any[];
   reshared: any[];
   openPostForm: boolean;
-  whichPost: 'story' | 'post';
+  whichPost: 'story' | 'post' | 'none';
   view: 'likes' | 'bookmark' | 'reshare' | 'none'
   status: "success" | "loading" | "failed" | "idle";
   editCommentStatus: "success" | "loading" | "failed" | "idle";
@@ -46,7 +46,7 @@ const initialState: PostInterface = {
   likes: [],
   bookmark: [],
   openPostForm: false,
-  whichPost: 'post',
+  whichPost: 'none',
   view: 'none',
   reshared: [],
   editCommentStatus: "idle",
@@ -300,7 +300,7 @@ export const postSlice = createSlice({
     openpostForm: (state, action: PayloadAction<boolean>) => {
        state.openPostForm = action.payload;
     },
-    setWhichPost: (state, action: PayloadAction<'story' | 'post'>) => {
+    setWhichPost: (state, action: PayloadAction<'story' | 'post' | 'none'>) => {
        state.whichPost = action.payload;
     },
     resetSearchPost: (state) => {

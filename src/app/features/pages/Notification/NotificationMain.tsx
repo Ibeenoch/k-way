@@ -55,7 +55,7 @@ const NotificationMain = () => {
       {/* feeds  */}
       
       {
-        notifications && notifications.length > 0 && Array.isArray(notifications) && notifications.map((note: any) => (
+        notifications && notifications.length > 0 && Array.isArray(notifications) ? notifications.map((note: any) => (
         <>
           {
             note && note.sender && note.sender && note.sender._id !== myId && (
@@ -124,7 +124,13 @@ const NotificationMain = () => {
             )
           }
       </>
-      ))
+      )) : (
+        <>
+        <div className='flex justify-center items-center'>
+        <p className='text-xs text-black font-semibold'>You have no Notifications yet</p>
+        </div>
+        </>
+      )
       }
       <NavBar />
     </div>

@@ -29,11 +29,9 @@ const Left = () => {
 
   const newsFeedActive = () => {
     dispatch(setActivePage('home'));
-    dispatch(getAllPosts()).then((res: any) => {
-      if(res && res.payload !== undefined){
-        navigate('/');
-      }
-    })
+    navigate('/');
+
+   
   };
   
   useEffect(() => {
@@ -54,12 +52,8 @@ const Left = () => {
 
   const messageActive = () => {
     dispatch(setActivePage('message'));
-    dispatch(getAllUser()).then((res: any) => {
-      if(res && res.payload !== undefined){
-        console.log('llll ', res);
-        navigate('/message');
-      }
-    } )
+    navigate('/message');
+
   }
 
   const notificationActive = () => {
