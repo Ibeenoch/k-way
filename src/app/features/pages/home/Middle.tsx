@@ -906,7 +906,7 @@ const viewNextImage = () => {
         {
 
           posts && Array.isArray(posts) && posts.map((post: any, index: number) => (       
-      <div key={index} className={`rounded-full my-1 p-3 max-w-full ${ desktopMenu || menu ? 'bg-gray-200' : 'bg-white'} dark-bg-gray-700 border border-gray-400 rounded-lg`} >
+      <div key={index} className={`rounded-full my-1 p-3 max-w-full ${ desktopMenu || menu ? 'bg-gray-200' : 'bg-white'} dark-bg-gray-700 border border-gray-200 rounded-lg`} >
        {
         post.reShared &&  (
           <div className="flex justify-between px-2 items-center">
@@ -1086,7 +1086,7 @@ const viewNextImage = () => {
           {
             !storyActive && (
             <button onClick={() => handleFollowing(post && post.owner && post.owner._id)} className='text-xs px-4 py-1 bg-black z-40 dark:bg-white rounded-full border border-white text-white dark:text-black transform-transition duration-100 hover:scale-110'>
-              { getUser && getUser._doc && getUser._doc.following  && getUser._doc.following.includes(post.owner._id) ? 'UnFollow' : "Follow" }
+              { getUser && getUser._doc && getUser._doc.following  && getUser._doc.following.includes(post.owner._id) ? 'Following' : "Follow" }
             </button>
             )
           }  
@@ -1253,19 +1253,19 @@ const viewNextImage = () => {
           { post && post.photos && post.photos.length === 1 ? (
             <div className="rounded-3xl overflow-hidden">
           <img onClick={() => showMobileModal(post && post.photos[0] && post.photos[0].url, post && post._id)}
-                className="w-[520px] h-[310px] bg-white rounded-3xl object-cover cursor-pointer"
+                className="w-full h-[310px] bg-white rounded-3xl object-cover cursor-pointer"
                 src={post && post.photos[0] && post.photos[0].url}
                alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
             </div>
           ) : post && post.photos && post.photos.length === 2 ? (
             <div className="flex overflow-hidden">
                <img onClick={() => showMobileModal(post && post.photos[0] && post.photos[0].url, post && post._id)}
-                className="fixed-size w-[258px]  rounded-l-3xl h-[293px] border-r border-white cursor-pointer object-cover"
+                className="fixed-size w-1/2 rounded-l-3xl h-[293px] border-r border-white cursor-pointer object-cover"
                 src={post && post.photos[0] && post.photos[0].url}
                alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
                
                <img onClick={() => showMobileModal(post && post.photos[1] && post.photos[1].url, post && post._id)}
-                 className="fixed-size w-[258px] h-[293px] border-l rounded-r-3xl border-white object-cover cursor-pointer"
+                 className="fixed-size w-1/2 h-[293px] border-l rounded-r-3xl border-white object-cover cursor-pointer"
                  src={post && post.photos[1] && post.photos[1].url}
                alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
             </div>
@@ -1289,22 +1289,22 @@ const viewNextImage = () => {
           ) :   post && post.photos && post.photos.length === 4 ? (
             <div className="grid grid-cols-2 rounded-3xl overflow-hidden">
               <img onClick={() => showMobileModal(post && post.photos[0] && post.photos[0].url, post && post._id)}
-                 className="w-[259px] h-[144px]  border-r border-b border-white rounded-tl-3xl fixed-size object-cover cursor-pointer"
+                 className="w-full h-[144px]  border-r border-b border-white rounded-tl-3xl fixed-size object-cover cursor-pointer"
                  src={post && post.photos[0] && post.photos[0].url}
                alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
 
                <img onClick={() => showMobileModal(post && post.photos[1] && post.photos[1].url, post && post._id)}
-                  className="w-[259px] h-[144px] border-l border-b border-white rounded-tr-3xl fixed-size object-cover cursor-pointer"
+                  className="w-full h-[144px] border-l border-b border-white rounded-tr-3xl fixed-size object-cover cursor-pointer"
                   src={post && post.photos[1] && post.photos[1].url}
                alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
 
                <img onClick={() => showMobileModal(post && post.photos[2] && post.photos[2].url, post && post._id)}
-                 className="w-[259px] h-[144px] border-t border-r border-white rounded-bl-3xl fixed-size object-cover cursor-pointer"
+                 className="w-full h-[144px] border-t border-r border-white rounded-bl-3xl fixed-size object-cover cursor-pointer"
                  src={post && post.photos[2] && post.photos[2].url}
                alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
 
                <img onClick={() => showMobileModal(post && post.photos[3] && post.photos[3].url, post && post._id)}
-                 className="w-[259px] h-[144px] border-t border-l border-white rounded-br-3xl fixed-size object-cover cursor-pointer"
+                 className="w-full h-[144px] border-t border-l border-white rounded-br-3xl fixed-size object-cover cursor-pointer"
                  src={post && post.photos[3] && post.photos[3].url}
                alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
             </div>

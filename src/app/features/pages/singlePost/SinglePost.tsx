@@ -7,7 +7,9 @@ import { ReactComponent as BookMarkLogo } from '../../../../assets/bookmark.svg'
 import { ReactComponent as ReplyLogo } from '../../../../assets/replyLogo.svg';
 import { ReactComponent as MenuLogo } from '../../../../assets/threeDot.svg';
 import { ReactComponent as BlockContactLogo } from '../../../../assets/blockContact.svg';
+import { ReactComponent as ArrowPreviousLogo } from '../../../../assets/arrowPrevious.svg';
 import { ReactComponent as ReportContactLogo } from '../../../../assets/reportContact.svg';
+import { ReactComponent as ArrowNextLogo } from '../../../../assets/arrowNext.svg';
 import { ReactComponent as AddContactLogo } from '../../../../assets/addContact.svg';
 import { ReactComponent as MuteContactLogo } from '../../../../assets/muteContact.svg';
 import { ReactComponent as CancelLogo } from '../../../../assets/cancelLogo.svg';
@@ -20,10 +22,10 @@ import { ReactComponent as ThreeDotVerticalLogo } from '../../../../assets/three
 import { formatCreatedAt } from "../../../../utils/timeformat";
 import { useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
-import { allCommentForAPost, bookmarkPost, commentOnPost, deleteComment, deletePost, getAPost, getAllRepliesForComment, likeComment, likePost, rePost, selectPost } from "../home/PostSlice";
+import {  allCommentForAPost, bookmarkPost, commentOnPost, likeComment, createPost, createStory, deletePost, getAPost, getAllPosts, getAllUserStories, getAvailableStories, getBookmarkforaPost, getLikesforaPost, getresharedforaPost, likePost, openpostForm, rePost, resetEditCommentStatus, selectPost, setWhichPost, updatePost, updateViewingStatus, deleteComment, getAllRepliesForComment } from "../home/PostSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import { HeartIcon } from "@heroicons/react/24/outline";
-import { addNotification, getOtherUser,  } from '../auth/authSlice'
+import { addNotification, getOtherUser, userFollowing } from '../auth/authSlice'
 import { socket } from '../../../../index'
 
 
@@ -31,22 +33,28 @@ import { socket } from '../../../../index'
 const SinglePost = () => {
     const desktopMenuRef = useRef<HTMLDivElement>(null);
     const getUser = JSON.parse(localStorage.getItem('user') as any);
+    const [touchstart, setTouchStart] = useState<number>();
     const [desktopMenu, setDesktopMenu] = useState<boolean>(false);
     const [postClicked, setPostClicked] = useState<string>("");
     const [commentClicked, setCommentClicked] = useState<string>("");
+    const [videoUrl, setVideoUrl] = useState<string>('');
     const [content, setcontent] = useState<string>("");
     const [findReply, setFindReply] = useState<boolean>(false);
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
+    const [toggleControls, setToggleControls] = useState<boolean>(false);
+    const [touchend, setTouchEnd] = useState<number>();
     const { id } = useParams();
     const [postModal, setPostModal] = useState<boolean>(false);
     const mobileMenuRef = useRef<HTMLDivElement>(null);
+    const [displayProfileImage, setDisplayProfileImage] = useState<string>('');
     const mobileCommentMenuRef = useRef<HTMLDivElement>(null);
     const [comment, setComment] = useState<string>("");
     const [commentErr, setCommentErr] = useState<string>("");
     const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);
     const [commentModal, setCommentModal] = useState<boolean>(false);
     const [isCommenting, setIsCommenting] = useState<boolean>(false);
+    const [currentPostId, setCurrentPostId] = useState<string>("");
     const [mobileCommentModal, setMobileCommentModal] = useState<boolean>(false);
     const [isPosting, setIsPosting] = useState<boolean>(false);
     const [menu, setMenu] = useState<boolean>(false);
@@ -58,8 +66,10 @@ const SinglePost = () => {
   const [displayImage, setDisplayImage] = useState<string>('');
   const [mobileModal, setMobileModal] = useState<boolean>(false);
   const [fullvideoScreen, setFullVideoScreen] = useState<boolean>(false);
+  const [storyActive, setStoryActive] = useState<boolean>(false);
 
-    const { post, comments } = useAppSelector(selectPost);
+
+    const { post, comments, storyOwner, posts } = useAppSelector(selectPost);
 
 
     const hideComment = () => {
@@ -69,6 +79,18 @@ const SinglePost = () => {
       const showFullScreen = () => {
         setFullVideoScreen(true);
       };
+
+      const hideMobileModal = () => {
+        setMobileModal(false);
+      };
+
+     
+    
+      const hideFullScreen = () => {
+        setFullVideoScreen(false);
+      };
+    
+    
 
       const handleLike = async (postId: string) => {
         const token = getUser && getUser.token;
@@ -109,6 +131,10 @@ const SinglePost = () => {
       console.log('nthe comment contain');
      }
    };
+
+   const toggleImageControls = () => {
+    setToggleControls((prev) => !prev);
+    }
       
   useEffect(() => {
      document.addEventListener("mousedown", hideMobileMenu);
@@ -139,12 +165,7 @@ const SinglePost = () => {
 
         
 
-        const handleEditPost = (id: string) => {
-            setcontent(post.content);
-            navigate(`/${post._id}`)
-            showPostModal()
-          };
-
+   
           const handleDeletePost = (id: string) => {
             const getConfirmation = window.confirm("Are you sure Your want to delete this post? This action cannot be undo");
             if(getConfirmation){
@@ -175,6 +196,23 @@ const SinglePost = () => {
         }
     })
   };
+
+  const handleFollowing = (auserId: string) => {
+    if(getUser === null){
+      navigate('/login');
+      return;
+    };
+  
+    const token = getUser && getUser.token;
+    const follow = { token, auserId };
+    dispatch(userFollowing(follow)).then((res: any) => {
+      if(res && res.payload !== undefined){
+        dispatch(getAllPosts()).then((res: any) => {
+        })
+      }
+    })
+   };
+  
 
   const handleCommentLike = (commentId: string) => {
     const token = getUser && getUser.token;
@@ -290,6 +328,63 @@ const handleBookmark = async (postId: string) => {
     })
   }
 
+  
+const handleTouchStart = (e : React.TouchEvent<HTMLDivElement>) => {
+  setTouchStart(e.targetTouches[0].clientX)
+}
+
+const handleTouchMove = (e : React.TouchEvent<HTMLDivElement>) => {
+  setTouchEnd(e.targetTouches[0].clientX)
+}
+
+const handleTouchEnd = (e : React.TouchEvent<HTMLDivElement>) => {
+  if(!touchstart || !touchend) return;
+
+  const distance = touchstart - touchend;
+  const minimumSwipeDistance = 50;
+
+    const findPost = posts.find((p: any) => p._id === currentPostId);
+    const picsLength = findPost.photos.length;
+    const findIndex = findPost.photos.findIndex((img: any) => img.url === displayImage);
+
+    if(distance > minimumSwipeDistance){
+    // swipe left = next
+    setDisplayImage(findPost.photos[findIndex === picsLength - 1 ? picsLength - 1 : findIndex + 1].url)
+  }else if(distance < -minimumSwipeDistance){
+    //swipe right = prev
+    setDisplayImage(findPost.photos[findIndex <= 0 ? 0 : findIndex - 1].url);
+
+  };
+
+ 
+}
+
+const goToPost = async (id: string) => {
+  dispatch(getAPost(id)).then((res: any) => {
+    if(res && res.payload !== undefined){
+      dispatch(allCommentForAPost(id)).then((res: any) => {
+        if(res && res.payload !== undefined){
+          navigate(`/post/${id}`);
+          window.scrollTo(0, 0);
+        }
+      })
+       
+    }
+  })
+ 
+}
+  const viewAProfile = (userId: string) => {
+
+    dispatch(getOtherUser(userId)).then((res) => {
+      console.log(' other user ', res);
+      if(res && res.payload !== undefined){
+        const myId = res && res.payload && res.payload._doc && res.payload._doc._id;
+        navigate(`/profile/${myId}`);
+        window.scrollTo(0, 0);
+      }
+    })
+  };
+
   const closeCommentMenu = () => {
     setDesktopCommentMenu(false);
   };
@@ -317,6 +412,35 @@ const navigateToProfile = (userId: string) => {
   }
 };
 
+
+const viewPrevImage = () => {
+  const findPost = posts.find((p: any) => p._id === currentPostId);
+  const picsLength = findPost.photos.length;
+  const findIndex = findPost.photos.findIndex((img: any) => img.url === displayImage);
+  setDisplayImage(findPost.photos[findIndex <= 0 ? 0 : findIndex - 1].url);
+
+};
+
+const viewNextImage = () => {
+  const findPost = posts.find((p: any) => p._id === currentPostId);
+  const picsLength = findPost.photos.length;
+  const findIndex = findPost.photos.findIndex((img: any) => img.url === displayImage);
+  setDisplayImage(findPost.photos[findIndex === picsLength - 1 ? picsLength - 1 : findIndex + 1].url);
+
+};
+
+  const handleEditPost = (id: string) => {
+    if(getUser === null){
+      navigate('/login');
+      return;
+    };
+    navigate('/');
+    const findPost = posts.find((p: any) => p._id === id);
+    setcontent(findPost.content);
+    navigate(`/${findPost._id}`)
+    showPostModal()
+  };
+
 const viewOthersProfile = ( userId: string ) => {
   dispatch(getOtherUser(userId)).then((res: any) => {
     if(res && res.payload !== undefined){
@@ -326,6 +450,9 @@ const viewOthersProfile = ( userId: string ) => {
   });
 }
 
+const viewPost = (postId: string) => {
+  navigate(`/post/${postId}`);
+}
 
   const getConfirmation = (commentId: string) => {
     const acceptTodelete = window.confirm('Are you sure you want to trash this comment? this action cannot be undo!!!');
@@ -492,63 +619,249 @@ const viewOthersProfile = ( userId: string ) => {
           </p>
         </div>
 
+        
+        {/* picture modal  */}
+        <div
+        className={`${
+          mobileModal ? "flex" : "hidden"
+        } fixed top-0 left-0 bg-black w-full h-full justify-center items-center`}
+      >
+        <div className={`w-full sm:px-[25%] h-full sm:max-h-sm sm:bg-gray-900`}>
+          <div className="flex justify-between items-center p-2 ">
+            <MenuLogo className={`${toggleControls ? 'block': 'hidden'} w-3 h-3  z-40 fill-white mt-3 ml-3 cursor-pointer`} />
+          
+            {/* cancel or close  */}
+            <CancelLogo onClick={hideMobileModal}  className={`${toggleControls ? 'block': 'hidden'} w-3 h-3 fill-white z-40 mt-4 mr-4 cursor-pointer`} />
+          </div>
+
+          <div className={`${toggleControls ? 'flex': 'hidden'} justify-between items-center z-14 my-2 px-4`}>
+            <div className='flex gap-2'>
+              <img onClick={() => viewAProfile(storyActive ? storyOwner && storyOwner._id : personalPost && personalPost.owner && personalPost.owner._id )} className='w-9 h-9 rounded-full cursor-pointer z-40' src={storyActive ? storyOwner && storyOwner.profilePhoto && storyOwner.profilePhoto.url : displayProfileImage} alt="" />
+            <div className="z-40">
+              <h1 className='text-sm text-white font-semibold'>{storyActive ? storyOwner && storyOwner.fullname : personalPost && personalPost.owner && personalPost.owner.fullname}</h1>
+              <p className='text-xs text-gray-300'>@{storyActive ? storyOwner && storyOwner.handle : personalPost && personalPost.owner && personalPost.owner.handle}</p>
+            </div>
+            </div>
+
+          {
+            !storyActive && (
+            <button onClick={() => handleFollowing(post && post.owner && post.owner._id)} className='text-xs px-4 py-1 bg-black z-40 dark:bg-white rounded-full border border-white text-white dark:text-black transform-transition duration-100 hover:scale-110'>
+              { getUser && getUser._doc && getUser._doc.following  && getUser._doc.following.includes(post.owner._id) ? 'Following' : "Follow" }
+            </button>
+            )
+          }  
+            
+          </div>
+
+         
+
+          <div className="fixed z-5 inset-0 flex justify-center items-center">
+            <div className="pt-1"></div>
+           <div className="z-40"  onClick={toggleImageControls} onTouchStart={handleTouchStart}  onTouchEnd={handleTouchEnd} onTouchMove={handleTouchMove} > 
+            <img
+             
+              className="max-w-[600px] cursor-pointer z-40"
+              src={displayImage}
+              alt="displayimage"
+            />
+            </div>
+
+            {/* show image  */}
+          <div className={`hidden sm:z-[20px] sm:px-[10%] ${ toggleControls ? 'sm:fixed' : 'sm:hidden'} inset-0 sm:flex justify-between items-center`}>
+            <ArrowPreviousLogo onClick={() => viewPrevImage()} className="w-9 h-9 fill-white cursor-pointer" /> 
+            <ArrowNextLogo  onClick={() =>viewNextImage()} className="w-9 h-9 fill-white cursor-pointer" />
+          </div>
+
+            <div className={`fixed bottom-11 ${toggleControls ? 'flex' : 'hidden'}  justify-between items-center`}>
+            <div className="flex justify-between items-center">
+          <div className="flex ml-9 mt-4 gap-8 items-center">
+            <div className="p-[5px] flex gap-1 cursor-pointer">
+              <HeartIcon onClick={() =>handleLike(post._id)} className="w-5 h-5 fill-white stroke-white"/>             
+            <p className="text-xs text-white">{post && post.likes && post.likes.length}</p>
+            </div>
+
+            <div className="p-[5px] flex gap-1 cursor-pointer">
+              <RetweetLogo  onClick={() =>handleReShare(post._id)}   className="w-5 h-5 fill-white stroke-white"/>
+            <p className="text-xs text-white">{post && post.allReshare && post.allReshare.length}</p>
+            </div>
+
+            <div className="p-[5px] flex gap-1 cursor-pointer">
+              <BookMarkLogo  onClick={() =>handleBookmark(post._id)} className="w-5 h-5 fill-white stroke-white"/>
+             
+            <p className="text-xs text-white">{post && post.bookmark && post.bookmark.length}</p>
+            </div>
+
+          </div>
+
+        </div>
+            </div>
+            
+            <div className={`fixed bottom-0 ${toggleControls ? 'flex' : 'hidden' } z-40 border border-white rounded-xl`}>
+             <input
+                  type="text"
+                  className="rounded-md border-0 border-none focus:ring-0 focus:ring-inset focus:ring-none bg-transparent w-[70vw] sm:left-[25%] sm:w-[42vw] mx-auto left-0 py-2 text-white shadow-sm placeholder:text-white  sm:text-xs"
+                  placeholder="start typing here"
+                  name=""
+                  id=""
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                /> 
+                <button onClick={() => handleCommentSubmit(post._id)} className="text-white font-medium text-xs rounded-xl py-2 px-4">
+                {
+              isCommenting ? (
+                <>
+               <div className='flex items-center'><ProcessingLogo className="w-5 h-5 fill-white" /> <p className='text-[9px] text-white'> Commenting...</p></div> 
+               </>
+              ) : (
+                <SendLogo className="w-6 h-6 fill-white" />
+              )
+            }  
+                </button>
+                </div>
+          </div>
+        </div>
+      </div>
+
+
+      {/* video view modal  */}
+
+      <div
+        className={`${
+          fullvideoScreen ? "flex" : "hidden"
+        } fixed top-0 left-0 bg-black  w-full h-full overflow-y-auto flex-cols justify-center items-center`}
+      >
+        <video
+          className="w-full h-screen object-cover"
+          controls
+          src={videoUrl}
+        ></video>
+
+        {/* video icons controls */}
+        <div className="absolute z-30 bottom-14 right-0 flex flex-col items-center space-y-4">
+          <div className="flex flex-col items-center">
+            <div className="flex flex-col cursor-pointer justify-end items-center pr-4">
+              <div className="p-2 w-8 h-8 bg-red-500 mt-2 rounded-full flex justify-center items-center">
+                <HeartIcon onClick={() =>handleLike(personalPost._id)} color="white" className="w-12 h-12 fill-white" />
+              </div>
+              <p className="text-xs text-white">{personalPost && personalPost.likes && personalPost.likes.length}</p>
+            </div>
+
+            <div className="flex flex-col cursor-pointer justify-end items-center pr-4">
+              <div  onClick={() =>handleReShare(personalPost._id)}  className="p-2 w-9 h-9 bg-sky-500 mt-2 rounded-full flex justify-center items-center">
+               <ReplyLogo className="w-15 h-15 fill-white stroke-white" />
+              </div>
+              <p className="text-xs text-white">{personalPost && personalPost.reShare && personalPost.reShare.length}</p>
+            </div>
+
+            <div  onClick={() => goToPost(personalPost._id)} className="flex flex-col cursor-pointer justify-end items-center pr-4">
+              <div  className="p-2 w-8 h-8 bg-sky-500 mt-2 rounded-full flex justify-center items-center">
+               <CommentLogo className="w-4 h-4 fill-white stroke-white" />
+              </div>
+              <p className="text-xs text-white">{personalPost && personalPost.comments && personalPost.comments.length}</p>
+            </div>
+
+            <div className="flex flex-col cursor-pointer justify-end items-center pr-4">
+            <div className="p-2 w-8 h-8 bg-sky-500 mt-2 rounded-full flex justify-center items-center">
+               <BookMarkLogo  onClick={() =>handleBookmark(personalPost._id)} className="w-4 h-4 fill-white stroke-white" />
+              </div>
+              <p className="text-xs text-white">{personalPost && personalPost.bookmark && personalPost.bookmark.length}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* cancel or close  */}
+        <div className="absolute top-5 right-5 flex justify-between items-center">
+          {/* cancel or close  */}
+          <CancelLogo onClick={hideFullScreen}
+            className="w-4 h-4 fill-white cursor-pointer"/>
+        </div>
+
+       
+
+        {/* add your comment  */}
+
+        <div className="fixed bottom-0 flex border border-white rounded-xl">
+             <input
+             onClick={() =>viewPost(personalPost && personalPost._id)}
+                  type="text"
+                  className="rounded-md border-0 bg-transparent w-[70vw] sm:left-[25%] sm:w-[42vw] mx-auto left-0 py-2 text-white shadow-sm placeholder:text-white  sm:text-xs"
+                  placeholder="comment here"
+                  name="video"
+                  id="video"
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                /> 
+                <button onClick={() => handleCommentSubmit(post._id)} className="text-white font-medium text-xs rounded-xl py-2 px-4">
+                {
+              isCommenting ? (
+                <>
+               <div className='flex items-center'><ProcessingLogo className="w-5 h-5 fill-white" /> <p className='text-[9px] text-white'> Posting...</p></div> 
+               </>
+              ) : (
+                <SendLogo className="w-6 h-6 fill-white" />
+              )
+            }  
+                </button>
+                </div>
+      </div>
+
         { post && post.photos && post.photos.length > 0 ? (
         <div className="mt-2 pl-9">
           { post && post.photos && post.photos.length === 1 ? (
             <div className="rounded-3xl overflow-hidden">
           <img onClick={() => showMobileModal(post && post.photos[0] && post.photos[0].url, post && post._id)}
-                className="w-[520px] h-[310px] cursor-pointer"
+                className="w-[520px] h-[310px] bg-white rounded-3xl object-cover cursor-pointer"
                 src={post && post.photos[0] && post.photos[0].url}
                alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
             </div>
           ) : post && post.photos && post.photos.length === 2 ? (
             <div className="flex rounded-3xl overflow-hidden">
                <img onClick={() => showMobileModal(post && post.photos[0] && post.photos[0].url, post && post._id)}
-                className="w-[258px] h-[293px] border-r-2 border-white cursor-pointer"
+                className="fixed-size w-[258px]  rounded-l-3xl h-[293px] border-r border-white cursor-pointer object-cover"
                 src={post && post.photos[0] && post.photos[0].url}
                alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
                
                <img onClick={() => showMobileModal(post && post.photos[1] && post.photos[1].url, post && post._id)}
-                 className="w-[258px] h-[293px] border-l-2 border-white cursor-pointer"
+                 className="fixed-size w-[258px] h-[293px] border-l rounded-r-3xl border-white object-cover cursor-pointer"
                  src={post && post.photos[1] && post.photos[1].url}
                alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
             </div>
           ) : post && post.photos && post.photos.length === 3 ? (
-            <div className="flex rounded-3xl overflow-hidden">
+            <div className="grid grid-cols-2 rounded-3xl overflow-hidden">
                <img onClick={() => showMobileModal(post && post.photos[0] && post.photos[0].url, post && post._id)}
-                 className="w-[258] h-[292px] border-r-2 border-r-white cursor-pointer"
+                 className="w-full h-[146px] col-span-2 border-b border-b-white cursor-pointer rounded-tl-3xl rounded-tr-3xl object-cover"
                  src={post && post.photos[0] && post.photos[0].url}
                alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
 
                <img onClick={() => showMobileModal(post && post.photos[1] && post.photos[1].url, post && post._id)}
-                 className="w-full h-[292px] border-b-2 border-l-2 border-b-white cursor-pointer"
+                 className="w-full h-[146px] border-t border-r border-b-white  rounded-bl-3xl cursor-pointer object-cover"
                  src={post && post.photos[1] && post.photos[1].url}
                alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
 
                <img onClick={() => showMobileModal(post && post.photos[2] && post.photos[2].url, post && post._id)}
-                 className="w-full h-[292px]  border-l-2  bordder-t-2 border-white cursor-pointer"
+                 className="w-full h-[146px]  border-t  border-l border-white cursor-pointer rounded-br-3xl object-cover"
                  src={post && post.photos[2] && post.photos[2].url}
                alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
             </div>
           ) :   post && post.photos && post.photos.length === 4 ? (
             <div className="grid grid-cols-2 rounded-3xl overflow-hidden">
               <img onClick={() => showMobileModal(post && post.photos[0] && post.photos[0].url, post && post._id)}
-                 className="w-[259px] h-[144px]  border-r-2 border-b-2 border-white cursor-pointer"
+                 className="w-full h-[144px]  border-r border-b border-white rounded-tl-3xl fixed-size object-cover cursor-pointer"
                  src={post && post.photos[0] && post.photos[0].url}
                alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
 
                <img onClick={() => showMobileModal(post && post.photos[1] && post.photos[1].url, post && post._id)}
-                  className="w-[259px] h-[144px] border-l-2 border-b-2 border-white cursor-pointer"
+                  className="w-full h-[144px] border-l border-b border-white rounded-tr-3xl fixed-size object-cover cursor-pointer"
                   src={post && post.photos[1] && post.photos[1].url}
                alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
 
                <img onClick={() => showMobileModal(post && post.photos[2] && post.photos[2].url, post && post._id)}
-                 className="w-[259px] h-[144px] border-t-2 border-r-2 border-white cursor-pointer"
+                 className="w-full h-[144px] border-t border-r border-white rounded-bl-3xl fixed-size object-cover cursor-pointer"
                  src={post && post.photos[2] && post.photos[2].url}
                alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
 
                <img onClick={() => showMobileModal(post && post.photos[3] && post.photos[3].url, post && post._id)}
-                 className="w-[259px] h-[144px] border-t-2 border-l-2 border-white cursor-pointer"
+                 className="w-full h-[144px] border-t border-l border-white rounded-br-3xl fixed-size object-cover cursor-pointer"
                  src={post && post.photos[3] && post.photos[3].url}
                alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
             </div>

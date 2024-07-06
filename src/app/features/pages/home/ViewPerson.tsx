@@ -38,8 +38,10 @@ const ViewPerson = () => {
      
     const handleGoBack = () => {
         navigate(-1);
-      }
+    }
 
+    const me = getUser && getUser._doc && getUser._doc._id;
+    console.log('me ', me, bookmark)
   return (
     <div className=''>
          <div onClick={handleGoBack} className='bg-white sm:bg-transparent sm:fixed flex gap-3 py-2 cursor-pointer'>
@@ -116,7 +118,7 @@ const ViewPerson = () => {
     </div>
     
     <button onClick={() => handleFollow(person && person._id)} className='text-xs px-4 py-1 bg-black dark:bg-white rounded-full text-white dark:text-black transform-transition duration-100 hover:scale-110'>
-    {user && user.mine && user.mine._doc && user.mine._doc.following && user.mine._doc.following.includes(person._id) ? 'Unfollow' : 'Follow'}  
+    {person && person.followers  && person.followers.includes(me) ? 'Following' : 'Follow'}  
     </button>
   
   </div>
