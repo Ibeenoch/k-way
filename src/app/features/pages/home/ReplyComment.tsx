@@ -1,6 +1,5 @@
 import  { useEffect, useRef, useState } from 'react'
 import { deleteRepliedComment, getAllRepliesForComment, likeReplyComment, replyComment, selectPost } from './PostSlice';
-
 import { ReactComponent as CommentLogo } from '../../../../assets/comment.svg';
 import { ReactComponent as ReplyLogo } from '../../../../assets/replyLogo.svg';
 import { ReactComponent as CancelLogo } from '../../../../assets/cancelLogo.svg';
@@ -14,7 +13,7 @@ import { formatCreatedAt } from "../../../../utils/timeformat";
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../hooks';
 import { HeartIcon } from '@heroicons/react/24/outline';
-import { addNotification, getAllUser, getOtherUser,  } from '../auth/authSlice'
+import { addNotification, getAllUser, getOtherUser, selectUser,  } from '../auth/authSlice'
 import { socket } from '../../../..';
 
 const ReplyComment = () => {
@@ -23,14 +22,17 @@ const ReplyComment = () => {
   const navigate = useNavigate();
   const desktopCommentMenuRef = useRef<HTMLDivElement>(null);
   const [desktopCommentMenu, setDesktopCommentMenu] = useState<boolean>(false);
-  const [commemtClicked, setCommentClicked] = useState<string>('');
   const [isCommenting, setIsCommenting] = useState<boolean>(false);
   const [comment, setComment] = useState<string>("");
   const [findReply, setFindReply] = useState<boolean>(false);
   const [commentErr, setCommentErr] = useState<string>("");
   const { post, comments, repliedcomments } = useAppSelector(selectPost);
+  const { mode } = useAppSelector(selectUser);
   const getUser = JSON.parse(localStorage.getItem('user') as any);
-  const [content, setcontent] = useState<string>("");
+  const [commentClicked, setCommentClicked] = useState<string>("");
+  const mobileCommentMenuRef = useRef<HTMLDivElement>(null);
+  const [commentmenu, setCommentMenu] = useState<boolean>(false);
+
 
   const { commentId } = useParams(); 
 
@@ -120,6 +122,7 @@ useEffect(() => {
   const showCommentMenuBar = (id: string) => {
     setCommentClicked(id);
     setDesktopCommentMenu(true);
+    setCommentMenu(true);
   };
 
   const closeCommentMenu = () => {
@@ -157,17 +160,18 @@ const getConfirmation = (theCommentId: string) => {
 }
 
   return (
-    <div className='h-[100vh]'>
+    <div className='sticky overflow-y-auto'>
       
         {/* desktop comment modal  */}
-       <div className='sm:mx-[30%] bg-white h-screen p-3'>
+       <div className={`sm:mx-[30%] ${ mode === 'light' ? 'bg-white' : 'bg-black fill-white text-white'} h-screen p-3`}>
         
         <div onClick={handleGoBack} className='flex gap-3'>
           <BackArrowLogo className='w-4 h-4 cursor-pointer' />
-        <h2 className='text-xs font-medium text-black cursor-pointer'>Reply Comment</h2>
+          <h2 className='text-xs font-medium cursor-pointer'>Back</h2>
         </div>
-        <div className="fixed max-w-[100%] sm:max-w-[38%] bottom-0 pt-2 border border-gray-400 rounded-xl">
-            <div className="flex bg-gray-100 items-center max-h-[30px] p-2 mb-1 rounded-xl">
+        <h2 className='text-xs text-center font-medium cursor-pointer'>Reply Comment</h2>
+        <div className={`fixed max-w-[100%] sm:max-w-[38%]  ${mode === 'light' ? 'bg-white' : 'bg-gray-800'} bottom-0 pt-2 border border-gray-400 rounded-xl`} >
+            <div className={`flex ${mode === 'light' ? 'bg-white' : 'bg-gray-800'} items-center max-h-[30px] p-2 mb-1 rounded-xl`}>
             <div onClick={() => viewPersonProfile(getUser._doc._id)}>
             <img
               src={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url }
@@ -179,17 +183,17 @@ const getConfirmation = (theCommentId: string) => {
               type="text"
               onChange={(e) => (setComment(e.target.value))}
               value={comment}
-              className="block text-xs w-[700px] h-[30px] p-3 bg-gray-100 border-0 focus:ring-0 focus:ring-inset focus:ring-none"
+              className={`block text-xs w-[300px] h-[30px] p-3 ${mode === 'light' ? 'bg-white' : 'bg-gray-800'}  border-0 focus:ring-0 focus:ring-inset focus:ring-none`}
               placeholder="Reply this post"
-              name=""
-              id=""
+              name="reply"
+              id="reply"
             />
             
-            <button onClick={handleCommentSubmit} className="text-[9px] text-white bg-black font-semibold rounded-2xl px-3 py-1 transform-transition duration-100 hover:scale-110">
+            <button onClick={handleCommentSubmit} className={`text-[9px] text-white ${ mode === 'light' ? 'bg-black' : 'bg-gray-900'} font-semibold rounded-2xl px-3 py-1 transform-transition duration-100 hover:scale-105`}>
             {
               isCommenting ? (
                 <>
-               <div className='flex items-center'><ProcessingLogo className="w-5 h-5 fill-white" /> <p className='text-[9px] text-white'> Commenting...</p></div> 
+               <div className='flex items-center'><ProcessingLogo className="w-5 h-5 fill-white" /> <p className='text-[9px] text-white'> Posting...</p></div> 
                </>
               ) : (
                 <SendLogo className="w-6 h-6 fill-white" />
@@ -206,7 +210,7 @@ const getConfirmation = (theCommentId: string) => {
             {
               repliedcomments && repliedcomments.length > 0 && Array.isArray(repliedcomments) ? (
                 repliedcomments.map((comment) => (
-            <div className="border-b border-gray-300 bg-white">
+            <div className={`border-b border-gray-300 ${mode === 'light' ? 'bg-white fill-black text-black' : 'bg-black fill-white text-white'}`}>
             <div className="p-4">
               <div className="flex justify-between">
               <div className="flex space-x-2">
@@ -215,23 +219,23 @@ const getConfirmation = (theCommentId: string) => {
                   <div>
 
                  <div className="flex gap-1 items-center"> 
-                  <p className="text-xs font-medium text-black">{comment && comment.owner && comment.owner.fullname}  </p>
+                  <p className="text-xs font-medium">{comment && comment.owner && comment.owner.fullname}  </p>
                  <p className="text-gray-400 text-[9px]">{formatCreatedAt(comment && comment.createdAt)}</p> 
                   </div>
-                  <p className="text-[9px] text-gray-600">@{comment && comment.owner && comment.owner.handle} </p>
+                  <p className="text-[9px] text-gray-500">@{comment && comment.owner && comment.owner.handle} </p>
                   </div>
-                  <p className="text-[10px] text-black dark:text-white">{comment && comment.content}</p>
+                  <p className={`text-[10px] ${ mode=== 'light' ? 'text-black' : 'text-white'} `}>{comment && comment.content}</p>
                    <div className="flex gap-2 items-center">
                     <div className="flex items-center">
                     {/* heart icon  */}
                     <HeartIcon onClick={() => handleLike(comment._id)} className="w-[14px] h-[14px] cursor-pointer" fill="red" stroke="red" />
-                      <p className="text-xs text-gray-500 dark:text-white">{comment && comment.likes && comment.likes.length}</p>
+                      <p className="text-xs text-gray-500">{comment && comment.likes && comment.likes.length}</p>
                     </div>
                     <div className="flex items-center">
                       {/* comment icon  */}
-                      <CommentLogo  onClick={() => handleReplyComent(comment._id)} className="w-[12px] h-[12px] fill-gray-600 stroke-gray-600 cursor-pointer"/>
+                      <CommentLogo  onClick={() => handleReplyComent(comment._id)} className="w-[12px] h-[12px] fill-gray-500 stroke-gray-500 cursor-pointer"/>
                  
-                  <p className="text-xs text-gray-500 dark:text-white">{comment && comment.replies && comment.replies.length}</p>
+                  <p className="text-xs text-gray-500">{comment && comment.replies && comment.replies.length}</p>
                     </div>
                       
                    </div>
@@ -244,7 +248,7 @@ const getConfirmation = (theCommentId: string) => {
 
               <div className="relative">
                  {/* three dot icon vertical */}
-                 <ThreeDotVerticalLogo onClick={() =>showCommentMenuBar(comment._id)} className="w-5 relative h-5 fill-black stroke-black dark:fill-white cursor-pointer dark:stroke-white"/>
+                 <ThreeDotVerticalLogo onClick={() =>showCommentMenuBar(comment._id)} className={`w-5 relative h-5 ${ mode === 'light' ? 'fill-black stroke-black' : 'fill-white stroke-white'} cursor-pointer`}/>
               
                 
                 {/* desktop comment menu  */}
@@ -252,8 +256,8 @@ const getConfirmation = (theCommentId: string) => {
                 ref={desktopCommentMenuRef}
                 id="desktopCommentMenu"
                 className={`hidden ${
-                  desktopCommentMenu && comment._id === commemtClicked ? "sm:block" : "sm:hidden"
-                } absolute shadow-xl w-[150px] top-0 shadow-purple-80 z-10 -right-3 rounded-3xl mx-auto bg-white  h-auto p-5`}
+                  desktopCommentMenu && comment._id === commentClicked ? "sm:block" : "sm:hidden"
+                } absolute shadow-xl w-[150px] top-0 shadow-purple-80 z-10 -right-3 rounded-3xl mx-auto ${mode === 'light' ? 'bg-white text-black fill-black stroke-black' : 'bg-gray-800 text-white fill-white stroke-white'} h-auto p-5`}
               >
                 <div className="flex justify-end">
                   <CancelLogo onClick={closeCommentMenu} className="w-3 h-3 cursor-pointer"/>
@@ -262,18 +266,18 @@ const getConfirmation = (theCommentId: string) => {
                   comment && comment.owner && comment.owner._id === getUser._doc._id ? (
                     <>
                      <div onClick={() =>handleEditIcon(comment._id, post._id)} className="flex gap-2 group cursor-pointer items-center pl-1">
-                  <EditLogo className="stroke-black w-3 h-3 group-hover:stroke-purple-600"/>
-                  <p className="text-black text-[10px] group-hover:text-purple-600">Edit Comment</p>
+                  <EditLogo className="w-3 h-3 group-hover:stroke-purple-600"/>
+                  <p className="text-[10px] group-hover:text-purple-600">Edit Comment</p>
                 </div>
 
                 <div onClick={() =>getConfirmation(comment._id)} className="flex gap-2 group items-center pt-4  cursor-pointer">
-                 <TrashLogo className="fill-black stroke-black w-5 h-5 group-hover:stroke-red-600 group-hover:fill-red-600"/>
-                  <p className="text-black text-[10px] group-hover:text-red-600">Delete Comment</p>
+                 <TrashLogo className="w-5 h-5 group-hover:stroke-red-600 group-hover:fill-red-600"/>
+                  <p className="text-[10px] group-hover:text-red-600">Delete Comment</p>
                 </div>
 
                 <div onClick={() => handleReplyComent(comment._id)} className="flex gap-2 group items-center cursor-pointer pt-4">
                   <ReplyLogo className="w-5 h-5  group-hover:stroke-purple-600" />
-                  <p className="text-black text-[10px] group-hover:text-purple-600">Reply Comment</p>
+                  <p className="text-[10px] group-hover:text-purple-600">Reply Comment</p>
                 </div>
 
                     </>
@@ -281,12 +285,50 @@ const getConfirmation = (theCommentId: string) => {
                     <>
                      <div className="flex gap-2 group items-center cursor-pointer pt-4">
                   <ReplyLogo className="w-5 h-5  group-hover:stroke-purple-600" />
-                  <p className="text-black text-[10px] group-hover:text-purple-600">Reply Comment</p>
+                  <p className="text-[10px] group-hover:text-purple-600">Reply Comment</p>
                 </div>
                     </>
                   )
                 }
                
+              </div>
+
+                 {/* mobile menu  */}
+                 <div
+                ref={mobileCommentMenuRef}
+                id="mobilecommentmenu"
+                className={`fixed ${
+                  commentmenu && comment._id === commentClicked ? "block" : "hidden"
+                } bottom-0 left-0 ${ mode === 'light' ? 'bg-white text-black fill-black stroke-black' : 'bg-gray-800 text-white fill-white stroke-white'} pt-10 pl-5 pr-5 pb-5 z-40 w-full h-[40%] rounded-tl-3xl rounded-tr-3xl sm:hidden`}
+              >
+                {
+                  comment && comment.owner && comment.owner._id === getUser._doc._id ? (
+                    <>
+                     <div onClick={() =>handleEditIcon(comment._id, post._id)} className="flex gap-3 group cursor-pointer items-center pl-1">
+                  <EditLogo className="w-5 h-5 group-hover:stroke-purple-600"/>
+                  <p className="text-[17px] group-hover:text-purple-600 pt-1">Edit Comment</p>
+                </div>
+
+                <div onClick={() =>getConfirmation(comment._id)} className="flex gap-1 group items-center pt-3  cursor-pointer">
+                 <TrashLogo className="w-8 h-8 group-hover:stroke-red-600 group-hover:fill-red-600"/>
+                  <p className="text-[17px] group-hover:text-red-600">Delete Comment</p>
+                </div>
+
+                <div onClick={() => handleReplyComent(comment._id)} className="flex gap-1 group items-center cursor-pointer pt-3">
+                  <ReplyLogo className="w-8 h-8  group-hover:stroke-purple-600" />
+                  <p className="text-[17px] group-hover:text-purple-600">Reply Comment</p>
+                </div>
+
+                    </>
+                  ) : (
+                    <>
+                     <div onClick={() => handleReplyComent(comment._id)} className="flex gap-2 group items-center cursor-pointer pt-1">
+                  <ReplyLogo className="w-6 h-6  group-hover:stroke-purple-600" />
+                  <p className="text-[15px] group-hover:text-purple-600">Reply Comment</p>
+                </div>
+                    </>
+                  )
+                }
               </div>
 
               </div>
@@ -295,7 +337,7 @@ const getConfirmation = (theCommentId: string) => {
             </div>
                 ))
               ) : (
-                <> <p className="text-gray-600 text-center pb-4 text-[10px] bg-white pt-4 px-2">No comment has been added</p></>
+                <> <p className={`text-gray-600 text-center pb-4 text-[10px] ${mode === 'light' ? 'bg-white' : 'bg-black'} pt-4 px-2`}>No comment has been added</p></>
               )
             }
 

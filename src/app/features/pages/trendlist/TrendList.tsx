@@ -61,7 +61,7 @@ const TrendList = () => {
   const [toRefresh, setToRefresh] = useState<boolean>(false);
   const [searchuser, setSearchuser] = useState<boolean>(false);
   const { posts, searchPosts, currentSearch, status } = useAppSelector(selectPost);
-  const { users, searchUsers } = useAppSelector(selectUser);
+  const { users, searchUsers, mode } = useAppSelector(selectUser);
   const [searchWord, setSearchWord] = useState(currentSearch ? currentSearch : '');
 
   useEffect(() => {
@@ -538,16 +538,16 @@ const viewNextImage = () => {
   }
 
   return (
-   <div className='p-2 bg-white'>
-      <div className='w-full bg-white dark:bg-black dark:text-white rounded-3xl'>
+   <div className={`p-2 ${ mode === 'light' ? 'bg-white text-black fill-black stroke-black' : 'bg-black text-white fill-white stroke-white'} `}>
+      <div className='w-full rounded-3xl'>
 
   <form onSubmit={handleSearch}>
 <div className='flex my-2 w-full items-center px-4'> 
 <div className='flex relative items-center w-full sm:w-[50%]'>
-  <input value={searchWord} required onChange={(e) => (setSearchWord(e.target.value))} type="search" name="search" id="search" className='w-full rounded-bl-2xl rounded-tl-2xl px-3 py-1 text-[12px] border-gray-200 focus:ring-0 focus:border-gray-200' placeholder='search for a trend' />
+  <input value={searchWord} required onChange={(e) => (setSearchWord(e.target.value))} type="search" name="search" id="search" className={`w-full ${ mode === 'light' ? 'bg-white border-gray-200 focus:border-gray-200' : 'bg-gray-600 border-purple-600 focus:border-purple-200'} rounded-bl-2xl rounded-tl-2xl px-3 py-1 text-[12px]  focus:ring-0`} placeholder='search for a trend' />
   <div className='absolute right-2'>
   <button>
-  <SearchLogo  className='w-[14px] h-[14px] fill-black stroke-[4px]' />
+  <SearchLogo  className='w-[14px] h-[14px] stroke-[4px]' />
   </button>
   </div>
 </div>
@@ -563,8 +563,8 @@ const viewNextImage = () => {
 </form>
 
 <div className='flex items-center justify-around gap-3'>
-      <p onClick={thesearchPost} className={` px-12 font-semibold cursor-pointer tracking-widest text-md ${searchuser ? 'text-black' : 'border-b-[3px] border-purple-600 text-purple-600'} `} >Post</p>
-      <p onClick={thesearchUser} className={`px-12 font-semibold cursor-pointer tracking-widest text-md ${searchuser ? 'border-b-[3px] border-purple-600 text-purple-600' : 'text-black'} `} >User</p>
+      <p onClick={thesearchPost} className={` px-12 font-semibold cursor-pointer tracking-widest text-md ${searchuser ? '' : 'border-b-[3px] border-purple-600 text-purple-600'} `} >Post</p>
+      <p onClick={thesearchUser} className={`px-12 font-semibold cursor-pointer tracking-widest text-md ${searchuser ? 'border-b-[3px] border-purple-600 text-purple-600' : ''} `} >User</p>
 </div>
 
 
@@ -578,10 +578,10 @@ const viewNextImage = () => {
               searchUsers && searchUsers.length === 0 ? (
                 <>
                 <img src={`${process.env.PUBLIC_URL}/images/nosearchfound.png`} alt="nosearchresultfound" className='w-full h-full' />
-                <h1>No User found</h1>
+                <h1 className='text-xs'>No User found</h1>
                 </>
               ) :   searchUsers && Array.isArray(searchUsers) && searchUser.length > 0 ? searchUsers.map((person: any, index: number) => (
-                <div className='flex justify-between items-center my-2 px-4'>
+                <div className={`flex justify-between items-center rounded-xl py-2 my-2 px-4 ${mode === 'light' ? 'bg-white' : 'bg-gray-800'} `}>
                   <div onClick={() =>viewProfile(person._id)} className='flex gap-2 cursor-pointer'>
                     {
                       person && person.profilePhoto && person.profilePhoto.url ? (
@@ -591,13 +591,13 @@ const viewNextImage = () => {
                       )
                     }
                   <div>
-                    <h1 className='text-sm text-black dark:text-white font-semibold'>{person && person.fullname ?  person.fullname : 'anonymous'}</h1>
-                    <p className='text-xs text-gray-600'>@{person && person.handle ?  person.handle : 'anonymous'}</p>
+                    <h1 className='text-sm font-semibold'>{person && person.fullname ?  person.fullname : 'anonymous'}</h1>
+                    <p className='text-xs text-gray-500'>@{person && person.handle ?  person.handle : 'anonymous'}</p>
                   </div>
                   </div>
                   
-                  <button onClick={() => handleFollow(person && person._id)} className='text-xs px-4 py-1 bg-black rounded-full text-white hover:bg-purple-600 transform-transition duration-100 hover:scale-110'>
-                {getUser && getUser._doc && getUser._doc.following && getUser._doc.following.includes(person._id) ? 'Unfollow' : 'Follow'} 
+                  <button onClick={() => handleFollow(person && person._id)} className={`text-xs px-4 py-1 rounded-full hover:bg-purple-600 ${mode === 'light' ? 'bg-black' : 'bg-gray-900'} transform-transition duration-100 hover:scale-110`}>
+                {getUser && getUser._doc && getUser._doc.following && getUser._doc.following.includes(person._id) ? 'Following' : 'Follow'} 
                   </button>
                 </div>
               )) : (
@@ -617,13 +617,13 @@ const viewNextImage = () => {
               </>
             )
           : searchPosts && Array.isArray(searchPosts) && searchPosts.length > 0 ? searchPosts.map((post: any, index: number) => (       
-          <div key={index} className="rounded-full my-1 p-3 max-w-full bg-white dark-bg-gray-700 border border-gray-400 rounded-lg">
+          <div key={index} className={`rounded-full my-1 p-3 max-w-full ${ mode === 'light' ? 'bg-white text-black' : 'bg-black text-white'} dark-bg-gray-700 border border-gray-400 rounded-lg`}>
           {
           post.reShared &&  (
           <>
           <div className="flex border-b border-b-gray-300 pb-4">
           <img onClick={() => viewAProfile(post && post.reShare && post.reShare[0] && post.reShare[0].user && post.reShare[0].user._id)} className="w-8 h-8 rounded-full cursor-pointer" src={post && post.reShare && post.reShare[0] && post.reShare[0].user  && post.reShare[0].user.profilePhoto && post.reShare[0].user.profilePhoto.url} alt=""/>
-            <p className="text-black dark:text-white text-xs font-medium px-1">{post && post.reShare && post.reShare[0]  && post.reShare[0].user  && post.reShare[0].user.fullname}</p>
+            <p className="text-xs font-medium px-1">{post && post.reShare && post.reShare[0]  && post.reShare[0].user  && post.reShare[0].user.fullname}</p>
             <p className="text-gray-500 text-xs font-semibold px-3">Reshared this post</p>
           </div>
           </>
@@ -634,19 +634,19 @@ const viewNextImage = () => {
           <div  className="w-full cursor-pointer flex items-center justify-between gap-1">
             <div  onClick={() => goToPost(post._id)} className="flex items-center">
               <div className="mt-3">
-                <h1 className="text-black dark:text-white text-sm font-semibold">
+                <h1 className="text-sm font-semibold">
                   {post && post.owner && post.owner.fullname}
                 </h1>
-              <p className="text-gray text-[8px]"> {post && formatCreatedAt(post.createdAt)} </p>
+              <p className="text-gray-500 text-[8px]"> {post && formatCreatedAt(post.createdAt)} </p>
               </div>
               <VerifyMarkLogo className="w-5 h-5 fill-purple-500 stroke-white"/>
           
-              <p className="text-gray-600 text-[10px] ">@{post && post.owner && post.owner.handle}</p>
+              <p className="text-gray-500 text-[10px] ">@{post && post.owner && post.owner.handle}</p>
             </div>
             {/* three dot icon  */}
             <div onClick={() => menuShow(post._id)} className="cursor-pointer ">
               <div className="relative" >
-                <MenuLogo className="w-[12px] h-[12px] fill-black stroke-black dark:fill-white dark:stroke-white"/>
+                <MenuLogo className={`w-[12px] h-[12px] ${ mode === 'light' ? 'fill-black stroke-black' : 'fill-white stroke-white'} `}/>
               
                 {/* desktop menu  */}
                 <div
@@ -654,18 +654,18 @@ const viewNextImage = () => {
                   id="desktopmenu"
                   className={`hidden ${
                     desktopMenu && post._id === postClicked ? "sm:block" : "sm:hidden"
-                  } absolute shadow-xl shadow-purple-80 z-10 top-0 -right-[10px] w-[150px] h-auto rounded-3xl mx-auto bg-white  p-2`}
+                  } absolute shadow-xl shadow-purple-80 z-10 top-0 -right-[10px] w-[150px] h-auto rounded-3xl mx-auto ${ mode === 'light' ? 'bg-white text-black fill-black stroke-black' : 'bg-gray-800 text-white fill-white stroke-white'}  p-2`}
                 >
                   {
                   getUser !== undefined && getUser && getUser._doc && getUser._doc._id  === post.owner._id ? (
                       <>
                     <div onClick={() =>handleEditPost(post._id)} className="flex gap-2 px-2 cursor-pointer items-center pt-4">
-                      <EditLogo  className="stroke-black w-3 h-3"/>
-                      <p className="text-black text-[10px]">Edit Post</p>
+                      <EditLogo  className="w-3 h-3"/>
+                      <p className="text-[10px]">Edit Post</p>
                     </div>
                     <div onClick={() =>handleDeletePost(post._id)} className="flex gap-2 cursor-pointer items-center pt-4">
-                      <TrashLogo className="fill-black stroke-black w-5 h-5"/>
-                      <p className="text-black text-[10px]">Delete Post</p>
+                      <TrashLogo className="w-5 h-5"/>
+                      <p className="text-[10px]">Delete Post</p>
                     </div>
                       </>
                     ) : (
@@ -674,8 +674,8 @@ const viewNextImage = () => {
                         getUser && getUser._doc && getUser._doc.following  && getUser._doc.following.includes(post.owner._id) && (
                           <>
                           <div onClick={() => handleFollowing(post && post.owner && post.owner._id )} className="flex gap-2 cursor-pointer items-center pt-4">
-                            <AddContactLogo  className="fill-black stroke-black w-3 h-3"/>
-                            <p className="text-black text-[10px]">Follow @{post && post.owner && post.owner.handle }</p>
+                            <AddContactLogo  className="w-3 h-3"/>
+                            <p className="text-[10px]">Follow @{post && post.owner && post.owner.handle }</p>
                           </div>
                           </>
                         )
@@ -683,18 +683,18 @@ const viewNextImage = () => {
                     
 
                   <div className="flex gap-2 items-center pt-4  cursor-pointer">
-                    <BlockContactLogo  className="fill-black stroke-black w-3 h-3"/>
-                    <p className="text-black text-[10px]">Block @{post && post.owner && post.owner.handle }</p>
+                    <BlockContactLogo  className="w-3 h-3"/>
+                    <p className="text-[10px]">Block @{post && post.owner && post.owner.handle }</p>
                   </div>
 
                   <div className="flex gap-2 items-center cursor-pointer pt-4">
-                    <ReportContactLogo  className="fill-black stroke-black w-3 h-3"/>
-                    <p className="text-black text-[10px]">Report Post</p>
+                    <ReportContactLogo  className="w-3 h-3"/>
+                    <p className="text-[10px]">Report Post</p>
                   </div>
 
                   <div className="flex gap-2 cursor-pointer items-center pt-4">
-                    <MuteContactLogo   className="fill-black stroke-black w-3 h-3"/>
-                    <p className="text-black text-[10px]">Mute @{post && post.owner && post.owner.handle }</p>
+                    <MuteContactLogo   className="w-3 h-3"/>
+                    <p className="text-[10px]">Mute @{post && post.owner && post.owner.handle }</p>
                   </div>
                       </>
                     )

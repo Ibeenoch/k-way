@@ -16,3 +16,6 @@ body{
 a {
   animation: transitionIn 1.5s;
 }
+.color-bg{
+  color: rgb(255, 255, 255);
+}

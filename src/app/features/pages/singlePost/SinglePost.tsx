@@ -25,7 +25,7 @@ import { useAppDispatch, useAppSelector } from "../../../hooks";
 import {  allCommentForAPost, bookmarkPost, commentOnPost, likeComment, createPost, createStory, deletePost, getAPost, getAllPosts, getAllUserStories, getAvailableStories, getBookmarkforaPost, getLikesforaPost, getresharedforaPost, likePost, openpostForm, rePost, resetEditCommentStatus, selectPost, setWhichPost, updatePost, updateViewingStatus, deleteComment, getAllRepliesForComment } from "../home/PostSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import { HeartIcon } from "@heroicons/react/24/outline";
-import { addNotification, getOtherUser, userFollowing } from '../auth/authSlice'
+import { addNotification, getOtherUser, selectUser, userFollowing } from '../auth/authSlice'
 import { socket } from '../../../../index'
 
 
@@ -70,6 +70,7 @@ const SinglePost = () => {
 
 
     const { post, comments, storyOwner, posts } = useAppSelector(selectPost);
+    const { mode } = useAppSelector(selectUser);
 
 
     const hideComment = () => {
@@ -487,33 +488,33 @@ const viewPost = (postId: string) => {
 
   const postOwner = post && post.owner && post.owner._id;
   return (
-    <div className="min-h-screen">
-        <div onClick={handleGoBack} className={`flex sm:mx-[25%] gap-3 ${commentmenu || menu  ? 'bg-gray-200' : 'bg-white'} p-2 cursor-pointer`} >
-          <BackArrowLogo  className='w-4 h-4 cursor-pointer fill-black' />
-        <h2 className='text-xs font-medium text-black'>Back to Post Feeds</h2>
+    <div className="sticky overflow-y-auto">
+        <div onClick={handleGoBack} className={`flex sm:mx-[25%] gap-3 ${mode === 'light' ? `${commentmenu || menu  ? 'bg-gray-200' : 'bg-white fill-black text-black'}` : 'bg-black fill-white text-white'} p-2 cursor-pointer`} >
+          <BackArrowLogo  className='w-4 h-4 cursor-pointer' />
+        <h2 className='text-xs font-medium'>Back to Post Feeds</h2>
         </div>
 
-    <div className={`${commentmenu  || menu ? 'bg-gray-200' : 'bg-white'} sm:mx-[25%] h-screen`} >
-         <div  className={`p-3 max-w-full ${commentmenu || menu  ? 'bg-gray-200' : 'bg-white'}  dark-bg-gray-700 border border-gray-400`}>
+    <div className={`sm:mx-[25%] h-screen`} >
+         <div  className={`p-3 max-w-full ${ mode === 'light' ? `${commentmenu  || menu ? 'bg-gray-200' : 'bg-white'} text-black fill-black` : 'bg-black text-white fill-white'} border border-gray-400`}>
          
         <div className="flex items-center gap-2 w-full">
           <img onClick={() => viewOthersProfile(post && post.owner && post.owner._id)} className="w-8 h-8 rounded-full cursor-pointer" src={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.url} alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
           <div className="w-full flex items-center justify-between gap-1">
             <div className="flex items-center">
               <div className="mt-3">
-                <h1 className="text-black dark:text-white text-sm font-semibold">
+                <h1 className="text-sm font-semibold">
                   {post && post.owner && post.owner.fullname}
                 </h1>
-              <p className="text-gray text-[8px]"> {post && formatCreatedAt(post.createdAt)} </p>
+              <p className="text-gray-500 text-[8px]"> {post && formatCreatedAt(post.createdAt)} </p>
               </div>
               <VerifyMarkLogo className="w-5 h-5 fill-purple-500 stroke-white"/>
            
-              <p className="text-gray-600 text-[10px] ">@{post && post.owner && post.owner.handle}</p>
+              <p className="text-gray-500 text-[10px] ">@{post && post.owner && post.owner.handle}</p>
             </div>
             {/* three dot icon  */}
             <div onClick={() => menuShow(post._id)} className="cursor-pointer ">
               <div className="relative" >
-                <MenuLogo className="w-[12px] h-[12px] fill-black stroke-black dark:fill-white dark:stroke-white"/>
+                <MenuLogo className="w-[12px] h-[12px]"/>
                
                 {/* desktop menu  */}
                 <div
@@ -521,40 +522,40 @@ const viewPost = (postId: string) => {
                   id="desktopmenu"
                   className={`hidden ${
                     desktopMenu && post._id === postClicked ? "sm:block" : "sm:hidden"
-                  } absolute shadow-xl shadow-purple-80 z-10 top-0 -right-[10px] w-[150px] h-auto rounded-3xl mx-auto bg-white  p-2`}
+                  } absolute shadow-xl shadow-purple-80 z-10 top-0 -right-[10px] w-[150px] h-auto rounded-3xl mx-auto ${ mode === 'light' ? 'bg-white text-black fill-black stroke-black' : 'bg-gray-800 text-white fill-white stroke-white'} p-2`}
                 >
                   {
                     getUser && getUser._doc && getUser._doc._id === postOwner ? (
                       <>
                        <div onClick={() =>handleEditPost(post._id)} className="flex gap-2 px-2 cursor-pointer items-center pt-4">
-                      <EditLogo  className="stroke-black w-3 h-3"/>
-                      <p className="text-black text-[10px]">Edit Post</p>
+                      <EditLogo  className="w-3 h-3"/>
+                      <p className="text-[10px]">Edit Post</p>
                     </div>
                     <div onClick={() =>handleDeletePost(post._id)} className="flex gap-2 cursor-pointer items-center pt-4">
-                      <TrashLogo className="fill-black stroke-black w-5 h-5"/>
-                      <p className="text-black text-[10px]">Delete Post</p>
+                      <TrashLogo className="w-5 h-5"/>
+                      <p className="text-[10px]">Delete Post</p>
                     </div>
                       </>
                     ) : (
                       <>
                        <div className="flex gap-2 cursor-pointer items-center pt-4">
-                    <AddContactLogo  className="fill-black stroke-black w-3 h-3"/>
-                    <p className="text-black text-[10px]">Follow @texilola😎</p>
+                    <AddContactLogo  className="w-3 h-3"/>
+                    <p className="text-[10px]">Follow @{post && post.owner && post.owner.handle}</p>
                   </div>
 
                   <div className="flex gap-2 items-center pt-4  cursor-pointer">
-                    <BlockContactLogo  className="fill-black stroke-black w-3 h-3"/>
-                    <p className="text-black text-[10px]">Block @texilola😎</p>
+                    <BlockContactLogo  className="w-3 h-3"/>
+                    <p className="text-[10px]">Block @{post && post.owner && post.owner.handle}</p>
                   </div>
 
                   <div className="flex gap-2 items-center cursor-pointer pt-4">
-                    <ReportContactLogo  className="fill-black stroke-black w-3 h-3"/>
-                    <p className="text-black text-[10px]">Report Post</p>
+                    <ReportContactLogo  className="w-3 h-3"/>
+                    <p className="text-[10px]">Report Post</p>
                   </div>
 
                   <div className="flex gap-2 cursor-pointer items-center pt-4">
-                    <MuteContactLogo   className="fill-black stroke-black w-3 h-3"/>
-                    <p className="text-black text-[10px]">Mute @texilola😎</p>
+                    <MuteContactLogo   className="w-3 h-3"/>
+                    <p className="text-[10px]">Mute @{post && post.owner && post.owner.handle}</p>
                   </div>
                       </>
                     )
@@ -568,40 +569,40 @@ const viewPost = (postId: string) => {
                 id="mobilemenu"
                 className={`fixed ${
                   menu && post._id === postClicked ? "block" : "hidden"
-                } bottom-0 left-0 bg-white pt-10 pl-5 pr-5 pb-5 z-40 w-full h-[40%] rounded-tl-3xl rounded-tr-3xl sm:hidden`}
+                } bottom-0 left-0 ${ mode === 'light' ? 'bg-white text-black fill-black stroke-black' : 'bg-gray-800 text-white fill-white stroke-white'} pt-10 pl-5 pr-5 pb-5 z-40 w-full h-[40%] rounded-tl-3xl rounded-tr-3xl sm:hidden`}
               >
                 {
                   getUser !== undefined && getUser && getUser._doc && getUser._doc._id  ===   post && post.owner && post.owner._id ? (
                               <>
                             <div onClick={() =>handleEditPost(post._id)} className="flex gap-2 px-2 cursor-pointer items-center py-4">
-                              <EditLogo  className="stroke-black w-4 h-4"/>
-                              <p className="text-black text-lg">Edit Post</p>
+                              <EditLogo  className="w-4 h-4"/>
+                              <p className="text-lg">Edit Post</p>
                             </div>
                             <div  onClick={() =>handleDeletePost(post._id)} className="flex gap-2 px-2 cursor-pointer items-center py-4">
-                              <TrashLogo className="fill-black stroke-black w-6 h-6"/>
-                              <p className="text-black text-lg">Delete Post</p>
+                              <TrashLogo className="w-6 h-6"/>
+                              <p className="text-lg">Delete Post</p>
                             </div>
                               </>
                             ) : (
                               <>
                               <div className="flex gap-2 cursor-pointer items-center px-2 py-4">
-                            <AddContactLogo  className="fill-black stroke-black w-5 h-5"/>
-                            <p className="text-black text-lg">Follow @texilola😎</p>
+                            <AddContactLogo  className="w-5 h-5"/>
+                            <p className="text-lg">Follow @{post && post.owner && post.owner.handle}</p>
                           </div>
 
                           <div className="flex gap-2 items-center px-2 py-4  cursor-pointer">
-                            <BlockContactLogo  className="fill-black stroke-black w-5 h-5"/>
-                            <p className="text-black text-lg">Block @texilola😎</p>
+                            <BlockContactLogo  className="w-5 h-5"/>
+                            <p className="text-lg">Block @{post && post.owner && post.owner.handle}</p>
                           </div>
 
                           <div className="flex gap-2 items-center cursor-pointer px-2 py-4">
-                            <ReportContactLogo  className="fill-black stroke-black w-5 h-5"/>
-                            <p className="text-black text-lg">Report Post</p>
+                            <ReportContactLogo  className="w-5 h-5"/>
+                            <p className="text-lg">Report Post</p>
                           </div>
 
                           <div className="flex gap-2 cursor-pointer items-center px-2 py-4">
-                            <MuteContactLogo   className="fill-black stroke-black w-5 h-5"/>
-                            <p className="text-black text-lg">Mute @texilola😎</p>
+                            <MuteContactLogo   className="w-5 h-5"/>
+                            <p className="text-lg">Mute @{post && post.owner && post.owner.handle}</p>
                           </div>
                               </>
                             )
@@ -614,7 +615,7 @@ const viewPost = (postId: string) => {
         </div>
         {/* post text  */}
         <div className="ml-9">
-          <p className="text-xs text-black dark:text-white">
+          <p className={`${mode === 'light' ? 'text-xs text-black' : 'text-xs text-white'}`}>
             {post.content}
           </p>
         </div>
@@ -886,40 +887,40 @@ const viewPost = (postId: string) => {
             <div className="p-[5px] bg-red-600 rounded-full">
               <LikeLogo  className="w-[12px] h-[12px] fill-white stroke-white"/>
             </div>
-            <p className="text-[8px] text-gray-600"> {post.likes.length}</p>
+            <p className="text-[8px] text-gray-500"> {post.likes.length}</p>
 
             <div className="p-[5px] bg-green-600 rounded-full">
               <RetweetLogo  className="w-[12px] h-[12px] fill-white stroke-white"/>
             </div>
-            <p className="text-[8px] text-gray-600">{post.reShare.length}</p>
+            <p className="text-[8px] text-gray-500">{post.reShare.length}</p>
 
             <div className="p-[5px] bg-sky-600 rounded-full">
               <BookMarkLogo className="w-[12px] h-[12px] fill-white stroke-white"/>
             </div>
 
-            <p className="text-[8px] text-gray-600">{post.bookmark.length}</p>
+            <p className="text-[8px] text-gray-500">{post.bookmark.length}</p>
           </div>
 
-          <p className="text-[10px] mt-3 text-gray-600 cursor-pointer">{post.comments.length} comments</p>
+          <p className="text-[10px] mt-3 text-gray-500 cursor-pointer">{post.comments.length} comments</p>
         </div>
         {/* icons */}
         <div className="flex justify-between items-center">
           <div className="flex items-center pl-9 sm:gap-1 mt-4">
-            <div  onClick={() =>handleLike(post._id)} className="bg-black mr-1 cursor-pointer sm:mx-0 flex items-center py-1 px-3 rounded-lg">
+            <div  onClick={() =>handleLike(post._id)} className={` ${mode === 'light' ? 'bg-black' : 'bg-gray-800'} mr-1 cursor-pointer sm:mx-0 flex items-center py-1 px-3 rounded-lg`}>
               <LikeLogo  className="w-[12px] h-[12px] fill-white stroke-white dark:fill-black dark:stroke-black"/>
               <p className="text-white dark:text-black text-[10px] pl-1">
                 Like
               </p>
             </div>
 
-            <div onClick={() =>handleReShare(post._id)} className="bg-black mr-1  cursor-pointer sm:mx-0 flex items-center py-1 px-3 rounded-lg">
+            <div onClick={() =>handleReShare(post._id)} className={` ${mode === 'light' ? 'bg-black' : 'bg-gray-800'} mr-1 cursor-pointer sm:mx-0 flex items-center py-1 px-3 rounded-lg`}>
               <RetweetLogo  className="w-[13px] h-[13px] fill-white stroke-white dark:fill-black dark:stroke-black"/>
               <p className="text-white dark:text-black text-[10px] pl-1">
                 ReShare
               </p>
             </div>
 
-            <div onClick={() => showComment(post._id)} className="bg-black mr-1  cursor-pointer sm:mx-0 flex items-center py-1 px-3 rounded-lg">
+            <div onClick={() => showComment(post._id)} className={` ${mode === 'light' ? 'bg-black' : 'bg-gray-800'} mr-1 cursor-pointer sm:mx-0 flex items-center py-1 px-3 rounded-lg`}>
               <CommentLogo  className="w-[12px] h-[12px] fill-white stroke-white dark:fill-black dark:stroke-black"/>
               <p className="text-white dark:text-black text-[10px] pl-1">
                 Comment
@@ -930,7 +931,7 @@ const viewPost = (postId: string) => {
             <div></div>
           </div>
 
-          <div  onClick={() =>handleBookmark(post._id)} className="bg-black cursor-pointer flex items-center sm:gap-1 p-2 mr-4 sm:mr-0 mt-4 rounded-lg">
+          <div  onClick={() =>handleBookmark(post._id)} className={`${mode === 'light' ? 'bg-black' : 'bg-gray-800'} cursor-pointer flex items-center sm:gap-1 p-2 mr-4 sm:mr-0 mt-4 rounded-lg`}>
             <BookMarkLogo   className="w-[12px] h-[12px] fill-white stroke-white dark:fill-black dark:stroke-black"/>
           </div>
         </div> 
@@ -942,11 +943,11 @@ const viewPost = (postId: string) => {
       
 
             {/* view other people comments  */}
-            <div className={`${commentmenu || menu ? 'bg-gray-200' : 'bg-white'} h-screen`} >
+            <div className={` ${mode === 'light' ? `${commentmenu || menu ? 'bg-gray-200' : 'bg-white'} text-black fill-black` : 'bg-black text-white fill-white'} h-screen`} >
             {
               comments && comments.length > 0 && Array.isArray(comments) ? (
                 comments.map((comment) => (
-            <div className={`border-b border-gray-300 ${commentmenu || menu ? 'bg-gray-200' : 'bg-white'}`} >
+            <div className={`border-b border-gray-300 `} >
             <div className="p-4">
               <div className="flex justify-between">
               <div className="flex space-x-2">
@@ -955,24 +956,24 @@ const viewPost = (postId: string) => {
                   <div>
 
                  <div className="flex gap-1 items-center"> 
-                  <p className="text-xs font-medium text-black">{comment && comment.owner && comment.owner.fullname}  </p>
-                  <p className="text-[9px] text-gray-600">@{comment && comment.owner && comment.owner.handle} </p>
+                  <p className="text-xs font-medium">{comment && comment.owner && comment.owner.fullname}  </p>
+                  <p className="text-[9px] text-gray-500">@{comment && comment.owner && comment.owner.handle} </p>
                  <p className="text-gray-400 text-[9px]">. {formatCreatedAt(comment && comment.createdAt)}</p> 
                   </div>
-                  <p className="text-[10px] text-gray-600 flex items-center">Replying to <p className="text-[11px] text-purple-600"> &nbsp; @{post && post.owner && post.owner.handle}</p> </p>
+                  <p className="text-[10px] text-gray-500 flex items-center">Replying to <p className="text-[11px] text-purple-600"> &nbsp; @{post && post.owner && post.owner.handle}</p> </p>
                   </div>
-                  <p className="text-[10px] text-black dark:text-white">{comment && comment.content}</p>
+                  <p className="text-[10px]">{comment && comment.content}</p>
                    <div className="flex gap-2 items-center">
                     <div className="flex items-center">
                     {/* heart icon  */}
                     <HeartIcon onClick={() => handleCommentLike(comment._id)} className="w-[14px] h-[14px] cursor-pointer" fill="red" stroke="red" />
-                      <p className="text-xs text-gray-500 dark:text-white">{comment && comment.likes && comment.likes.length}</p>
+                      <p className="text-xs text-gray-500">{comment && comment.likes && comment.likes.length}</p>
                     </div>
                     <div className="flex items-center">
                       {/* comment icon  */}
                       <CommentLogo  onClick={() => handleReplyComent(comment._id)} className="w-[12px] h-[12px] fill-gray-600 stroke-gray-600 cursor-pointer"/>
                  
-                  <p className="text-xs text-gray-500 dark:text-white">{comment && comment.replies && comment.replies.length}</p>
+                  <p className="text-xs text-gray-500">{comment && comment.replies && comment.replies.length}</p>
                     </div>
                       
                    </div>
@@ -985,7 +986,7 @@ const viewPost = (postId: string) => {
 
               <div className="relative">
                  {/* three dot icon vertical */}
-                 <ThreeDotVerticalLogo onClick={() =>showCommentMenuBar(comment._id)} className="w-5 relative h-5 fill-black stroke-black dark:fill-white cursor-pointer dark:stroke-white"/>
+                 <ThreeDotVerticalLogo onClick={() =>showCommentMenuBar(comment._id)} className={`w-5 relative h-5 ${mode === 'light' ? 'fill-black stroke-black' : 'fill-white stroke-white'} cursor-pointer`}/>
               
                 
                 {/* desktop comment menu  */}
@@ -994,7 +995,7 @@ const viewPost = (postId: string) => {
                 id="desktopCommentMenu"
                 className={`hidden ${
                   desktopCommentMenu && comment._id === commentClicked ? "sm:block" : "sm:hidden"
-                } absolute shadow-xl w-[150px] top-0 shadow-purple-80 z-10 -right-3 rounded-3xl mx-auto bg-white  h-auto p-5`}
+                } absolute shadow-xl w-[150px] top-0 shadow-purple-80 z-10 -right-3 rounded-lg mx-auto ${mode === 'light' ? 'bg-white text-black fill-black stroke-black' : 'bg-gray-800 text-white fill-white stroke-white'}  h-auto pb-3 pl-3 pr-3 pt-2`}
               >
                 <div className="flex justify-end">
                   <CancelLogo onClick={closeCommentMenu} className="w-3 h-3 cursor-pointer"/>
@@ -1003,26 +1004,26 @@ const viewPost = (postId: string) => {
                   comment && comment.owner && comment.owner._id === getUser._doc._id ? (
                     <>
                      <div onClick={() =>handleEditIcon(comment._id, post._id)} className="flex gap-2 group cursor-pointer items-center pl-1">
-                  <EditLogo className="stroke-black w-3 h-3 group-hover:stroke-purple-600"/>
-                  <p className="text-black text-[10px] group-hover:text-purple-600">Edit Comment</p>
+                  <EditLogo className="w-4 h-4 group-hover:stroke-purple-600"/>
+                  <p className="text-[10px] group-hover:text-purple-600">Edit Comment</p>
                 </div>
 
                 <div onClick={() =>getConfirmation(comment._id)} className="flex gap-2 group items-center pt-4  cursor-pointer">
-                 <TrashLogo className="fill-black stroke-black w-5 h-5 group-hover:stroke-red-600 group-hover:fill-red-600"/>
-                  <p className="text-black text-[10px] group-hover:text-red-600">Delete Comment</p>
+                 <TrashLogo className="w-5 h-5 group-hover:stroke-red-600 group-hover:fill-red-600"/>
+                  <p className="text-[10px] group-hover:text-red-600">Delete Comment</p>
                 </div>
 
                 <div onClick={() => handleReplyComent(comment._id)} className="flex gap-2 group items-center cursor-pointer pt-4">
                   <ReplyLogo className="w-5 h-5  group-hover:stroke-purple-600" />
-                  <p className="text-black text-[10px] group-hover:text-purple-600">Reply Comment</p>
+                  <p className="text-[10px] group-hover:text-purple-600">Reply Comment</p>
                 </div>
 
                     </>
                   ) : (
                     <>
-                     <div onClick={() => handleReplyComent(comment._id)} className="flex gap-2 group items-center cursor-pointer pt-1">
+                     <div onClick={() => handleReplyComent(comment._id)} className="flex items-center gap-2 group items-center cursor-pointer pt-1">
                   <ReplyLogo  className="w-5 h-5  group-hover:stroke-purple-600" />
-                  <p className="text-black text-[10px] group-hover:text-purple-600">Reply Comment</p>
+                  <p className="text-[10px] group-hover:text-purple-600">Reply Comment</p>
                 </div>
                     </>
                   )
@@ -1036,24 +1037,24 @@ const viewPost = (postId: string) => {
                 id="mobilecommentmenu"
                 className={`fixed ${
                   commentmenu && comment._id === commentClicked ? "block" : "hidden"
-                } bottom-0 left-0 bg-white pt-10 pl-5 pr-5 pb-5 z-40 w-full h-[40%] rounded-tl-3xl rounded-tr-3xl sm:hidden`}
+                } bottom-0 left-0 ${ mode === 'light' ? 'bg-white text-black fill-black stroke-black' : 'bg-gray-800 text-white fill-white stroke-white'} pt-10 pl-5 pr-5 pb-5 z-40 w-full h-[40%] rounded-tl-3xl rounded-tr-3xl sm:hidden`}
               >
                 {
                   comment && comment.owner && comment.owner._id === getUser._doc._id ? (
                     <>
                      <div onClick={() =>handleEditIcon(comment._id, post._id)} className="flex gap-3 group cursor-pointer items-center pl-1">
-                  <EditLogo className="stroke-black w-5 h-5 group-hover:stroke-purple-600"/>
-                  <p className="text-black text-[17px] group-hover:text-purple-600 pt-1">Edit Comment</p>
+                  <EditLogo className="w-5 h-5 group-hover:stroke-purple-600"/>
+                  <p className="text-[17px] group-hover:text-purple-600 pt-1">Edit Comment</p>
                 </div>
 
                 <div onClick={() =>getConfirmation(comment._id)} className="flex gap-1 group items-center pt-3  cursor-pointer">
-                 <TrashLogo className="fill-black stroke-black w-8 h-8 group-hover:stroke-red-600 group-hover:fill-red-600"/>
-                  <p className="text-black text-[17px] group-hover:text-red-600">Delete Comment</p>
+                 <TrashLogo className="w-8 h-8 group-hover:stroke-red-600 group-hover:fill-red-600"/>
+                  <p className="text-[17px] group-hover:text-red-600">Delete Comment</p>
                 </div>
 
                 <div onClick={() => handleReplyComent(comment._id)} className="flex gap-1 group items-center cursor-pointer pt-3">
                   <ReplyLogo className="w-8 h-8  group-hover:stroke-purple-600" />
-                  <p className="text-black text-[17px] group-hover:text-purple-600">Reply Comment</p>
+                  <p className="text-[17px] group-hover:text-purple-600">Reply Comment</p>
                 </div>
 
                     </>
@@ -1061,7 +1062,7 @@ const viewPost = (postId: string) => {
                     <>
                      <div onClick={() => handleReplyComent(comment._id)} className="flex gap-2 group items-center cursor-pointer pt-1">
                   <ReplyLogo className="w-6 h-6  group-hover:stroke-purple-600" />
-                  <p className="text-black text-[15px] group-hover:text-purple-600">Reply Comment</p>
+                  <p className="text-[15px] group-hover:text-purple-600">Reply Comment</p>
                 </div>
                     </>
                   )
@@ -1074,15 +1075,15 @@ const viewPost = (postId: string) => {
             </div>
                 ))
               ) : (
-                <div className="h-screen bg-white"> 
-                <p className="text-gray-600 text-center pb-4 text-[10px] bg-white pt-4 px-2">No comment has been added</p>
+                <div className={`h-screen ${mode === 'light' ? 'bg-white' : 'bg-black'}`}> 
+                <p className="text-gray-500 text-center pb-4 text-[12px] pt-4 px-2">No comment has been added</p>
                 </div>
               )
             }
           </div>
 
-        <div className="fixed max-w-[100%] sm:max-w-[50%] pt-2 bottom-0 rounded-xl">
-            <div className="flex bg-white border border-gray-300 items-center max-h-[30px] py-6 px-2 rounded-xl">
+        <div className="fixed max-w-[100%] sm:max-w-[49%] pt-2 bottom-0 rounded-xl">
+            <div className={`flex ${ mode === 'light' ? 'bg-white fill-black text-black' : 'bg-gray-800 fill-white text-white'} border border-gray-300 items-center max-h-[30px] py-6 px-2 rounded-xl`}>
             <img onClick={() => navigateToProfile(getUser && getUser._doc && getUser._doc._id)}
               src={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url }
               className="block w-7 h-7 rounded-full cursor-pointer"
@@ -1092,7 +1093,7 @@ const viewPost = (postId: string) => {
               type="text"
               onChange={(e) => (setComment(e.target.value))}
               value={comment}
-              className="block text-xs w-[700px] h-[30px] p-3 bg-white border-0 focus:ring-0 focus:ring-inset focus:ring-none"
+              className={`block text-xs w-[700px] h-[30px] p-3 ${ mode === 'light' ? 'bg-white' : 'bg-gray-800'} bg-opacity-50 border-0 focus:ring-0 focus:ring-inset focus:ring-none`}
               placeholder="Comment on this post"
               name=""
               id=""
