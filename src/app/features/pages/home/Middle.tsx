@@ -3,7 +3,7 @@ import { PlusIcon, HeartIcon,  } from "@heroicons/react/24/outline";
 import EmojiPicker from "emoji-picker-react";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { changeMode, getAllUser, getOtherUser, selectUser, setProfileType, userFollowers, userFollowing } from "../auth/authSlice";
-import { allCommentForAPost, bookmarkPost, commentOnPost, createPost, createStory, deletePost, getAPost, getAllPosts, getAllUserStories, getAvailableStories, getBookmarkforaPost, getLikesforaPost, getresharedforaPost, likePost, openpostForm, rePost, resetEditCommentStatus, selectPost, setWhichPost, updatePost, updateViewingStatus } from "./PostSlice";
+import { allCommentForAPost, bookmarkPost, commentOnPost, createPost, createStory, deletePost, getAPost, getAllPosts, getAllUserStories, getAvailableStories, getBookmarkforaPost, getLikesforaPost, getresharedforaPost, likePost, openpostForm, rePost, resetEditCommentStatus, selectPost, setWhichPost, shouldWeHideMobileNav, updatePost, updateViewingStatus } from "./PostSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import NavBar from "../mobilenav/NavBar";
 import { ReactComponent as GlobalTrendLogo } from '../../../../assets/globeTrend.svg';
@@ -487,12 +487,13 @@ const handleTouchEnd = (e : React.TouchEvent<HTMLDivElement>) => {
   const me = getUser && getUser._doc && getUser._doc._id;
 
   const showPostModal = () => {
-    dispatch(setWhichPost('post'))
+    dispatch(setWhichPost('post'));
+    dispatch(shouldWeHideMobileNav(true));
     setPostModal(true);
-   setisHome(false);
-   setIsTrend(false);
-   setisnotify(false);
-   setispost(true);
+    setisHome(false);
+    setIsTrend(false);
+    setisnotify(false);
+    setispost(true);
   };
 
   const handleEditIcon = (commentId: string, postId: string) => {
@@ -561,6 +562,7 @@ const handleTouchEnd = (e : React.TouchEvent<HTMLDivElement>) => {
   const hideMobileModal = () => {
     setMobileModal(false);
     dispatch(setWhichPost('none'));
+    dispatch(shouldWeHideMobileNav(false));
   };
 
   const viewUserProfile = (userId: string) => {
@@ -593,6 +595,7 @@ const handleTouchEnd = (e : React.TouchEvent<HTMLDivElement>) => {
     setMobileModal(true);
     setCurrentPostId(id);
     setPersonalPost(post);
+    dispatch(shouldWeHideMobileNav(true))
   };
 
   const showStoriesModal = () => {

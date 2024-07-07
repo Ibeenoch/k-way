@@ -5,7 +5,7 @@ import { ReactComponent as PlusIcon } from '../../../../assets/plusLogo.svg';
 import { ReactComponent as BellLogo } from '../../../../assets/notificationLogo.svg';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../hooks';
-import { openpostForm, selectPost } from '../home/PostSlice';
+import { openpostForm, selectPost, shouldWeHideMobileNav } from '../home/PostSlice';
 import { getAllNotificationForAUser, getOtherUser, markAllNotificationForAUser, selectUser, setActivePage } from '../auth/authSlice';
 
 
@@ -21,8 +21,8 @@ const NavBar = () => {
     const getUser = JSON.parse(localStorage.getItem('user') as any);
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const { active, unViewednotificationCount, whoToNotify, viewingProfile, notification } = useAppSelector(selectUser);
-    const { whichPost } = useAppSelector(selectPost);
+    const { active, unViewednotificationCount, whoToNotify, viewingProfile, notification, mode } = useAppSelector(selectUser);
+    const { whichPost, hideMobileNav } = useAppSelector(selectPost);
     const { viewingStory } = useAppSelector(selectPost);
     
     const me = getUser && getUser._doc && getUser._doc._id;
@@ -33,6 +33,7 @@ const NavBar = () => {
     
       const hideFullMobileScreen = () => {
         setMobileIconModal(false);
+        dispatch(shouldWeHideMobileNav(false));
       };
 
       const goHome = () => {
@@ -101,6 +102,7 @@ const goTrend = () => {
   
   
   const showPostModal = () => {
+    dispatch(shouldWeHideMobileNav(true));
     navigate('/');
     setPostModal(true);
    setisHome(false);
@@ -126,18 +128,18 @@ const goTrend = () => {
     <div>
       
       {mobileIconModal ? (
-        <div className={`fixed ${postModal || viewingStory || viewingProfile || whichPost === 'post' || whichPost === 'story'  ? 'z-0' : 'z-40'} left-0 bottom-0 bg-black pr-3 pl-3 py-2 w-full rounded-full sm:hidden`} >
+        <div className={`fixed ${postModal || viewingStory || viewingProfile || whichPost === 'post' || whichPost === 'story' || hideMobileNav  ? 'z-0' : 'z-40'} left-0 bottom-0 ${mode === 'light' ? 'fill-white bg-black'   : 'bg-gray-800'} pr-3 pl-3 py-2 w-full rounded-full sm:hidden`} >
 
           <div className="flex gap-2 justify-around items-center">
-            <HomeLogo onClick={goHome} className={`w-7 h-7 ${ active === 'home' ? 'stroke-purple-600 fill-purple-600' : 'stroke-white fill-white' } `} />
+            <HomeLogo onClick={goHome} className={`w-7 h-7 ${ active === 'home' ? 'stroke-purple-600 fill-purple-600' : 'stroke-white fill-white' } ${mode === 'light' ? 'fill-white' : 'fill-black' }`} />
             
-            <GlobalTrendLogo onClick={goTrend} className={`w-7 h-7 ${ active === 'trend' ? 'fill-purple-600 stroke-purple-600' : 'fill-white stroke-white'} `} />
+            <GlobalTrendLogo onClick={goTrend} className={`w-7 h-7 ${ active === 'trend' ? 'fill-purple-600 stroke-purple-600' : 'fill-white stroke-white'} ${mode === 'light' ? 'fill-white' : 'fill-black' }`} />
 
-            <div onClick={showPostModal} className={` ${active === 'post' ? 'bg-purple-600 p-3 border-2 border-white rounded-full' : 'p-3 bg-black border-2 border-white rounded-full'} `} >
+            <div onClick={showPostModal} className={` ${active === 'post' ? 'bg-purple-600 p-3 border-2 border-white rounded-full' : 'p-3 bg-black border-2 border-white rounded-full'} ${mode === 'light' ? 'fill-white' : 'fill-black' }`} >
                <PlusIcon className="w-7 h-7 stroke-2 fill-white stroke-white"/>
             </div>
             <div className='relative flex items-center'>
-              <BellLogo onClick={goNotify} className={`w-9 h-9 ${active === 'notification' ? 'stroke-purple-600' : 'stroke-white'} `} />
+              <BellLogo onClick={goNotify} className={`w-9 h-9 ${active === 'notification' ? 'stroke-purple-600' : 'stroke-white'} ${mode === 'light' ? 'fill-white' : 'fill-black' }`} />
              {
               whoToNotify === me && unViewednotificationCount && unViewednotificationCount > 0 && (
               <div className='text-white bg-purple-600 rounded-full absolute px-2 py-[0.8px] top-0 right-0 text-sm font-semibold'>

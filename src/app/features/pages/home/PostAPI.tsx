@@ -93,6 +93,17 @@ export const repost = async(post: any) => {
   }
 }
 
+export const usersPostImages = async(post: any) => {
+  try {
+    const userId = post.userId;
+
+    const res = await axios.get(`${API}/post/alluserimages/${userId}`);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export const updatepost = async(post: any) => {
   try {
     const token = post.token;

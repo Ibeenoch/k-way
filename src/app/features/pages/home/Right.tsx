@@ -9,7 +9,7 @@ const Right = () => {
   const getUsers = JSON.parse(localStorage.getItem('alluser') as any);
   const getAUser = JSON.parse(localStorage.getItem('user') as any);
   const dispatch = useAppDispatch();
-  const { trendingPost, viewingStory, whichPost } = useAppSelector(selectPost);
+  const { trendingPost, viewingStory, whichPost, hideMobileNav } = useAppSelector(selectPost);
   const { mode } = useAppSelector(selectUser);
   const navigate = useNavigate();
 
@@ -55,9 +55,9 @@ const viewTrend = (trend: string) => {
   navigate('/trendlist')
 }
 
-
+console.log('pop  ', hideMobileNav);
 return (
-    <div className={`sticky ${viewingStory || whichPost === 'story' || whichPost === 'post' ? '-z-10' : 'z-0'}  p-4 top-0 overflow-y-auto`}>
+    <div className={`sticky ${viewingStory || whichPost === 'story' || whichPost === 'post' || hideMobileNav ? '-z-10' : 'z-0'}  p-4 top-0 overflow-y-auto`}>
       <div className={`w-full ${mode === 'light' ? 'bg-white fill-black text-black' : 'bg-black fill-white text-white' } rounded-tr-3xl rounded-tl-3xl p-4 border-b border-gray-200`}>
 
       <div className='flex justify-between my-2 items-center px-4'>

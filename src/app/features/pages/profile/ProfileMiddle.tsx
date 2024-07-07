@@ -8,7 +8,7 @@ import { ReactComponent as LogoutLogo } from '../../../../assets/logout.svg';
 import { ReactComponent as BackLogo } from '../../../../assets/arrowBack.svg';
 import { ReactComponent as SearchLogo } from '../../../../assets/searchBar.svg';
 import { ReactComponent as SettingLogo } from '../../../../assets/setting.svg';
-import { getAllUserPosts, searchForPost } from '../home/PostSlice';
+import { allImagesUserAPost, getAllUserPosts, searchForPost, shouldWeHideMobileNav } from '../home/PostSlice';
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import { allCommentForAPost, bookmarkPost, commentOnPost, deletePost, getAPost, getAllPosts, getBookmarkforaPost, getLikesforaPost, getresharedforaPost, likePost, rePost, selectPost,  } from "../home/PostSlice";
 import { ReactComponent as LikeLogo } from '../../../../assets/like.svg';
@@ -80,7 +80,7 @@ const ProfileMiddle = () => {
     const [toRefresh, setToRefresh] = useState<boolean>(false);
   
     const [searchWord, setSearchWord] = useState('');
-    const { posts, searchPosts, usersPosts } = useAppSelector(selectPost);
+    const { posts, imageUpload, usersPosts } = useAppSelector(selectPost);
     const { viewingProfile } = useAppSelector(selectUser);
   
   
@@ -397,6 +397,7 @@ const ProfileMiddle = () => {
     }
   
     const showMobileModal = (img: any, id: any) => {
+      dispatch(shouldWeHideMobileNav(true));
       const post = posts.find((item: any) => item._id === id );
       setDisplayImage(img);
       setDisplayProfileImage(post.owner.profilePhoto.url);
@@ -407,6 +408,7 @@ const ProfileMiddle = () => {
     
   
     useEffect(() => {
+      dispatch(shouldWeHideMobileNav(false));
      const hideMobileMenu = (e: MouseEvent) => {
       if ( mobileMenuRef.current && !mobileMenuRef.current.contains(e.currentTarget as Node)) {
         setMenu(false);
@@ -520,6 +522,11 @@ const ProfileMiddle = () => {
         setShowupload(true);
         setShowFollowers(false);
         setShowFollowing(false);
+        const userId = id;
+        const data = { userId };
+        dispatch(allImagesUserAPost(data)).then((res: any) => {
+          console.log('res all images   ', res);
+        })
     }
     const getFollower = (id: string) => {
       dispatch(getFollowers(id)).then((res: any) => {
@@ -725,11 +732,27 @@ const ProfileMiddle = () => {
   }
 
   const handleViewImage = (img: string, id: string) => {
+    dispatch(shouldWeHideMobileNav(true));
     dispatch(setIsVewingProfile(true))
     setDisplayImage(img);
     setDisplayImage(img);
     setMobileModal(true);
+};
+
+const randomHeight = [50, 75];
+const randomWidth = [1, 2, 3];
+
+const generateRandomwidth = (arr: number[]) => {
+  const randomIndex = Math.floor(Math.random() * arr.length);
+  return arr[randomIndex];
 }
+
+const generateRandomheight = (arr: number[]) => {
+  const randomIndex = Math.floor(Math.random() * arr.length);
+  return arr[randomIndex];
+}
+
+console.log('lkkk  ', generateRandomwidth(randomWidth))
   return (
     <div className={`sm:mt-10 max-w-md sm:max-w-full ${mode === 'light' ? 'bg-white' : mode === 'dark' ? 'bg-black' : 'bg-white'} rounded-tl-3xl rounded-tr-3xl`}>
       
@@ -1383,8 +1406,12 @@ const ProfileMiddle = () => {
         )) : 
         (
             <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
-                {/* <img src="" alt="" /> */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-1 md:grid-cols-5">
+                {
+                  imageUpload && imageUpload.length > 0 && imageUpload.map((image: any, index: number) => (
+                    <img src={image && image.url} className={`col-span-${generateRandomwidth(randomWidth)} h-[${generateRandomheight(randomHeight)}] rounded-xl`} alt="imageupload" />
+                  ))
+                }
             </div>
   
             </>

@@ -3,7 +3,7 @@ import { ReactComponent as SearchLogo } from '../../../../assets/searchBar.svg';
 import { ReactComponent as SettingLogo } from '../../../../assets/setting.svg';
 import './trend.css';
 import { useNavigate, useParams } from 'react-router-dom'
-import { resetSearchPost, searchForPost } from '../home/PostSlice';
+import { resetSearchPost, searchForPost, shouldWeHideMobileNav } from '../home/PostSlice';
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import { HeartIcon,  } from "@heroicons/react/24/outline";
 import { getAllUser, getOtherUser, resetSearchUser, searchUser, selectUser, setProfileType, userFollowing } from "../auth/authSlice";
@@ -412,6 +412,7 @@ const me = getUser && getUser._doc  && getUser._doc._id;
 
   const hideMobileModal = () => {
     setMobileModal(false);
+    dispatch(shouldWeHideMobileNav(false));
   };
 
   const viewUserProfile = (userId: string) => {
@@ -437,6 +438,7 @@ const me = getUser && getUser._doc  && getUser._doc._id;
   }
 
   const showMobileModal = (img: any, id: any) => {
+    dispatch(shouldWeHideMobileNav(true));
     const post = posts.find((item: any) => item._id === id );
     setDisplayImage(img);
     setDisplayProfileImage(post.owner.profilePhoto.url);

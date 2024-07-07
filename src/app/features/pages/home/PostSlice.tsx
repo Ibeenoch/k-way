@@ -9,6 +9,7 @@ export interface PostInterface {
   searchPosts: any[];
   usersPosts: any[];
   stories: any[];
+  imageUpload: any[];
   storyOwner: any;
   viewstories: any[];
   trendingPost: any[];
@@ -26,6 +27,7 @@ export interface PostInterface {
   view: 'likes' | 'bookmark' | 'reshare' | 'none'
   status: "success" | "loading" | "failed" | "idle";
   editCommentStatus: "success" | "loading" | "failed" | "idle";
+  hideMobileNav: boolean
 }
 
 const initialState: PostInterface = {
@@ -36,6 +38,7 @@ const initialState: PostInterface = {
   stories: [],
   viewstories: [],
   post: {},
+  imageUpload: [],
   story: {},
   storyOwner: {},
   comments: [],
@@ -46,6 +49,7 @@ const initialState: PostInterface = {
   likes: [],
   bookmark: [],
   openPostForm: false,
+  hideMobileNav: false,
   whichPost: 'none',
   view: 'none',
   reshared: [],
@@ -259,6 +263,15 @@ export const deleteRepliedComment = createAsyncThunk("/post/deletereplycomment",
   }
 });
 
+export const allImagesUserAPost = createAsyncThunk("/post/allusersImage", async (comments: any) => {
+  try {
+    const res = await api.usersPostImages(comments);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 export const allCommentForAPost = createAsyncThunk("/post/allcomment", async (comments: any) => {
   try {
     const res = await api.allCommentsforaPost(comments);
@@ -311,6 +324,9 @@ export const postSlice = createSlice({
     },
     updateViewingStatus: (state, action: PayloadAction<boolean>) => {
        state.viewingStory = action.payload;
+    },
+    shouldWeHideMobileNav: (state, action: PayloadAction<boolean>) => {
+       state.hideMobileNav = action.payload;
     },
    
   },
@@ -500,6 +516,18 @@ export const postSlice = createSlice({
       .addCase(getAPost.rejected, (state, action) => {
         state.status = "failed";
       })
+      .addCase(allImagesUserAPost.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(allImagesUserAPost.fulfilled, (state, action) => {
+        if (action.payload !== undefined) {
+          state.status = "success";
+          state.imageUpload = action.payload;
+        }
+      })
+      .addCase(allImagesUserAPost.rejected, (state, action) => {
+        state.status = "failed";
+      })
       .addCase(commentOnPost.pending, (state, action) => {
         state.status = "loading";
       })
@@ -655,7 +683,7 @@ export const postSlice = createSlice({
   },
 });
 
-export const { logout, resetEditCommentStatus, openpostForm, setWhichPost, updateViewingStatus, resetSearchPost, currentSearchTrend } = postSlice.actions;
+export const { logout, resetEditCommentStatus, openpostForm, shouldWeHideMobileNav, setWhichPost, updateViewingStatus, resetSearchPost, currentSearchTrend } = postSlice.actions;
 
 export const selectPost = (state: RootState) => state.posts;
 
