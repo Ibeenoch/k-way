@@ -1,7 +1,7 @@
 import NavBar from "../mobilenav/NavBar";
 import { HeartIcon } from "@heroicons/react/24/outline";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
-import {  getAllUser, getOtherUser, setProfileType, userFollowing, getFollowers, getFollowing, addNotification, getAllNotificationForAUser, selectUser, userFollowers, setIsVewingProfile, findChatIdForTwoUsers, fetchChat } from "../auth/authSlice";
+import {  getAllUser, getOtherUser, setProfileType, userFollowing, getFollowers, getFollowing, addNotification, getAllNotificationForAUser, selectUser, userFollowers, setIsVewingProfile, findChatIdForTwoUsers, fetchChat, changeMode } from "../auth/authSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import { socket } from '../../../../index'
 import { ReactComponent as LogoutLogo } from '../../../../assets/logout.svg';
@@ -16,6 +16,8 @@ import { ReactComponent as VerifyMarkLogo } from '../../../../assets/verifyCheck
 import { ReactComponent as CommentLogo } from '../../../../assets/comment.svg';
 import { ReactComponent as RetweetLogo } from '../../../../assets/retweet.svg';
 import { ReactComponent as BookMarkLogo } from '../../../../assets/bookmark.svg';
+import { ReactComponent as LightModeLogo } from '../../../../assets/lighmode.svg';
+import { ReactComponent as DarkModeLogo } from '../../../../assets/darkmode.svg';
 import { ReactComponent as ReplyLogo } from '../../../../assets/replyLogo.svg';
 import { ReactComponent as SendLogo } from '../../../../assets/sendLogo.svg';
 import { ReactComponent as ArrowPreviousLogo } from '../../../../assets/arrowPrevious.svg';
@@ -57,7 +59,7 @@ const ProfileMiddle = () => {
     const [showfollowers, setShowFollowers] = useState<boolean>(false);
     const [showfollowing, setShowFollowing] = useState<boolean>(false);
     const [inputStr, setInputStr] = useState<string>("");
-    const { user, followers, following, otherperson,  } = useAppSelector(selectUser);
+    const { user, followers, following, otherperson, mode } = useAppSelector(selectUser);
     const { refresh, toggleRefresh } = useAppContext();
     const [isTrend, setIsTrend] = useState<boolean>(false);
     const [isNotify, setisnotify] = useState<boolean>(false);
@@ -714,6 +716,13 @@ const ProfileMiddle = () => {
     navigate(-1);
   };
 
+  const changeToDarkMode = () => {
+    dispatch(changeMode('dark'));
+  }
+
+  const changeToLightMode = () => {
+    dispatch(changeMode('light'));
+  }
 
   const handleViewImage = (img: string, id: string) => {
     dispatch(setIsVewingProfile(true))
@@ -722,14 +731,30 @@ const ProfileMiddle = () => {
     setMobileModal(true);
 }
   return (
-    <div className="sm:mt-10 max-w-md sm:max-w-full bg-white rounded-tl-3xl rounded-tr-3xl">
+    <div className={`sm:mt-10 max-w-md sm:max-w-full ${mode === 'light' ? 'bg-white' : mode === 'dark' ? 'bg-black' : 'bg-white'} rounded-tl-3xl rounded-tr-3xl`}>
       
-      <div onClick={handleGoBack} className=' sm:flex flex gap-2 p-2 sm:p-4 cursor-pointer'>
-          <BackLogo  className='w-4 h-4 cursor-pointer stroke-[4px] fill-black' />
-        <h2 className='text-xs font-semibold text-black'>Go Back</h2>
+      <div className='sm:flex flex justify-between gap-2 p-2 sm:p-4 cursor-pointer'>
+        <div onClick={handleGoBack} className="flex gap-2 items-center">
+          <BackLogo  className={`w-4 h-4 cursor-pointer stroke-[4px] ${mode === 'light' ? 'fill-black' : mode === 'dark' ? 'fill-white' : 'fill-black'}`} />
+        <h2 className={`text-xs font-semibold ${mode === 'light' ? 'text-black' : mode === 'dark' ? 'text-white' : 'text-black'} `}>Go Back</h2>
+        </div>
+
+        <div className="flex">
+          {
+            mode === 'light' ? (
+              <>
+              <DarkModeLogo onClick={changeToDarkMode} className={`w-6 h-6 ${ mode === 'light' ? 'fill-black' : 'fill-white'}`} />
+              </>
+            ) : (
+              <>
+              <LightModeLogo onClick={changeToLightMode} className={`w-6 h-6 ${ mode === 'dark' ? 'fill-white' : 'fill-black'}`} />
+              </>
+            )
+          }
+        </div>
       </div>
 
-      <div className='flex flex-col rounded-tl-3xl justify-center items-center bg-white p-6'>
+      <div className={`flex flex-col rounded-tl-3xl justify-center items-center ${ mode === 'light' ? 'bg-white' : 'bg-black'} p-6`}>
         
         <div className='flex gap-2 items-center'>
         <div className='rounded-full bg-sky-500 cursor-pointer w-18 h-18'></div>
@@ -739,7 +764,7 @@ const ProfileMiddle = () => {
             <div className="relative">
             <img onClick={() => handleViewImage(otherperson && otherperson._doc && otherperson._doc.profilePhoto && otherperson._doc.profilePhoto.url, otherperson && otherperson._doc && otherperson._doc._id)} className='rounded-full w-[250px] h-[250px] cursor-pointer -ml-4' src={otherperson && otherperson._doc && otherperson._doc.profilePhoto && otherperson._doc.profilePhoto.url} alt="" />
              <div onClick={editProfile} className="absolute bottom-0 right-9 cursor-pointer">
-             <EditLogo className="w-5 h-5"/>              
+             <EditLogo className={`w-5 h-5 ${ mode === 'dark' ? 'fill-white' : 'fill-black'}`}/>              
              </div> 
             </div>
             
@@ -749,7 +774,7 @@ const ProfileMiddle = () => {
             <div className="relative">
              <img className='rounded-full w-[250px] h-[250px] cursor-pointer -ml-4' src={`${process.env.PUBLIC_URL}/images/user.png`} alt="" />
              <div onClick={editProfile} className="absolute bottom-0 right-9 cursor-pointer">
-              <EditLogo className="w-5 h-5"/>
+              <EditLogo className={`w-5 h-5 ${ mode === 'dark' ? 'fill-white' : 'stroke-black'}`}/>
               </div> 
             </div>
             
@@ -762,7 +787,7 @@ const ProfileMiddle = () => {
         firstUser !== secondUser && checkmyFollower && (
           <div className="flex justify-center mt-2">
 
-          <p className="text-gray-800 text-[11px] bg-purple-50 rounded-xl px-2 sm:py-2">Follows you</p>
+          <p className="text-gray-500 text-[11px] bg-purple-50 rounded-xl px-2 sm:py-2">Follows you</p>
           </div>
         )
       }
@@ -771,7 +796,7 @@ const ProfileMiddle = () => {
         <div className='flex flex-col text-center justify-center'>
             <div className="flex gap-1 justify-center items-center pt-2">
               <VerifyMarkLogo className="w-7 h-7 fill-purple-600"/>
-            <h1 className='text-black font-bold  cursor-pointer text-md'>{otherperson && otherperson._doc && otherperson._doc.fullname}</h1>
+            <h1 className={`${ mode === 'light' ? 'text-black' : 'text-white'} font-bold  cursor-pointer text-md`}>{otherperson && otherperson._doc && otherperson._doc.fullname}</h1>
             </div>
             <p className='text-gray-500 text-xs'>@{otherperson && otherperson._doc && otherperson._doc.handle}</p>
             <p className='text-gray-500 text-xs'>{otherperson && otherperson._doc && otherperson._doc.profession}</p>
@@ -797,15 +822,15 @@ const ProfileMiddle = () => {
       </div>
      
         { firstUser !== secondUser ? (
-      <div className="mx-auto flex justify-center gap-6 py-4 bg-white">
-        <button onClick={handleFollow} className="text-white bg-black hover:bg-purple-600 hover:text-white duration-200 hover:border-white hover:scale-105 rounded-2xl border border-white font-semibold text-center px-4 py-1">{
+      <div className={`mx-auto flex justify-center gap-6 py-4 ${ mode === 'light' ? 'bg-white text-black' : 'bg-black text-white'} `}>
+        <button onClick={handleFollow} className=" hover:bg-purple-600 hover:text-white duration-200 hover:border-white hover:scale-105 rounded-2xl border border-white font-semibold text-center px-4 py-1">{
       user && user._doc && user._doc.following &&  user._doc.following.includes(otherperson && otherperson._doc && otherperson._doc._id) ? 'Following' : 'Follow'
       }
       </button>
         <button onClick={() =>handleChat(otherperson && otherperson._doc && otherperson._doc._id)} className="text-white bg-black hover:bg-purple-600 hover:text-white duration-200 hover:border-white hover:scale-105 rounded-2xl border border-white font-semibold text-center px-4 py-1">Chat</button>
       </div>    
           ) : (
-            <div className="mx-auto flex justify-center gap-6 py-4 bg-white">
+            <div className="mx-auto flex justify-center gap-6 py-4 ">
             <button onClick={logoutUser} className="text-white bg-black hover:bg-purple-600 hover:text-white duration-200 hover:scale-105 rounded-2xl border border-white font-semibold text-center px-4 py-1 flex gap-0 items-center"> <LogoutLogo className="w-5 h-5 stroke-white fill-none" /> <p>Logout</p></button>
           </div> 
           )
@@ -813,17 +838,17 @@ const ProfileMiddle = () => {
 
  
 
-    <div className="flex justify-around px-2 mb-4">
-    <h1 onClick={activateFeed} className={`text-lg cursor-pointer font-bold ${showfeed ? 'text-purple-500 border-b-2 border-purple-500': 'text-black' }  dark:text-white pl-3`}>
+    <div className={`flex justify-around px-2 mb-4 ${ mode === 'light' ? 'text-black': 'text-white'} `}>
+    <h1 onClick={activateFeed} className={`text-lg cursor-pointer font-bold ${showfeed ? 'text-purple-500 border-b-2 border-purple-500': '' }  dark:text-white pl-3`}>
       Feeds
     </h1>
-    <h1 onClick={activateFollowers} className={`text-lg cursor-pointer font-bold ${showfollowers ? 'text-purple-500  border-b-2 border-purple-500': 'text-black' }  dark:text-white pl-3`}>
+    <h1 onClick={activateFollowers} className={`text-lg cursor-pointer font-bold ${showfollowers ? 'text-purple-500  border-b-2 border-purple-500': '' }  dark:text-white pl-3`}>
       Followers
     </h1>
-    <h1 onClick={activateFollowing} className={`text-lg cursor-pointer font-bold ${showfollowing ? 'text-purple-500  border-b-2 border-purple-500': 'text-black' }  dark:text-white pl-3`}>
+    <h1 onClick={activateFollowing} className={`text-lg cursor-pointer font-bold ${showfollowing ? 'text-purple-500  border-b-2 border-purple-500': '' }  dark:text-white pl-3`}>
       Following
     </h1>
-    <h1 onClick={activateUpload} className={`text-lg cursor-pointer font-bold ${showupload ? 'text-purple-500  border-b-2 border-purple-500': 'text-black' }  dark:text-white pl-3`}>
+    <h1 onClick={activateUpload} className={`text-lg cursor-pointer font-bold ${showupload ? 'text-purple-500  border-b-2 border-purple-500': '' }  dark:text-white pl-3`}>
       Uploads
     </h1>
     </div>
@@ -833,13 +858,13 @@ const ProfileMiddle = () => {
            {
 
             usersPosts && Array.isArray(usersPosts) && usersPosts.map((post: any, index: number) => (       
-            <div key={index} className="rounded-full my-1 p-3 max-w-full bg-white dark-bg-gray-700 border border-gray-400 rounded-lg">
+            <div key={index} className={`rounded-full my-1 p-3 max-w-full ${ mode === 'light' ? 'bg-white' : 'bg-black'} dark-bg-gray-700 border border-gray-400 rounded-lg`}>
             {
             post.reShared &&  (
             <>
             <div className="flex border-b border-b-gray-300 pb-4">
              <img onClick={() => viewAProfile(post && post.reShare && post.reShare[0] && post.reShare[0].user && post.reShare[0].user._id)} className="w-8 h-8 rounded-full cursor-pointer" src={post && post.reShare && post.reShare[0] && post.reShare[0].user  && post.reShare[0].user.profilePhoto && post.reShare[0].user.profilePhoto.url} alt=""/>
-              <p className="text-black dark:text-white text-xs font-medium px-1">{post && post.reShare && post.reShare[0]  && post.reShare[0].user  && post.reShare[0].user.fullname}</p>
+              <p className={`${ mode === 'light' ? 'text-black' : 'text-white'} dark:text-white text-xs font-medium px-1`}>{post && post.reShare && post.reShare[0]  && post.reShare[0].user  && post.reShare[0].user.fullname}</p>
               <p className="text-gray-500 text-xs font-semibold px-3">Reshared this post</p>
             </div>
             </>
@@ -850,19 +875,19 @@ const ProfileMiddle = () => {
             <div  className="w-full cursor-pointer flex items-center justify-between gap-1">
               <div  onClick={() => goToPost(post._id)} className="flex items-center">
                 <div className="mt-3">
-                  <h1 className="text-black dark:text-white text-sm font-semibold">
+                  <h1 className={` ${ mode === 'light' ? 'text-black' : 'text-white'} text-sm font-semibold`}>
                     {post && post.owner && post.owner.fullname}
                   </h1>
-                <p className="text-gray text-[8px]"> {post && formatCreatedAt(post.createdAt)} </p>
+                <p className="text-gray-500 text-[8px]"> {post && formatCreatedAt(post.createdAt)} </p>
                 </div>
                 <VerifyMarkLogo className="w-5 h-5 fill-purple-500 stroke-white"/>
              
-                <p className="text-gray-600 text-[10px] ">@{post && post.owner && post.owner.handle}</p>
+                <p className="text-gray-500 text-[10px] ">@{post && post.owner && post.owner.handle}</p>
               </div>
               {/* three dot icon  */}
               <div onClick={() => menuShow(post._id)} className="cursor-pointer ">
                 <div className="relative" >
-                  <MenuLogo className="w-[12px] h-[12px] fill-black stroke-black dark:fill-white dark:stroke-white"/>
+                  <MenuLogo className={`w-[12px] h-[12px] ${mode === 'light' ? 'fill-black stroke-black' : 'fill-white stroke-white'}`} />
                  
                   {/* desktop menu  */}
                   <div
@@ -870,18 +895,18 @@ const ProfileMiddle = () => {
                     id="desktopmenu"
                     className={`hidden ${
                       desktopMenu && post._id === postClicked ? "sm:block" : "sm:hidden"
-                    } absolute shadow-xl shadow-purple-80 z-10 top-0 -right-[10px] w-[150px] h-auto rounded-3xl mx-auto bg-white  p-2`}
+                    } absolute shadow-lg shadow-purple-80 z-10 top-0 -right-[10px] w-[150px] h-auto rounded-3xl mx-auto ${ mode=== 'light' ? 'bg-white text-black fill-black stroke-black' : 'bg-gray-900 text-white fill-white stroke-white'}  p-2`}
                   >
                     {
                     getUser !== undefined && getUser && getUser._doc && getUser._doc._id  === post.owner._id ? (
                         <>
-                      <div onClick={() =>handleEditPost(post._id)} className="flex gap-2 px-2 cursor-pointer items-center pt-4">
-                        <EditLogo  className="stroke-black w-3 h-3"/>
-                        <p className="text-black text-[10px]">Edit Post</p>
+                      <div onClick={() =>handleEditPost(post._id)} className={`flex gap-2 px-2 cursor-pointer ${mode === 'light' ? 'text-black' : 'text-white'} items-center pt-4`}>
+                        <EditLogo  className="w-4 h-4"/>
+                        <p className="text-[10px]">Edit Post</p>
                       </div>
-                      <div onClick={() =>handleDeletePost(post._id)} className="flex gap-2 cursor-pointer items-center pt-4">
-                        <TrashLogo className="fill-black stroke-black w-5 h-5"/>
-                        <p className="text-black text-[10px]">Delete Post</p>
+                      <div onClick={() =>handleDeletePost(post._id)} className="flex ml-[2.5px] gap-2 cursor-pointer items-center pt-4">
+                        <TrashLogo className="w-5 h-5"/>
+                        <p className="text-[10px]">Delete Post</p>
                       </div>
                         </>
                       ) : (
@@ -890,8 +915,8 @@ const ProfileMiddle = () => {
                           getUser && getUser._doc && getUser._doc.following  && getUser._doc.following.includes(post.owner._id) && (
                             <>
                             <div onClick={() => handleFollowing(post && post.owner && post.owner._id )} className="flex gap-2 cursor-pointer items-center pt-4">
-                              <AddContactLogo  className="fill-black stroke-black w-3 h-3"/>
-                              <p className="text-black text-[10px]">Follow @{post && post.owner && post.owner.handle }</p>
+                              <AddContactLogo  className="w-3 h-3"/>
+                              <p className="ext-[10px]">Follow @{post && post.owner && post.owner.handle }</p>
                             </div>
                             </>
                           )
@@ -899,18 +924,18 @@ const ProfileMiddle = () => {
                       
             
                     <div className="flex gap-2 items-center pt-4  cursor-pointer">
-                      <BlockContactLogo  className="fill-black stroke-black w-3 h-3"/>
-                      <p className="text-black text-[10px]">Block @{post && post.owner && post.owner.handle }</p>
+                      <BlockContactLogo  className="w-3 h-3"/>
+                      <p className="text-[10px]">Block @{post && post.owner && post.owner.handle }</p>
                     </div>
             
                     <div className="flex gap-2 items-center cursor-pointer pt-4">
-                      <ReportContactLogo  className="fill-black stroke-black w-3 h-3"/>
-                      <p className="text-black text-[10px]">Report Post</p>
+                      <ReportContactLogo  className="w-3 h-3"/>
+                      <p className="text-[10px]">Report Post</p>
                     </div>
             
                     <div className="flex gap-2 cursor-pointer items-center pt-4">
-                      <MuteContactLogo   className="fill-black stroke-black w-3 h-3"/>
-                      <p className="text-black text-[10px]">Mute @{post && post.owner && post.owner.handle }</p>
+                      <MuteContactLogo   className="w-3 h-3"/>
+                      <p className="text-[10px]">Mute @{post && post.owner && post.owner.handle }</p>
                     </div>
                         </>
                       )
@@ -1314,14 +1339,14 @@ const ProfileMiddle = () => {
           <>
           {/* followers  */}
 
-     <div key={index} className='w-full bg-white dark:bg-black mt-4 rounded-3xl p-4'>
+     <div key={index} className={`w-full ${ mode === 'light' ? 'bg-white text-black' : 'bg-gray-800 text-white'}  dark:bg-black mt-4 rounded-3xl p-4`} >
        {/* people */}
 
        <div className='flex justify-between items-center my-2 px-4'>
          <div className='flex gap-2'>
            <img className='w-9 h-9 rounded-full' src={follower && follower.profilePhoto && follower.profilePhoto.url} alt="" />
          <div>
-           <h1 className='text-sm text-black dark:text-white font-semibold'>{follower && follower.fullname}</h1>
+           <h1 className='text-sm dark:text-white font-semibold'>{follower && follower.fullname}</h1>
            <p className='text-xs text-gray-600'>@{follower && follower.handle}</p>
          </div>
          </div>
@@ -1337,14 +1362,14 @@ const ProfileMiddle = () => {
           <>
           {/* followers  */}
 
-     <div key={index} className='w-full bg-white dark:bg-black mt-4 rounded-3xl p-4'>
+     <div key={index} className={`w-full ${ mode === 'light' ? 'bg-white text-black' : 'bg-gray-800 text-white'}  dark:bg-black mt-4 rounded-3xl p-4`}>
        {/* people */}
 
        <div className='flex justify-between items-center my-2 px-4'>
          <div className='flex gap-2'>
            <img className='w-9 h-9 rounded-full' src={follow && follow.profilePhoto && follow.profilePhoto.url} alt="" />
          <div>
-           <h1 className='text-sm text-black dark:text-white font-semibold'>{follow && follow.fullname}</h1>
+           <h1 className='text-sm  dark:text-white font-semibold'>{follow && follow.fullname}</h1>
            <p className='text-xs text-gray-600'>@{follow && follow.handle}</p>
          </div>
          </div>
@@ -1357,7 +1382,12 @@ const ProfileMiddle = () => {
          </>
         )) : 
         (
-            <></>
+            <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+                {/* <img src="" alt="" /> */}
+            </div>
+  
+            </>
          )
     }
     </div>

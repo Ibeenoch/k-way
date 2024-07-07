@@ -1,7 +1,7 @@
 
 import { useNavigate } from 'react-router-dom'
-import { useAppDispatch } from '../../../hooks';
-import { fetchChat, findChatIdForTwoUsers, getAllUser, getOtherUser } from '../auth/authSlice';
+import { useAppDispatch, useAppSelector } from '../../../hooks';
+import { fetchChat, findChatIdForTwoUsers, getAllUser, getOtherUser, selectUser } from '../auth/authSlice';
 import { socket } from '../../../../index'
 import { useEffect } from 'react';
 
@@ -12,6 +12,7 @@ const MessageList = () => {
   const dispatch = useAppDispatch();
     const getUsers = JSON.parse(localStorage.getItem('alluser') as any);
     const getAUser = JSON.parse(localStorage.getItem('user') as any);
+    const { mode } = useAppSelector(selectUser);
 
     const viewProfile = (userId: string) => {
       // check if i am not logged in
@@ -84,8 +85,8 @@ const MessageList = () => {
   return (
     <div>
       
-      <div className='w-full bg-white dark:bg-black h-screen mt-4 rounded-3xl p-4'>
-          <h1 className='text-black dark-text-white font-bold text-md'>Message Your Friends</h1>
+      <div className={`w-full ${mode === 'light' ? 'bg-white text-black' : 'bg-black text-white'} h-screen mt-4 rounded-3xl p-4`}>
+          <h1 className='font-bold text-md'>Message Your Friends</h1>
           {/* people */}
         {
           getUsers  && getUsers && getUsers.length > 0 && getUsers.map((person: any) => (       
@@ -93,7 +94,7 @@ const MessageList = () => {
                 {
                   person && person._id !== me && (
     
-            <div className='flex justify-between items-center my-2 px-4'>
+            <div className={`flex justify-between items-center py-2 rounded-xl my-2 px-4 ${mode === 'light' ? 'bg-white' : 'bg-gray-800'}`}>
                 <div onClick={() =>viewProfile(person._id)} className='flex gap-2 cursor-pointer'>
                   {
                     person && person.profilePhoto && person.profilePhoto.url ? (
@@ -103,8 +104,8 @@ const MessageList = () => {
                     )
                   }
                 <div>
-                  <h1 className='text-sm text-black dark:text-white font-semibold'>{person && person.fullname ?  person.fullname : 'anonymous'}</h1>
-                  <p className='text-xs text-gray-600'>@{person && person.handle ?  person.handle : 'anonymous'}</p>
+                  <h1 className='text-sm font-semibold'>{person && person.fullname ?  person.fullname : 'anonymous'}</h1>
+                  <p className='text-xs text-gray-500'>@{person && person.handle ?  person.handle : 'anonymous'}</p>
                 </div>
                 </div>
             

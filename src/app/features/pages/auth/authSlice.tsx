@@ -22,6 +22,7 @@ export interface userState {
   searchUsers: any;
   trendingUser: any;
   chatId: string;
+  mode: 'light' | 'dark';
   followers: any[];
   following: any[];
   notificationCountHistory: any[];
@@ -43,6 +44,7 @@ const initialState: userState = {
   notificationCountHistory: [],
   chat: [],
   followers: [],
+  mode: 'light',
   unreadChatCount: 0,
   whoToNotify: '',
   chatId: '',
@@ -310,6 +312,9 @@ export const authSlice = createSlice({
     },
     checkIfNoteIsLoading: (state, action: PayloadAction<boolean>) => {
       state.isNotificationLoading = action.payload;
+    },
+    changeMode: (state, action: PayloadAction<'light' | 'dark'>) => {
+      state.mode = action.payload;
     },
   
   },
@@ -592,7 +597,7 @@ export const authSlice = createSlice({
   },
 });
 
-export const { logout, setActivePage, setProfileType, addChat, resetSearchUser, setIsVewingProfile, checkIfNoteIsLoading, addCountHistory } = authSlice.actions;
+export const { logout, setActivePage, setProfileType, addChat, resetSearchUser, setIsVewingProfile, checkIfNoteIsLoading, addCountHistory, changeMode } = authSlice.actions;
 
 export const selectUser = (state: RootState) => state.auth;
 

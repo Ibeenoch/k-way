@@ -8,12 +8,12 @@ import { ReactComponent as CommentLogo } from '../../../../assets/comment.svg'
 import { ReactComponent as BookmarkLogo } from '../../../../assets/bookmark.svg'
 import { ReactComponent as FollowerLogo } from '../../../../assets/follower.svg'
 import { ReactComponent as ReshareLogo } from '../../../../assets/retweet.svg'
+import { ReactComponent as ArrowLeftIcon } from '../../../../assets/arrowPrevious.svg'
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
-import Loading from '../../../Loading';
 
 const NotificationMain = () => {
-  const { notifications, notification, isNotificationLoading } = useAppSelector(selectUser);
+  const { notifications, notification, isNotificationLoading, mode } = useAppSelector(selectUser);
   const getUser = JSON.parse(localStorage.getItem('user') as any);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -46,12 +46,19 @@ const NotificationMain = () => {
 
   }, []);
 
+  const goBack = () => {
+    navigate(-1);
+  };
  
 
   return (
-    <div className='p-4 bg-white sm:rounded-tl-3xl sm:rounded-tr-3xl'>
+    <div className={`p-4 ${mode === 'light' ? 'bg-white text-black fill=black' : 'bg-black text-white fill-white'} sm:rounded-tl-3xl sm:rounded-tr-3xl`}>
+  <div onClick={goBack} className='flex items-center pb-2 gap-3 cursor-pointer'>
+      <ArrowLeftIcon className='w-4 h-4 cursor-pointer' />
+  <h2 className='text-xs font-semibold'>Go Back</h2>
+  </div>
 
-      <h2 className='text-black font-bold border-b border-gray-300'>Notifications </h2>
+      <h2 className='font-bold border-b border-gray-300'>Notifications </h2>
       {/* feeds  */}
       
       {
@@ -101,7 +108,7 @@ const NotificationMain = () => {
           
             }
           
-              <p className='text-sm flex-none text-black dark:text-white'><strong>{note && note.sender && note.sender.fullname} &nbsp;</strong>
+              <p className='text-sm flex-none'><strong>{note && note.sender && note.sender.fullname} &nbsp;</strong>
               {
                 note && note.message && note.message.includes('liked') ? 'liked your post'
                 : note && note.message && note.message.includes('bookmark') ? 'bookmark your post'
@@ -127,7 +134,7 @@ const NotificationMain = () => {
       )) : (
         <>
         <div className='flex justify-center items-center'>
-        <p className='text-xs text-black font-semibold'>You have no Notifications yet</p>
+        <p className='text-xs font-semibold'>You have no Notifications yet</p>
         </div>
         </>
       )

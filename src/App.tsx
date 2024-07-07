@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from "react";
+import React, { lazy, Suspense, useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -6,6 +6,8 @@ import "./index.css";
 import { Toaster, ToastOptions } from "react-hot-toast"
 import { ReactComponent as LoadingLogo } from './assets/loading.svg';
 import EditReplyComment from "./app/features/pages/home/EditReplyComment";
+import { useAppDispatch, useAppSelector } from "./app/hooks";
+import { selectUser } from "./app/features/pages/auth/authSlice";
 const Home = lazy(() => import("./app/features/pages/home/Home"));
 const Profile = lazy(() => import("./app/features/pages/profile/Profile"));
 const Notification = lazy(() => import("./app/features/pages/Notification/Notification"));
@@ -119,9 +121,14 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  const dispatch = useAppDispatch();
+  const { mode } = useAppSelector(selectUser);
+
+
+
   return (
     
-      <div className="App">
+      <div className={`App ${ mode === 'light' ? 'bg-white' : 'bg-gray-800' } `} >
         <Suspense fallback={<div className="flex items-center justify-center h-screen w-full"> <LoadingLogo className="w-14 h-14" /> </div>}>
         <RouterProvider router={router} />
         </Suspense>
