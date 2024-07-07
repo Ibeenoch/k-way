@@ -810,7 +810,7 @@ console.log('lkkk  ', generateRandomwidth(randomWidth))
         firstUser !== secondUser && checkmyFollower && (
           <div className="flex justify-center mt-2">
 
-          <p className="text-gray-500 text-[11px] bg-purple-50 rounded-xl px-2 sm:py-2">Follows you</p>
+          <p className={`text-gray-500 text-[11px] ${ mode === 'light' ? 'bg-gray-100 bg-opacity-50' : 'bg-gray-100 bg-opacity-80'}  rounded-xl px-2 sm:py-2`}>Follows you</p>
           </div>
         )
       }

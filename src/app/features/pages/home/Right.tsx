@@ -16,7 +16,10 @@ const Right = () => {
   const handleFollow = (auserId: string) => {
     const token = getAUser && getAUser.token;
     const follow = { token, auserId };
-    dispatch(userFollowing(follow));
+    console.log('tahey ', follow);
+    dispatch(userFollowing(follow)).then((res: any) => {
+      console.log('the sujs ', res)
+    })
   };
 
 
@@ -32,9 +35,9 @@ if(!getAUser){
 }
 // if i am logged in
 const me = getAUser && getAUser._doc  && getAUser._doc._id;
-  
-  const findPerson = getUsers.users.find((u: any) => u._id === userId);
-    if(!findPerson.fullname || findPerson.fullname === ''){
+  console.log('lolyuah ', userId, getUsers);
+  const findPerson = getUsers.find((u: any) => u._id === userId);
+    if(findPerson && !findPerson.fullname || findPerson.fullname === ''){
       navigate(`/profile/create/${userId}`);
       return;
     }else{
@@ -95,7 +98,7 @@ return (
         {
           getUsers  && getUsers && getUsers.length > 0 && getUsers.map((person: any) => (       
           <div className={`flex justify-between items-center my-2 px-4 `}>
-            <div onClick={() =>viewProfile(person._id)} className='flex gap-2 cursor-pointer'>
+            <div onClick={() =>viewProfile(person && person._id)} className='flex gap-2 cursor-pointer'>
               {
                 person && person.profilePhoto && person.profilePhoto.url ? (
                   <img className='w-9 h-9 rounded-full' src={person && person.profilePhoto && person.profilePhoto.url} alt="" />
