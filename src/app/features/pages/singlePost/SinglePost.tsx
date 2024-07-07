@@ -484,12 +484,33 @@ const viewPost = (postId: string) => {
 
   const handleGoBack = () => {
     navigate(-1);
-  }
+  };
+
+  
+  const hideDeskTopMenu = (e: MouseEvent) => {
+    if (
+       desktopMenuRef.current &&
+       !desktopMenuRef.current.contains(e.target as Node)
+     ) {
+       setDesktopMenu(false);
+     }
+   };
+
+   
+  useEffect(() => {
+    if(hideDeskTopMenu){
+      document.addEventListener("mousedown", hideDeskTopMenu);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", hideDeskTopMenu);
+    };
+  }, [hideDeskTopMenu]);
 
   const postOwner = post && post.owner && post.owner._id;
   return (
     <div className="sticky overflow-y-auto">
-        <div onClick={handleGoBack} className={`flex sm:mx-[25%] gap-3 ${mode === 'light' ? `${commentmenu || menu  ? 'bg-gray-200' : 'bg-white fill-black text-black'}` : 'bg-black fill-white text-white'} p-2 cursor-pointer`} >
+        <div onClick={handleGoBack} className={`flex sm:mx-[25%] gap-3 ${mode === 'light' ? `${commentmenu || menu  ? 'bg-gray-200 text-black' : 'bg-white fill-black text-black'}` : 'bg-black fill-white text-white'} p-2 cursor-pointer`} >
           <BackArrowLogo  className='w-4 h-4 cursor-pointer' />
         <h2 className='text-xs font-medium'>Back to Post Feeds</h2>
         </div>
@@ -818,12 +839,12 @@ const viewPost = (postId: string) => {
           ) : post && post.photos && post.photos.length === 2 ? (
             <div className="flex rounded-3xl overflow-hidden">
                <img onClick={() => showMobileModal(post && post.photos[0] && post.photos[0].url, post && post._id)}
-                className="fixed-size w-[258px]  rounded-l-3xl h-[293px] border-r border-white cursor-pointer object-cover"
+                className="fixed-size w-1/2 rounded-l-3xl h-[293px] border-r border-white cursor-pointer object-cover"
                 src={post && post.photos[0] && post.photos[0].url}
                alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
                
                <img onClick={() => showMobileModal(post && post.photos[1] && post.photos[1].url, post && post._id)}
-                 className="fixed-size w-[258px] h-[293px] border-l rounded-r-3xl border-white object-cover cursor-pointer"
+                 className="fixed-size w-1/2 h-[293px] border-l rounded-r-3xl border-white object-cover cursor-pointer"
                  src={post && post.photos[1] && post.photos[1].url}
                alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
             </div>

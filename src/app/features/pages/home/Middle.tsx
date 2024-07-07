@@ -645,11 +645,8 @@ const handleTouchEnd = (e : React.TouchEvent<HTMLDivElement>) => {
     }
   }, [storyActive, startShowingIndex]);
 
-  console.log(startShowingIndex, 'story active ', storyActive)
-
    const hideMobileMenu = (e: MouseEvent) => {
-    if ( mobileMenuRef.current && !mobileMenuRef.current.contains(e.target as Node)) {
-      console.log('the tagert ', e.target, e.currentTarget,  mobileMenuRef.current);
+    if ( mobileMenuRef.current && !mobileMenuRef.current.contains(e.currentTarget as Node)) {
       setMenu(false);
     }
   };
@@ -778,7 +775,7 @@ const viewNextImage = () => {
 
   return (
     <div className={`sm:mt-10 ${ mode === 'light' ? 'bg-white' : 'bg-black' } sm:rounded-t-3xl max-w-md sm:max-w-full`} >
-      <div className="px-2 flex justify-between">
+      <div className={`px-2 flex justify-between ${desktopMenu || menu ? 'bg-gray-200' : 'bg-white'}`}>
         <h1 className={`text-md font-bold ${ mode === 'light' ? 'text-black' : 'text-white'} pt-3 pl-4`}>
           Stories
         </h1>
@@ -797,7 +794,7 @@ const viewNextImage = () => {
         </div>
       </div>
       {/* stories */}
-      <div className="my-4">
+      <div className={`py-4  ${desktopMenu || menu ? 'bg-gray-200' : 'bg-white'}`}>
         <div className="flex max-w-full overflow-x-auto scrollbar-hide">
           {/* add a story  */}
           <div  onClick={handleStory} className="relative inline-block mx-1 flex-none">
@@ -819,7 +816,7 @@ const viewNextImage = () => {
                 
                 )
             }
-            <p className={`text-[10px] ${ mode === 'light' ? 'text-black' : 'text-white'} dark:text-white text-center`} >
+            <p className={`text-[10px] ${ mode === 'light' ? 'text-black' : 'text-white'} text-center`} >
             { getUser && getUser._doc && getUser._doc.fullname && 'Your story' }  
             </p>
           </div>
@@ -868,7 +865,7 @@ const viewNextImage = () => {
         </div>
       </div>
 
-      <h1 className={`text-lg font-bold ${ mode === 'light' ? 'text-black' : 'text-white' } pl-4`} >
+      <h1 className={`text-lg font-bold ${ mode === 'light' ?  `${desktopMenu || menu ? 'bg-gray-200 text-black' : 'bg-white text-black'}` : 'text-white' } pl-4`} >
         Feeds
       </h1>
       {/* desktop post  */}
@@ -962,7 +959,7 @@ const viewNextImage = () => {
         {
 
           posts && Array.isArray(posts) && posts.map((post: any, index: number) => (       
-      <div key={index} className={`rounded-full my-1 p-3 max-w-full ${ mode === 'light' ? `${ desktopMenu || menu ? 'bg-gray-200' : 'bg-white'} text-black fill-black` : 'bg-black text-white fill-white' } border border-gray-200 rounded-lg`} >
+      <div key={index} className={`rounded-full py-1 p-3 max-w-full ${ mode === 'light' ? `${ desktopMenu || menu ? 'bg-gray-200' : 'bg-white'} text-black fill-black` : 'bg-black text-white fill-white' } border border-gray-200 rounded-lg`} >
        {
         post.reShared &&  (
           <div className={`flex justify-between px-2 items-center`}>
