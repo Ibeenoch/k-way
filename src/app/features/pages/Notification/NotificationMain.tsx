@@ -8,7 +8,7 @@ import { ReactComponent as CommentLogo } from '../../../../assets/comment.svg'
 import { ReactComponent as BookmarkLogo } from '../../../../assets/bookmark.svg'
 import { ReactComponent as FollowerLogo } from '../../../../assets/follower.svg'
 import { ReactComponent as ReshareLogo } from '../../../../assets/retweet.svg'
-import { ReactComponent as ArrowLeftIcon } from '../../../../assets/arrowPrevious.svg'
+import { ReactComponent as ArrowLeftIcon } from '../../../../assets/arrowBack.svg'
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 

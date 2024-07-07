@@ -2,7 +2,7 @@ import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import { PlusIcon, HeartIcon,  } from "@heroicons/react/24/outline";
 import EmojiPicker from "emoji-picker-react";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
-import { getAllUser, getOtherUser, selectUser, setProfileType, userFollowers, userFollowing } from "../auth/authSlice";
+import { changeMode, getAllUser, getOtherUser, selectUser, setProfileType, userFollowers, userFollowing } from "../auth/authSlice";
 import { allCommentForAPost, bookmarkPost, commentOnPost, createPost, createStory, deletePost, getAPost, getAllPosts, getAllUserStories, getAvailableStories, getBookmarkforaPost, getLikesforaPost, getresharedforaPost, likePost, openpostForm, rePost, resetEditCommentStatus, selectPost, setWhichPost, updatePost, updateViewingStatus } from "./PostSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import NavBar from "../mobilenav/NavBar";
@@ -11,6 +11,8 @@ import { ReactComponent as SignalLogo } from '../../../../assets/signal.svg';
 import { ReactComponent as PlayLogo } from '../../../../assets/play.svg';
 import { ReactComponent as LikeLogo } from '../../../../assets/like.svg';
 import { ReactComponent as VerifyMarkLogo } from '../../../../assets/verifyChecker.svg';
+import { ReactComponent as DarkModeLogo } from '../../../../assets/darkmode.svg';
+import { ReactComponent as LightModeLogo } from '../../../../assets/lighmode.svg';
 import { ReactComponent as CommentLogo } from '../../../../assets/comment.svg';
 import { ReactComponent as RetweetLogo } from '../../../../assets/retweet.svg';
 import { ReactComponent as BookMarkLogo } from '../../../../assets/bookmark.svg';
@@ -762,14 +764,35 @@ const viewNextImage = () => {
     showPostModal();
   };
   
+  const changeToDarkMode = () => {
+    dispatch(changeMode('dark'));
+  }
 
+  const changeToLightMode = () => {
+    dispatch(changeMode('light'));
+  }
 
 
   return (
     <div className={`sm:mt-10 ${ mode === 'light' ? 'bg-white' : 'bg-black' } sm:rounded-t-3xl max-w-md sm:max-w-full`} >
-      <h1 className={`text-md font-bold ${ mode === 'light' ? 'text-black' : 'text-white'} pt-3 pl-4`}>
-        Stories
-      </h1>
+      <div className="px-2 flex justify-between">
+        <h1 className={`text-md font-bold ${ mode === 'light' ? 'text-black' : 'text-white'} pt-3 pl-4`}>
+          Stories
+        </h1>
+        <div className="flex p-3">
+        {
+            mode === 'light' ? (
+              <>
+              <LightModeLogo  onClick={changeToDarkMode} className={`cursor-pointer w-6 h-6 ${ mode === 'light' ? 'fill-black' : 'fill-white'}`} />
+              </>
+            ) : (
+              <>
+              <DarkModeLogo onClick={changeToLightMode} className={`cursor-pointer w-6 h-6 ${ mode === 'dark' ? 'fill-white' : 'fill-black'}`} />
+              </>
+            )
+          }
+        </div>
+      </div>
       {/* stories */}
       <div className="my-4">
         <div className="flex max-w-full overflow-x-auto scrollbar-hide">

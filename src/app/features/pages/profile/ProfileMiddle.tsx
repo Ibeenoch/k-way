@@ -743,11 +743,11 @@ const ProfileMiddle = () => {
           {
             mode === 'light' ? (
               <>
-              <DarkModeLogo onClick={changeToDarkMode} className={`w-6 h-6 ${ mode === 'light' ? 'fill-black' : 'fill-white'}`} />
+              <LightModeLogo onClick={changeToDarkMode} className={`cursor-pointer w-6 h-6 ${ mode === 'light' ? 'fill-black' : 'fill-white'}`} />
               </>
             ) : (
               <>
-              <LightModeLogo onClick={changeToLightMode} className={`w-6 h-6 ${ mode === 'dark' ? 'fill-white' : 'fill-black'}`} />
+              <DarkModeLogo onClick={changeToLightMode} className={`cursor-pointer w-6 h-6 ${ mode === 'dark' ? 'fill-white' : 'fill-black'}`} />
               </>
             )
           }
