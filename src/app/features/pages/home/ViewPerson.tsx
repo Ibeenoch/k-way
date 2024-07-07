@@ -10,7 +10,7 @@ const ViewPerson = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const { likes, bookmark, reshared, view } = useAppSelector(selectPost);
-    const { user,  } = useAppSelector(selectUser);
+    const { user, mode  } = useAppSelector(selectUser);
 
     const viewProfile = (userId: string) => {
         dispatch(getOtherUser(userId)).then((res: any) => {
@@ -41,19 +41,19 @@ const ViewPerson = () => {
     }
 
     const me = getUser && getUser._doc && getUser._doc._id;
-    console.log('me ', me, bookmark)
-  return (
-    <div className=''>
-         <div onClick={handleGoBack} className='bg-white sm:bg-transparent sm:fixed flex gap-3 py-2 cursor-pointer'>
-          <ArrowBackLogo  className='w-4 h-4 cursor-pointer sm:fill-white fill-black' />
-        <h2 className='text-xs font-medium text-black sm:text-white'>Back to Post Feeds</h2>
+
+    return (
+    <div className='sticky overflow-y-auto'>
+         <div onClick={handleGoBack} className={`sm:mx-[25%] p-2 ${mode === 'light' ? 'bg-white text-black fill-black' : 'bg-black text-white fill-white'} flex gap-3 py-2 cursor-pointer`}>
+          <ArrowBackLogo  className='w-4 h-4 cursor-pointer' />
+        <h2 className='text-xs font-medium'>Back to Post Feeds</h2>
         </div>
 
-      <div className='sm:mx-[25%] bg-white h-screen'>
-        <h2 className='text-black font-bold text-sm text-center p-1 border-b border-gray-300'>Post { view === 'likes' ? 'Liked' : view === 'bookmark' ? 'Bookmark' : view === 'reshare' ? 'Reshared' : 'none'} By</h2>
+      <div className={`sm:mx-[25%] ${mode === 'light' ? 'bg-white text-black fill-black stroke-black' : 'bg-black text-white fill-white stroke-white'} h-screen`}>
+        <h2 className='font-bold text-sm text-center p-1'>Post { view === 'likes' ? 'Liked' : view === 'bookmark' ? 'Bookmark' : view === 'reshare' ? 'Reshared' : 'none'} By</h2>
         {
           view === 'likes' &&  likes && likes.length > 0 ? likes.map((person: any) => (
-                <div className='flex justify-between items-center my-2 px-4 py-3 border-b border-gray-300'>
+                <div className={`${ mode === 'light' ? 'bg-white' : 'bg-gray-800'} rounded-xl flex justify-between items-center px-4 py-3 mb-[0.5px]`}>
 
           
             <div onClick={() =>viewProfile(person._id)} className='flex gap-2 cursor-pointer'>
@@ -65,63 +65,64 @@ const ViewPerson = () => {
                 )
               }
             <div>
-              <h1 className='text-sm text-black dark:text-white font-semibold'>{person && person.fullname ?  person.fullname : 'anonymous'}</h1>
-              <p className='text-xs text-gray-600'>@{person && person.handle ?  person.handle : 'anonymous'}</p>
+              <h1 className='text-sm font-semibold'>{person && person.fullname ?  person.fullname : 'anonymous'}</h1>
+              <p className='text-xs text-gray-500'>@{person && person.handle ?  person.handle : 'anonymous'}</p>
             </div>
             </div>
             
-            <button onClick={() => handleFollow(person && person._id)} className='text-xs px-4 py-1 bg-black dark:bg-white rounded-full text-white dark:text-black transform-transition duration-100 hover:scale-110'>
-                {user && user.mine && user.mine._doc && user.mine._doc.following && user.mine._doc.following.includes(person._id) ? 'Unfollow' : 'Follow'} 
+            <button onClick={() => handleFollow(person && person._id)}  className={`text-[11px] text-purple-600 border border-purple-600 hover:border-purple-600 font-bold hover:bg-purple-600 hover:text-white px-4 py-1 duration-200 hover:scale-105 rounded-2xl ${ mode === 'light' ? 'bg-white' : 'bg-black'}`}>
+                {user && user.mine && user.mine._doc && user.mine._doc.following && user.mine._doc.following.includes(person._id) ? 'Following' : 'Follow'} 
             </button>
           
           </div>
         ))
         : view === 'bookmark' && bookmark && bookmark.length > 0 ? bookmark.map((person: any) => (
-            <div className='flex justify-between items-center my-2 px-4'>
+          <div className={`${ mode === 'light' ? 'bg-white' : 'bg-gray-800'} rounded-xl flex justify-between items-center px-4 py-3 mb-[0.5px]`}>
 
-        <div onClick={() =>viewProfile(person._id)} className='flex gap-2 cursor-pointer'>
-          {
-            person && person.profilePhoto && person.profilePhoto.url ? (
-              <img className='w-9 h-9 rounded-full' src={person && person.profilePhoto && person.profilePhoto.url} alt="" />
-            ) : (
-              <img className='w-9 h-9 rounded-full' src={`${process.env.PUBLIC_URL}/images/user.png`} alt="" />
-            )
-          }
-        <div>
-          <h1 className='text-sm text-black dark:text-white font-semibold'>{person && person.fullname ?  person.fullname : 'anonymous'}</h1>
-          <p className='text-xs text-gray-600'>@{person && person.handle ?  person.handle : 'anonymous'}</p>
-        </div>
-        </div>
+          
+          <div onClick={() =>viewProfile(person._id)} className='flex gap-2 cursor-pointer'>
+            {
+              person && person.profilePhoto && person.profilePhoto.url ? (
+                <img className='w-9 h-9 rounded-full' src={person && person.profilePhoto && person.profilePhoto.url} alt="" />
+              ) : (
+                <img className='w-9 h-9 rounded-full' src={`${process.env.PUBLIC_URL}/images/user.png`} alt="" />
+              )
+            }
+          <div>
+            <h1 className='text-sm font-semibold'>{person && person.fullname ?  person.fullname : 'anonymous'}</h1>
+            <p className='text-xs text-gray-500'>@{person && person.handle ?  person.handle : 'anonymous'}</p>
+          </div>
+          </div>
+          
+          <button onClick={() => handleFollow(person && person._id)}  className={`text-[11px] text-purple-600 border border-purple-600 hover:border-purple-600 font-bold hover:bg-purple-600 hover:text-white px-4 py-1 duration-200 hover:scale-105 rounded-2xl ${ mode === 'light' ? 'bg-white' : 'bg-black'}`}>
+              {user && user.mine && user.mine._doc && user.mine._doc.following && user.mine._doc.following.includes(person._id) ? 'Following' : 'Follow'} 
+          </button>
         
-        <button onClick={() => handleFollow(person && person._id)} className='text-xs px-4 py-1 bg-black dark:bg-white rounded-full text-white dark:text-black transform-transition duration-100 hover:scale-110'>
-        {user && user.mine && user.mine._doc && user.mine._doc.following && user.mine._doc.following.includes(person._id) ? 'Unfollow' : 'Follow'}  
-        </button>
-      
-      </div>
+        </div>
     )) 
     : view === 'reshare' && reshared && reshared.length > 0 ? reshared.map((person: any) => (
-        <div className='flex justify-between items-center my-2 px-4'>
+      <div className={`${ mode === 'light' ? 'bg-white' : 'bg-gray-800'} rounded-xl flex justify-between items-center px-4 py-3 mb-[0.5px]`}>
 
-  
-    <div onClick={() =>viewProfile(person._id)} className='flex gap-2 cursor-pointer'>
-      {
-        person && person.profilePhoto && person.profilePhoto.url ? (
-          <img className='w-9 h-9 rounded-full' src={person && person.profilePhoto && person.profilePhoto.url} alt="" />
-        ) : (
-          <img className='w-9 h-9 rounded-full' src={`${process.env.PUBLIC_URL}/images/user.png`} alt="" />
-        )
-      }
-    <div>
-      <h1 className='text-sm text-black dark:text-white font-semibold'>{person && person.fullname ?  person.fullname : 'anonymous'}</h1>
-      <p className='text-xs text-gray-600'>@{person && person.handle ?  person.handle : 'anonymous'}</p>
-    </div>
-    </div>
-    
-    <button onClick={() => handleFollow(person && person._id)} className='text-xs px-4 py-1 bg-black dark:bg-white rounded-full text-white dark:text-black transform-transition duration-100 hover:scale-110'>
-    {person && person.followers  && person.followers.includes(me) ? 'Following' : 'Follow'}  
-    </button>
-  
-  </div>
+          
+            <div onClick={() =>viewProfile(person._id)} className='flex gap-2 cursor-pointer'>
+              {
+                person && person.profilePhoto && person.profilePhoto.url ? (
+                  <img className='w-9 h-9 rounded-full' src={person && person.profilePhoto && person.profilePhoto.url} alt="" />
+                ) : (
+                  <img className='w-9 h-9 rounded-full' src={`${process.env.PUBLIC_URL}/images/user.png`} alt="" />
+                )
+              }
+            <div>
+              <h1 className='text-sm font-semibold'>{person && person.fullname ?  person.fullname : 'anonymous'}</h1>
+              <p className='text-xs text-gray-500'>@{person && person.handle ?  person.handle : 'anonymous'}</p>
+            </div>
+            </div>
+            
+            <button onClick={() => handleFollow(person && person._id)}  className={`text-[11px] text-purple-600 border border-purple-600 hover:border-purple-600 font-bold hover:bg-purple-600 hover:text-white px-4 py-1 duration-200 hover:scale-105 rounded-2xl ${ mode === 'light' ? 'bg-white' : 'bg-black'}`}>
+                {user && user.mine && user.mine._doc && user.mine._doc.following && user.mine._doc.following.includes(person._id) ? 'Following' : 'Follow'} 
+            </button>
+          
+          </div>
 )) : (
     <></>
 )
