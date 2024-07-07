@@ -5,6 +5,7 @@ import { commentOnPost, editComment, selectPost } from './PostSlice';
 import ImgLazyLoad from '../lazyLoad/ImgLazyLoad';
 import { ReactComponent as ProcessingLogo } from '../../../../assets/processingLogo.svg';
 import { ArrowLeftIcon } from '@heroicons/react/24/outline';
+import { selectUser } from '../auth/authSlice';
 
 
 
@@ -14,7 +15,8 @@ const EditReplyComment = () => {
     const [comment, setComment] = useState<string>("");
     const getUser = JSON.parse(localStorage.getItem('user') as any);
     const [content, setcontent] = useState<string>("");
-    const { comments, repliedcomments } = useAppSelector(selectPost)
+    const { comments, repliedcomments } = useAppSelector(selectPost);
+    const { mode } = useAppSelector(selectUser);
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
@@ -63,13 +65,13 @@ const EditReplyComment = () => {
 
   return (
     <div className='bg-black h-screen'>
-        <div  className='sm:mx-[30%] p-1 bg-white h-auto p-3'>
+        <div  className={`sm:mx-[30%] p-1 ${ mode === 'light' ? 'bg-white text-black fill-black' : 'bg-gray-800 text-white fill-white'} h-auto p-3`}>
             <div className='flex items-center gap-3'>
                 <ArrowLeftIcon onClick={goBack} className='w-4 h-4 cursor-pointer' />
-            <h2 className='text-xs font-semibold text-black'>Edit Your comment</h2>
+            <h2 className='text-xs font-semibold'>Edit Your comment</h2>
             </div>
         <div className="flex bg-gray-100 items-center max-h-[30px] p-2 rounded-xl">
-                <ImgLazyLoad
+                <img
                 src={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url }
                 className="block w-6 h-6 rounded-full"
                 alt={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.public_id }
@@ -78,7 +80,7 @@ const EditReplyComment = () => {
                 type="text"
                 onChange={(e) => (setComment(e.target.value))}
                 value={comment}
-                className="block text-xs w-[700px] h-[30px] bg-gray-100 border-0"
+                className={`block text-xs w-[700px] h-[30px] ${ mode === 'light' ? 'bg-gray-100' : 'bg-gray-600'} border-0`}
                 placeholder="Comment on this"
                 name=""
                 id=""
@@ -95,14 +97,14 @@ const EditReplyComment = () => {
 
             
 
-                <button onClick={() => handleCommentSubmit()} className="text-[9px] text-white dark-text-black bg-black dark:bg-white font-semibold rounded-2xl px-3 py-1 transform-transition duration-100 hover:scale-110">
+                <button onClick={() => handleCommentSubmit()} className={`text-[9px] ${ mode === 'light' ? 'bg-black' : 'bg-gray-900'} text-white font-semibold rounded-2xl px-3 py-1 mt-2 transform-transition duration-100 hover:scale-110`}>
                 {
                 isCommenting ? (
                     <>
-               <div className='flex items-center'><ProcessingLogo className="w-5 h-5 fill-white" /> <p className='text-[9px] text-white'> Editing...</p></div> 
+               <div className='flex items-center'><ProcessingLogo className="w-5 h-5 fill-white" /> <p className='text-[9px]'> Editing...</p></div> 
                </>
                 ) : (
-                    'Comment'
+                    'Edit Post'
                 )
                 }  
                 </button>

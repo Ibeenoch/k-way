@@ -36,12 +36,12 @@ import { ReactComponent as PlusLogo } from '../../../../assets/plusLogo.svg';
 import { ReactComponent as UndoLogo } from '../../../../assets/undo.svg';
 import { formatCreatedAt } from "../../../../utils/timeformat";
 import { useAppContext } from "./homeContext";
+import useOnClickOutside from "../../../../utils/ClickOut";
 
 const Middle = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { refresh, toggleRefresh } = useAppContext();
-  const mobileMenuRef = useRef<HTMLDivElement>(null);
   const desktopMenuRef = useRef<HTMLDivElement>(null);
   const desktopCommentMenuRef = useRef<HTMLDivElement>(null);
   const [menu, setMenu] = useState<boolean>(false);
@@ -548,17 +548,21 @@ const handleTouchEnd = (e : React.TouchEvent<HTMLDivElement>) => {
   };
 
 
+  useOnClickOutside(desktopCommentMenuRef, (e: MouseEvent) => {
+    const target = e.target as HTMLElement;
+    const targetElement = target.closest('.flex.gap-2.items-center.cursor-pointer.pt-4');
+    
 
-  const hideDeskTopMenu = (e: MouseEvent) => {
-   if (
-      desktopMenuRef.current &&
-      !desktopMenuRef.current.contains(e.target as Node)
-    ) {
+    if (targetElement) {
+      console.log('Clicked inside the specific div!', e.target);
+    } else {
+      console.log('Clicked outside the button!', e.target);
       setDesktopMenu(false);
     }
-  };
+  });
 
-
+ 
+ 
   const hideMobileModal = () => {
     setMobileModal(false);
     dispatch(setWhichPost('none'));
@@ -645,30 +649,8 @@ const handleTouchEnd = (e : React.TouchEvent<HTMLDivElement>) => {
     }
   }, [storyActive, startShowingIndex]);
 
-   const hideMobileMenu = (e: MouseEvent) => {
-    if ( mobileMenuRef.current && !mobileMenuRef.current.contains(e.currentTarget as Node)) {
-      setMenu(false);
-    }
-  };
 
-  useEffect(() => {
-document.addEventListener("mousedown", hideMobileMenu);
-
-    return () => {
-      document.removeEventListener("mousedown", hideMobileMenu);
-    };
-  }, [mobileMenuRef]);
-
-
-  useEffect(() => {
-    if(hideDeskTopMenu){
-      document.addEventListener("mousedown", hideDeskTopMenu);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", hideDeskTopMenu);
-    };
-  }, [hideDeskTopMenu]);
+  
 
   useEffect(() => {
     dispatch(getAllPosts())
@@ -775,7 +757,7 @@ const viewNextImage = () => {
 
   return (
     <div className={`sm:mt-10 ${ mode === 'light' ? 'bg-white' : 'bg-black' } sm:rounded-t-3xl max-w-md sm:max-w-full`} >
-      <div className={`px-2 flex justify-between ${desktopMenu || menu ? 'bg-gray-200' : 'bg-white'}`}>
+      <div className={`p-2 flex justify-between ${ mode === 'light' ? `${desktopMenu || menu ? 'bg-gray-200' : 'bg-white'}` : 'bg-black' }  `}>
         <h1 className={`text-md font-bold ${ mode === 'light' ? 'text-black' : 'text-white'} pt-3 pl-4`}>
           Stories
         </h1>
@@ -794,7 +776,7 @@ const viewNextImage = () => {
         </div>
       </div>
       {/* stories */}
-      <div className={`py-4  ${desktopMenu || menu ? 'bg-gray-200' : 'bg-white'}`}>
+      <div className={`py-4 ${ mode === 'light' ? `${desktopMenu || menu ? 'bg-gray-200' : 'bg-white'}` : 'bg-black' }   `}>
         <div className="flex max-w-full overflow-x-auto scrollbar-hide">
           {/* add a story  */}
           <div  onClick={handleStory} className="relative inline-block mx-1 flex-none">
@@ -1066,42 +1048,40 @@ const viewNextImage = () => {
 
          {/* mobile menu  */}
       <div
-        ref={mobileMenuRef}
-        id="mobilemenu"
-        className={`fixed ${
-          menu && post._id === postClicked ? "block" : "hidden"
-        } bottom-0 left-0  ${mode === 'light' ? 'bg-white fill-black stroke-black text-black' : 'bg-gray-900 fill-white stroke-white text-white' } pt-10 pl-5 pr-5 pb-5 z-40 w-full h-[40%] rounded-tl-3xl rounded-tr-3xl sm:hidden`}
+      ref={desktopMenuRef}
+      id="desktopmenu"
+      className={`fixed sm:hidden ${ desktopMenu && post._id === postClicked ? "block" : "hidden"} bottom-0 left-0  ${mode === 'light' ? 'bg-white fill-black stroke-black text-black' : 'bg-gray-900 fill-white stroke-white text-white' } pt-10 pl-5 pr-5 pb-5 z-40 w-full h-[40%] rounded-tl-3xl rounded-tr-3xl sm:hidden`}
       >
          {
-           getUser !== undefined && getUser && getUser._doc && getUser._doc._id  ===   post && post.owner && post.owner._id ? (
+           getUser !== undefined && getUser && getUser._doc && getUser._doc._id  === post.owner._id ? (
                       <>
-                    <div onClick={() =>handleEditPost(post._id)} className="flex gap-2 px-2 cursor-pointer items-center py-4">
+                    <div onClick={() =>handleEditPost(post._id)} className="flex gap-2 items-center cursor-pointer pt-4">
                       <EditLogo  className="w-4 h-4"/>
                       <p className="text-lg">Edit Post</p>
                     </div>
-                    <div  onClick={() =>handleDeletePost(post._id)} className="flex gap-2 px-2 cursor-pointer items-center py-4">
+                    <div  onClick={() =>handleDeletePost(post._id)} className="flex gap-2 items-center cursor-pointer pt-4">
                       <TrashLogo className="w-6 h-6"/>
                       <p className="text-lg">Delete Post</p>
                     </div>
                       </>
                     ) : (
                       <>
-                       <div className="flex gap-2 cursor-pointer items-center px-2 py-4">
+                       <div className="flex gap-2 items-center cursor-pointer pt-4">
                     <AddContactLogo  className="w-5 h-5"/>
                     <p className="text-lg">Follow @{ post && post.owner && post.owner.handle} </p>
                   </div>
 
-                  <div className="flex gap-2 items-center px-2 py-4  cursor-pointer">
+                  <div className="flex gap-2 items-center cursor-pointer pt-4">
                     <BlockContactLogo  className="w-5 h-5"/>
                     <p className="text-lg">Block @{ post && post.owner && post.owner.handle}</p>
                   </div>
 
-                  <div className="flex gap-2 items-center cursor-pointer px-2 py-4">
+                  <div className="flex gap-2 items-center cursor-pointer pt-4">
                     <ReportContactLogo  className="w-5 h-5"/>
                     <p className="text-lg">Report Post</p>
                   </div>
 
-                  <div className="flex gap-2 cursor-pointer items-center px-2 py-4">
+                  <div className="flex gap-2 items-center cursor-pointer pt-4">
                     <MuteContactLogo   className="w-5 h-5"/>
                     <p className="text-lg">Mute @{ post && post.owner && post.owner.handle}</p>
                   </div>

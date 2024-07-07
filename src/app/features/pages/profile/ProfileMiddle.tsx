@@ -752,8 +752,8 @@ const generateRandomheight = (arr: number[]) => {
   return arr[randomIndex];
 }
 
-console.log('lkkk  ', generateRandomwidth(randomWidth))
-  return (
+
+return (
     <div className={`sm:mt-10 max-w-md sm:max-w-full ${mode === 'light' ? 'bg-white' : mode === 'dark' ? 'bg-black' : 'bg-white'} rounded-tl-3xl rounded-tr-3xl`}>
       
       <div className='sm:flex flex justify-between gap-2 p-2 sm:p-4 cursor-pointer'>
@@ -1406,7 +1406,7 @@ console.log('lkkk  ', generateRandomwidth(randomWidth))
         )) : 
         (
             <>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-1 md:grid-cols-5">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-1 md:grid-cols-5">
                 {
                   imageUpload && imageUpload.length > 0 && imageUpload.map((image: any, index: number) => (
                     <img src={image && image.url} className={`col-span-${generateRandomwidth(randomWidth)} h-[${generateRandomheight(randomHeight)}] rounded-xl`} alt="imageupload" />

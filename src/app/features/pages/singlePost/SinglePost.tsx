@@ -27,6 +27,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { HeartIcon } from "@heroicons/react/24/outline";
 import { addNotification, getOtherUser, selectUser, userFollowing } from '../auth/authSlice'
 import { socket } from '../../../../index'
+import useOnClickOutside from '../../../../utils/ClickOut';
 
 
 
@@ -486,26 +487,21 @@ const viewPost = (postId: string) => {
     navigate(-1);
   };
 
-  
-  const hideDeskTopMenu = (e: MouseEvent) => {
-    if (
-       desktopMenuRef.current &&
-       !desktopMenuRef.current.contains(e.target as Node)
-     ) {
-       setDesktopMenu(false);
-     }
-   };
 
-   
-  useEffect(() => {
-    if(hideDeskTopMenu){
-      document.addEventListener("mousedown", hideDeskTopMenu);
+
+
+   useOnClickOutside(desktopCommentMenuRef, (e: MouseEvent) => {
+    const target = e.target as HTMLElement;
+    const targetElement = target.closest('.flex.gap-2.items-center.cursor-pointer.pt-4');
+    
+
+    if (targetElement) {
+      console.log('Clicked inside the specific div!', e.target);
+    } else {
+      console.log('Clicked outside the button!', e.target);
+      setDesktopMenu(false);
     }
-
-    return () => {
-      document.removeEventListener("mousedown", hideDeskTopMenu);
-    };
-  }, [hideDeskTopMenu]);
+  });
 
   const postOwner = post && post.owner && post.owner._id;
   return (
@@ -1024,17 +1020,17 @@ const viewPost = (postId: string) => {
                 {
                   comment && comment.owner && comment.owner._id === getUser._doc._id ? (
                     <>
-                     <div onClick={() =>handleEditIcon(comment._id, post._id)} className="flex gap-2 group cursor-pointer items-center pl-1">
+                     <div onClick={() =>handleEditIcon(comment._id, post._id)} className="flex gap-2 items-center cursor-pointer pt-4">
                   <EditLogo className="w-4 h-4 group-hover:stroke-purple-600"/>
                   <p className="text-[10px] group-hover:text-purple-600">Edit Comment</p>
                 </div>
 
-                <div onClick={() =>getConfirmation(comment._id)} className="flex gap-2 group items-center pt-4  cursor-pointer">
+                <div onClick={() =>getConfirmation(comment._id)} className="flex gap-2 items-center cursor-pointer pt-4">
                  <TrashLogo className="w-5 h-5 group-hover:stroke-red-600 group-hover:fill-red-600"/>
                   <p className="text-[10px] group-hover:text-red-600">Delete Comment</p>
                 </div>
 
-                <div onClick={() => handleReplyComent(comment._id)} className="flex gap-2 group items-center cursor-pointer pt-4">
+                <div onClick={() => handleReplyComent(comment._id)} className="flex gap-2 items-center cursor-pointer pt-4">
                   <ReplyLogo className="w-5 h-5  group-hover:stroke-purple-600" />
                   <p className="text-[10px] group-hover:text-purple-600">Reply Comment</p>
                 </div>
@@ -1042,7 +1038,7 @@ const viewPost = (postId: string) => {
                     </>
                   ) : (
                     <>
-                     <div onClick={() => handleReplyComent(comment._id)} className="flex items-center gap-2 group items-center cursor-pointer pt-1">
+                     <div onClick={() => handleReplyComent(comment._id)} className="flex gap-2 items-center cursor-pointer pt-4">
                   <ReplyLogo  className="w-5 h-5  group-hover:stroke-purple-600" />
                   <p className="text-[10px] group-hover:text-purple-600">Reply Comment</p>
                 </div>
@@ -1054,26 +1050,26 @@ const viewPost = (postId: string) => {
 
                 {/* mobile menu  */}
               <div
-                ref={mobileCommentMenuRef}
+                ref={desktopCommentMenuRef}
                 id="mobilecommentmenu"
                 className={`fixed ${
-                  commentmenu && comment._id === commentClicked ? "block" : "hidden"
+                  desktopCommentMenu && comment._id === commentClicked ? "block" : "hidden"
                 } bottom-0 left-0 ${ mode === 'light' ? 'bg-white text-black fill-black stroke-black' : 'bg-gray-800 text-white fill-white stroke-white'} pt-10 pl-5 pr-5 pb-5 z-40 w-full h-[40%] rounded-tl-3xl rounded-tr-3xl sm:hidden`}
               >
                 {
                   comment && comment.owner && comment.owner._id === getUser._doc._id ? (
                     <>
-                     <div onClick={() =>handleEditIcon(comment._id, post._id)} className="flex gap-3 group cursor-pointer items-center pl-1">
+                     <div onClick={() =>handleEditIcon(comment._id, post._id)} className="flex gap-2 items-center cursor-pointer pt-4">
                   <EditLogo className="w-5 h-5 group-hover:stroke-purple-600"/>
                   <p className="text-[17px] group-hover:text-purple-600 pt-1">Edit Comment</p>
                 </div>
 
-                <div onClick={() =>getConfirmation(comment._id)} className="flex gap-1 group items-center pt-3  cursor-pointer">
+                <div onClick={() =>getConfirmation(comment._id)} className="flex gap-2 items-center cursor-pointer pt-4">
                  <TrashLogo className="w-8 h-8 group-hover:stroke-red-600 group-hover:fill-red-600"/>
                   <p className="text-[17px] group-hover:text-red-600">Delete Comment</p>
                 </div>
 
-                <div onClick={() => handleReplyComent(comment._id)} className="flex gap-1 group items-center cursor-pointer pt-3">
+                <div onClick={() => handleReplyComent(comment._id)} className="flex gap-2 items-center cursor-pointer pt-4">
                   <ReplyLogo className="w-8 h-8  group-hover:stroke-purple-600" />
                   <p className="text-[17px] group-hover:text-purple-600">Reply Comment</p>
                 </div>
@@ -1081,7 +1077,7 @@ const viewPost = (postId: string) => {
                     </>
                   ) : (
                     <>
-                     <div onClick={() => handleReplyComent(comment._id)} className="flex gap-2 group items-center cursor-pointer pt-1">
+                     <div onClick={() => handleReplyComent(comment._id)} className="flex gap-2 items-center cursor-pointer pt-4">
                   <ReplyLogo className="w-6 h-6  group-hover:stroke-purple-600" />
                   <p className="text-[15px] group-hover:text-purple-600">Reply Comment</p>
                 </div>
