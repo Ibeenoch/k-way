@@ -96,8 +96,12 @@ return (
           <h1 className={`font-bold text-md`}>Suggestions</h1>
           {/* people */}
         {
-          getUsers  && getUsers && getUsers.length > 0 && getUsers.map((person: any) => (       
+          getUsers  && getUsers && getUsers.length > 0 && getUsers.map((person: any) => (  
+                 
           <div className={`flex justify-between items-center my-2 px-4 `}>
+            {
+              getAUser && getAUser._doc && getAUser._doc._id !== person._id && (
+                <>
             <div onClick={() =>viewProfile(person && person._id)} className='flex gap-2 cursor-pointer'>
               {
                 person && person.profilePhoto && person.profilePhoto.url ? (
@@ -111,10 +115,14 @@ return (
               <p className='text-xs text-gray-500'>@{person && person.handle ?  person.handle : 'anonymous'}</p>
             </div>
             </div>
+               
             
             <button onClick={() => handleFollow(person && person._id)} className={`text-[11px] text-purple-600 border border-purple-600 hover:border-purple-600 font-bold hover:bg-purple-600 hover:text-white px-4 py-1 duration-200 hover:scale-105 rounded-2xl ${ mode === 'light' ? 'bg-white' : 'bg-black'}`}>
           {getAUser && getAUser._doc && getAUser._doc.following && getAUser._doc.following.includes(person._id) ? 'Following' : 'Follow'} 
             </button>
+            </>
+              )
+            }
           </div>
           ))
           }

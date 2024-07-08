@@ -364,6 +364,7 @@ const goToPost = async (id: string) => {
 
     setDisplayImage(img);
     setMobileModal(true);
+    setDisplayProfileImage(post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.url );
   };
 
 const navigateToProfile = (userId: string) => {
@@ -533,11 +534,7 @@ const viewPost = (postId: string) => {
                 >
                   {
                     getUser && getUser._doc && getUser._doc._id === postOwner ? (
-                      <div id="mobileMenuRef">
-                       <div onClick={() =>handleEditPost(post._id)} className="flex gap-2 px-2 cursor-pointer items-center py-4">
-                      <EditLogo  className="w-3 h-3"/>
-                      <p className="text-[10px]">Edit Post</p>
-                    </div>
+                      <div id="mobileMenuRef">    
                     <div onClick={() =>handleDeletePost(post._id)} className="flex gap-2 px-2 cursor-pointer items-center py-4">
                       <TrashLogo className="w-5 h-5"/>
                       <p className="text-[10px]">Delete Post</p>
@@ -581,10 +578,6 @@ const viewPost = (postId: string) => {
                 {
                   getUser !== undefined && getUser && getUser._doc && getUser._doc._id  ===   post && post.owner && post.owner._id ? (
                               <div id="mobileMenuRef">
-                            <div onClick={() =>handleEditPost(post._id)} className="flex gap-2 px-2 cursor-pointer items-center py-4">
-                              <EditLogo  className="w-4 h-4"/>
-                              <p className="text-lg">Edit Post</p>
-                            </div>
                             <div  onClick={() =>handleDeletePost(post._id)} className="flex gap-2 px-2 cursor-pointer items-center py-4">
                               <TrashLogo className="w-6 h-6"/>
                               <p className="text-lg">Delete Post</p>
@@ -644,10 +637,10 @@ const viewPost = (postId: string) => {
 
           <div className={`${toggleControls ? 'flex': 'hidden'} justify-between items-center z-14 my-2 px-4`}>
             <div className='flex gap-2'>
-              <img onClick={() => viewAProfile(storyActive ? storyOwner && storyOwner._id : personalPost && personalPost.owner && personalPost.owner._id )} className='w-9 h-9 rounded-full cursor-pointer z-40' src={storyActive ? storyOwner && storyOwner.profilePhoto && storyOwner.profilePhoto.url : displayProfileImage} alt="" />
+              <img onClick={() => viewAProfile(post && post.owner && post.owner._id )} className='w-9 h-9 rounded-full cursor-pointer z-40' src={displayProfileImage} alt="" />
             <div className="z-40">
-              <h1 className='text-sm text-white font-semibold'>{storyActive ? storyOwner && storyOwner.fullname : personalPost && personalPost.owner && personalPost.owner.fullname}</h1>
-              <p className='text-xs text-gray-300'>@{storyActive ? storyOwner && storyOwner.handle : personalPost && personalPost.owner && personalPost.owner.handle}</p>
+              <h1 className='text-sm text-white font-semibold'>{post && post.owner && post.owner.fullname}</h1>
+              <p className='text-xs text-gray-300'>@{post && post.owner && post.owner.handle}</p>
             </div>
             </div>
 
@@ -749,30 +742,30 @@ const viewPost = (postId: string) => {
           <div className="flex flex-col items-center">
             <div className="flex flex-col cursor-pointer justify-end items-center pr-4">
               <div className="p-2 w-8 h-8 bg-red-500 mt-2 rounded-full flex justify-center items-center">
-                <HeartIcon onClick={() =>handleLike(personalPost._id)} color="white" className="w-12 h-12 fill-white" />
+                <HeartIcon onClick={() =>handleLike(post._id)} color="white" className="w-12 h-12 fill-white" />
               </div>
-              <p className="text-xs text-white">{personalPost && personalPost.likes && personalPost.likes.length}</p>
+              <p className="text-xs text-white">{post && post.likes && post.likes.length}</p>
             </div>
 
             <div className="flex flex-col cursor-pointer justify-end items-center pr-4">
-              <div  onClick={() =>handleReShare(personalPost._id)}  className="p-2 w-9 h-9 bg-sky-500 mt-2 rounded-full flex justify-center items-center">
+              <div  onClick={() =>handleReShare(post._id)}  className="p-2 w-9 h-9 bg-sky-500 mt-2 rounded-full flex justify-center items-center">
                <ReplyLogo className="w-15 h-15 fill-white stroke-white" />
               </div>
-              <p className="text-xs text-white">{personalPost && personalPost.reShare && personalPost.reShare.length}</p>
+              <p className="text-xs text-white">{post && post.reShare && post.reShare.length}</p>
             </div>
 
-            <div  onClick={() => goToPost(personalPost._id)} className="flex flex-col cursor-pointer justify-end items-center pr-4">
+            <div  onClick={() => goToPost(post._id)} className="flex flex-col cursor-pointer justify-end items-center pr-4">
               <div  className="p-2 w-8 h-8 bg-sky-500 mt-2 rounded-full flex justify-center items-center">
                <CommentLogo className="w-4 h-4 fill-white stroke-white" />
               </div>
-              <p className="text-xs text-white">{personalPost && personalPost.comments && personalPost.comments.length}</p>
+              <p className="text-xs text-white">{post && post.comments && post.comments.length}</p>
             </div>
 
             <div className="flex flex-col cursor-pointer justify-end items-center pr-4">
             <div className="p-2 w-8 h-8 bg-sky-500 mt-2 rounded-full flex justify-center items-center">
-               <BookMarkLogo  onClick={() =>handleBookmark(personalPost._id)} className="w-4 h-4 fill-white stroke-white" />
+               <BookMarkLogo  onClick={() =>handleBookmark(post._id)} className="w-4 h-4 fill-white stroke-white" />
               </div>
-              <p className="text-xs text-white">{personalPost && personalPost.bookmark && personalPost.bookmark.length}</p>
+              <p className="text-xs text-white">{post && post.bookmark && post.bookmark.length}</p>
             </div>
           </div>
         </div>
@@ -788,9 +781,9 @@ const viewPost = (postId: string) => {
 
         {/* add your comment  */}
 
-        <div className="fixed bottom-0 flex border border-white rounded-xl">
+        <div className={`${ mobileModal ? 'hidden' : 'block'} fixed bottom-0 flex border border-white rounded-xl`}>
              <input
-             onClick={() =>viewPost(personalPost && personalPost._id)}
+             onClick={() =>viewPost(post && post._id)}
                   type="text"
                   className="rounded-md border-0 bg-transparent w-[70vw] sm:left-[25%] sm:w-[42vw] mx-auto left-0 py-2 text-white shadow-sm placeholder:text-white  sm:text-xs"
                   placeholder="comment here"
@@ -1089,7 +1082,7 @@ const viewPost = (postId: string) => {
             }
           </div>
 
-        <div className="fixed max-w-[100%] sm:max-w-[49%] pt-2 bottom-0 rounded-xl">
+        <div className={`${ mobileModal ? 'hidden' : 'block'} fixed max-w-[100%] sm:max-w-[49%] pt-2 bottom-0 rounded-xl`}>
             <div className={`flex ${ mode === 'light' ? 'bg-white fill-black text-black' : 'bg-gray-800 fill-white text-white'} border border-gray-300 items-center max-h-[30px] py-6 px-2 rounded-xl`}>
             <img onClick={() => navigateToProfile(getUser && getUser._doc && getUser._doc._id)}
               src={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url }

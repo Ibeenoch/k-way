@@ -1053,10 +1053,10 @@ return (
           !viewingProfile && (
             <div className={`${toggleControls ? 'flex': 'hidden'} justify-between items-center z-14 my-2 px-4`}>
               <div className='flex gap-2'>
-                <img onClick={() => viewAProfile(personalPost && personalPost.owner && personalPost.owner._id )} className='w-9 h-9 rounded-full cursor-pointer z-40' src={displayProfileImage} alt="" />
+                <img onClick={() => viewAProfile(post && post.owner && post.owner._id )} className='w-9 h-9 rounded-full cursor-pointer z-40' src={displayProfileImage} alt="" />
               <div className="z-40">
-                <h1 className='text-sm text-white font-semibold'>{personalPost && personalPost.owner && personalPost.owner.fullname}</h1>
-                <p className='text-xs text-gray-300'>@{personalPost && personalPost.owner && personalPost.owner.handle}</p>
+                <h1 className='text-sm text-white font-semibold'>{post && post.owner && post.owner.fullname}</h1>
+                <p className='text-xs text-gray-300'>@{post && post.owner && post.owner.handle}</p>
               </div>
               </div>
               
@@ -1162,30 +1162,30 @@ return (
             <div className="flex flex-col items-center">
               <div className="flex flex-col cursor-pointer justify-end items-center pr-4">
                 <div className="p-2 w-8 h-8 bg-red-500 mt-2 rounded-full flex justify-center items-center">
-                  <HeartIcon onClick={() =>handleLike(personalPost._id)} color="white" className="w-12 h-12 fill-white" />
+                  <HeartIcon onClick={() =>handleLike(post._id)} color="white" className="w-12 h-12 fill-white" />
                 </div>
-                <p className="text-xs text-white">{personalPost && personalPost.likes && personalPost.likes.length}</p>
+                <p className="text-xs text-white">{post && post.likes && post.likes.length}</p>
               </div>
             
               <div className="flex flex-col cursor-pointer justify-end items-center pr-4">
-                <div  onClick={() =>handleReShare(personalPost._id)}  className="p-2 w-9 h-9 bg-sky-500 mt-2 rounded-full flex justify-center items-center">
+                <div  onClick={() =>handleReShare(post._id)}  className="p-2 w-9 h-9 bg-sky-500 mt-2 rounded-full flex justify-center items-center">
                  <ReplyLogo className="w-15 h-15 fill-white stroke-white" />
                 </div>
-                <p className="text-xs text-white">{personalPost && personalPost.reShare && personalPost.reShare.length}</p>
+                <p className="text-xs text-white">{post && post.reShare && post.reShare.length}</p>
               </div>
             
-              <div  onClick={() => goToPost(personalPost._id)} className="flex flex-col cursor-pointer justify-end items-center pr-4">
+              <div  onClick={() => goToPost(post._id)} className="flex flex-col cursor-pointer justify-end items-center pr-4">
                 <div  className="p-2 w-8 h-8 bg-sky-500 mt-2 rounded-full flex justify-center items-center">
                  <CommentLogo className="w-4 h-4 fill-white stroke-white" />
                 </div>
-                <p className="text-xs text-white">{personalPost && personalPost.comments && personalPost.comments.length}</p>
+                <p className="text-xs text-white">{post && post.comments && post.comments.length}</p>
               </div>
             
               <div className="flex flex-col cursor-pointer justify-end items-center pr-4">
               <div className="p-2 w-8 h-8 bg-sky-500 mt-2 rounded-full flex justify-center items-center">
-                 <BookMarkLogo  onClick={() =>handleBookmark(personalPost._id)} className="w-4 h-4 fill-white stroke-white" />
+                 <BookMarkLogo  onClick={() =>handleBookmark(post._id)} className="w-4 h-4 fill-white stroke-white" />
                 </div>
-                <p className="text-xs text-white">{personalPost && personalPost.bookmark && personalPost.bookmark.length}</p>
+                <p className="text-xs text-white">{post && post.bookmark && post.bookmark.length}</p>
               </div>
             </div>
             </div>
@@ -1203,7 +1203,7 @@ return (
             
             <div className="fixed bottom-0 flex border border-white rounded-xl">
                <input
-               onClick={() =>viewPost(personalPost && personalPost._id)}
+               onClick={() =>viewPost(post && post._id)}
                     type="text"
                     className="rounded-md border-0 bg-transparent w-[70vw] sm:left-[25%] sm:w-[42vw] mx-auto left-0 py-2 text-white shadow-sm placeholder:text-white  sm:text-xs"
                     placeholder="comment here"
@@ -1368,7 +1368,7 @@ return (
           <>
           {/* followers  */}
 
-     <div key={index} className={`w-full ${ mode === 'light' ? 'bg-white text-black' : 'bg-gray-800 text-white'}  dark:bg-black mt-4 rounded-3xl p-4`} >
+     <div key={index} className={`w-full ${ mode === 'light' ? 'bg-white text-black' : 'bg-gray-800 text-white'}  dark:bg-black mt-[0.9px] rounded-3xl p-4`} >
        {/* people */}
 
        <div className='flex justify-between items-center my-2 px-4'>
@@ -1391,7 +1391,7 @@ return (
           <>
           {/* followers  */}
 
-     <div key={index} className={`w-full ${ mode === 'light' ? 'bg-white text-black' : 'bg-gray-800 text-white'}  dark:bg-black mt-4 rounded-3xl p-4`}>
+     <div key={index} className={`w-full ${ mode === 'light' ? 'bg-white text-black' : 'bg-gray-800 text-white'}  dark:bg-black mt-[0.9px] rounded-3xl p-4`}>
        {/* people */}
 
        <div className='flex justify-between items-center my-2 px-4'>
@@ -1414,9 +1414,69 @@ return (
             <>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-1 md:grid-cols-3">
                 {
-                  imageUpload && imageUpload.length > 0 && imageUpload.map((image: any, index: number) => (
-                    <img src={image && image.url} onClick={() => showUploadedMobileModal(image && image.url)} className={`col-span-${generateRandomwidth(randomWidth)} h-[${generateRandomheight(randomHeight)}] rounded-xl`} alt="imageupload" />
-                  ))
+                  imageUpload && imageUpload.length > 0 && imageUpload.map((post: any, index: number) => (
+                    <>
+                    <img src={post && post.url} onClick={() => showUploadedMobileModal(post && post.url)} className={`col-span-${generateRandomwidth(randomWidth)} h-[${generateRandomheight(randomHeight)}] rounded-xl`} alt="imageupload" />
+                    
+                         {/* picture modal  */}
+            <div
+            className={`${
+            mobileModal ? "flex" : "hidden"
+            } fixed top-0 left-0 bg-black w-full h-full justify-center items-center`}
+            >
+            <div className={`w-full sm:px-[25%] h-full sm:max-h-sm sm:bg-gray-900`}>
+            <div className="flex justify-between items-center p-2 ">
+              <MenuLogo className={` w-3 h-3  z-40 fill-white mt-3 ml-3 cursor-pointer`} />
+            
+              {/* cancel or close  */}
+              <CancelLogo onClick={hideMobileModal}  className={` w-3 h-3 fill-white z-40 mt-4 mr-4 cursor-pointer`} />
+            </div>         
+             
+            <div className="fixed z-5 inset-0 flex justify-center items-center">
+              <div className="pt-1"></div>
+             <div className="z-40"  > 
+              <img
+               
+                className="max-w-[600px] cursor-pointer z-40"
+                src={displayImage}
+                alt=""
+              />
+              </div>
+            
+              {/* show image  */}
+             
+            </div>
+            </div>
+            </div>
+            
+            
+            {/* video view modal  */}
+            
+            <div
+            className={`${
+            fullvideoScreen ? "flex" : "hidden"
+            } fixed top-0 left-0 bg-black  w-full h-full overflow-y-auto flex-cols justify-center items-center`}
+            >
+            <video
+            className="w-full h-screen object-cover"
+            controls
+            src={videoUrl}
+            ></video>
+            
+           
+            
+            {/* cancel or close  */}
+            <div className="absolute top-5 right-5 flex justify-between items-center">
+            {/* cancel or close  */}
+            <CancelLogo onClick={hideFullScreen}
+              className="w-4 h-4 fill-white cursor-pointer"/>
+            </div>
+            
+            </div>
+
+                 </>
+                 
+                ))
                 }
             </div>
   
