@@ -641,7 +641,7 @@ const viewNextImage = () => {
                 </h1>
               <p className="text-gray-500 text-[8px]"> {post && formatCreatedAt(post.createdAt)} </p>
               </div>
-              <VerifyMarkLogo className="w-5 h-5 fill-purple-500 stroke-white"/>
+              <VerifyMarkLogo className="w-5 h-5 fill-purple-500"/>
           
               <p className="text-gray-500 text-[10px] ">@{post && post.owner && post.owner.handle}</p>
             </div>
@@ -1050,21 +1050,21 @@ const viewNextImage = () => {
           {/* icons */}
           <div className="flex justify-between items-center">
           <div className="flex items-center pl-9 sm:gap-1 mt-4">
-            <div  onClick={() =>handleLike(post._id)} className={`${ mode === 'light' ? 'bg-black' : 'bg-gray-900' } mr-1 cursor-pointer sm:mx-0 flex items-center py-1 px-3 rounded-lg`}>
+            <div  onClick={() =>handleLike(post._id)} className={`${ mode === 'light' ? 'bg-black' : 'bg-gray-800'} mr-1 cursor-pointer sm:mx-0 flex items-center py-1 px-3 rounded-lg`}>
               <LikeLogo  className="w-[12px] h-[12px] fill-white stroke-white dark:fill-black dark:stroke-black"/>
               <p className="text-white dark:text-black text-[10px] pl-1">
                 Like
               </p>
             </div>
 
-            <div onClick={() =>handleReShare(post._id)} className={`${ mode === 'light' ? 'bg-black' : 'bg-gray-900' } mr-1 cursor-pointer sm:mx-0 flex items-center py-1 px-3 rounded-lg`}>
+            <div onClick={() =>handleReShare(post._id)} className={`${ mode === 'light' ? 'bg-black' : 'bg-gray-800'} mr-1 cursor-pointer sm:mx-0 flex items-center py-1 px-3 rounded-lg`}>
               <RetweetLogo  className="w-[13px] h-[13px] fill-white stroke-white dark:fill-black dark:stroke-black"/>
               <p className="text-white dark:text-black text-[10px] pl-1">
                 ReShare
               </p>
             </div>
 
-            <div onClick={() => goToPost(post._id)} className={`${ mode === 'light' ? 'bg-black' : 'bg-gray-900' } mr-1 cursor-pointer sm:mx-0 flex items-center py-1 px-3 rounded-lg`}>
+            <div onClick={() => goToPost(post._id)} className={`${ mode === 'light' ? 'bg-black' : 'bg-gray-800'} mr-1 cursor-pointer sm:mx-0 flex items-center py-1 px-3 rounded-lg`}>
               <CommentLogo  className="w-[12px] h-[12px] fill-white stroke-white dark:fill-black dark:stroke-black"/>
               <p className="text-white dark:text-black text-[10px] pl-1">
                 Comment
@@ -1075,7 +1075,7 @@ const viewNextImage = () => {
             <div></div>
           </div>
 
-          <div  onClick={() =>handleBookmark(post._id)} className={` ${ mode === 'light' ? 'bg-black' : 'bg-gray-900'} flex cursor-pointer items-center sm:gap-1 p-2 mr-4 sm:mr-0 mt-4 rounded-lg`}>
+          <div  onClick={() =>handleBookmark(post._id)} className={`${ mode === 'light' ? 'bg-black' : 'bg-gray-800'} mr-1 cursor-pointer sm:mx-0 flex items-center py-1 px-3 rounded-lg`}>
             <BookMarkLogo   className="w-[12px] h-[12px] fill-white stroke-white dark:fill-black dark:stroke-black"/>
           </div>
           </div>
