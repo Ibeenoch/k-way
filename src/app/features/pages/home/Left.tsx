@@ -97,7 +97,7 @@ const me = getUser && getUser._doc && getUser._doc._id;
         <div className='rounded-full bg-sky-500 cursor-pointer w-18 h-18'></div>
         {
          getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url && (
-            <img onClick={viewProfile} className='rounded-full border fixed-size object-center border-purple-500 w-[100px] h-[100px] cursor-pointer -ml-4' src={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url} alt="" />
+            <img onClick={viewProfile} className='rounded-full border fixed-size object-center border-purple-500 w-[100px] h-[100px] cursor-pointer -ml-4' src={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url} alt="profileurl" />
 
           ) 
         }
@@ -140,7 +140,7 @@ const me = getUser && getUser._doc && getUser._doc._id;
           getUser && getUser._doc && !getUser._doc.fullname && (
             <>
             <div onClick={() =>editProfile(getUser && getUser._doc && getUser._doc._id)} className={`flex gap-2 justify-center items-center rounded-2xl cursor-pointer border border-purple-600 group hover:bg-purple-600 border hover:border-purple-600 sm:mx-2 lg:mx-8 py-2 ${ mode === 'light' ? 'bg-white border border-purple-600' : 'bg-black'}`}>
-              <h2 className={`${ mode === 'light' ? 'text-purple-600' : 'text-purple-600'} text-[11px] font-semibold text-center group-hover:text-white`} >Edit Profile</h2> 
+              <h2 className={`${ mode === 'light' ? 'text-purple-600' : 'text-purple-600'} text-[11px] font-semibold text-center group-hover:text-purple-600`} >Edit Profile</h2> 
               <EditLogo className={`w-4 h-4 ${mode === 'light' ? 'stroke-purple-600 fill-purple-600 group-hover:stroke-white group-hover:fill-white' : 'stroke-purple-600 fill-purple-600 group-hover:stroke-white group-hover:fill-white'}`} />
             </div>
             </>
@@ -148,9 +148,9 @@ const me = getUser && getUser._doc && getUser._doc._id;
         }
         {
            getUser === null && (
-            <div onClick={loginUser} className={`flex gap-2 justify-center items-center rounded-2xl cursor-pointer group hover:bg-white border hover:border-black sm:mx-2 lg:mx-8 py-2 ${ mode === 'light' ? 'bg-black stroke-white group-hover:stroke-black text-black' : 'bg-white stroke-white group-hover:stroke-black text-white'}`} >
+            <div onClick={loginUser} className={`flex gap-2 justify-center items-center rounded-2xl cursor-pointer group stroke-purple-600 group-hover:stroke-white border  border-purple-600 sm:mx-2 lg:mx-8 py-2 ${ mode === 'light' ? 'bg-white group-hover:bg-purple-600 text-purple-600' : 'bg-black group-hover:bg-purple-600 text-purple-600 group-hover:text-white'}`} >
             <LoginLogo className='w-5 h-5 ' />
-            <h2 className='text-[11px] font-semibold text-center group-hover:text-black'>Login</h2> 
+            <h2 className='text-[11px] font-semibold text-center'>Login</h2> 
           </div>
           )
         }
