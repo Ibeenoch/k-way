@@ -32,15 +32,15 @@ const PasswordRecovery = () => {
 
   return (
     <div
-      className={`flex min-h-full flex-1 flex-col justify-center mt-5 px-6 py-12 lg:px-8 ${mode === 'light' ? 'bg-white text-black' : 'bg-black text-white' } `}
+      className={`flex h-screen flex-1 flex-col justify-center mt-5 px-6 py-12 lg:px-8 ${mode === 'light' ? 'bg-white text-black' : 'bg-black text-white' } `}
     >
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
       <Link to="/">
             <div
-               className="ml-[40%] pt-1"
+               className="ml-[40%]"
             >
                 {/* company logo  */}
-                <CompanyLogo  className="w-9 h-9"/>
+                <CompanyLogo  className="w-24 h-24"/>
             </div>
           </Link>
         <form className="space-y-6 mt-14" onSubmit={handleSubmit}>

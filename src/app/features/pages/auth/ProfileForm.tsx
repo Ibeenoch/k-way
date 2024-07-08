@@ -1,14 +1,11 @@
 import React, { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-
 import { useAppDispatch, useAppSelector } from "../../../../app/hooks";
-import toast, { Toaster } from "react-hot-toast";
-import Switch from "react-switch";
-import { EyeIcon, EyeSlashIcon } from "@heroicons/react/20/solid";
 import { createUserProfile, getAUser, registerUser, selectUser } from "./authSlice";
 import { ReactComponent as CompanyLogo } from '../../../../assets/companylogo.svg';
 import { ReactComponent as ProfileImageLogo } from '../../../../assets/profileImage.svg';
 import { ReactComponent as CameraLogo } from '../../../../assets/cameraAdd.svg';
+import { ReactComponent as ProcessingLogo } from '../../../../assets/processingLogo.svg';
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 
 
@@ -43,11 +40,10 @@ const ProfileForm: React.FC = () => {
   const [imageUploaded, setImageUploaded] = useState<boolean>(false);
   const { status, user } = useAppSelector(selectUser);
   const { id } = useParams();
+  const { mode } = useAppSelector(selectUser);
   
   useEffect(() => {
-    dispatch(getAUser(id)).then((res: any) => {
-      console.log('users fetched ', res);
-    })
+    dispatch(getAUser(id))
   }, []);
 
   const { token } = getUser;
@@ -66,7 +62,6 @@ const ProfileForm: React.FC = () => {
     }
   };
 
-console.log('image upload ', image)
   
   
   const openImgFile = () => {
@@ -146,34 +141,34 @@ console.log('image upload ', image)
   };
 
   return (
-    <div className="flex min-h-full flex-1 flex-col justify-center bg-white px-6 py-1 lg:px-8">
-      <div onClick={goBack} className='flex items-center gap-2 p-2 cursor-pointer'>
+    <div className={`flex min-h-full flex-1 flex-col justify-center ${ mode === 'light' ? 'bg-white text-black' : 'bg-black text-white' } px-6 py-1 lg:px-8`}>
+      <div onClick={goBack} className='flex items-center gap-2 p-2 ml-[30%] cursor-pointer'>
                 <ArrowLeftIcon className='w-4 h-4 cursor-pointer' />
-            <h2 className='text-xs font-semibold text-black'>Go Back</h2>
-            </div>
+        <h2 className='text-xs font-semibold'>Go Back</h2>
+        </div>
 
        <div className="">
           <div className="sm:mx-auto sm:w-1/2 px-4 sm:max-w-sm">
             <Link to="/">
               <div              
-                className="ml-[40%] pt-3"
+                className="ml-[40%]"
               >
                 {/* company logo  */}
-                <CompanyLogo className="w-9 h-9"/>
+                <CompanyLogo className="w-24 h-24"/>
               </div>
             </Link>
-            <h2 className="mt-5 text-center text-lg font-bold leading-4 tracking-tight text-gray-900">
+            <h2 className="mt-5 text-center text-lg font-bold leading-4 tracking-tight">
               Create Your Profile
             </h2>
           </div>
 
-          <div className="mt-10 sm:mx-auto sm:w-1/2 px-4 sm:max-w-sm">
+          <div className="mt-4 sm:mx-auto sm:w-1/2 px-4 sm:max-w-sm">
             <form className="space-y-6" onSubmit={handleProfile} >
               <div className="flex-none mx-auto w-full relative">
                 {/* image upload  */}
                 {
                   getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url ? (
-                    <img  className="w-16 h-16 rounded-full border border-purple-600" src={`${getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url}`} alt="" />
+                    <img  className="w-20 h-20 rounded-full border border-purple-600" src={`${getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url}`} alt="profileimg" />
                   ) : (
                     <ProfileImageLogo  className="w-16 h-16"/>
                   )
@@ -187,7 +182,7 @@ console.log('image upload ', image)
               <div>
                 <label
                   htmlFor="fullname"
-                  className="block text-sm font-medium leading-6 text-gray-900"
+                  className="block text-sm font-medium leading-6"
                 >
                   Full Name
                 </label>
@@ -209,7 +204,7 @@ console.log('image upload ', image)
                 <div className="flex items-center justify-between">
                   <label
                     htmlFor="dateOfBirth"
-                    className="block text-sm font-medium leading-6 text-gray-900"
+                    className="block text-sm font-medium leading-6"
                   >
                     Date Of Birth
                   </label>
@@ -233,7 +228,7 @@ console.log('image upload ', image)
                 <div className="flex items-center justify-between">
                   <label
                     htmlFor="handle"
-                    className="block text-sm font-medium leading-6 text-gray-900"
+                    className="block text-sm font-medium leading-6"
                   >
                     Handle
                   </label>
@@ -257,7 +252,7 @@ console.log('image upload ', image)
                 <div className="flex items-center justify-between">
                   <label
                     htmlFor="address"
-                    className="block text-sm font-medium leading-6 text-gray-900"
+                    className="block text-sm font-medium leading-6"
                   >
                     Address
                   </label>
@@ -281,7 +276,7 @@ console.log('image upload ', image)
                 <div className="flex items-center justify-between">
                   <label
                     htmlFor="profession"
-                    className="block text-sm font-medium leading-6 text-gray-900"
+                    className="block text-sm font-medium leading-6"
                   >
                     Profession
                   </label>
@@ -305,7 +300,7 @@ console.log('image upload ', image)
                 <div className="flex items-center justify-between">
                   <label
                     htmlFor="bio"
-                    className="block text-sm font-medium leading-6 text-gray-900"
+                    className="block text-sm font-medium leading-6"
                   >
                     Describe yourself
                   </label>
@@ -333,7 +328,7 @@ console.log('image upload ', image)
                   
                   { isClicked  ? (
                     <div className="flex items-center">
-                      <svg className="w-9 h-9" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><radialGradient id="a11" cx=".66" fx=".66" cy=".3125" fy=".3125" gradientTransform="scale(1.5)"><stop offset="0" stop-color="#FFFFFF"></stop><stop offset=".3" stop-color="#FFFFFF" stop-opacity=".9"></stop><stop offset=".6" stop-color="#FFFFFF" stop-opacity=".6"></stop><stop offset=".8" stop-color="#FFFFFF" stop-opacity=".3"></stop><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"></stop></radialGradient><circle transform-origin="center" fill="none" stroke="url(#a11)" stroke-width="8" stroke-linecap="round" stroke-dasharray="200 1000" stroke-dashoffset="0" cx="100" cy="100" r="70"><animateTransform type="rotate" attributeName="transform" calcMode="spline" dur="2" values="360;0" keyTimes="0;1" keySplines="0 0 1 1" repeatCount="indefinite"></animateTransform></circle><circle transform-origin="center" fill="none" opacity=".2" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" cx="100" cy="100" r="70"></circle></svg>
+                      <ProcessingLogo className="w-9 h-9" />
                        <p>Processing...</p>
                     </div>
                   ) : (

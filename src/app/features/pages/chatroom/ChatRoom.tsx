@@ -1,7 +1,8 @@
 
-import Left from "../home/Left"
-import Right from "../home/Right"
-import ChatMain from "./ChatMain"
+import { lazy } from "react"
+const Left = lazy(() => import("../home/Left"));
+const Right = lazy(() => import("../home/Right"));
+const ChatMain = lazy(() => import("./ChatMain"));
 
 
 const ChatRoom = () => {
