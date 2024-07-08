@@ -378,6 +378,7 @@ const goToPost = async (id: string) => {
   };
 
   const closeCommentMenu = () => {
+    dispatch(shouldWeHideMobileNav(false));
     setDesktopCommentMenu(false);
   };
 

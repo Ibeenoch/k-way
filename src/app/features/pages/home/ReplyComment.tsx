@@ -1,5 +1,5 @@
 import  { useEffect, useRef, useState } from 'react'
-import { deleteRepliedComment, getAllRepliesForComment, likeReplyComment, replyComment, selectPost } from './PostSlice';
+import { deleteRepliedComment, getAllRepliesForComment, likeReplyComment, replyComment, selectPost, shouldWeHideMobileNav } from './PostSlice';
 import { ReactComponent as CommentLogo } from '../../../../assets/comment.svg';
 import { ReactComponent as ReplyLogo } from '../../../../assets/replyLogo.svg';
 import { ReactComponent as CancelLogo } from '../../../../assets/cancelLogo.svg';
@@ -120,12 +120,14 @@ useEffect(() => {
 }, [socket]);
 
   const showCommentMenuBar = (id: string) => {
+    dispatch(shouldWeHideMobileNav(true));
     setCommentClicked(id);
     setDesktopCommentMenu(true);
     setCommentMenu(true);
   };
 
   const closeCommentMenu = () => {
+    dispatch(shouldWeHideMobileNav(false));
     setDesktopCommentMenu(false);
   };
 
