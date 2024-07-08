@@ -571,6 +571,7 @@ const ProfileMiddle = () => {
   
     const hideFullScreen = () => {
       setFullVideoScreen(false);
+      dispatch(shouldWeHideMobileNav(false));
     };
   
     const showFullMobileScreen = () => {
@@ -661,7 +662,8 @@ const ProfileMiddle = () => {
   
     const hideMobileModal = () => {
       dispatch(setIsVewingProfile(false));
-      setMobileModal(false);
+      setMobileModal(false);        
+      dispatch(shouldWeHideMobileNav(false));
     };
   
    

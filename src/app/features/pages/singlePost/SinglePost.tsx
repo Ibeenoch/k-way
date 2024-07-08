@@ -22,7 +22,7 @@ import { ReactComponent as ThreeDotVerticalLogo } from '../../../../assets/three
 import { formatCreatedAt } from "../../../../utils/timeformat";
 import { useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
-import {  allCommentForAPost, bookmarkPost, commentOnPost, likeComment, createPost, createStory, deletePost, getAPost, getAllPosts, getAllUserStories, getAvailableStories, getBookmarkforaPost, getLikesforaPost, getresharedforaPost, likePost, openpostForm, rePost, resetEditCommentStatus, selectPost, setWhichPost, updatePost, updateViewingStatus, deleteComment, getAllRepliesForComment } from "../home/PostSlice";
+import {  allCommentForAPost, bookmarkPost, commentOnPost, likeComment, createPost, createStory, deletePost, getAPost, getAllPosts, getAllUserStories, getAvailableStories, getBookmarkforaPost, getLikesforaPost, getresharedforaPost, likePost, openpostForm, rePost, resetEditCommentStatus, selectPost, setWhichPost, updatePost, updateViewingStatus, deleteComment, getAllRepliesForComment, shouldWeHideMobileNav } from "../home/PostSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import { HeartIcon } from "@heroicons/react/24/outline";
 import { addNotification, getOtherUser, selectUser, userFollowing } from '../auth/authSlice'
@@ -85,12 +85,14 @@ const SinglePost = () => {
 
       const hideMobileModal = () => {
         setMobileModal(false);
+        dispatch(shouldWeHideMobileNav(false));
       };
 
      
     
       const hideFullScreen = () => {
         setFullVideoScreen(false);
+        dispatch(shouldWeHideMobileNav(false));
       };
     
     
@@ -494,15 +496,6 @@ const viewPost = (postId: string) => {
 
    useOnClickOutside(mobileMenuRef, (e: MouseEvent) => {
     const target = e.target as HTMLElement;
-    // const targetElement = target.closest('#mobileMenuRef');
-    // const targetElement2 = target.closest('.flex.gap-2.px-2.cursor-pointer.items-center.py-4');
-
-    // if (targetElement || targetElement2) {
-    //   console.log('Clicked inside the specific div!', e.target);
-    // } else {
-    //   console.log('Clicked outside the button!', e.target);
-    //   setDesktopMenu(false);
-    // }
 
     if (target.classList.contains('text-[10px]')
       ) 
@@ -927,22 +920,22 @@ const viewPost = (postId: string) => {
         <div className="flex justify-between items-center">
           <div className="flex items-center pl-9 sm:gap-1 mt-4">
             <div  onClick={() =>handleLike(post._id)} className={` ${mode === 'light' ? 'bg-black' : 'bg-gray-800'} mr-1 cursor-pointer sm:mx-0 flex items-center py-1 px-3 rounded-lg`}>
-              <LikeLogo  className="w-[12px] h-[12px] fill-white stroke-white dark:fill-black dark:stroke-black"/>
-              <p className="text-white dark:text-black text-[10px] pl-1">
+              <LikeLogo  className="w-[12px] h-[12px] fill-white stroke-white"/>
+              <p className="text-white text-[10px] pl-1">
                 Like
               </p>
             </div>
 
             <div onClick={() =>handleReShare(post._id)} className={` ${mode === 'light' ? 'bg-black' : 'bg-gray-800'} mr-1 cursor-pointer sm:mx-0 flex items-center py-1 px-3 rounded-lg`}>
-              <RetweetLogo  className="w-[13px] h-[13px] fill-white stroke-white dark:fill-black dark:stroke-black"/>
-              <p className="text-white dark:text-black text-[10px] pl-1">
+              <RetweetLogo  className="w-[13px] h-[13px] fill-white stroke-white"/>
+              <p className="text-white text-[10px] pl-1">
                 ReShare
               </p>
             </div>
 
             <div onClick={() => showComment(post._id)} className={` ${mode === 'light' ? 'bg-black' : 'bg-gray-800'} mr-1 cursor-pointer sm:mx-0 flex items-center py-1 px-3 rounded-lg`}>
-              <CommentLogo  className="w-[12px] h-[12px] fill-white stroke-white dark:fill-black dark:stroke-black"/>
-              <p className="text-white dark:text-black text-[10px] pl-1">
+              <CommentLogo  className="w-[12px] h-[12px] fill-white stroke-white"/>
+              <p className="text-white text-[10px] pl-1">
                 Comment
               </p>
             </div>
@@ -952,7 +945,7 @@ const viewPost = (postId: string) => {
           </div>
 
           <div  onClick={() =>handleBookmark(post._id)} className={`${mode === 'light' ? 'bg-black' : 'bg-gray-800'} cursor-pointer flex items-center sm:gap-1 p-2 mr-4 sm:mr-0 mt-4 rounded-lg`}>
-            <BookMarkLogo   className="w-[12px] h-[12px] fill-white stroke-white dark:fill-black dark:stroke-black"/>
+            <BookMarkLogo   className="w-[12px] h-[12px] fill-white stroke-white"/>
           </div>
         </div> 
 
