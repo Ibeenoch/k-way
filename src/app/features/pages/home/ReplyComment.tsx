@@ -183,7 +183,7 @@ const getConfirmation = (theCommentId: string) => {
               type="text"
               onChange={(e) => (setComment(e.target.value))}
               value={comment}
-              className={`block text-xs w-[300px] h-[30px] p-3 ${mode === 'light' ? 'bg-white' : 'bg-gray-800'}  border-0 focus:ring-0 focus:ring-inset focus:ring-none`}
+              className={`block text-xs w-[300px] h-[30px] p-3 ${mode === 'light' ? 'bg-white text-black' : 'bg-gray-800 text-white'}  border-0 focus:ring-0 focus:ring-inset focus:ring-none`}
               placeholder="Reply this post"
               name="reply"
               id="reply"

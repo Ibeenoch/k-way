@@ -204,7 +204,7 @@ const handlePostSubmit = async() => {
   }
   const token = getUser.token;
   
-  setcontent('');
+
   setFileInput([]);
   setImageInput([]);
  
@@ -218,8 +218,10 @@ if(id){
   if(post){
     dispatch(updatePost(post)).then((res: any) => {
       if(res.payload !== undefined){
+      setcontent('');
       setIsUpdated(true);
       hidePostModal();
+      setdeskTopModal(false);
       navigate('/');
       window.scrollTo(0, document.documentElement.scrollHeight);
      }
@@ -233,7 +235,6 @@ if(id){
     token
   };
 
-  setcontent('');
   setFileInput([]);
   setImageInput([]);
 
@@ -243,9 +244,11 @@ if(id){
       dispatch(createStory(post)).then((res: any) => {
         if(res && res.payload !== undefined){
            dispatch(getAvailableStories()).then((res: any) => {
+            setcontent('');
             toggleRefresh();
             setIsPosting(false);
             hidePostModal();
+            setdeskTopModal(false);
             navigate('/');
             window.scrollTo(0, 0);
         });
@@ -256,9 +259,11 @@ if(id){
     dispatch(createPost(post)).then((res: any) => {
       if(res.payload !== undefined){
          dispatch(getAllPosts()).then((res: any) => {
+          setcontent('');
           toggleRefresh();
           setIsPosting(false);
           hidePostModal();
+          setdeskTopModal(false);
           navigate('/');
           window.scrollTo(0, 0);
       });
