@@ -912,7 +912,7 @@ return (
                   </h1>
                 <p className="text-gray-500 text-[8px]"> {post && formatCreatedAt(post.createdAt)} </p>
                 </div>
-                <VerifyMarkLogo className="w-5 h-5 fill-purple-500 stroke-white"/>
+                <VerifyMarkLogo className="w-5 h-5 fill-purple-500"/>
              
                 <p className="text-gray-500 text-[10px] ">@{post && post.owner && post.owner.handle}</p>
               </div>

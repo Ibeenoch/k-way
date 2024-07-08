@@ -142,7 +142,7 @@ const goTrend = () => {
              {
               whoToNotify === me && unViewednotificationCount && unViewednotificationCount > 0 && (
               <div className='text-white bg-purple-600 rounded-full absolute px-2 py-[0.8px] top-0 right-0 text-sm font-semibold'>
-              { whoToNotify === me && unViewednotificationCount && unViewednotificationCount} 
+              { whoToNotify === me && unViewednotificationCount !== 0 && unViewednotificationCount} 
               </div> 
               )
              }
