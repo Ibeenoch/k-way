@@ -173,7 +173,7 @@ const ProfileForm: React.FC = () => {
                     <ProfileImageLogo  className="w-16 h-16"/>
                   )
                 }
-                <div className="absolute bg-white rounded-full ml-11 -mt-3 cursor-pointer">
+                <div className={`absolute ${ mode === 'light' ? 'bg-white' : 'bg-gray-800' } rounded-full ml-11 -mt-3 cursor-pointer`}>
                   <CameraLogo onClick={openImgFile} className="w-5 h-5 fill-none" />
                 </div>
               </div>

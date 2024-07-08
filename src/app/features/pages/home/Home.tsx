@@ -1,7 +1,7 @@
 import React, { useEffect, useState, lazy, Suspense } from 'react'
-import { useAppDispatch, useAppSelector } from '../../../hooks'
-import { addNotification, getAllNotificationForAUser, getAllUser, selectUser,  } from '../auth/authSlice'
-import { getAllPosts, selectPost } from './PostSlice';
+import { useAppDispatch } from '../../../hooks'
+import { addNotification, getAllNotificationForAUser, getAllUser } from '../auth/authSlice'
+import { getAllPosts } from './PostSlice';
 import { socket } from '../../../../index'
 import Loading from '../../../Loading';
 const Left = lazy(() =>import('./Left'));
@@ -10,9 +10,8 @@ const Right = lazy(() =>import('../home/Right'));
 
 const Home = () => {
   const dispatch = useAppDispatch();
-  const [userUpdated, setUserUpdated] = useState<boolean>(false);
+  const [userUpdated] = useState<boolean>(false);
   const getUser = JSON.parse(localStorage.getItem('user') as any);
-  const { status } = useAppSelector(selectPost);
 
  
 
@@ -26,18 +25,14 @@ const Home = () => {
 
   useEffect(() => {
     const handlePostLiked = (data: any) => {
-      console.log('data liked post ', data);
       dispatch(addNotification(data)).then((res: any) => {
-        console.log('ress    ', res)
         const userId = res && res.payload && res.payload.receiver;
         const postId = res && res.payload && res.payload.post;
         const token = getUser && getUser.token;
 
         const note = { userId, token, postId };
 
-        dispatch(getAllNotificationForAUser(note)).then((res: any) => {
-          console.log('all note ', res)
-        })
+        dispatch(getAllNotificationForAUser(note));
       })
     };
   
@@ -52,16 +47,13 @@ const Home = () => {
     const handlepostBookmarked = (data: any) => {
       console.log('data postBookmarked post ', data);
       dispatch(addNotification(data)).then((res: any) => {
-        console.log('ress    ', res)
         const userId = res && res.payload && res.payload.receiver;
         const postId = res && res.payload && res.payload.post;
         const token = getUser && getUser.token;
 
         const note = { userId, token, postId }
 
-        dispatch(getAllNotificationForAUser(note)).then((res: any) => {
-          console.log('all note ', res)
-        })
+        dispatch(getAllNotificationForAUser(note));
       });
     };
   
@@ -74,18 +66,14 @@ const Home = () => {
   
   useEffect(() => {
     const handlepostReshared = (data: any) => {
-      console.log('data postReshared post ', data);
       dispatch(addNotification(data)).then((res: any) => {
-        console.log('ress    ', res)
         const userId = res && res.payload && res.payload.receiver;
         const postId = res && res.payload && res.payload.post;
         const token = getUser && getUser.token;
 
         const note = { userId, token, postId }
 
-        dispatch(getAllNotificationForAUser(note)).then((res: any) => {
-          console.log('all note ', res)
-        })
+        dispatch(getAllNotificationForAUser(note));
       });
     };
   

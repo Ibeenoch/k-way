@@ -16,16 +16,11 @@ import { getAllPosts, resetSearchPost } from './PostSlice';
 
 const Left = () => {
   const dispatch = useAppDispatch();
-  const [isNews, setIsNews] = useState<boolean>(true);
-  const [isMessage, setIsMessage] = useState<boolean>(false);
-  const [isNotification, setisNotifications] = useState<boolean>(false);
-  const [isTrends, setIsTrends] = useState<boolean>(false);
-  const [isMedia, setIsMedia] = useState<boolean>(false);
   const navigate = useNavigate();
   const { active, mode } = useAppSelector(selectUser);
   const getUser = JSON.parse(localStorage.getItem('user') as any);
-  const { refresh, toggleRefresh } = useAppContext();
-  const { notifications, notification, unViewednotificationCount, unreadChatCount, whoToNotify, notificationCountHistory } = useAppSelector(selectUser);
+  const { refresh } = useAppContext();
+  const { unViewednotificationCount, unreadChatCount, whoToNotify, notificationCountHistory } = useAppSelector(selectUser);
 
   const newsFeedActive = () => {
     dispatch(setActivePage('home'));
@@ -36,7 +31,6 @@ const Left = () => {
     dispatch(addCountHistory(unViewednotificationCount));
 
   }, [unViewednotificationCount])
-  console.log('history ', notificationCountHistory, unViewednotificationCount);
 
  useEffect(() => {
   if(refresh){
@@ -45,7 +39,6 @@ const Left = () => {
     dispatch(getAUser(userId))
   }
  }, [refresh]);
-    console.log('to refresh ', refresh);
  
 
   const messageActive = () => {
@@ -69,7 +62,6 @@ const Left = () => {
     navigate('/trends');
   }
 
-  console.log('getuser ', getUser);
  const loginUser = () => {
   navigate('/login');
  }
@@ -82,7 +74,6 @@ const Left = () => {
     dispatch(setProfileType('local'));
     const userId = getUser && getUser._doc && getUser._doc._id;
     dispatch(getOtherUser(userId)).then((res: any) => {
-      console.log(' other user ', res);
       if(res && res.payload !== undefined){
         const myId = res && res.payload && res.payload._doc && res.payload._doc._id;
         navigate(`/profile/${myId}`);

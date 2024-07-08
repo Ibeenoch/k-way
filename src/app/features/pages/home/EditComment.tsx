@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../hooks';
-import { commentOnPost, editComment, selectPost } from './PostSlice';
-import ImgLazyLoad from '../lazyLoad/ImgLazyLoad';
-import EmojiPicker from 'emoji-picker-react';
+import { editComment, selectPost } from './PostSlice';
 import { ReactComponent as ProcessingLogo } from '../../../../assets/processingLogo.svg';
 import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 import { selectUser } from '../auth/authSlice';

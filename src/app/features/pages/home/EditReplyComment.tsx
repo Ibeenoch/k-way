@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../hooks';
-import { commentOnPost, editComment, selectPost } from './PostSlice';
-import ImgLazyLoad from '../lazyLoad/ImgLazyLoad';
+import { editComment, selectPost } from './PostSlice';
 import { ReactComponent as ProcessingLogo } from '../../../../assets/processingLogo.svg';
 import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 import { selectUser } from '../auth/authSlice';
@@ -14,7 +13,6 @@ const EditReplyComment = () => {
     const [commentErr, setCommentErr] = useState<string>("");
     const [comment, setComment] = useState<string>("");
     const getUser = JSON.parse(localStorage.getItem('user') as any);
-    const [content, setcontent] = useState<string>("");
     const { comments, repliedcomments } = useAppSelector(selectPost);
     const { mode } = useAppSelector(selectUser);
     const dispatch = useAppDispatch();
@@ -51,7 +49,6 @@ const EditReplyComment = () => {
 
       const populateComment = () => {
         const findComment = repliedcomments.find((c: any) => c._id.toString() === commentId );
-        console.log('findrepliedcomment ', findComment, repliedcomments);
         setComment(findComment.content);
       }
 

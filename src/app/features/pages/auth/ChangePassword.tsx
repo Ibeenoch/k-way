@@ -152,7 +152,7 @@ console.log(checkWeak, checkGood, checkStrong);
 
   return (
     <div
-      className={`flex min-h-full flex-1 flex-col justify-center px-6 py-12 mt-4 lg:px-8 ${mode === 'light' ? 'bg-white text-black' : 'text-white bg-black'}`}
+      className={`flex h-screen flex-1 flex-col justify-center px-6 py-12 mt-4 lg:px-8 ${mode === 'light' ? 'bg-white text-black' : 'text-white bg-black'}`}
     >
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
       <Link to="/">
