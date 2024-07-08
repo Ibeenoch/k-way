@@ -836,17 +836,17 @@ return (
             <p className='text-gray-500 text-xs max-w-sm'>{otherperson && otherperson._doc && otherperson._doc.bio}</p>
         </div>
 
-        <div className='flex gap-1 mt-3'>
+        <div className={`flex gap-1 mt-3 ${ mode === 'light' ? 'text-black' : 'text-white'} `} >
           <div className='flex flex-col justify-center px-3 border-r-2 border-gray-400'>
-            <h1 className='text-black dark:text-white text-center font-semibold text-sm'>{otherperson && otherperson._doc && otherperson._doc.followers && otherperson._doc.followers.length  }</h1>
+            <h1 className='text-center font-semibold text-sm'>{otherperson && otherperson._doc && otherperson._doc.followers && otherperson._doc.followers.length  }</h1>
             <p className='text-xs text-gray-400'>Followers</p>
           </div>
           <div className='flex flex-col justify-center px-3 border-r-2 border-gray-400'>
-            <h1 className='text-black dark:text-white text-center font-semibold text-sm'>{otherperson && otherperson._doc && otherperson._doc.following && otherperson._doc.following.length }</h1>
+            <h1 className='text-center font-semibold text-sm'>{otherperson && otherperson._doc && otherperson._doc.following && otherperson._doc.following.length }</h1>
             <p className='text-xs text-gray-400'>Following</p>
           </div>
           <div className='flex flex-col justify-center px-3'>
-            <h1 className='text-black dark:text-white text-center font-semibold text-sm'>{otherperson && otherperson._doc && otherperson._doc.posts && otherperson._doc.posts.length }</h1>
+            <h1 className='text-center font-semibold text-sm'>{otherperson && otherperson._doc && otherperson._doc.posts && otherperson._doc.posts.length }</h1>
             <p className='text-xs text-gray-400'>Posts</p>
           </div>
         </div>
@@ -870,16 +870,16 @@ return (
  
 
     <div className={`flex justify-around px-2 mb-4 ${ mode === 'light' ? 'text-black': 'text-white'} `}>
-    <h1 onClick={activateFeed} className={`text-lg cursor-pointer font-bold ${showfeed ? 'text-purple-500 border-b-2 border-purple-500': '' }  dark:text-white pl-3`}>
+    <h1 onClick={activateFeed} className={`text-lg cursor-pointer font-bold ${showfeed ? 'text-purple-500 border-b-2 border-purple-500': '' } pl-3`}>
       Feeds
     </h1>
-    <h1 onClick={activateFollowers} className={`text-lg cursor-pointer font-bold ${showfollowers ? 'text-purple-500  border-b-2 border-purple-500': '' }  dark:text-white pl-3`}>
+    <h1 onClick={activateFollowers} className={`text-lg cursor-pointer font-bold ${showfollowers ? 'text-purple-500  border-b-2 border-purple-500': '' } pl-3`}>
       Followers
     </h1>
-    <h1 onClick={activateFollowing} className={`text-lg cursor-pointer font-bold ${showfollowing ? 'text-purple-500  border-b-2 border-purple-500': '' }  dark:text-white pl-3`}>
+    <h1 onClick={activateFollowing} className={`text-lg cursor-pointer font-bold ${showfollowing ? 'text-purple-500  border-b-2 border-purple-500': '' } pl-3`}>
       Following
     </h1>
-    <h1 onClick={activateUpload} className={`text-lg cursor-pointer font-bold ${showupload ? 'text-purple-500  border-b-2 border-purple-500': '' }  dark:text-white pl-3`}>
+    <h1 onClick={activateUpload} className={`text-lg cursor-pointer font-bold ${showupload ? 'text-purple-500  border-b-2 border-purple-500': '' } pl-3`}>
       Uploads
     </h1>
     </div>
