@@ -1329,25 +1329,25 @@ return (
             <p className="text-[10px] mt-3 text-gray-600">{post.comments.length} Comments</p>
             </div>
             {/* icons */}
-            <div className="flex justify-between items-center">
+            <div className={`flex justify-between items-center ${ mode === 'light' ? 'bg-black text-white fill-white stroke-white' : 'bg-gray-800 text-white fill-white stroke-white'} `} >
             <div className="flex items-center pl-9 sm:gap-1 mt-4">
-              <div  onClick={() =>handleLike(post._id)} className="bg-black mr-1 cursor-pointer sm:mx-0 flex items-center py-1 px-3 rounded-lg">
-                <LikeLogo  className="w-[12px] h-[12px] fill-white stroke-white dark:fill-black dark:stroke-black"/>
-                <p className="text-white dark:text-black text-[10px] pl-1">
+              <div  onClick={() =>handleLike(post._id)} className="mr-1 cursor-pointer sm:mx-0 flex items-center py-1 px-3 rounded-lg">
+                <LikeLogo  className="w-[12px] h-[12px]"/>
+                <p className="text-[10px] pl-1">
                   Like
                 </p>
               </div>
             
-              <div onClick={() =>handleReShare(post._id)} className="bg-black mr-1  cursor-pointer sm:mx-0 flex items-center py-1 px-3 rounded-lg">
-                <RetweetLogo  className="w-[13px] h-[13px] fill-white stroke-white dark:fill-black dark:stroke-black"/>
-                <p className="text-white dark:text-black text-[10px] pl-1">
+              <div onClick={() =>handleReShare(post._id)} className="mr-1  cursor-pointer sm:mx-0 flex items-center py-1 px-3 rounded-lg">
+                <RetweetLogo  className="w-[13px] h-[13px]"/>
+                <p className="text-[10px] pl-1">
                   ReShare
                 </p>
               </div>
             
-              <div onClick={() => goToPost(post._id)} className="bg-black mr-1 cursor-pointer sm:mx-0 flex items-center py-1 px-3 rounded-lg">
-                <CommentLogo  className="w-[12px] h-[12px] fill-white stroke-white dark:fill-black dark:stroke-black"/>
-                <p className="text-white dark:text-black text-[10px] pl-1">
+              <div onClick={() => goToPost(post._id)} className="mr-1 cursor-pointer sm:mx-0 flex items-center py-1 px-3 rounded-lg">
+                <CommentLogo  className="w-[12px] h-[12px]"/>
+                <p className="text-[10px] pl-1">
                   Comment
                 </p>
               </div>
@@ -1356,8 +1356,8 @@ return (
               <div></div>
             </div>
             
-            <div  onClick={() =>handleBookmark(post._id)} className="bg-black flex cursor-pointer items-center sm:gap-1 p-2 mr-4 sm:mr-0 mt-4 rounded-lg">
-              <BookMarkLogo   className="w-[12px] h-[12px] fill-white stroke-white dark:fill-black dark:stroke-black"/>
+            <div  onClick={() =>handleBookmark(post._id)} className="flex cursor-pointer items-center sm:gap-1 p-2 mr-4 sm:mr-0 mt-4 rounded-lg">
+              <BookMarkLogo   className="w-[12px] h-[12px]"/>
             </div>
             </div>
             </div>
@@ -1412,6 +1412,7 @@ return (
    </div>
          </>
         )) : 
+        imageUpload && imageUpload.length > 0  ?
         (
             <>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-1 md:grid-cols-3">
@@ -1483,6 +1484,11 @@ return (
             </div>
   
             </>
+         ) :
+         (
+          <>
+          <p className="text-sm text-center mt-5" >No Result for now</p>
+          </>
          )
     }
     </div>
