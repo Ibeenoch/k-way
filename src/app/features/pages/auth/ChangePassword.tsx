@@ -188,8 +188,8 @@ console.log(checkWeak, checkGood, checkStrong);
                 onChange={handleChange}
                 required
                 placeholder="New Password"
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-              />
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-0 focus:ring-inset focus:ring-none sm:text-sm sm:leading-6"
+                />
               <div
                 onClick={changeVisibilty2}
                 className="absolute top-1/2 right-3 transform -translate-y-1/2 cursor-pointer z-30"
@@ -258,8 +258,8 @@ console.log(checkWeak, checkGood, checkStrong);
                 onChange={handleChange}
                 required
                 placeholder="Confirm New Password"
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-              />
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-0 focus:ring-inset focus:ring-none sm:text-sm sm:leading-6"
+                />
               <div
                 onClick={changeVisibilty3}
                 className="absolute top-1/2 right-3 transform -translate-y-1/2 cursor-pointer z-30"
