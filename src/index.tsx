@@ -10,7 +10,7 @@ import { persistStore } from 'redux-persist'
 import { AppProvider } from './app/features/pages/home/homeContext';
 import { io, Socket } from 'socket.io-client'
 
-export const socket: Socket = io('http://localhost:5800');
+export const socket: Socket = io('https://k-waybackend.onrender.com');
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);

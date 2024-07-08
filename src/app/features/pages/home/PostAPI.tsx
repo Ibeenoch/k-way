@@ -1,5 +1,5 @@
 import axios from "axios";
-const API = "http://localhost:5800";
+const API = "https://k-waybackend.onrender.com";
 
 export const createpost = async(post: any) => {
   try {
