@@ -797,7 +797,7 @@ const viewNextImage = () => {
                     </div>
                     <div className="bg-[#a9a9a9] bg-opacity-50 rounded-2xl flex gap-[1px] items-center py-1 px-2">
                       <PlayLogo className="w-2 h-2 fill-white stroke-white" />
-                      <p className="text-white text-[9px]">{storyNumberOfViews}</p>
+                      <p className="text-white text-[9px]">{story && story.followers && story.followers.length}</p>
                     </div>
                   </div>
                 </div>

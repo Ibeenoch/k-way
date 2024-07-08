@@ -475,7 +475,6 @@ export const postSlice = createSlice({
           state.status = "success";
           state.viewstories = action.payload.photoUrls;
           state.storyOwner = action.payload.owner;
-          state.storyNumberOfViews = action.payload.noOfViews;
         }
       })
       .addCase(getAllUserStories.rejected, (state, action) => {
