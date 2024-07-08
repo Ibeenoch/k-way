@@ -82,8 +82,8 @@ const Middle = () => {
   const [isOpenStories, setIsOpenStories] = useState<boolean>(false);
   const [startShowingIndex, setStartShowingIndex] = useState<any>(1);
 
-  const { users, mode } = useAppSelector(selectUser);
-  const { posts, comments, openPostForm, whichPost, stories, story, viewstories, storyOwner } = useAppSelector(selectPost);
+  const {  mode,  } = useAppSelector(selectUser);
+  const { posts, storyNumberOfViews, openPostForm, whichPost, stories, story, viewstories, storyOwner } = useAppSelector(selectPost);
 
   const fileRef = useRef<HTMLInputElement>(null);
   const [fileInput, setFileInput] = useState<File[]>([]);
@@ -279,7 +279,6 @@ const handleLike = async (postId: string) => {
   };
   const findpost = posts.find((p: any) => p._id === postId);
   const postOwnerId = findpost && findpost.owner && findpost.owner._id;
-  console.log('post ownerid ', postOwnerId, findpost);
   const token = getUser && getUser.token;
   const userId =  getUser && getUser._doc._id;
   const postLike = {
@@ -288,16 +287,13 @@ const handleLike = async (postId: string) => {
     postId
   };
   dispatch(likePost(postLike)).then((res: any) => {
-    console.log('like post ', res)
     setPersonalPost(res && res.payload && res.payload);
   })
 };
 
 const viewWhoLikePost = (e: React.MouseEvent<HTMLDivElement>, postId: string) => {
   e.stopPropagation();
-  console.log('postid ', postId);
   dispatch(getLikesforaPost(postId)).then((res: any) => {
-    console.log('liked post are ', res);
     if(res && res.payload !== undefined){
       navigate(`/post/like/${postId}`);
     }
@@ -307,7 +303,6 @@ const viewWhoLikePost = (e: React.MouseEvent<HTMLDivElement>, postId: string) =>
 const viewWhoBookmarkPost = (e: React.MouseEvent<HTMLDivElement>, postId: string) => {
   e.stopPropagation();
   dispatch(getBookmarkforaPost(postId)).then((res: any) => {
-    console.log('bookmark post are ', res);
     if(res && res.payload !== undefined){
       navigate(`/post/bookmark/${postId}`);
     }
@@ -317,7 +312,6 @@ const viewWhoBookmarkPost = (e: React.MouseEvent<HTMLDivElement>, postId: string
 const viewWhoResharedPost = (e: React.MouseEvent<HTMLDivElement>, postId: string) => {
   e.stopPropagation();
   dispatch(getresharedforaPost(postId)).then((res: any) => {
-    console.log('reshared post are ', res);
     if(res && res.payload !== undefined){
       navigate(`/post/reshare/${postId}`);
     }
@@ -329,7 +323,6 @@ const viewWhoResharedPost = (e: React.MouseEvent<HTMLDivElement>, postId: string
 const viewAProfile = (userId: string) => {
 
   dispatch(getOtherUser(userId)).then((res) => {
-    console.log(' other user ', res);
     if(res && res.payload !== undefined){
       const myId = res && res.payload && res.payload._doc && res.payload._doc._id;
       navigate(`/profile/${myId}`);
@@ -345,9 +338,6 @@ const handleBookmark = async (postId: string) => {
   };
   const findpost = posts.find((p: any) => p._id === postId);
   const postOwnerId = findpost && findpost.owner && findpost.owner._id;
-  console.log('post bookmark ownerid ', postOwnerId, findpost);
-  // socket.emit('joinNotificationRoom', postOwnerId);
-
   const token = getUser && getUser.token;
   const userId =  getUser && getUser._doc._id;
   const postBooked = {
@@ -369,8 +359,6 @@ const handleReShare = async (postId: string) => {
   };
   const findpost = posts.find((p: any) => p._id === postId);
   const postOwnerId = findpost && findpost.owner && findpost.owner._id;
-  console.log('post reshared ownerid ', postOwnerId, findpost);
-  // socket.emit('joinNotificationRoom', postOwnerId);
 
   const token = getUser && getUser.token;
   const userId =  getUser && getUser._doc._id;
@@ -379,9 +367,7 @@ const handleReShare = async (postId: string) => {
     userId,
     postId
   };
-  dispatch(rePost(postReshare)).then((res: any) => {
-    console.log('reshared post ', res)
-  });
+  dispatch(rePost(postReshare))
 };
 
 const goToPost = async (id: string) => {
@@ -400,9 +386,7 @@ const goToPost = async (id: string) => {
 }
 
 useEffect(() => {
-  dispatch(getAvailableStories()).then((res: any) => {
-    console.log('story availiable ', res);
-  })
+  dispatch(getAvailableStories());
 }, [])
 
 const toggleImageControls = () => {
@@ -501,13 +485,7 @@ const handleTouchEnd = (e : React.TouchEvent<HTMLDivElement>) => {
     setispost(true);
   };
 
-  const handleEditIcon = (commentId: string, postId: string) => {
-    if(getUser === null){
-      navigate('/login');
-      return;
-    };
-    navigate(`/edit/${postId}/${commentId}`);
-  }
+ 
 
   useEffect(() => {
      setDesktopMenu(false);
@@ -583,11 +561,9 @@ const handleTouchEnd = (e : React.TouchEvent<HTMLDivElement>) => {
         } else{ 
           const userId = getUser && getUser._doc && getUser._doc._id;
           if(res && res.payload && res.payload._doc && res.payload._doc._id === userId){
-          console.log('type profile local ', res.payload._doc._id)
           dispatch(setProfileType('local'))
           navigate(`/profile/${userId}`);
         }else{
-          console.log('type foreign profile ', res.payload._doc._id)
           dispatch(setProfileType('foreign'))
           navigate(`/profile/${userId}`);
         }
@@ -668,14 +644,6 @@ const handleTouchEnd = (e : React.TouchEvent<HTMLDivElement>) => {
     setDesktopMenu(true);
   };
 
-  const showCommentMenuBar = (id: string) => {
-    setCommentClicked(id);
-    setDesktopCommentMenu(true);
-  };
-
-  const closeCommentMenu = () => {
-    setDesktopCommentMenu(false);
-  };
 
 const viewPrevImage = () => {
   const findPost = posts.find((p: any) => p._id === currentPostId);
@@ -736,7 +704,11 @@ const viewNextImage = () => {
   
   const viewProfile = () => {
     if(getUser && getUser._doc  && getUser._doc.fullname){
-      navigate(`/profile/${getUser && getUser._doc && getUser._doc._id}`)
+      dispatch(getOtherUser(getUser && getUser._doc && getUser._doc._id)).then((res) => {
+        if(res && res.payload !== undefined){
+          navigate(`/profile/${getUser && getUser._doc && getUser._doc._id}`)
+        }
+      })
     }else{
       navigate(`/profile/create/${getUser && getUser._doc && getUser._doc._id}`)
     }
@@ -761,8 +733,8 @@ const viewNextImage = () => {
 
 
   return (
-    <div className={`sm:mt-10 ${ mode === 'light' ? 'bg-white' : 'bg-black' } sm:rounded-t-3xl max-w-md sm:max-w-full`} >
-      <div className={`p-2 flex justify-between ${ mode === 'light' ? `${desktopMenu || menu ? 'bg-gray-200' : 'bg-white'}` : 'bg-black' }  `}>
+    <div className={`sm:mt-10 sm:rounded-tl-3xl ${ mode === 'light' ? 'bg-white' : 'bg-black' } sm:rounded-tr-3xl max-w-md sm:max-w-full`} >
+      <div className={`p-2 flex sm:rounded-t-3xl justify-between ${ mode === 'light' ? `${desktopMenu || menu ? 'bg-gray-200' : 'bg-white'}` : 'bg-black' }  `}>
         <h1 className={`text-md font-bold ${ mode === 'light' ? 'text-black' : 'text-white'} pt-3 pl-4`}>
           Stories
         </h1>
@@ -825,7 +797,7 @@ const viewNextImage = () => {
                     </div>
                     <div className="bg-[#a9a9a9] bg-opacity-50 rounded-2xl flex gap-[1px] items-center py-1 px-2">
                       <PlayLogo className="w-2 h-2 fill-white stroke-white" />
-                      <p className="text-white text-[9px]">123k</p>
+                      <p className="text-white text-[9px]">{storyNumberOfViews}</p>
                     </div>
                   </div>
                 </div>

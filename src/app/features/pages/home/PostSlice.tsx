@@ -13,6 +13,7 @@ export interface PostInterface {
   storyOwner: any;
   viewstories: any[];
   trendingPost: any[];
+  storyNumberOfViews: number;
   post: any;
   story: any;
   currentSearch: string;
@@ -41,6 +42,7 @@ const initialState: PostInterface = {
   imageUpload: [],
   story: {},
   storyOwner: {},
+  storyNumberOfViews: 0,
   comments: [],
   status: "idle",
   repliedcomments: [],
@@ -473,6 +475,7 @@ export const postSlice = createSlice({
           state.status = "success";
           state.viewstories = action.payload.photoUrls;
           state.storyOwner = action.payload.owner;
+          state.storyNumberOfViews = action.payload.noOfViews;
         }
       })
       .addCase(getAllUserStories.rejected, (state, action) => {
