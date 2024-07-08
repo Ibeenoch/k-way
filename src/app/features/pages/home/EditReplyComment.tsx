@@ -66,11 +66,11 @@ const EditReplyComment = () => {
   return (
     <div className='bg-black h-screen'>
         <div  className={`sm:mx-[30%] p-1 ${ mode === 'light' ? 'bg-white text-black fill-black' : 'bg-gray-800 text-white fill-white'} h-auto p-3`}>
-            <div className='flex items-center gap-3'>
+            <div className='flex items-center gap-3 pb-4'>
                 <ArrowLeftIcon onClick={goBack} className='w-4 h-4 cursor-pointer' />
             <h2 className='text-xs font-semibold'>Edit Your comment</h2>
             </div>
-        <div className="flex bg-gray-100 items-center max-h-[30px] p-2 rounded-xl">
+        <div className="flex items-center max-h-[30px] p-2 rounded-xl">
                 <img
                 src={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url }
                 className="block w-6 h-6 rounded-full"
@@ -104,7 +104,7 @@ const EditReplyComment = () => {
                <div className='flex items-center'><ProcessingLogo className="w-5 h-5 fill-white" /> <p className='text-[9px]'> Editing...</p></div> 
                </>
                 ) : (
-                    'Edit Post'
+                    'Edit Comment'
                 )
                 }  
                 </button>

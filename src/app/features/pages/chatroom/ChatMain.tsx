@@ -8,6 +8,7 @@ import { ReactComponent as SendLogo } from '../../../../assets/sendLogo.svg';
 import { ReactComponent as BackArrowLogo } from '../../../../assets/arrowBack.svg';
 import { Socket, io } from 'socket.io-client';
 import { formatCreatedAt } from '../../../../utils/timeformat';
+import '../../pages/home/home.css'
 
 const ChatMain = () => {
 const dispatch = useAppDispatch();
@@ -78,7 +79,7 @@ const handleGoBack = () => {
 }
 
   return (
-    <div className='sticky overflow-y-auto'>
+    <div className='sticky overflow-y-auto hide-scrollbar'>
       <div className={`${ mode === 'light' ? 'bg-white text-black fill-black' : 'bg-gray-800 text-white fill-white'} h-screen`}>
 
   <div onClick={handleGoBack} className={`flex justify-start gap-3 p-2 cursor-pointer`} >

@@ -30,15 +30,13 @@ const Left = () => {
   const newsFeedActive = () => {
     dispatch(setActivePage('home'));
     navigate('/');
-
-   
   };
   
   useEffect(() => {
-    addCountHistory(unViewednotificationCount);
+    dispatch(addCountHistory(unViewednotificationCount));
 
   }, [unViewednotificationCount])
-  console.log('history ', notificationCountHistory);
+  console.log('history ', notificationCountHistory, unViewednotificationCount);
 
  useEffect(() => {
   if(refresh){

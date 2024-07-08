@@ -405,6 +405,12 @@ const ProfileMiddle = () => {
       setCurrentPostId(id);
       setPersonalPost(post);
     };
+  
+    const showUploadedMobileModal = (img: any) => {
+      dispatch(shouldWeHideMobileNav(true));
+      setDisplayImage(img);
+      setMobileModal(true);
+    };
     
   
     useEffect(() => {
@@ -754,12 +760,12 @@ const generateRandomheight = (arr: number[]) => {
 
 
 return (
-    <div className={`sm:mt-10 max-w-md sm:max-w-full ${mode === 'light' ? 'bg-white' : mode === 'dark' ? 'bg-black' : 'bg-white'} rounded-tl-3xl rounded-tr-3xl`}>
+    <div className={`sm:mt-10 max-w-md sm:max-w-full ${mode === 'light' ? 'bg-white text-black fill-black' : 'bg-black text-white fill-white' } rounded-tl-3xl rounded-tr-3xl`}>
       
       <div className='sm:flex flex justify-between gap-2 p-2 sm:p-4 cursor-pointer'>
         <div onClick={handleGoBack} className="flex gap-2 items-center">
-          <BackLogo  className={`w-4 h-4 cursor-pointer stroke-[4px] ${mode === 'light' ? 'fill-black' : mode === 'dark' ? 'fill-white' : 'fill-black'}`} />
-        <h2 className={`text-xs font-semibold ${mode === 'light' ? 'text-black' : mode === 'dark' ? 'text-white' : 'text-black'} `}>Go Back</h2>
+          <BackLogo  className={`w-4 h-4 cursor-pointer stroke-[4px] ${mode === 'light' ? 'fill-black' : 'fill-white'}`} />
+        <h2 className={`text-xs font-semibold ${mode === 'light' ? 'text-black' : 'text-white'} `}>Go Back</h2>
         </div>
 
         <div className="flex">
@@ -1406,10 +1412,10 @@ return (
         )) : 
         (
             <>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-1 md:grid-cols-5">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-1 md:grid-cols-3">
                 {
                   imageUpload && imageUpload.length > 0 && imageUpload.map((image: any, index: number) => (
-                    <img src={image && image.url} className={`col-span-${generateRandomwidth(randomWidth)} h-[${generateRandomheight(randomHeight)}] rounded-xl`} alt="imageupload" />
+                    <img src={image && image.url} onClick={() => showUploadedMobileModal(image && image.url)} className={`col-span-${generateRandomwidth(randomWidth)} h-[${generateRandomheight(randomHeight)}] rounded-xl`} alt="imageupload" />
                   ))
                 }
             </div>

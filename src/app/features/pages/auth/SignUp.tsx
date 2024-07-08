@@ -135,7 +135,7 @@ console.log(checkWeak, checkGood, checkStrong);
   };
 
   return (
-    <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-1 lg:px-8">
+    <div className="flex h-screen flex-1 flex-col justify-center px-6 py-1 lg:px-8">
        <div className="">
           <div className="sm:mx-auto sm:w-1/2 px-4 sm:max-w-sm">
             <Link to="/">

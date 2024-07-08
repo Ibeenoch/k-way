@@ -6,6 +6,7 @@ import { changeMode, getAllUser, getOtherUser, selectUser, setProfileType, userF
 import { allCommentForAPost, bookmarkPost, commentOnPost, createPost, createStory, deletePost, getAPost, getAllPosts, getAllUserStories, getAvailableStories, getBookmarkforaPost, getLikesforaPost, getresharedforaPost, likePost, openpostForm, rePost, resetEditCommentStatus, selectPost, setWhichPost, shouldWeHideMobileNav, updatePost, updateViewingStatus } from "./PostSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import NavBar from "../mobilenav/NavBar";
+import './home.css';
 import { ReactComponent as GlobalTrendLogo } from '../../../../assets/globeTrend.svg';
 import { ReactComponent as SignalLogo } from '../../../../assets/signal.svg';
 import { ReactComponent as PlayLogo } from '../../../../assets/play.svg';
@@ -777,7 +778,7 @@ const viewNextImage = () => {
       </div>
       {/* stories */}
       <div className={`py-4 ${ mode === 'light' ? `${desktopMenu || menu ? 'bg-gray-200' : 'bg-white'}` : 'bg-black' }   `}>
-        <div className="flex max-w-full overflow-x-auto scrollbar-hide">
+        <div className="flex max-w-full overflow-x-auto hide-scrollbar">
           {/* add a story  */}
           <div  onClick={handleStory} className="relative inline-block mx-1 flex-none">
           {
@@ -806,7 +807,7 @@ const viewNextImage = () => {
             {/* view stories  */}
             {
               stories && stories.length > 0 && stories.map((story: any, index: number) => (
-                <div onClick={() =>viewStories(story && story._id, index)} className="flex-none relative text-center">
+                <div onClick={() =>viewStories(story && story._id, index)} className="flex-none  relative text-center">
                 <img
                   className="w-[180px] h-[220px] rounded-3xl border-2 border-purple-500 cursor-pointer"
                   src={viewstories && viewstories[index]}
@@ -941,11 +942,11 @@ const viewNextImage = () => {
         {
 
           posts && Array.isArray(posts) && posts.map((post: any, index: number) => (       
-      <div key={index} className={`rounded-full py-1 p-3 max-w-full ${ mode === 'light' ? `${ desktopMenu || menu ? 'bg-gray-200' : 'bg-white'} text-black fill-black` : 'bg-black text-white fill-white' } border border-gray-200 rounded-lg`} >
+      <div key={index} className={`rounded-full py-1 p-3 max-w-full ${ mode === 'light' ? `${ desktopMenu || menu ? 'bg-gray-200' : 'bg-white'} text-black fill-black` : 'bg-black text-white fill-white' } border border-gray-200 border-opacity-40 rounded-lg`} >
        {
         post.reShared &&  (
-          <div className={`flex justify-between px-2 items-center`}>
-          <div className="flex items-center border-b border-b-gray-300 pb-4">
+          <div className={`flex justify-between px-2 items-center border-b border-b-gray-300 border-opacity-40`}>
+          <div className="flex items-center pb-4">
            <img onClick={() => viewAProfile(post && post.reShare && post.reShare[0] && post.reShare[0].user && post.reShare[0].user._id)} className="w-8 h-8 rounded-full cursor-pointer" src={post && post.reShare && post.reShare[0] && post.reShare[0].user  && post.reShare[0].user.profilePhoto && post.reShare[0].user.profilePhoto.url} alt=""/>
             <p className="text-xs font-medium px-1">{post && post.reShare && post.reShare[0]  && post.reShare[0].user  && post.reShare[0].user.fullname}</p>
             <p className="text-gray-500 text-xs font-semibold px-3">Reshared this post</p>
@@ -969,7 +970,7 @@ const viewNextImage = () => {
                 </h1>
               <p className="text-gray-400 text-[8px]"> {post && formatCreatedAt(post.createdAt)} </p>
               </div>
-              <VerifyMarkLogo className="w-5 h-5 fill-purple-500 stroke-white"/>
+              <VerifyMarkLogo className="w-5 h-5 fill-purple-500"/>
            
               <p className="text-gray-400 text-[10px] ">@{post && post.owner && post.owner.handle}</p>
             </div>

@@ -308,7 +308,7 @@ export const authSlice = createSlice({
       state.viewingProfile = action.payload;
     },
     addCountHistory: (state, action: PayloadAction<number>) => {
-      state.notificationCountHistory.push(action.payload);
+      Array.isArray(state.notificationCountHistory) ? state.notificationCountHistory.push(action.payload) : state.notificationCountHistory = [action.payload];
     },
     checkIfNoteIsLoading: (state, action: PayloadAction<boolean>) => {
       state.isNotificationLoading = action.payload;

@@ -124,46 +124,13 @@ const SinglePost = () => {
             setCommentMenu(true);
           };
         
-  const hideMobileMenu = (e: MouseEvent) => {
-     if ( mobileMenuRef.current && !mobileMenuRef.current.contains(e.target as Node)) {
-      console.log('no post menu contain ', e.target, e.currentTarget);
-       setMenu(false);
-     }else{
-
-      console.log('nthe comment contain');
-     }
-   };
+ 
 
    const toggleImageControls = () => {
     setToggleControls((prev) => !prev);
     }
-      
-  useEffect(() => {
-     document.addEventListener("mousedown", hideMobileMenu);
- 
-     return () => {
-       document.removeEventListener("mousedown", hideMobileMenu);
-     };
-   }, [mobileMenuRef]);
-      
- 
-    const hideMobileCommentMenu = (e: MouseEvent) => {
-     if ( mobileCommentMenuRef.current && !mobileCommentMenuRef.current.contains(e.target as Node)) {
-       console.log('no comment contain ', e.target, e.currentTarget);
-      setCommentMenu(false);
-     }else{
 
-       console.log('nthe comment contain');
-      }
-   };
-
-   useEffect(() => {       
-     document.addEventListener("mousedown", hideMobileCommentMenu);
- 
-     return () => {
-       document.removeEventListener("mousedown", hideMobileCommentMenu);
-     };
-   }, [mobileCommentMenuRef]);
+      
 
         
 
@@ -503,6 +470,28 @@ const viewPost = (postId: string) => {
     }
   });
 
+   useOnClickOutside(mobileMenuRef, (e: MouseEvent) => {
+    const target = e.target as HTMLElement;
+    // const targetElement = target.closest('#mobileMenuRef');
+    // const targetElement2 = target.closest('.flex.gap-2.px-2.cursor-pointer.items-center.py-4');
+
+    // if (targetElement || targetElement2) {
+    //   console.log('Clicked inside the specific div!', e.target);
+    // } else {
+    //   console.log('Clicked outside the button!', e.target);
+    //   setDesktopMenu(false);
+    // }
+
+    if (target.classList.contains('text-[10px]')
+      ) 
+    {
+  console.log('Clicked inside the specific div!', target);
+} else {
+  console.log('Clicked outside the button!', target.classList);
+  setDesktopMenu(false);
+}
+  });
+
   const postOwner = post && post.owner && post.owner._id;
   return (
     <div className="sticky overflow-y-auto">
@@ -526,7 +515,7 @@ const viewPost = (postId: string) => {
               </div>
               <VerifyMarkLogo className="w-5 h-5 fill-purple-500 stroke-white"/>
            
-              <p className="text-gray-500 text-[10px] ">@{post && post.owner && post.owner.handle}</p>
+              <p className="text-gray-400 text-[10px] ">@{post && post.owner && post.owner.handle}</p>
             </div>
             {/* three dot icon  */}
             <div onClick={() => menuShow(post._id)} className="cursor-pointer ">
@@ -535,46 +524,46 @@ const viewPost = (postId: string) => {
                
                 {/* desktop menu  */}
                 <div
-                  ref={desktopMenuRef}
-                  id="desktopmenu"
+                  ref={mobileMenuRef}
+                  id="mobileMenuRef"
                   className={`hidden ${
-                    desktopMenu && post._id === postClicked ? "sm:block" : "sm:hidden"
+                    menu && post._id === postClicked ? "sm:block" : "sm:hidden"
                   } absolute shadow-xl shadow-purple-80 z-10 top-0 -right-[10px] w-[150px] h-auto rounded-3xl mx-auto ${ mode === 'light' ? 'bg-white text-black fill-black stroke-black' : 'bg-gray-800 text-white fill-white stroke-white'} p-2`}
                 >
                   {
                     getUser && getUser._doc && getUser._doc._id === postOwner ? (
-                      <>
-                       <div onClick={() =>handleEditPost(post._id)} className="flex gap-2 px-2 cursor-pointer items-center pt-4">
+                      <div id="mobileMenuRef">
+                       <div onClick={() =>handleEditPost(post._id)} className="flex gap-2 px-2 cursor-pointer items-center py-4">
                       <EditLogo  className="w-3 h-3"/>
                       <p className="text-[10px]">Edit Post</p>
                     </div>
-                    <div onClick={() =>handleDeletePost(post._id)} className="flex gap-2 cursor-pointer items-center pt-4">
+                    <div onClick={() =>handleDeletePost(post._id)} className="flex gap-2 px-2 cursor-pointer items-center py-4">
                       <TrashLogo className="w-5 h-5"/>
                       <p className="text-[10px]">Delete Post</p>
                     </div>
-                      </>
+                      </div>
                     ) : (
-                      <>
-                       <div className="flex gap-2 cursor-pointer items-center pt-4">
+                      <div id="mobileMenuRef">
+                       <div className="flex gap-2 px-2 cursor-pointer items-center py-4">
                     <AddContactLogo  className="w-3 h-3"/>
                     <p className="text-[10px]">Follow @{post && post.owner && post.owner.handle}</p>
                   </div>
 
-                  <div className="flex gap-2 items-center pt-4  cursor-pointer">
+                  <div className="flex gap-2 px-2 cursor-pointer items-center py-4">
                     <BlockContactLogo  className="w-3 h-3"/>
                     <p className="text-[10px]">Block @{post && post.owner && post.owner.handle}</p>
                   </div>
 
-                  <div className="flex gap-2 items-center cursor-pointer pt-4">
+                  <div className="flex gap-2 px-2 cursor-pointer items-center py-4">
                     <ReportContactLogo  className="w-3 h-3"/>
                     <p className="text-[10px]">Report Post</p>
                   </div>
 
-                  <div className="flex gap-2 cursor-pointer items-center pt-4">
+                  <div className="flex gap-2 px-2 cursor-pointer items-center py-4">
                     <MuteContactLogo   className="w-3 h-3"/>
                     <p className="text-[10px]">Mute @{post && post.owner && post.owner.handle}</p>
                   </div>
-                      </>
+                      </div>
                     )
                   }
                   
@@ -583,14 +572,14 @@ const viewPost = (postId: string) => {
                    {/* mobile menu  */}
               <div
                 ref={mobileMenuRef}
-                id="mobilemenu"
+                id="mobileMenuRef"
                 className={`fixed ${
                   menu && post._id === postClicked ? "block" : "hidden"
                 } bottom-0 left-0 ${ mode === 'light' ? 'bg-white text-black fill-black stroke-black' : 'bg-gray-800 text-white fill-white stroke-white'} pt-10 pl-5 pr-5 pb-5 z-40 w-full h-[40%] rounded-tl-3xl rounded-tr-3xl sm:hidden`}
               >
                 {
                   getUser !== undefined && getUser && getUser._doc && getUser._doc._id  ===   post && post.owner && post.owner._id ? (
-                              <>
+                              <div id="mobileMenuRef">
                             <div onClick={() =>handleEditPost(post._id)} className="flex gap-2 px-2 cursor-pointer items-center py-4">
                               <EditLogo  className="w-4 h-4"/>
                               <p className="text-lg">Edit Post</p>
@@ -599,29 +588,29 @@ const viewPost = (postId: string) => {
                               <TrashLogo className="w-6 h-6"/>
                               <p className="text-lg">Delete Post</p>
                             </div>
-                              </>
+                              </div>
                             ) : (
-                              <>
-                              <div className="flex gap-2 cursor-pointer items-center px-2 py-4">
+                              <div id="mobileMenuRef">
+                              <div className="flex gap-2 px-2 cursor-pointer items-center py-4">
                             <AddContactLogo  className="w-5 h-5"/>
                             <p className="text-lg">Follow @{post && post.owner && post.owner.handle}</p>
                           </div>
 
-                          <div className="flex gap-2 items-center px-2 py-4  cursor-pointer">
+                          <div className="flex gap-2 px-2 cursor-pointer items-center py-4">
                             <BlockContactLogo  className="w-5 h-5"/>
                             <p className="text-lg">Block @{post && post.owner && post.owner.handle}</p>
                           </div>
 
-                          <div className="flex gap-2 items-center cursor-pointer px-2 py-4">
+                          <div className="flex gap-2 px-2 cursor-pointer items-center py-4">
                             <ReportContactLogo  className="w-5 h-5"/>
                             <p className="text-lg">Report Post</p>
                           </div>
 
-                          <div className="flex gap-2 cursor-pointer items-center px-2 py-4">
+                          <div className="flex gap-2 px-2 cursor-pointer items-center py-4">
                             <MuteContactLogo   className="w-5 h-5"/>
                             <p className="text-lg">Mute @{post && post.owner && post.owner.handle}</p>
                           </div>
-                              </>
+                              </div>
                             )
                           }
                 
