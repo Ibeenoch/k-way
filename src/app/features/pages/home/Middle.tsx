@@ -558,9 +558,9 @@ const handleTouchEnd = (e : React.TouchEvent<HTMLDivElement>) => {
  
  
   const hideMobileModal = () => {
+    dispatch(shouldWeHideMobileNav(false));
     setMobileModal(false);
     dispatch(setWhichPost('none'));
-    dispatch(shouldWeHideMobileNav(false));
   };
 
   const viewUserProfile = (userId: string) => {
