@@ -446,6 +446,7 @@ const ProfileMiddle = () => {
       setIsPosting(false);
       setMenu((prev) => !prev);
       setDesktopMenu(true);
+      dispatch(shouldWeHideMobileNav(true))
     };
   
    
@@ -1329,23 +1330,23 @@ return (
             <p className="text-[10px] mt-3 text-gray-600">{post.comments.length} Comments</p>
             </div>
             {/* icons */}
-            <div className={`flex justify-between items-center ${ mode === 'light' ? 'bg-black text-white fill-white stroke-white' : 'bg-gray-800 text-white fill-white stroke-white'} `} >
+            <div className={`flex justify-between items-center`} >
             <div className="flex items-center pl-9 sm:gap-1 mt-4">
-              <div  onClick={() =>handleLike(post._id)} className="mr-1 cursor-pointer sm:mx-0 flex items-center py-1 px-3 rounded-lg">
+              <div  onClick={() =>handleLike(post._id)} className={`mr-1 cursor-pointer sm:mx-0 flex items-center py-1 px-3 rounded-lg  ${ mode === 'light' ? 'bg-black text-white fill-white stroke-white' : 'bg-gray-800 text-white fill-white stroke-white'}`} >
                 <LikeLogo  className="w-[12px] h-[12px]"/>
                 <p className="text-[10px] pl-1">
                   Like
                 </p>
               </div>
             
-              <div onClick={() =>handleReShare(post._id)} className="mr-1  cursor-pointer sm:mx-0 flex items-center py-1 px-3 rounded-lg">
+              <div onClick={() =>handleReShare(post._id)}   className={`mr-1 cursor-pointer sm:mx-0 flex items-center py-1 px-3 rounded-lg  ${ mode === 'light' ? 'bg-black text-white fill-white stroke-white' : 'bg-gray-800 text-white fill-white stroke-white'}`} >
                 <RetweetLogo  className="w-[13px] h-[13px]"/>
                 <p className="text-[10px] pl-1">
                   ReShare
                 </p>
               </div>
             
-              <div onClick={() => goToPost(post._id)} className="mr-1 cursor-pointer sm:mx-0 flex items-center py-1 px-3 rounded-lg">
+              <div onClick={() => goToPost(post._id)}  className={`mr-1 cursor-pointer sm:mx-0 flex items-center py-1 px-3 rounded-lg  ${ mode === 'light' ? 'bg-black text-white fill-white stroke-white' : 'bg-gray-800 text-white fill-white stroke-white'}`} >
                 <CommentLogo  className="w-[12px] h-[12px]"/>
                 <p className="text-[10px] pl-1">
                   Comment
@@ -1356,7 +1357,7 @@ return (
               <div></div>
             </div>
             
-            <div  onClick={() =>handleBookmark(post._id)} className="flex cursor-pointer items-center sm:gap-1 p-2 mr-4 sm:mr-0 mt-4 rounded-lg">
+            <div  onClick={() =>handleBookmark(post._id)}  className={`mr-1 cursor-pointer sm:mx-0 flex items-center py-1 px-3 rounded-lg  ${ mode === 'light' ? 'bg-black text-white fill-white stroke-white' : 'bg-gray-800 text-white fill-white stroke-white'}`} >
               <BookMarkLogo   className="w-[12px] h-[12px]"/>
             </div>
             </div>
@@ -1412,7 +1413,7 @@ return (
    </div>
          </>
         )) : 
-        imageUpload && imageUpload.length > 0  ?
+        showupload && imageUpload && imageUpload.length > 0  ?
         (
             <>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-1 md:grid-cols-3">
