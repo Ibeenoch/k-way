@@ -2,7 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import { FormEvent, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../../app/hooks";
 import toast, { Toaster} from "react-hot-toast"
-import { emailPasswordLink } from "./authSlice";
+import { emailPasswordLink, selectUser } from "./authSlice";
 import { ReactComponent as ProcessingLogo } from '../../../../assets/processingLogo.svg';
 import { ReactComponent as CompanyLogo } from '../../../../assets/companylogo.svg';
 
@@ -12,6 +12,7 @@ const PasswordRecovery = () => {
   const [isClicked, setIsClicked] = useState(false);
   const [isSent, setIsSent] = useState(false);
   const dispatch = useAppDispatch();
+  const { mode } = useAppSelector(selectUser);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -19,7 +20,6 @@ const PasswordRecovery = () => {
     const data = { email };
     if(email){
       dispatch(emailPasswordLink(data)).then((res) => {
-        console.log('emmail link ', res)
         if(res && res.payload && res.payload.message){
           setIsSent(true);
           setIsClicked(false);
@@ -29,11 +29,10 @@ const PasswordRecovery = () => {
     
   };
 
-  // const hexcode = "#DEB887";
 
   return (
     <div
-      className="flex min-h-full flex-1 flex-col justify-center mt-5 px-6 py-12 lg:px-8"
+      className={`flex min-h-full flex-1 flex-col justify-center mt-5 px-6 py-12 lg:px-8 ${mode === 'light' ? 'bg-white text-black' : 'bg-black text-white' } `}
     >
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
       <Link to="/">
@@ -45,13 +44,13 @@ const PasswordRecovery = () => {
             </div>
           </Link>
         <form className="space-y-6 mt-14" onSubmit={handleSubmit}>
-        <p className="text-center text-sm font-semibold tracking-tight text-gray-900">
+        <p className="text-center text-sm font-semibold tracking-tight">
             Please enter your email address to reset your password
           </p>
           <div>
             <label
               htmlFor="email"
-              className="block text-sm font-medium leading-6 text-gray-900"
+              className="block text-sm font-medium leading-6"
             >
               Email address
             </label>

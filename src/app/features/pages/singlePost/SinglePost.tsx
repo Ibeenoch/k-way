@@ -27,6 +27,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { HeartIcon } from "@heroicons/react/24/outline";
 import { addNotification, getOtherUser, selectUser, userFollowing } from '../auth/authSlice'
 import { socket } from '../../../../index'
+import '../../pages/home/home.css';
 import useOnClickOutside from '../../../../utils/ClickOut';
 
 
@@ -494,7 +495,7 @@ const viewPost = (postId: string) => {
 
   const postOwner = post && post.owner && post.owner._id;
   return (
-    <div className="sticky overflow-y-auto">
+    <div className="sticky overflow-y-auto hide-scrollbar">
         <div onClick={handleGoBack} className={`flex sm:mx-[25%] gap-3 ${mode === 'light' ? `${commentmenu || menu  ? 'bg-gray-200 text-black' : 'bg-white fill-black text-black'}` : 'bg-black fill-white text-white'} p-2 cursor-pointer`} >
           <BackArrowLogo  className='w-4 h-4 cursor-pointer' />
         <h2 className='text-xs font-medium'>Back to Post Feeds</h2>
