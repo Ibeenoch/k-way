@@ -20,7 +20,7 @@ interface ProfileInterface {
 const ProfileForm: React.FC = () => {
   const getUser = JSON.parse(localStorage.getItem('user') as any);
   const [formData, setFormData] = useState<ProfileInterface>({
-    fullname: getUser && getUser.fullname && typeof getUser.fullname === 'string' ? getUser.fullname : "",
+    fullname: getUser && getUser._doc && getUser._doc.fullname && typeof getUser._doc.fullname === 'string' ? getUser._doc.fullname : "",
     dateOfBirth: getUser && getUser._doc && getUser._doc.dateOfBirth && typeof getUser._doc.dateOfBirth === 'string' ? getUser._doc.dateOfBirth : "",
     handle:  getUser && getUser._doc && getUser._doc.handle && typeof getUser._doc.handle === 'string' ? getUser._doc.handle : "",
     address:  getUser && getUser._doc && getUser._doc.address && typeof getUser._doc.address === 'string' ? getUser._doc.address : "",
@@ -170,7 +170,7 @@ const ProfileForm: React.FC = () => {
                   getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url ? (
                     <img  className="w-20 h-20 rounded-full border border-purple-600" src={`${getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url}`} alt="profileimg" />
                   ) : (
-                    <ProfileImageLogo  className="w-16 h-16"/>
+                    <ProfileImageLogo stroke="purple"  className="w-16 h-16"/>
                   )
                 }
                 <div className={`absolute ${ mode === 'light' ? 'bg-white' : 'bg-gray-800' } rounded-full ml-11 -mt-3 cursor-pointer`}>
