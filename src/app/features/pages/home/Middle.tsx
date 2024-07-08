@@ -181,6 +181,10 @@ const handlePostSubmit = async() => {
     navigate('/login');
     return;
   };
+  if(getUser === null){
+    navigate('/login');
+    return;
+  };
   if(content === ''){
     setIsPosting(false);
     return;
@@ -223,7 +227,7 @@ if(id){
       hidePostModal();
       setdeskTopModal(false);
       navigate('/');
-      window.scrollTo(0, document.documentElement.scrollHeight);
+      window.scrollTo(0, 0);
      }
 
     })
@@ -563,6 +567,7 @@ const handleTouchEnd = (e : React.TouchEvent<HTMLDivElement>) => {
         if(getUser === null){
           dispatch(setProfileType('foreign'));
           navigate(`/profile/${userId}`);
+          window.scrollTo(0, 0);
         } else{ 
           const userId = getUser && getUser._doc && getUser._doc._id;
           if(res && res.payload && res.payload._doc && res.payload._doc._id === userId){
@@ -712,6 +717,7 @@ const viewNextImage = () => {
       dispatch(getOtherUser(getUser && getUser._doc && getUser._doc._id)).then((res) => {
         if(res && res.payload !== undefined){
           navigate(`/profile/${getUser && getUser._doc && getUser._doc._id}`)
+          window.scrollTo(0, 0);
         }
       })
     }else{
@@ -1410,7 +1416,7 @@ const viewNextImage = () => {
 
             {/* cancel or close  */}
             <CancelLogo  onClick={hidePostModal}
-              className="w-3 h-3 fill-black z-40 mr-2 cursor-pointer"/>
+              className={`w-3 h-3 ${ mode === 'light' ? 'fill-black' : 'fill-white'} z-40 mr-2 cursor-pointer`}/>
             
           </div>
 

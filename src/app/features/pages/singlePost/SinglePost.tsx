@@ -96,6 +96,10 @@ const SinglePost = () => {
     
 
       const handleLike = async (postId: string) => {
+        if(getUser === null){
+          navigate('/login');
+          return;
+        };
         const token = getUser && getUser.token;
         const userId =  getUser && getUser._doc._id;
         const postLike = {
@@ -185,6 +189,10 @@ const SinglePost = () => {
   
 
   const handleCommentLike = (commentId: string) => {
+    if(getUser === null){
+      navigate('/login');
+      return;
+    };
     const token = getUser && getUser.token;
     const likes = { token, commentId };
     dispatch(likeComment(likes)).then((res: any) => {
@@ -196,6 +204,10 @@ const SinglePost = () => {
   }
 
   const handleReShare = async (postId: string) => {
+    if(getUser === null){
+      navigate('/login');
+      return;
+    };
     const token = getUser && getUser.token;
     const userId =  getUser && getUser._doc._id;
     const postReshare = {
@@ -224,6 +236,10 @@ const SinglePost = () => {
 
   
 const handleBookmark = async (postId: string) => {
+  if(getUser === null){
+    navigate('/login');
+    return;
+  };
     const token = getUser && getUser.token;
     const userId =  getUser && getUser._doc._id;
     const postBooked = {
@@ -270,6 +286,10 @@ const handleBookmark = async (postId: string) => {
 
 
   const handleCommentSubmit = (postId: string) => {
+    if(getUser === null){
+      navigate('/login');
+      return;
+    };
     setIsCommenting(true);
     if(comment === ''){
       setIsCommenting(false);
