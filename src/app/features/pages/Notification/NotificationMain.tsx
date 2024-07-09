@@ -52,7 +52,7 @@ const NotificationMain = () => {
  
 
   return (
-    <div className={`p-4 ${mode === 'light' ? 'bg-white text-black fill=black' : 'bg-black text-white fill-white'} sm:rounded-tl-3xl sm:rounded-tr-3xl`}>
+    <div className={`p-4 h-screen ${mode === 'light' ? 'bg-white text-black fill=black' : 'bg-black text-white fill-white'} sm:rounded-tl-3xl sm:rounded-tr-3xl`}>
   <div onClick={goBack} className='flex items-center pb-2 gap-3 cursor-pointer'>
       <ArrowLeftIcon className='w-4 h-4 cursor-pointer' />
   <h2 className='text-xs font-semibold'>Go Back</h2>

@@ -540,7 +540,7 @@ const viewNextImage = () => {
   }
 
   return (
-   <div className={`p-2 ${ mode === 'light' ? 'bg-white text-black fill-black stroke-black' : 'bg-black text-white fill-white stroke-white'} `}>
+   <div className={`p-2 ${ mode === 'light' ? 'bg-white text-black fill-black stroke-black' : 'bg-black text-white fill-white stroke-white'} h-screen `}>
       <div className='w-full rounded-3xl'>
 
   <form onSubmit={handleSearch}>
