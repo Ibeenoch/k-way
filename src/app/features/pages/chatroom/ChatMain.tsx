@@ -13,7 +13,7 @@ import '../../pages/home/home.css'
 const ChatMain = () => {
 const dispatch = useAppDispatch();
 const navigate = useNavigate();
-const socket: Socket = io('http://localhost:5800');
+const socket: Socket = io('https://k-way.vercel.app/');
 const getUser = JSON.parse(localStorage.getItem('user') as any);
 const [isCommenting, setIsCommenting] = useState<boolean>(false);
 const [comment, setComment] = useState<string>("");
