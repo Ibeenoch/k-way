@@ -763,7 +763,7 @@ const generateRandomheight = (arr: number[]) => {
 
 
 return (
-    <div className={`sm:mt-10 max-w-md sm:max-w-full ${mode === 'light' ? 'bg-white text-black fill-black' : 'bg-black text-white fill-white' } rounded-tl-3xl rounded-tr-3xl`}>
+    <div className={`sm:mt-10 h-screen max-w-md sm:max-w-full ${mode === 'light' ? 'bg-white text-black fill-black' : 'bg-black text-white fill-white' } rounded-tl-3xl rounded-tr-3xl`}>
       
       <div className='sm:flex flex justify-between gap-2 p-2 sm:p-4 cursor-pointer'>
         <div onClick={handleGoBack} className="flex gap-2 items-center">
