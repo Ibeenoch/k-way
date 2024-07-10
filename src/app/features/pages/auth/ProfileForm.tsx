@@ -141,7 +141,7 @@ const ProfileForm: React.FC = () => {
   };
 
   return (
-    <div className={`flex min-h-full flex-1 flex-col justify-center ${ mode === 'light' ? 'bg-white text-black' : 'bg-black text-white' } px-6 py-1 lg:px-8`}>
+    <div className={`flex h-screen flex-1 flex-col justify-center ${ mode === 'light' ? 'bg-white text-black' : 'bg-black text-white' } px-6 py-1 lg:px-8`}>
       <div onClick={goBack} className='flex items-center gap-2 p-2 ml-[30%] cursor-pointer'>
                 <ArrowLeftIcon className='w-4 h-4 cursor-pointer' />
         <h2 className='text-xs font-semibold'>Go Back</h2>
@@ -195,7 +195,7 @@ const ProfileForm: React.FC = () => {
                     value={formData.fullname}
                     required
                     placeholder="Surname Firstname"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-0 focus:ring-inset focus:ring-none sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-0 focus:ring-inset focus:ring-none sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
