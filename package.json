@@ -35,6 +35,7 @@
     "react-scripts": "5.0.1",
     "react-switch": "^7.0.0",
     "react-virtualized": "^9.22.5",
+    "react-window": "^1.8.10",
     "recordrtc": "^5.6.2",
     "redux-persist": "^6.0.0",
     "socket.io-client": "^4.7.5",
@@ -72,6 +73,7 @@
   "devDependencies": {
     "@types/react-lazyload": "^3.2.3",
     "@types/react-virtualized": "^9.21.30",
+    "@types/react-window": "^1.8.8",
     "@types/recordrtc": "^5.6.14"
   }
 }
