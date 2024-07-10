@@ -128,7 +128,7 @@ function App() {
 
   return (
     
-      <div className={`App ${ mode === 'light' ? 'color-bg' : 'bg-gray-800' } `} >
+      <div className={`App h-screen ${ mode === 'light' ? 'color-bg' : 'bg-gray-800' } `} >
         <Suspense fallback={<div className="flex items-center justify-center h-screen w-full"> <LoadingLogo className="w-14 h-14" /> </div>}>
         <RouterProvider router={router} />
         </Suspense>

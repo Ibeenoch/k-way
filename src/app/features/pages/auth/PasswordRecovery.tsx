@@ -32,7 +32,7 @@ const PasswordRecovery = () => {
 
   return (
     <div
-      className={`flex h-screen flex-1 flex-col justify-center mt-5 px-6 py-12 lg:px-8 ${mode === 'light' ? 'bg-white text-black' : 'bg-black text-white' } `}
+      className={`flex h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8 ${mode === 'light' ? 'bg-white text-black' : 'bg-black text-white' } `}
     >
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
       <Link to="/">

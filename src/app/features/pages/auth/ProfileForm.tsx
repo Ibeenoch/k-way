@@ -142,13 +142,13 @@ const ProfileForm: React.FC = () => {
   };
 
   return (
-    <div className={`flex h-screen flex-1 flex-col justify-center ${ mode === 'light' ? 'bg-white text-black' : 'bg-black text-white' } px-6 py-1 lg:px-8`}>
+    <div className={`flex h-screen flex-1 flex-col justify-center ${ mode === 'light' ? 'bg-white text-black' : 'bg-black text-white' } `}>
       <div onClick={goBack} className='flex items-center gap-2 p-2 ml-[30%] cursor-pointer'>
-                <ArrowLeftIcon className='w-4 h-4 cursor-pointer' />
+        <ArrowLeftIcon className='w-4 h-4 cursor-pointer' />
         <h2 className='text-xs font-semibold'>Go Back</h2>
         </div>
 
-       <div className="">
+       <div className={`${ mode === 'light' ? 'bg-white text-black' : 'bg-black text-white' }`}>
           <div className="sm:mx-auto sm:w-1/2 px-4 sm:max-w-sm">
             <Link to="/">
               <div              
@@ -163,7 +163,7 @@ const ProfileForm: React.FC = () => {
             </h2>
           </div>
 
-          <div className={`mt-4 sm:mx-auto sm:w-1/2 px-4 sm:max-w-sm h-screen ${mode === 'light' ? 'bg-white' : 'bg-black' }`}>
+          <div className={`mt-4 sm:mx-auto sm:w-1/2 px-4 sm:max-w-sm ${mode === 'light' ? 'bg-white' : 'bg-black' }`}>
             <form className="space-y-6" onSubmit={handleProfile} >
               <div className="flex-none mx-auto w-full relative">
                 {/* image upload  */}
