@@ -7,6 +7,7 @@ import { ReactComponent as ProfileImageLogo } from '../../../../assets/profileIm
 import { ReactComponent as CameraLogo } from '../../../../assets/cameraAdd.svg';
 import { ReactComponent as ProcessingLogo } from '../../../../assets/processingLogo.svg';
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
+import '../home/home.css';
 
 
 interface ProfileInterface {
@@ -314,7 +315,7 @@ const ProfileForm: React.FC = () => {
                     onChange={(e) => setBio(e.target.value)}
                     required
                     placeholder="What makes you special?"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-0 focus:ring-inset focus:ring-none sm:text-sm sm:leading-6"
+                    className="block w-full hide-scrollbar resize-none rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-0 focus:ring-inset focus:ring-none sm:text-sm sm:leading-6"
                     />
                  
                 </div>
