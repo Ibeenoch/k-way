@@ -884,7 +884,7 @@ return (
       Uploads
     </h1>
     </div>
-      <div className="pb-[85px] h-screen">
+      <div className={`pb-[85px] h-min ${mode === 'light' ? 'bg-white' : 'bg-black'} `}>
         { showfeed  ? (
           <>
            {
