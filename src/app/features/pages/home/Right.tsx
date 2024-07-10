@@ -92,7 +92,7 @@ return (
   }
       </div>
 
-      <div className={`w-full p-4 ${mode === 'light' ? 'bg-white text-black' : 'bg-black text-white'} `}>
+      <div className={`w-full h-screen p-4 ${mode === 'light' ? 'bg-white text-black' : 'bg-black text-white'} `}>
           <h1 className={`font-bold text-md`}>Suggestions</h1>
           {/* people */}
         {

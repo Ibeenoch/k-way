@@ -884,7 +884,7 @@ return (
       Uploads
     </h1>
     </div>
-      <div className="pb-[85px]">
+      <div className="pb-[85px] h-screen">
         { showfeed  ? (
           <>
            {
