@@ -1,13 +1,17 @@
 
 import { lazy } from "react"
+import { selectUser } from "../auth/authSlice";
+import { useAppSelector } from "../../../hooks";
 const Left = lazy(() => import("../home/Left"));
 const Right = lazy(() => import("../home/Right"));
 const ChatMain = lazy(() => import("./ChatMain"));
 
 
 const ChatRoom = () => {
+  const { mode } = useAppSelector(selectUser);
+
   return (
-    <div className='grid grid-cols-1 sm:grid-cols-9 md:grid-cols-9'>
+    <div className={`grid grid-cols-1 sm:grid-cols-9 md:grid-cols-9 ${mode === 'light' ? 'bg-white' : 'bg-black' }`}>
       <div className='hidden sm:block sm:col-start-1 sm:col-end-3 md:col-start-1 md:col-end-3'>
         <Left />
       </div>

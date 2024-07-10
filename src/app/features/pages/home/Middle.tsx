@@ -193,7 +193,7 @@ const handlePostSubmit = async() => {
   const data = { content, privacy,  };
   let postData = new FormData();
   postData.append('content', content);
-  postData.append('privacy', privacy);
+  postData.append('privacy', 'public');
   
   if( imageInput.length > 0){
     imageInput.forEach((image: any) => {
@@ -246,6 +246,7 @@ if(id){
     if( whichPost === 'story'){
 
       dispatch(createStory(post)).then((res: any) => {
+        console.log('story created ', res)
         if(res && res.payload !== undefined){
            dispatch(getAvailableStories()).then((res: any) => {
             setcontent('');
@@ -727,14 +728,20 @@ const viewNextImage = () => {
     }
   };
 
-  const handleStory = () => {
+ const handleStory = () => {
     if(getUser === null || getUser === undefined){
       navigate('/login');
       return;
     };
     dispatch(setWhichPost('story'));
-    showPostModal();
+    dispatch(shouldWeHideMobileNav(true));
+    setPostModal(true);
+    setisHome(false);
+    setIsTrend(false);
+    setisnotify(false);
+    setispost(true);
   };
+  console.log('the post is ', whichPost)
   
   const changeToDarkMode = () => {
     dispatch(changeMode('dark'));

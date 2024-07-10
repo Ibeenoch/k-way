@@ -1,6 +1,6 @@
 import React, { useEffect, useState, lazy, Suspense } from 'react'
-import { useAppDispatch } from '../../../hooks'
-import { addNotification, getAllNotificationForAUser, getAllUser } from '../auth/authSlice'
+import { useAppDispatch, useAppSelector } from '../../../hooks'
+import { addNotification, getAllNotificationForAUser, getAllUser, selectUser } from '../auth/authSlice'
 import { getAllPosts } from './PostSlice';
 import { socket } from '../../../../index'
 import Loading from '../../../Loading';
@@ -12,7 +12,7 @@ const Home = () => {
   const dispatch = useAppDispatch();
   const [userUpdated] = useState<boolean>(false);
   const getUser = JSON.parse(localStorage.getItem('user') as any);
-
+  const { mode } = useAppSelector(selectUser);
  
 
   useEffect(() => {
@@ -89,7 +89,7 @@ const Home = () => {
 
 
   return (
-    <div className='grid grid-cols-1 sm:grid-cols-9 md:grid-cols-9'>
+    <div className={`grid grid-cols-1 sm:grid-cols-9 md:grid-cols-9 h-min ${ mode === 'light' ? 'bg-white' : 'bg-black'} `}>
       <div className='hidden sm:block sm:col-start-1 sm:col-end-3 md:col-start-1 md:col-end-3'>
        <Suspense fallback={<Loading />}>
         <Left />
