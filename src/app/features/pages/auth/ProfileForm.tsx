@@ -163,7 +163,7 @@ const ProfileForm: React.FC = () => {
             </h2>
           </div>
 
-          <div className="mt-4 sm:mx-auto sm:w-1/2 px-4 sm:max-w-sm">
+          <div className={`mt-4 sm:mx-auto sm:w-1/2 px-4 sm:max-w-sm h-screen ${mode === 'light' ? 'bg-white' : 'bg-black' }`}>
             <form className="space-y-6" onSubmit={handleProfile} >
               <div className="flex-none mx-auto w-full relative">
                 {/* image upload  */}
