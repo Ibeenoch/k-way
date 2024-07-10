@@ -119,7 +119,7 @@ const ProfileForm: React.FC = () => {
     dispatch(createUserProfile(data)).then((res: any) => {
         if(res && res.payload && res.payload._doc && res.payload._doc._id ){
           console.log('good  ', res.payload._doc._id)
-          navigate(`/profile/${res && res.payload && res.payload._doc && res.payload._doc._id}`)
+          navigate(`/`)
         }else{
           setIsClicked(false);
         }
