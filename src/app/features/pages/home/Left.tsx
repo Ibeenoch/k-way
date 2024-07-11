@@ -88,7 +88,7 @@ const Left = () => {
 const me = getUser && getUser._doc && getUser._doc._id;
 
   return (
-    <div className={`p-2 sticky top-0`}>
+    <div className={`p-2 fixed w-[22vw] top-0`}>
       <div className={`flex ${ mode === 'light' ? 'bg-white' : 'bg-black'} flex-col rounded-tl-3xl justify-center p-6`}>
         <div  className='mx-auto pb-4'>
         <CompanyLogo className='w-12 h-12' />

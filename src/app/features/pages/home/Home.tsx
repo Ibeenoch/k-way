@@ -5,8 +5,8 @@ import { getAllPosts } from './PostSlice';
 import { socket } from '../../../../index'
 import Loading from '../../../Loading';
 const Left = lazy(() =>import('./Left'));
-const Middle = lazy(() =>import('../home/Middle'));
-const Right = lazy(() =>import('../home/Right'));
+const Middle = lazy(() =>import('./Middle'));
+const Right = lazy(() =>import('./Right'));
 
 const Home = () => {
   const dispatch = useAppDispatch();
