@@ -755,7 +755,7 @@ const viewNextImage = () => {
  
   return (
     <div className={`sm:mt-10 sm:rounded-tl-3xl ${ mode === 'light' ? 'bg-white' : 'bg-black' } sm:rounded-tr-3xl max-w-md sm:max-w-full`} >
-      <div className={`p-2 flex sm:rounded-t-3xl justify-between ${ mode === 'light' ? `${desktopMenu || menu ? 'bg-gray-200' : 'bg-white'}` : 'bg-black' }  `}>
+      <div className={`p-2 flex sm:rounded-t-3xl justify-between ${ mode === 'light' ? `${desktopMenu || menu ? 'bg-gray-200' : ''}` : 'bg-black' }  `}>
         <h1 className={`text-md font-bold ${ mode === 'light' ? 'text-black' : 'text-white'} pt-3 pl-4`}>
           Stories
         </h1>
@@ -774,7 +774,7 @@ const viewNextImage = () => {
         </div>
       </div>
       {/* stories */}
-      <div className={`py-4 ${ mode === 'light' ? `${desktopMenu || menu ? 'bg-gray-200' : 'bg-white'}` : 'bg-black' }   `}>
+      <div className={`py-4 ${ mode === 'light' ? `${desktopMenu || menu ? 'bg-gray-200' : ''}` : 'bg-black' }   `}>
         <div className="flex max-w-full overflow-x-auto hide-scrollbar">
           {/* add a story  */}
           <div  onClick={handleStory} className="relative inline-block mx-1 flex-none">
@@ -828,7 +828,7 @@ const viewNextImage = () => {
                   <img className="w-7 h-7 rounded-full" src={story && story && story.profilePhoto && story.profilePhoto.url} alt="" />
                   <div className="flex flex-col justify-start items-start">
                   <h2 className="text-white font-semibold text-[10px]">{story && story.fullname}</h2>
-                  <p className="text-gray-300 text-[9px]">{story && story.followers && story.followers.length}followers</p>
+                  <p className="text-gray-400 text-[9px]">{story && story.followers && story.followers.length}&nbsp;followers</p>
                   </div>
                   </div>
 
@@ -940,7 +940,7 @@ const viewNextImage = () => {
       {
 
 posts && Array.isArray(posts) && posts.map((post: any, index: number) => (       
-<div key={index} className={`rounded-full py-1 p-3 max-w-full ${ mode === 'light' ? `${ desktopMenu || menu ? 'bg-gray-200' : 'bg-white'} text-black fill-black` : 'bg-black text-white fill-white' } border border-gray-200 border-opacity-40 rounded-lg`} >
+<div key={index} className={`rounded-full py-1 p-3 max-w-full ${ mode === 'light' ? `${ desktopMenu || menu ? 'bg-gray-200' : 'bg-white'} text-black fill-black` : 'bg-black text-white fill-white' } border border-gray-200 border-opacity-50 rounded-lg`} >
 {
 post.reShared &&  (
 <div className={`flex justify-between px-2 items-center border-b border-b-gray-300 border-opacity-40`}>
