@@ -940,7 +940,7 @@ const viewNextImage = () => {
       {
 
 posts && Array.isArray(posts) && posts.map((post: any, index: number) => (       
-<div key={index} className={`rounded-full py-1 p-3 max-w-full ${ mode === 'light' ? `${ desktopMenu || menu ? 'bg-gray-200' : 'bg-white'} text-black fill-black` : 'bg-black text-white fill-white' } border border-gray-200 border-opacity-50 rounded-lg`} >
+<div key={index} className={`rounded-full py-1 p-3 max-w-full ${ mode === 'light' ? `${ desktopMenu || menu ? 'bg-gray-200' : 'bg-white'} border-gray-300 border-opacity-80 text-black fill-black` : 'bg-black text-white fill-white border-gray-200 border-opacity-50' } border rounded-lg`} >
 {
 post.reShared &&  (
 <div className={`flex justify-between px-2 items-center border-b border-b-gray-300 border-opacity-40`}>
