@@ -138,9 +138,9 @@ const goTrend = () => {
                <PlusIcon className="w-7 h-7 stroke-2 fill-white stroke-white"/>
             </div>
             <div className='relative flex items-center'>
-              <BellLogo onClick={goNotify} className={`w-9 h-9 ${active === 'notification' ? 'stroke-purple-600 fill-purple-600' : 'stroke-white'} ${mode === 'light' ? 'fill-white' : 'fill-black' }`} />
+              <BellLogo onClick={goNotify} className={`w-9 h-9 ${active === 'notification' ? 'stroke-purple-600 fill-purple-600' : 'stroke-white'} `} />
              {
-              whoToNotify === me && unViewednotificationCount && unViewednotificationCount > 0 && (
+              whoToNotify === me && unViewednotificationCount > 0 && (
               <div className='text-white bg-purple-600 rounded-full absolute px-2 py-[0.8px] top-0 right-0 text-sm font-semibold'>
               { whoToNotify === me && unViewednotificationCount !== 0 && unViewednotificationCount} 
               </div> 
