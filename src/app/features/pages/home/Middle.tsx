@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from "react";
+import React, { ChangeEvent, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { PlusIcon, HeartIcon,  } from "@heroicons/react/24/outline";
 import EmojiPicker from "emoji-picker-react";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
@@ -645,7 +645,9 @@ const handleTouchEnd = (e : React.TouchEvent<HTMLDivElement>) => {
   }, [storyActive, startShowingIndex]);
 
 
-  
+  useLayoutEffect(() => {
+    dispatch(shouldWeHideMobileNav(false));
+  }, [])
 
   useEffect(() => {
     dispatch(getAllPosts())

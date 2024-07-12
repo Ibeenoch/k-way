@@ -383,6 +383,7 @@ const me = getUser && getUser._doc  && getUser._doc._id;
 
 
   useEffect(() => {
+     dispatch(shouldWeHideMobileNav(false));
      setDesktopMenu(false);
      setMenu(false);
   }, [postModal])
@@ -406,13 +407,14 @@ const me = getUser && getUser._doc  && getUser._doc._id;
       desktopMenuRef.current &&
       !desktopMenuRef.current.contains(e.target as Node)
     ) {
+      dispatch(shouldWeHideMobileNav(false));
       setDesktopMenu(false);
     }
   };
 
   const hideMobileModal = () => {
-    setMobileModal(false);
     dispatch(shouldWeHideMobileNav(false));
+    setMobileModal(false);
   };
 
   const viewUserProfile = (userId: string) => {
@@ -476,10 +478,12 @@ const me = getUser && getUser._doc  && getUser._doc._id;
 
 
   const menuShow = (id: string) => {
+    dispatch(shouldWeHideMobileNav(true));
     setPostClicked(id);
     setIsPosting(false);
     setMenu((prev) => !prev);
     setDesktopMenu(true);
+    
   };
 
   const handleFollow = (userId: string) => {
@@ -571,7 +575,7 @@ const viewNextImage = () => {
 
 
 {/* search user result  */}
-  <div className='pb-[61px]'>
+  <div className={`pb-[61px] h-screen ${mode === 'light' ? 'bg-white' : 'bg-black'} `}>
     {
       searchuser ? (
         <>
@@ -579,8 +583,7 @@ const viewNextImage = () => {
           
               searchUsers && searchUsers.length === 0 ? (
                 <>
-                <img src={`${process.env.PUBLIC_URL}/images/nosearchfound.png`} alt="nosearchresultfound" className='w-full h-full' />
-                <h1 className='text-xs'>No User found</h1>
+                <h1 className={`text-xs flex p-4 justify-center ${mode === 'light' ? 'text-black' : 'text-white'}`}>No User found</h1>
                 </>
               ) :   searchUsers && Array.isArray(searchUsers) && searchUser.length > 0 ? searchUsers.map((person: any, index: number) => (
                 <div className={`flex justify-between items-center rounded-xl py-2 my-2 px-4 ${mode === 'light' ? 'bg-white' : 'bg-gray-800'} `}>

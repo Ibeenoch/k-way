@@ -6,9 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { socket } from '../../../../index'
 import { ReactComponent as LogoutLogo } from '../../../../assets/logout.svg';
 import { ReactComponent as BackLogo } from '../../../../assets/arrowBack.svg';
-import { ReactComponent as SearchLogo } from '../../../../assets/searchBar.svg';
-import { ReactComponent as SettingLogo } from '../../../../assets/setting.svg';
-import { allImagesUserAPost, getAllUserPosts, searchForPost, shouldWeHideMobileNav } from '../home/PostSlice';
+import { allImagesUserAPost, getAllUserPosts,  shouldWeHideMobileNav } from '../home/PostSlice';
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import { allCommentForAPost, bookmarkPost, commentOnPost, deletePost, getAPost, getAllPosts, getBookmarkforaPost, getLikesforaPost, getresharedforaPost, likePost, rePost, selectPost,  } from "../home/PostSlice";
 import { ReactComponent as LikeLogo } from '../../../../assets/like.svg';
@@ -41,18 +39,10 @@ const ProfileMiddle = () => {
   const { id } = useParams();
     const mobileMenuRef = useRef<HTMLDivElement>(null);
     const desktopMenuRef = useRef<HTMLDivElement>(null);
-    const [onePic, setOnePic] = useState<boolean>(false);
-    const [twoPics, setTwoPics] = useState<boolean>(false);
-    const [threePics, setThreePics] = useState<boolean>(false);
-    const [fourPics, setFourPics] = useState<boolean>(true);
-    const [playvideo, setPlayVideo] = useState<boolean>(false);
     const [menu, setMenu] = useState<boolean>(false);
     const [desktopMenu, setDesktopMenu] = useState<boolean>(false);
     const [mobileModal, setMobileModal] = useState<boolean>(false);
-    const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);
     const [fullvideoScreen, setFullVideoScreen] = useState<boolean>(false);
-    const [desktopmodal, setdeskTopModal] = useState<boolean>(false);
-    const [mobileIconModal, setMobileIconModal] = useState<boolean>(false);
     const [postModal, setPostModal] = useState<boolean>(false);
     const [showfeed, setShowFeed] = useState<boolean>(true);
     const [showupload, setShowupload] = useState<boolean>(false);
@@ -78,36 +68,13 @@ const ProfileMiddle = () => {
     const [displayProfileImage, setDisplayProfileImage] = useState<string>('');
     const [videoUrl, setVideoUrl] = useState<string>('');
     const [toRefresh, setToRefresh] = useState<boolean>(false);
-  
-    const [searchWord, setSearchWord] = useState('');
     const { posts, imageUpload, usersPosts } = useAppSelector(selectPost);
     const { viewingProfile } = useAppSelector(selectUser);
-  
-  
-    const viewTrendsPage = () => {
-      navigate('/trends')
-    }
   
     useEffect(() => {
       getAllPosts()
     }, [dispatch])
   
-    const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      console.log('search key ', searchWord);
-      dispatch(searchForPost(searchWord)).then((res: any) => {
-        console.log('searched post are ', res)
-      })
-    };
-  
-    const thesearchPost = () => {
-      if(searchWord && searchWord !== ''){
-      console.log('search key ', searchWord);
-      dispatch(searchForPost(searchWord)).then((res: any) => {
-        console.log('searched post are ', res)
-      })
-      }
-    };
   
     const [toggleControls, setToggleControls] = useState<boolean>(false);
     const [personalPost, setPersonalPost] = useState<any>();
@@ -349,6 +316,7 @@ const ProfileMiddle = () => {
   
   
     useEffect(() => {
+       dispatch(shouldWeHideMobileNav(false));
        setDesktopMenu(false);
        setMenu(false);
     }, [postModal])
@@ -370,6 +338,7 @@ const ProfileMiddle = () => {
         !desktopMenuRef.current.contains(e.target as Node)
       ) {
         setDesktopMenu(false);
+        dispatch(shouldWeHideMobileNav(false));
       }
     };
 
@@ -575,31 +544,14 @@ const ProfileMiddle = () => {
       dispatch(shouldWeHideMobileNav(false));
     };
   
-    const showFullMobileScreen = () => {
-      setMobileIconModal(true);
-    };
-  
-    const hideFullMobileScreen = () => {
-      setMobileIconModal(false);
-    };
-    const handleDesktopPost = () => {
-      setdeskTopModal(false);
-    };
-  
-    const showDeskTopModal = () => {
-      setdeskTopModal(true);
-    };
+ 
 
     const logoutUser = () => {
       localStorage.clear();
       navigate('/login');
     }
   
-    const onEmojiClick = (emojiObject: any) => {
-      console.log("events emoji ", emojiObject);
-      setInputStr((prev) => prev + emojiObject.emoji);
-      setShowEmojiPicker(false);
-    };
+ 
 
     const handleFollow = () => {
       const token = userStored && userStored.token;
@@ -656,6 +608,7 @@ const ProfileMiddle = () => {
         let desktop = document.getElementById("desktopmenu");
         if (desktop) {
           console.log("not desktop");
+          dispatch(shouldWeHideMobileNav(false));
           setDesktopMenu(false);
         }
       }
