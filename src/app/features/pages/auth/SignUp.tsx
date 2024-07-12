@@ -22,7 +22,10 @@ const SignUp: React.FC = () => {
   const [passcode, setPasscode] = useState<string>("");
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const [ischecked, setIsChecked] = useState(false);
+  const [emailInvalid, setemailInvalid] = useState(false);
+  const [passwordInvalid, setPasswordInvalid] = useState(false);
+  const [noemail, setnoEmail] = useState(false);
+  const [nopassword, setnoPassword] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
   const [isShowPassword, setIsShowPassword] = useState(false);
   const [isWeak, setIsWeak] = useState(false);
@@ -90,25 +93,68 @@ const SignUp: React.FC = () => {
 console.log(checkWeak, checkGood, checkStrong);
   }, [passwordCheck])
 
+  const handleEmailBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    if(email.length < 1){
+      setnoEmail(true);
+      return;
+    };
+
+    if(email){
+      setnoEmail(false);
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      const validEmail = emailRegex.test(email);
+      if(!validEmail){
+        setemailInvalid(true);
+      }else{
+        setemailInvalid(false);
+      }
+    }
+  }
+
+  const handlePasswordBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    if(password.length < 1){
+      setnoPassword(true);
+      return;
+    }else{
+
+      setnoPassword(false);
+      if((isWeak === false && isGood ===true) || (isWeak === false && isStrong === true)){
+        setPasswordInvalid(false);
+      }
+
+    };
+
+  }
 
   const handleRegister = async(e: FormEvent) => {
     e.preventDefault();
+    if(email === '' && password === ''){
+      setnoEmail(true);
+      setnoPassword(true);
+      setIsGood(false);
+      setIsWeak(false);
+      setIsStrong(false);
+      return;
+    }
+
     setIsClicked(true);
 
-    if(isWeak){
-      toast.error('Password too weak, password should be at least 8 characters long', {
-        duration: 6000,
-        position: 'top-center',
-        
-      });
+    if(isWeak || passwordInvalid){
       setIsClicked(false);
       return;
     }
    
    dispatch(registerUser(formData)).then((res: any) => {
     if(res && res.payload && res.payload.email){
-      console.log('sign   ', res.payload);
+
+      setFormData({
+        email: '',
+        password: '',
+      })
       setIsClicked(false);
+      setIsGood(false);
+      setIsWeak(false);
+      setIsStrong(false);
       navigate('/verify/email');
     };
 
@@ -124,10 +170,7 @@ console.log(checkWeak, checkGood, checkStrong);
     
    })
    
-   setFormData({
-    email: '',
-    password: '',
-  })
+ 
 
   };
 
@@ -167,13 +210,15 @@ console.log(checkWeak, checkGood, checkStrong);
                   <input
                     id="email"
                     name="email"
-                    type="email"
+                    type="text"
+                    onBlur={handleEmailBlur}
                     onChange={handleChange}
                     value={formData.email}
-                    required
                     placeholder="Email Address"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-0 focus:ring-inset focus:ring-none sm:text-sm sm:leading-6"
+                    className={`block w-full rounded-md ${noemail || emailInvalid ? "border border-red-600" : 'border-0'} py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-0 focus:ring-inset focus:ring-none sm:text-sm sm:leading-6`}
                     />
+                    <p className={`${ noemail ? 'block text-red-600 text-[11px]' : 'hidden' }`}>Email address is required</p>
+                    <p className={`${ emailInvalid ? 'block text-red-600 text-[11px]' : 'hidden' } `}>please enter a valid email address</p>
                 </div>
               </div>
 
@@ -193,13 +238,14 @@ console.log(checkWeak, checkGood, checkStrong);
                     type={isShowPassword ? "text" : "password"}
                     value={formData.password}
                     onChange={handleChange}
-                    required
+                    onBlur={handlePasswordBlur}
                     placeholder="Password"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-0 focus:ring-inset focus:ring-none sm:text-sm sm:leading-6"
+                    className={`block w-full rounded-md ${ passwordInvalid || nopassword ? 'border border-red-600' : 'border-0'} py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-0 focus:ring-inset focus:ring-none sm:text-sm sm:leading-6`}
                     />
+                    <p className={`${ nopassword ? 'block text-red-600  text-[11px]' : 'hidden' }`}>Password is Required</p>
                   <div
                     onClick={changeVisibilty}
-                    className="absolute top-1/2 right-3 transform -translate-y-1/2 cursor-pointer z-30"
+                    className={`absolute ${ nopassword || passwordInvalid ? 'top-1/3' : 'top-1/2'} right-3 transform -translate-y-1/2 cursor-pointer z-30`}
                   >
                     {isShowPassword ? (
                       <EyeIcon color="purple" className="w-4 h-4 z-30" />
