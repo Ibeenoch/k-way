@@ -910,11 +910,11 @@ return (
                   <h1 className={` ${ mode === 'light' ? 'text-black' : 'text-white'} text-sm font-semibold`}>
                     {post && post.owner && post.owner.fullname}
                   </h1>
-                <p className="text-gray-500 text-[8px]"> {post && formatCreatedAt(post.createdAt)} </p>
+                <p className={`${ mode === 'light' ? 'text-gray-900' : 'text-gray-300'} text-[8px] `}> {post && formatCreatedAt(post.createdAt)} </p>
                 </div>
                 <VerifyMarkLogo className="w-5 h-5 fill-purple-500"/>
              
-                <p className="text-gray-500 text-[10px] ">@{post && post.owner && post.owner.handle}</p>
+                <p className={`${ mode === 'light' ? 'text-gray-700' : 'text-gray-300'} text-[10px] `}>@{post && post.owner && post.owner.handle}</p>
               </div>
               {/* three dot icon  */}
               <div onClick={() => menuShow(post._id)} className="cursor-pointer ">
@@ -980,10 +980,10 @@ return (
             </div>
             {/* post text  */}
             <div onClick={() => goToPost(post._id)} className="ml-9">
-            <p className="text-[11px] text-gray-600">
+            <p className="text-[11px]">
               {post.content.length > 200 ? (
                <>
-               <p className="text-justify text-wrap text-[11px] text-gray-600">{post.content.slice(0, 500)} <strong className="cursor-pointer text-purple-600 text-xs">read more</strong></p>
+               <p className="text-justify text-wrap text-[11px]">{post.content.slice(0, 500)} <strong className="cursor-pointer text-purple-600 text-xs">read more</strong></p>
                </> 
                  ) : post.content}
             </p>
@@ -1237,19 +1237,19 @@ return (
             { post && post.photos && post.photos.length === 1 ? (
               <div className="rounded-3xl overflow-hidden">
             <img onClick={() => showMobileModal(post && post.photos[0] && post.photos[0].url, post && post._id)}
-                  className="w-[520px] h-[310px] bg-white rounded-3xl object-cover cursor-pointer"
+                  className="w-full h-[310px] bg-white rounded-3xl object-cover cursor-pointer"
                   src={post && post.photos[0] && post.photos[0].url}
                  alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
               </div>
             ) : post && post.photos && post.photos.length === 2 ? (
               <div className="flex overflow-hidden">
                  <img onClick={() => showMobileModal(post && post.photos[0] && post.photos[0].url, post && post._id)}
-                  className="fixed-size w-[258px]  rounded-l-3xl h-[293px] border-r border-white cursor-pointer object-cover"
+                  className="fixed-size w-full  rounded-l-3xl h-[293px] border-r border-white cursor-pointer object-cover"
                   src={post && post.photos[0] && post.photos[0].url}
                  alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
                  
                  <img onClick={() => showMobileModal(post && post.photos[1] && post.photos[1].url, post && post._id)}
-                   className="fixed-size w-[258px] h-[293px] border-l rounded-r-3xl border-white object-cover cursor-pointer"
+                   className="fixed-size w-full h-[293px] border-l rounded-r-3xl border-white object-cover cursor-pointer"
                    src={post && post.photos[1] && post.photos[1].url}
                  alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
               </div>
@@ -1273,22 +1273,22 @@ return (
             ) :   post && post.photos && post.photos.length === 4 ? (
               <div className="grid grid-cols-2 rounded-3xl overflow-hidden">
                 <img onClick={() => showMobileModal(post && post.photos[0] && post.photos[0].url, post && post._id)}
-                   className="w-[259px] h-[144px]  border-r border-b border-white rounded-tl-3xl fixed-size object-cover cursor-pointer"
+                   className="w-full h-[144px]  border-r border-b border-white rounded-tl-3xl fixed-size object-cover cursor-pointer"
                    src={post && post.photos[0] && post.photos[0].url}
                  alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
             
                  <img onClick={() => showMobileModal(post && post.photos[1] && post.photos[1].url, post && post._id)}
-                    className="w-[259px] h-[144px] border-l border-b border-white rounded-tr-3xl fixed-size object-cover cursor-pointer"
+                    className="w-full h-[144px] border-l border-b border-white rounded-tr-3xl fixed-size object-cover cursor-pointer"
                     src={post && post.photos[1] && post.photos[1].url}
                  alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
             
                  <img onClick={() => showMobileModal(post && post.photos[2] && post.photos[2].url, post && post._id)}
-                   className="w-[259px] h-[144px] border-t border-r border-white rounded-bl-3xl fixed-size object-cover cursor-pointer"
+                   className="w-full h-[144px] border-t border-r border-white rounded-bl-3xl fixed-size object-cover cursor-pointer"
                    src={post && post.photos[2] && post.photos[2].url}
                  alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
             
                  <img onClick={() => showMobileModal(post && post.photos[3] && post.photos[3].url, post && post._id)}
-                   className="w-[259px] h-[144px] border-t border-l border-white rounded-br-3xl fixed-size object-cover cursor-pointer"
+                   className="w-full h-[144px] border-t border-l border-white rounded-br-3xl fixed-size object-cover cursor-pointer"
                    src={post && post.photos[3] && post.photos[3].url}
                  alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
               </div>
@@ -1313,21 +1313,21 @@ return (
               <div onClick={(e) =>viewWhoLikePost(e, post._id)} className="p-[5px] bg-red-600 rounded-full">
                 <LikeLogo  className="w-[12px] h-[12px] fill-white stroke-white"/>
               </div>
-              <p className="text-[8px] text-gray-600"> {post.likes.length}</p>
+              <p className={`${ mode === 'light' ? 'text-gray-600' : 'text-gray-300'} text-[8px] `}> {post.likes.length}</p>
             
               <div  onClick={(e) =>viewWhoResharedPost(e, post._id)} className="p-[5px] bg-green-600 rounded-full">
                 <RetweetLogo  className="w-[12px] h-[12px] fill-white stroke-white"/>
               </div>
-              <p className="text-[8px] text-gray-600">{post.reShare.length}</p>
+              <p className={`${ mode === 'light' ? 'text-gray-600' : 'text-gray-300'} text-[8px] `}>{post.reShare.length}</p>
             
               <div  onClick={(e) =>viewWhoBookmarkPost(e, post._id)} className="p-[5px] bg-sky-600 rounded-full">
                 <BookMarkLogo className="w-[12px] h-[12px] fill-white stroke-white"/>
               </div>
             
-              <p className="text-[8px] text-gray-600">{post.bookmark.length}</p>
+              <p className={`${ mode === 'light' ? 'text-gray-600' : 'text-gray-300'} text-[8px] `}>{post.bookmark.length}</p>
             </div>
             
-            <p className="text-[10px] mt-3 text-gray-600">{post.comments.length} Comments</p>
+            <p className={`${ mode === 'light' ? 'text-gray-600' : 'text-gray-300'} text-[10px] mt-3 `}>{post.comments.length} Comments</p>
             </div>
             {/* icons */}
             <div className={`flex justify-between items-center`} >

@@ -966,11 +966,11 @@ post.reShared &&  (
       <h1 className="text-sm font-semibold">
         {post && post.owner && post.owner.fullname}
       </h1>
-    <p className="text-gray-400 text-[8px]"> {post && formatCreatedAt(post.createdAt)} </p>
+    <p className={`${ mode === 'light' ? 'text-gray-900' : 'text-gray-300'} text-[8px] `}> {post && formatCreatedAt(post.createdAt)} </p>
     </div>
     <VerifyMarkLogo className="w-5 h-5 fill-purple-500"/>
  
-    <p className="text-gray-400 text-[10px] ">@{post && post.owner && post.owner.handle}</p>
+    <p className={`${ mode === 'light' ? 'text-gray-700' : 'text-gray-300'} text-[10px] `}>@{post && post.owner && post.owner.handle}</p>
   </div>
   {/* three dot icon  */}
   <div onClick={() => menuShow(post._id)} className="cursor-pointer ">
@@ -1036,10 +1036,10 @@ post.reShared &&  (
 </div>
 {/* post text  */}
 <div onClick={() => goToPost(post._id)} className="ml-9">
-<p className="text-[11px] text-gray-400">
+<p className="text-[11px] ">
   {post.content.length > 200 ? (
    <>
-   <p className="text-justify text-wrap text-[11px] text-gray-600">{post.content.slice(0, 500)} <strong className="cursor-pointer text-purple-600 text-xs">read more</strong></p>
+   <p className="text-justify text-wrap text-[11px]">{post.content.slice(0, 500)} <strong className="cursor-pointer text-purple-600 text-xs">read more</strong></p>
    </> 
      ) : post.content}
 </p>
@@ -1361,21 +1361,21 @@ src={videoUrl}
   <div onClick={(e) =>viewWhoLikePost(e, post._id)} className="p-[5px] bg-red-600 rounded-full">
     <LikeLogo  className="w-[12px] h-[12px] fill-white stroke-white"/>
   </div>
-  <p className="text-[8px] text-gray-400"> {post.likes.length}</p>
+  <p className={`${ mode === 'light' ? 'text-gray-600' : 'text-gray-300'} text-[8px] `}> {post.likes.length}</p>
 
   <div  onClick={(e) =>viewWhoResharedPost(e, post._id)} className="p-[5px] bg-green-600 rounded-full">
     <RetweetLogo  className="w-[12px] h-[12px] fill-white stroke-white"/>
   </div>
-  <p className="text-[8px] text-gray-400">{post.reShare.length}</p>
+  <p className={`${ mode === 'light' ? 'text-gray-600' : 'text-gray-300'} text-[8px] `}>{post.reShare.length}</p>
 
   <div  onClick={(e) =>viewWhoBookmarkPost(e, post._id)} className="p-[5px] bg-sky-600 rounded-full">
     <BookMarkLogo className="w-[12px] h-[12px] fill-white stroke-white"/>
   </div>
 
-  <p className="text-[8px] text-gray-400">{post.bookmark.length}</p>
+  <p className={`${ mode === 'light' ? 'text-gray-600' : 'text-gray-300'} text-[8px] `}>{post.bookmark.length}</p>
 </div>
 
-<p className="text-[10px] mt-3 text-gray-400">{post.comments.length} Comments</p>
+<p className={`${ mode === 'light' ? 'text-gray-600' : 'text-gray-300'} text-[10px] mt-3 `}>{post.comments.length} Comments</p>
 </div>
 {/* icons */}
 <div className="flex justify-between items-center">
