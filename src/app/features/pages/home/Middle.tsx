@@ -807,7 +807,7 @@ const viewNextImage = () => {
                 <div onClick={() =>viewStories(story && story._id, index)} className="flex-none  relative text-center">
                 <img
                   className="w-[180px] h-[220px] rounded-3xl border-2 border-purple-500 cursor-pointer"
-                  src={viewstories && viewstories[index]}
+                  src={stories && stories[index] && stories[index].stories && stories[index].stories[0] && stories[index].stories[0].photos && stories[index].stories[0].photos[0]  && stories[index].stories[0].photos[0].url }
                   alt=''
                 />
                 <div className="absolute top-3 left-3">
