@@ -89,7 +89,7 @@ const me = getUser && getUser._doc && getUser._doc._id;
 
   return (
     <div className={`p-2 fixed w-[22vw] top-0 ${ mode === 'light' ? 'bg-gray-100' : 'bg-gray-900'}`}>
-      <div className={`flex ${ mode === 'light' ? 'bg-white' : 'bg-black'} flex-col rounded-3xl justify-center p-6`}>
+      <div className={`flex ${ mode === 'light' ? 'bg-white' : 'bg-black'} flex-col rounded-tl-3xl  rounded-tr-3xl justify-center p-6`}>
         <div  className='mx-auto pb-4'>
           <Link to='/'>
             <CompanyLogo className='w-12 h-12' />
@@ -160,7 +160,7 @@ const me = getUser && getUser._doc && getUser._doc._id;
        {/* nav icons desktop  */}
       <div className={`flex h-screen flex-col pt-4 ${ mode === 'light'? 'bg-white text-black fill-black' : 'bg-black text-white fill-white' } dark:bg-dark pt-2 pl-2 pr-2 pb-[150px]`} >
         
-        <div onClick={newsFeedActive} className={`group flex cursor-pointer justify-between p-2  ${ active === 'home' ? 'border-r-2 border-r-purple-500': 'border-0' } group-hover:text-purple`}>
+        <div onClick={newsFeedActive} className={`group flex cursor-pointer justify-between p-2  ${ active === 'home' ? 'border-r-[3px] border-l-[3px] border-purple-600': 'border-0' } group-hover:text-purple`}>
           <div className='flex gap-1 items-center'>
            <Home className={`w-4 h-4 group-hover:fill-purple-500 ${active === 'home' ? 'fill-purple-500 dark:fill-purple-500': ''}`}/>
           <p className={`text-xs font-semibold group-hover:text-purple-500 ${active === 'home' ? 'text-purple-500 dark:text-purple-500': ''}`}> News Feed</p>
@@ -168,7 +168,7 @@ const me = getUser && getUser._doc && getUser._doc._id;
         <div></div>
         </div>
         
-        <div onClick={messageActive} className={`group flex cursor-pointer justify-between p-2 ${active === 'message' ? 'border-r-2 border-r-purple-500': 'border-0' } group-hover:text-purple`}>
+        <div onClick={messageActive} className={`group flex cursor-pointer justify-between p-2 ${active === 'message' ? 'border-r-[3px] border-l-[3px] border-purple-600': 'border-0' } group-hover:text-purple`}>
           <div className='flex gap-1 items-center'>
             <Envelope className={`w-4 h-4 group-hover:fill-purple-500 ${active === 'message' ? 'fill-purple-500 stroke-purple-500 dark:fill-purple-500': ''}`} />
           <p className={`text-xs font-semibold group-hover:text-purple-500 ${active === 'message' ? 'text-purple-500': ''}`}> Messages</p>
@@ -183,7 +183,7 @@ const me = getUser && getUser._doc && getUser._doc._id;
         
         </div>
         
-        <div onClick={notificationActive} className={`group flex cursor-pointer justify-between p-2 ${active === 'notification' ? 'border-r-2 border-r-purple-500': 'border-0' } group-hover:text-purple`}>
+        <div onClick={notificationActive} className={`group flex cursor-pointer justify-between p-2 ${active === 'notification' ? 'border-r-[3px] border-l-[3px] border-purple-600': 'border-0' } group-hover:text-purple`}>
         <div className='flex gap-1 items-center'>
           <Bell className={`w-5 h-5 -ml-1 group-hover:fill-purple-500 ${active === 'notification' ? 'fill-purple-500 dark:fill-purple-500': ''}`}/>
       
@@ -200,7 +200,7 @@ const me = getUser && getUser._doc && getUser._doc._id;
         </div>
         
         
-        <div onClick={trendsActive} className={`group flex cursor-pointer justify-between p-2 ${active === 'trend' ? 'text-purple-500 border-purple-500 border-r-2': '' } group-hover:text-purple-500`}>
+        <div onClick={trendsActive} className={`group flex cursor-pointer justify-between p-2 ${active === 'trend' ? 'text-purple-500 border-purple-600 border-r-[3px] border-l-[3px]': '' } group-hover:text-purple-500`}>
           <div className='flex gap-1 items-center'>
            <GlobalTrend  className={`w-4 h-4 group-hover:fill-purple-500 ${active === 'trend' ? 'fill-purple-500': ''}`} />
           <p className={`text-xs font-semibold group-hover:text-purple-500 ${active === 'trend' ? 'text-purple-500': ''}`}> Trends</p>
