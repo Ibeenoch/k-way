@@ -130,9 +130,9 @@ const goTrend = () => {
       {mobileIconModal ? (
         <div className={`fixed ${postModal || viewingStory || viewingProfile || whichPost === 'post' || whichPost === 'story' || hideMobileNav === true  ? '-z-10' : 'z-40'} left-0 bottom-0 ${mode === 'light' ? 'fill-white bg-black' : 'bg-gray-900'} pr-3 pl-3 py-2 w-full rounded-full sm:hidden`} >
           <div className="flex gap-2 justify-around items-center">
-            <HomeLogo onClick={goHome} className={`w-7 h-7 ${ active === 'home' ? 'stroke-purple-600 fill-purple-600' : 'stroke-white fill-white' } ${mode === 'light' ? 'fill-white' : 'fill-black' }`} />
+            <HomeLogo onClick={goHome} className={`w-7 h-7 ${ active === 'home' ? 'stroke-purple-600 fill-purple-600' : 'stroke-white fill-white' } ${mode === 'light' ? '' : 'fill-black' }`} />
             
-            <GlobalTrendLogo onClick={goTrend} className={`w-7 h-7 ${ active === 'trend' ? 'fill-purple-600 stroke-purple-600' : 'fill-white stroke-white'} ${mode === 'light' ? 'fill-white' : 'fill-black' }`} />
+            <GlobalTrendLogo onClick={goTrend} className={`w-7 h-7 ${ active === 'trend' ? 'fill-purple-600 stroke-purple-600' : 'fill-white stroke-white'} ${mode === 'light' ? '' : 'fill-black' }`} />
 
             <div onClick={showPostModal} className={` ${active === 'post' ? 'bg-purple-600 p-3 border-2 border-white rounded-full' : 'p-3 bg-black border-2 border-white rounded-full'} ${mode === 'light' ? 'fill-white' : 'fill-black' }`} >
                <PlusIcon className="w-7 h-7 stroke-2 fill-white stroke-white"/>

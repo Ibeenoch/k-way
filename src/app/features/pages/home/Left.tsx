@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../hooks';
 import { addCountHistory, checkIfNoteIsLoading, getAUser, getAllNotificationForAUser, getAllUser, getOtherUser, markAllNotificationForAUser, resetSearchUser, selectUser, setActivePage, setProfileType } from '../auth/authSlice';
 import { useAppContext } from '../home/homeContext'
@@ -88,10 +88,12 @@ const Left = () => {
 const me = getUser && getUser._doc && getUser._doc._id;
 
   return (
-    <div className={`p-2 fixed w-[22vw] top-0`}>
-      <div className={`flex ${ mode === 'light' ? 'bg-white' : 'bg-black'} flex-col rounded-tl-3xl justify-center p-6`}>
+    <div className={`p-2 fixed w-[22vw] top-0 ${ mode === 'light' ? 'bg-gray-100' : 'bg-gray-900'}`}>
+      <div className={`flex ${ mode === 'light' ? 'bg-white' : 'bg-black'} flex-col rounded-3xl justify-center p-6`}>
         <div  className='mx-auto pb-4'>
-        <CompanyLogo className='w-12 h-12' />
+          <Link to='/'>
+            <CompanyLogo className='w-12 h-12' />
+          </Link>
         </div>
         <div className='flex gap-2 items-center justify-center'>
         <div className='rounded-full bg-sky-500 cursor-pointer w-18 h-18'></div>

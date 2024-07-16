@@ -544,7 +544,7 @@ const viewNextImage = () => {
   }
 
   return (
-   <div className={`p-2 ${ mode === 'light' ? 'bg-white text-black fill-black' : 'bg-black text-white fill-white'} h-min `}>
+   <div className={`p-2 sm:mt-10 sm:rounded-xl ${ mode === 'light' ? 'bg-white text-black fill-black' : 'bg-black text-white fill-white'} h-min `}>
       <div className='w-full rounded-3xl'>
 
   <form onSubmit={handleSearch}>

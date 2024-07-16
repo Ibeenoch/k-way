@@ -44,7 +44,7 @@ const initialState: userState = {
   notificationCountHistory: [],
   chat: [],
   followers: [],
-  mode: 'light',
+  mode: 'dark',
   unreadChatCount: 0,
   whoToNotify: '',
   chatId: '',

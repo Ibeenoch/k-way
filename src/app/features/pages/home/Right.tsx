@@ -61,7 +61,7 @@ const viewTrend = (trend: string) => {
 
 console.log('pop  ', hideMobileNav);
 return (
-    <div className={`fixed w-[34vw] hide-scrollbar ${viewingStory || whichPost === 'story' || whichPost === 'post' || hideMobileNav ? '-z-10' : 'z-0'}  p-4 top-0 overflow-y-auto`}>
+    <div className={`fixed w-[33vw] hide-scrollbar ${viewingStory || whichPost === 'story' || whichPost === 'post' || hideMobileNav ? '-z-10' : 'z-0'}  p-4 top-0 overflow-y-auto`}>
       <div className={`w-full ${mode === 'light' ? 'bg-white fill-black text-black' : 'bg-black fill-white text-white' } rounded-tr-3xl rounded-tl-3xl p-4 border-b border-gray-200`}>
 
       <div className='flex justify-between my-2 items-center px-4'>

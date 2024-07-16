@@ -701,7 +701,7 @@ const ProfileMiddle = () => {
     setMobileModal(true);
 };
 
-const randomHeight = [50, 75];
+const randomHeight = [50, 51, 49];
 const randomWidth = [1, 2, 3];
 
 const generateRandomwidth = (arr: number[]) => {

@@ -4,7 +4,7 @@ import EmojiPicker from "emoji-picker-react";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { changeMode, getAllUser, getOtherUser, selectUser, setProfileType, userFollowers, userFollowing } from "../auth/authSlice";
 import { allCommentForAPost, bookmarkPost, commentOnPost, createPost, createStory, deletePost, getAPost, getAllPosts, getAllUserStories, getAvailableStories, getBookmarkforaPost, getLikesforaPost, getresharedforaPost, likePost, openpostForm, rePost, resetEditCommentStatus, selectPost, setWhichPost, shouldWeHideMobileNav, updatePost, updateViewingStatus } from "./PostSlice";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import NavBar from "../mobilenav/NavBar";
 import './home.css';
 import { ReactComponent as GlobalTrendLogo } from '../../../../assets/globeTrend.svg';
@@ -35,6 +35,7 @@ import { ReactComponent as ProcessingLogo } from '../../../../assets/processingL
 import { ReactComponent as ArrowDownLogo } from '../../../../assets/arrowDownLogo.svg';
 import { ReactComponent as PlusLogo } from '../../../../assets/plusLogo.svg';
 import { ReactComponent as UndoLogo } from '../../../../assets/undo.svg';
+import { ReactComponent as CompanyLogo } from '../../../../assets/companylogo.svg';
 import { formatCreatedAt } from "../../../../utils/timeformat";
 import { useAppContext } from "./homeContext";
 import useOnClickOutside from "../../../../utils/ClickOut";
@@ -757,6 +758,11 @@ const viewNextImage = () => {
  
   return (
     <div className={`sm:mt-10 sm:rounded-tl-3xl ${ mode === 'light' ? 'bg-white' : 'bg-black' } sm:rounded-tr-3xl max-w-md sm:max-w-full`} >
+      <div className="pt-4 pl-4 pr-4">
+      <Link to='/'>
+            <CompanyLogo className='w-16 h-16' />
+          </Link>
+      </div>
       <div className={`p-2 flex sm:rounded-t-3xl justify-between ${ mode === 'light' ? `${desktopMenu || menu ? 'bg-gray-200' : ''}` : 'bg-black' }  `}>
         <h1 className={`text-md font-bold ${ mode === 'light' ? 'text-black' : 'text-white'} pt-3 pl-4`}>
           Stories

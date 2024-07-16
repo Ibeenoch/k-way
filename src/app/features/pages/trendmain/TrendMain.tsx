@@ -35,7 +35,7 @@ const TrendMain = () => {
   };
 
   return (
-    <div className={`${mode === 'light' ? 'bg-white' : 'bg-black' } h-min `}  >
+    <div className={`sm:mt-10 sm:rounded-xl ${mode === 'light' ? 'bg-white' : 'bg-black' } h-min `}  >
        <div className={`w-full ${ mode === 'light' ? 'bg-white text-black fill-black' : 'bg-black text-white fill-white' } h-screen rounded-3xl p-4`}>
        <div onClick={goBack} className='flex items-center gap-3 cursor-pointer'>
           <ArrowLeftIcon className='w-4 h-4 cursor-pointer' />
