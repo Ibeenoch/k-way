@@ -808,7 +808,7 @@ return (
      
         { firstUser !== secondUser ? (
       <div className={`mx-auto flex justify-center gap-6 py-4 ${ mode === 'light' ? 'bg-white text-black' : 'bg-black text-white'} `}>
-        <button onClick={handleFollow} className=" hover:bg-purple-600 hover:text-white duration-200 hover:border-white hover:scale-105 rounded-2xl border border-white font-semibold text-center px-4 py-1">{
+        <button onClick={handleFollow} className={`bg-black text-white hover:bg-purple-600 hover:text-white duration-200 hover:border-white hover:scale-105 rounded-2xl border border-white font-semibold text-center px-4 py-1`}>{
       user && user._doc && user._doc.following &&  user._doc.following.includes(otherperson && otherperson._doc && otherperson._doc._id) ? 'Following' : 'Follow'
       }
       </button>
