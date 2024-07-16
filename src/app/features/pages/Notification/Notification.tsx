@@ -7,10 +7,10 @@ const NotificationMain = lazy(() => import('./NotificationMain'));
 const Loading = lazy(() => import('../../../Loading'));
 
 const Notification = () => {
-  const { mode } = useAppSelector(selectUser);
+  const { mode, notifications } = useAppSelector(selectUser);
 
   return (
-    <div className={`grid grid-cols-1 sm:grid-cols-9 md:grid-cols-9 h-min ${mode === 'light' ? '' : 'bg-gray-900'} `}>
+    <div className={`grid grid-cols-1 sm:grid-cols-9 md:grid-cols-9 ${ notifications && Array.isArray(notifications) && notifications.length > 6 ? 'h-min' :  'h-screen' } ${mode === 'light' ? '' : 'bg-gray-900'} `}>
       <div className='hidden sm:block sm:col-start-1 sm:col-end-3 md:col-start-1 md:col-end-3'>
        <Suspense fallback={<Loading />} >
         <Left />

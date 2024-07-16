@@ -52,7 +52,7 @@ const NotificationMain = () => {
  
 
   return (
-    <div className={`p-4 h-min sm:mt-10 sm:rounded-xl  ${mode === 'light' ? 'bg-white text-black fill=black' : 'bg-black text-white fill-white'} sm:rounded-tl-3xl sm:rounded-tr-3xl`}>
+    <div className={`p-4 ${ notifications && Array.isArray(notifications) && notifications.length > 6 ? 'h-min' :  'h-screen' } sm:mt-10 sm:rounded-tl-xl sm:rounded-tr-xl ${mode === 'light' ? 'bg-white text-black fill=black' : 'bg-black text-white fill-white'} sm:rounded-tl-3xl sm:rounded-tr-3xl`}>
   <div onClick={goBack} className='flex items-center pb-2 gap-3 cursor-pointer'>
       <ArrowLeftIcon className='w-4 h-4 cursor-pointer' />
   <h2 className='text-xs font-semibold'>Go Back</h2>
@@ -133,7 +133,7 @@ const NotificationMain = () => {
       </>
       )) : (
         <>
-        <div className='flex justify-center items-center'>
+        <div className={`flex h-screen justify-center items-center ${ mode === 'light' ? 'bg-white text-black' : 'bg-black text-white'} `}>
         <p className='text-xs font-semibold'>You have no Notifications yet</p>
         </div>
         </>
