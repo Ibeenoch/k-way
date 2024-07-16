@@ -383,6 +383,11 @@ const handleReShare = async (postId: string) => {
 };
 
 const goToPost = async (id: string) => {
+  if(!getUser || getUser === null){
+    navigate('/login');
+    return;
+  };
+  
   dispatch(getAPost(id)).then((res: any) => {
     if(res && res.payload !== undefined){
       dispatch(allCommentForAPost(id)).then((res: any) => {
