@@ -6,7 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { socket } from '../../../../index'
 import { ReactComponent as LogoutLogo } from '../../../../assets/logout.svg';
 import { ReactComponent as BackLogo } from '../../../../assets/arrowBack.svg';
-import { allImagesUserAPost, getAllUserPosts,  shouldWeHideMobileNav } from '../home/PostSlice';
+import { allImagesUserAPost, getAllUserPosts,  shouldWeHideMobileNav, setWhichPost } from '../home/PostSlice';
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import { allCommentForAPost, bookmarkPost, commentOnPost, deletePost, getAPost, getAllPosts, getBookmarkforaPost, getLikesforaPost, getresharedforaPost, likePost, rePost, selectPost,  } from "../home/PostSlice";
 import { ReactComponent as LikeLogo } from '../../../../assets/like.svg';
@@ -417,6 +417,10 @@ const ProfileMiddle = () => {
       setDesktopMenu(true);
       dispatch(shouldWeHideMobileNav(true))
     };
+
+    useEffect(() => {
+      dispatch(setWhichPost('none'))
+    }, [])
   
    
   const viewPrevImage = () => {

@@ -1437,7 +1437,7 @@ src={videoUrl}
       >
         <div className={`w-full h-full  ${mode === 'light' ? 'bg-white text-black fill-black' : 'bg-gray-800 text-white fill-white'}`}>
           <div className="flex justify-between items-center p-2">
-          <img className='rounded-full w-7 h-7 cursor-pointer' src={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url} alt="" />
+          <img className='rounded-full w-8 h-8 cursor-pointer' src={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url} alt="" />
 
             {/* cancel or close  */}
             <CancelLogo  onClick={hidePostModal}
