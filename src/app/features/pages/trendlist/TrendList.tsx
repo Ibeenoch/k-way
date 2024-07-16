@@ -601,7 +601,7 @@ const viewNextImage = () => {
                   </div>
                   </div>
                   
-                  <button onClick={() => handleFollow(person && person._id)} className={`text-xs px-4 py-1 rounded-full hover:bg-purple-600 ${mode === 'light' ? 'bg-black' : 'bg-gray-900'} transform-transition duration-100 hover:scale-110`}>
+                  <button onClick={() => handleFollow(person && person._id)} className={`text-xs px-4 py-1 rounded-full hover:bg-purple-600 ${mode === 'light' ? 'bg-black text-white' : 'bg-gray-900 text-white'} transform-transition duration-100 hover:scale-110`}>
                 {getUser && getUser._doc && getUser._doc.following && getUser._doc.following.includes(person._id) ? 'Following' : 'Follow'} 
                   </button>
                 </div>
