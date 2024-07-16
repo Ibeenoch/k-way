@@ -1096,7 +1096,7 @@ const viewPost = (postId: string) => {
             }
           </div>
 
-        <div className={`${ mobileModal ? 'hidden' : 'block'} fixed max-w-[100%] sm:w-[50%] pt-2 bottom-0 rounded-xl`}>
+        <div className={`${ mobileModal ? 'hidden' : 'block'} fixed w-[100%] sm:w-[50%] pt-2 bottom-0 rounded-xl`}>
             <div className={`flex ${ mode === 'light' ? 'bg-white fill-black text-black' : 'bg-gray-800 fill-white text-white'} border border-gray-300 items-center max-h-[30px] py-6 px-2 rounded-xl`}>
             <img onClick={() => navigateToProfile(getUser && getUser._doc && getUser._doc._id)}
               src={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url }

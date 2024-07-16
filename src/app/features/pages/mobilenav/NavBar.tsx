@@ -90,7 +90,10 @@ const goTrend = () => {
     setisProfile(true);
     setispost(false);
     dispatch(setActivePage('profile'));
-    if(!getUser)return;
+    if(!getUser){
+      navigate('/login');
+      return;
+    };
     const userId = getUser && getUser._doc && getUser._doc._id;
     dispatch(getOtherUser(userId)).then((res: any) => {
       if(res && res.payload !== undefined){
