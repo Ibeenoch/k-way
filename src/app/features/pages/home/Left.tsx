@@ -88,7 +88,7 @@ const Left = () => {
 const me = getUser && getUser._doc && getUser._doc._id;
 
   return (
-    <div className={`p-2 fixed w-[22vw] top-0 ${ mode === 'light' ? 'bg-gray-100' : 'bg-gray-900'}`}>
+    <div className={`p-2 fixed w-[22vw] top-4 ${ mode === 'light' ? 'bg-gray-100' : 'bg-gray-900'}`}>
       <div className={`flex ${ mode === 'light' ? 'bg-white' : 'bg-black'} flex-col rounded-tl-3xl  rounded-tr-3xl justify-center p-6`}>
         <div  className='mx-auto pb-4'>
           <Link to='/'>

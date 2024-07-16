@@ -162,7 +162,7 @@ const getConfirmation = (theCommentId: string) => {
 }
 
   return (
-    <div className='sticky overflow-y-auto'>
+    <div className='sticky overflow-y-auto bg-gray-800'>
       
         {/* desktop comment modal  */}
        <div className={`sm:mx-[30%] ${ mode === 'light' ? 'bg-white' : 'bg-black fill-white text-white'} h-screen p-3`}>
@@ -172,7 +172,7 @@ const getConfirmation = (theCommentId: string) => {
           <h2 className='text-xs font-medium cursor-pointer'>Back</h2>
         </div>
         <h2 className='text-xs text-center font-medium cursor-pointer'>Reply Comment</h2>
-        <div className={`fixed max-w-[100%] sm:max-w-[38%]  ${mode === 'light' ? 'bg-white' : 'bg-gray-800'} bottom-0 pt-2 border border-gray-400 rounded-xl`} >
+        <div className={`fixed w-[94%] sm:w-[38.7vw]  ${mode === 'light' ? 'bg-white' : 'bg-gray-800'} bottom-0 pt-2 border border-gray-400 rounded-xl`} >
             <div className={`flex ${mode === 'light' ? 'bg-white' : 'bg-gray-800'} items-center max-h-[30px] p-2 mb-1 rounded-xl`}>
             <div onClick={() => viewPersonProfile(getUser._doc._id)}>
             <img
@@ -185,7 +185,7 @@ const getConfirmation = (theCommentId: string) => {
               type="text"
               onChange={(e) => (setComment(e.target.value))}
               value={comment}
-              className={`block text-xs w-[300px] h-[30px] p-3 ${mode === 'light' ? 'bg-white text-black' : 'bg-gray-800 text-white'}  border-0 focus:ring-0 focus:ring-inset focus:ring-none`}
+              className={`block text-xs w-[100%] h-[30px] p-3 ${mode === 'light' ? 'bg-white text-black' : 'bg-gray-800 text-white'}  border-0 focus:ring-0 focus:ring-inset focus:ring-none`}
               placeholder="Reply this post"
               name="reply"
               id="reply"

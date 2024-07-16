@@ -510,7 +510,7 @@ const viewPost = (postId: string) => {
 
   const postOwner = post && post.owner && post.owner._id;
   return (
-    <div className="sticky overflow-y-auto hide-scrollbar">
+    <div className="sticky overflow-y-auto hide-scrollbar bg-gray-800 h-min">
         <div onClick={handleGoBack} className={`flex sm:mx-[25%] gap-3 ${mode === 'light' ? `${commentmenu || menu  ? 'bg-gray-200 text-black' : 'bg-white fill-black text-black'}` : 'bg-black fill-white text-white'} p-2 cursor-pointer`} >
           <BackArrowLogo  className='w-4 h-4 cursor-pointer' />
         <h2 className='text-xs font-medium'>Back to Post Feeds</h2>
@@ -1096,7 +1096,7 @@ const viewPost = (postId: string) => {
             }
           </div>
 
-        <div className={`${ mobileModal ? 'hidden' : 'block'} fixed max-w-[100%] sm:max-w-[49%] pt-2 bottom-0 rounded-xl`}>
+        <div className={`${ mobileModal ? 'hidden' : 'block'} fixed max-w-[100%] sm:w-[50%] pt-2 bottom-0 rounded-xl`}>
             <div className={`flex ${ mode === 'light' ? 'bg-white fill-black text-black' : 'bg-gray-800 fill-white text-white'} border border-gray-300 items-center max-h-[30px] py-6 px-2 rounded-xl`}>
             <img onClick={() => navigateToProfile(getUser && getUser._doc && getUser._doc._id)}
               src={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url }
@@ -1107,7 +1107,7 @@ const viewPost = (postId: string) => {
               type="text"
               onChange={(e) => (setComment(e.target.value))}
               value={comment}
-              className={`block text-xs w-[700px] h-[30px] p-3 ${ mode === 'light' ? 'bg-white' : 'bg-gray-800'} bg-opacity-50 border-0 focus:ring-0 focus:ring-inset focus:ring-none`}
+              className={`block text-xs w-[100%] h-[30px] p-3 ${ mode === 'light' ? 'bg-white' : 'bg-gray-800'} bg-opacity-50 border-0 focus:ring-0 focus:ring-inset focus:ring-none`}
               placeholder="Comment on this post"
               name=""
               id=""

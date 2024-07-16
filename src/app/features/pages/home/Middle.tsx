@@ -942,7 +942,7 @@ const viewNextImage = () => {
       {/* mobile post  */}
       <NavBar />
 
-      <div className="pb-[150px] sm:pb-[100px]">
+      <div className="pb-[73px] sm:pb-[100px]">
       {/* feeds */}
 
       {
