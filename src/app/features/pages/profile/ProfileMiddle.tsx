@@ -399,9 +399,17 @@ return (
             <>
             <div className="relative">
             <img onClick={() => handleViewImage(otherperson && otherperson._doc && otherperson._doc.profilePhoto && otherperson._doc.profilePhoto.url, otherperson && otherperson._doc && otherperson._doc._id)} className='rounded-full w-[250px] h-[250px] cursor-pointer -ml-4' src={otherperson && otherperson._doc && otherperson._doc.profilePhoto && otherperson._doc.profilePhoto.url} alt="img" />
-             <div onClick={editProfile} className="absolute bottom-0 right-9 cursor-pointer">
-             <EditLogo className={`w-5 h-5 ${ mode === 'dark' ? 'fill-white' : 'fill-black'}`}/>              
-             </div> 
+             {
+              otherperson && otherperson._doc && otherperson._doc._id === id  && (
+                <>
+                <div onClick={editProfile} className="absolute bottom-0 right-9 cursor-pointer">
+                <EditLogo className={`w-5 h-5 ${ mode === 'dark' ? 'fill-white' : 'fill-black'}`}/>              
+                </div> 
+                </>
+                
+              )
+             }
+             
             </div>
             
             </>
@@ -409,9 +417,16 @@ return (
             <>
             <div className="relative">
              <img className='rounded-full w-[250px] h-[250px] cursor-pointer -ml-4' src={`${process.env.PUBLIC_URL}/images/user.png`} alt="" />
-             <div onClick={editProfile} className="absolute bottom-0 right-9 cursor-pointer">
-              <EditLogo className={`w-5 h-5 ${ mode === 'dark' ? 'fill-white' : 'stroke-black'}`}/>
-              </div> 
+             {
+              otherperson && otherperson._doc && otherperson._doc._id === id  && (
+                <>
+                <div onClick={editProfile} className="absolute bottom-0 right-9 cursor-pointer">
+                <EditLogo className={`w-5 h-5 ${ mode === 'dark' ? 'fill-white' : 'fill-black'}`}/>              
+                </div> 
+                </>
+                
+              )
+             }
             </div>
             
             </>

@@ -154,7 +154,7 @@ const ProfileForm: React.FC = () => {
               </div>
             </Link>
             <h2 className="mt-5 text-center text-lg font-bold leading-4 tracking-tight">
-              Create Your Profile
+              Update Your Profile
             </h2>
           </div>
 
