@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from 'react'
+import { Suspense, lazy } from 'react'
 import Loading from '../../../Loading';
 import { useAppSelector } from '../../../hooks';
 import { selectUser } from '../auth/authSlice';

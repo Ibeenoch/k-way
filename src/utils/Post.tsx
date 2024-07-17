@@ -2,7 +2,7 @@ import React, {  useEffect, useLayoutEffect, useRef, useState } from "react";
 import { HeartIcon,  } from "@heroicons/react/24/outline";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { getOtherUser, selectUser, setProfileType, userFollowing } from "../app/features/pages/auth/authSlice";
-import { allCommentForAPost, bookmarkPost, commentOnPost, deletePost, getAPost, getAllPosts, getAllUserStories, getAvailableStories, getBookmarkforaPost, getLikesforaPost, getresharedforaPost, likePost, openpostForm, rePost, resetEditCommentStatus, selectPost, setWhichPost, shouldWeEditPost, shouldWeHideMobileNav, updatePost, updateViewingStatus } from "../app/features/pages/home/PostSlice";
+import { allCommentForAPost, bookmarkPost, commentOnPost, deletePost, getAPost, getAllPosts, getAllUserStories, getAvailableStories, getBookmarkforaPost, getLikesforaPost, getresharedforaPost, likePost, openpostForm, rePost, resetEditCommentStatus, selectPost, setMenuActive, setWhichPost, shouldWeEditPost, shouldWeHideMobileNav, updatePost, updateViewingStatus } from "../app/features/pages/home/PostSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import '../app/features/pages/home/home.css';
 import { ReactComponent as LikeLogo } from '../assets/like.svg';
@@ -364,10 +364,9 @@ const Post: React.FC<Props> = ({ post }) => {
       
   
       if (targetElement) {
-        console.log('Clicked inside the specific div!', e.target);
       } else {
-        console.log('Clicked outside the button!', e.target);
         setDesktopMenu(false);
+        dispatch(setMenuActive(false));
       }
     });
   
@@ -484,6 +483,7 @@ const Post: React.FC<Props> = ({ post }) => {
       setIsPosting(false);
       setMenu((prev) => !prev);
       setDesktopMenu(true);
+      dispatch(setMenuActive(true));
     };
   
   

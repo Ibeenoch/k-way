@@ -19,6 +19,7 @@ export interface PostInterface {
   story: any;
   currentSearch: string;
   viewingStory: boolean;
+  menuActive: boolean;
   isEditPost: boolean;
   comments: any[];
   repliedcomments: any[];
@@ -49,6 +50,7 @@ const initialState: PostInterface = {
   status: "idle",
   repliedcomments: [],
   viewingStory: false,
+  menuActive: false,
   currentSearch: '',
   likes: [],
   bookmark: [],
@@ -335,6 +337,9 @@ export const postSlice = createSlice({
     },
     shouldWeEditPost: (state, action: PayloadAction<boolean>) => {
        state.isEditPost = action.payload;
+    },
+    setMenuActive: (state, action: PayloadAction<boolean>) => {
+       state.menuActive = action.payload;
     },
    
   },
@@ -685,7 +690,7 @@ export const postSlice = createSlice({
   },
 });
 
-export const { logout, resetEditCommentStatus, openpostForm, shouldWeHideMobileNav, setWhichPost, updateViewingStatus, resetSearchPost, shouldWeEditPost, currentSearchTrend } = postSlice.actions;
+export const { logout, resetEditCommentStatus, openpostForm, shouldWeHideMobileNav, setWhichPost, setMenuActive, updateViewingStatus, resetSearchPost, shouldWeEditPost, currentSearchTrend } = postSlice.actions;
 
 export const selectPost = (state: RootState) => state.posts;
 

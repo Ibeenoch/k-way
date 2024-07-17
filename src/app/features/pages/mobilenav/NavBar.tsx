@@ -23,7 +23,7 @@ const NavBar = () => {
     const dispatch = useAppDispatch();
     const { active, unViewednotificationCount, whoToNotify, viewingProfile, notification, mode } = useAppSelector(selectUser);
     const { whichPost, hideMobileNav } = useAppSelector(selectPost);
-    const { viewingStory } = useAppSelector(selectPost);
+    const { viewingStory, menuActive } = useAppSelector(selectPost);
     
     const me = getUser && getUser._doc && getUser._doc._id;
 
@@ -123,11 +123,12 @@ const goTrend = () => {
     }
   }, [])
 
+  console.log('postModal  ', postModal, 'menuactive ', menuActive, 'viewingStory ', viewingStory, 'viewingProfile ', viewingProfile, 'whichPost ', whichPost, 'hideMobileNav ', hideMobileNav)
   return (
     <div>
       
       {mobileIconModal ? (
-        <div className={`fixed ${postModal || viewingStory || viewingProfile || whichPost === 'post' || whichPost === 'story' || hideMobileNav === true  ? '-z-10' : 'z-40'} left-0 bottom-0 ${mode === 'light' ? 'fill-white bg-black' : 'bg-gray-900'} pr-3 pl-3 py-2 w-full rounded-full sm:hidden`} >
+        <div className={`fixed ${postModal || viewingStory || menuActive || viewingProfile || whichPost === 'post' || whichPost === 'story' || hideMobileNav === true  ? '-z-10' : 'z-40'} left-0 bottom-0 ${mode === 'light' ? 'fill-white bg-black' : 'bg-gray-900'} pr-3 pl-3 py-2 w-full rounded-full sm:hidden`} >
           <div className="flex gap-2 justify-around items-center">
             <HomeLogo onClick={goHome} className={`w-7 h-7 ${ active === 'home' ? 'stroke-purple-600 fill-purple-600' : 'stroke-white fill-white' } ${mode === 'light' ? '' : 'fill-black' }`} />
             
