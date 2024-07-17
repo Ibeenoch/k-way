@@ -560,7 +560,7 @@ useEffect(() => {
       </h1>
       {/* desktop post  */}
       {desktopmodal ? (
-        <div className={`hidden sm:block fixed mx-auto bottom-0 z-5 sm:rounded-xl ${mode === 'light' ? 'sm:bg-gray-300' : 'sm:bg-gray-800'} sm:pr-3 sm:pl-3 sm:pb-3 sm:max-w-sm md:max-w-sm lg:max-w-lg xl:max-w-xl`} >
+        <div className={`hidden sm:block fixed mx-auto bottom-0 z-5 sm:rounded-xl ${mode === 'light' ? 'sm:bg-gray-300' : 'sm:bg-gray-800'} sm:pr-3 sm:pl-3 sm:pb-3 sm:w-[44%]`} >
           <div className="flex justify-center sm:pb-2">
             <ArrowDownLogo onClick={handleDesktopPost}
               className="w-4 h-4 cursor-pointer"/>
