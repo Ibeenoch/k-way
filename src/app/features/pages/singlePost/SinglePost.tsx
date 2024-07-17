@@ -511,7 +511,7 @@ const viewPost = (postId: string) => {
   const postOwner = post && post.owner && post.owner._id;
   return (
     <div className="sticky overflow-y-auto hide-scrollbar bg-gray-800 h-min">
-       <div onClick={handleGoBack} className={`flex items-center py-4 pl-3 gap-3 ${ mode === 'light' ? 'text-black stroke-black' : 'text-white stroke-white'} cursor-pointer`}>
+       <div onClick={handleGoBack} className={`sm:mx-[25%] flex items-center py-4 pl-3 gap-3 ${ mode === 'light' ? 'text-black stroke-black' : 'text-white stroke-white'} cursor-pointer`}>
         <ArrowLeftIcon className='w-5 h-5 stroke-[3px] cursor-pointer' />
         <h2 className='text-sm font-semibold'>Go Back</h2>
       </div>

@@ -10,7 +10,7 @@ const Right = () => {
   const getUsers = JSON.parse(localStorage.getItem('alluser') as any);
   const getAUser = JSON.parse(localStorage.getItem('user') as any);
   const dispatch = useAppDispatch();
-  const { trendingPost, viewingStory, whichPost, hideMobileNav } = useAppSelector(selectPost);
+  const { trendingPost, viewingStory, whichPost, hideMobileNav, isEditPost } = useAppSelector(selectPost);
   const { mode } = useAppSelector(selectUser);
   const navigate = useNavigate();
 
@@ -36,8 +36,8 @@ if(!getAUser){
 }
 // if i am logged in
 const me = getAUser && getAUser._doc  && getAUser._doc._id;
-  console.log('lolyuah ', userId, getUsers);
-  const findPerson = getUsers.find((u: any) => u._id === userId);
+
+const findPerson = getUsers.find((u: any) => u._id === userId);
     if(findPerson && !findPerson.fullname || findPerson.fullname === ''){
       navigate(`/profile/create/${userId}`);
       return;
@@ -58,10 +58,10 @@ const viewTrend = (trend: string) => {
   dispatch(currentSearchTrend(trend));
   navigate('/trendlist')
 }
+console.log('which post ', whichPost, 'viewingStory ', viewingStory, 'isEditPost ', isEditPost, 'hideMobileNav ', hideMobileNav  );
 
-console.log('pop  ', hideMobileNav);
 return (
-    <div className={`fixed w-[33vw] hide-scrollbar ${viewingStory || whichPost === 'story' || whichPost === 'post' || hideMobileNav ? '-z-10' : 'z-10'}  p-4 top-2 overflow-y-auto`}>
+    <div className={`fixed w-[33vw] hide-scrollbar ${viewingStory || isEditPost || whichPost === 'story' || whichPost === 'post' || hideMobileNav ? '-z-10' : 'z-10'}  p-4 top-2 overflow-y-auto`}>
       <div className={`w-full ${mode === 'light' ? 'bg-white fill-black text-black' : 'bg-black fill-white text-white' } rounded-tr-3xl rounded-tl-3xl p-4 border-b border-gray-200`}>
 
       <div className='flex justify-between my-2 items-center px-4'>

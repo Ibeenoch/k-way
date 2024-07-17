@@ -4,6 +4,7 @@ import { act } from "@testing-library/react";
 import * as api from './PostAPI'
 
 
+
 export interface PostInterface {
   posts: any[];
   searchPosts: any[];
@@ -18,6 +19,7 @@ export interface PostInterface {
   story: any;
   currentSearch: string;
   viewingStory: boolean;
+  isEditPost: boolean;
   comments: any[];
   repliedcomments: any[];
   likes: any[];
@@ -51,6 +53,7 @@ const initialState: PostInterface = {
   likes: [],
   bookmark: [],
   openPostForm: false,
+  isEditPost: false,
   hideMobileNav: false,
   whichPost: 'none',
   view: 'none',
@@ -329,6 +332,9 @@ export const postSlice = createSlice({
     },
     shouldWeHideMobileNav: (state, action: PayloadAction<boolean>) => {
        state.hideMobileNav = action.payload;
+    },
+    shouldWeEditPost: (state, action: PayloadAction<boolean>) => {
+       state.isEditPost = action.payload;
     },
    
   },
@@ -685,7 +691,7 @@ export const postSlice = createSlice({
   },
 });
 
-export const { logout, resetEditCommentStatus, openpostForm, shouldWeHideMobileNav, setWhichPost, updateViewingStatus, resetSearchPost, currentSearchTrend } = postSlice.actions;
+export const { logout, resetEditCommentStatus, openpostForm, shouldWeHideMobileNav, setWhichPost, updateViewingStatus, resetSearchPost, shouldWeEditPost, currentSearchTrend } = postSlice.actions;
 
 export const selectPost = (state: RootState) => state.posts;
 
