@@ -248,8 +248,12 @@ const me = getUser && getUser._doc  && getUser._doc._id;
           
               searchUsers && searchUsers.length === 0 ? (
                 <>
-             <img src={`${process.env.PUBLIC_URL}/images/noresultfound1.png`} alt="nosearchresultfound" className='w-full h-full' />
-                <h1 className={`text-xs flex p-4 justify-center ${mode === 'light' ? 'text-black' : 'text-white'}`}>No User found</h1>
+                <div className='bg-gray-800'>
+                    <div className={`h-screen ${ mode === 'light' ? 'bg-white text-black' : 'bg-black text-white'} w-full flex flex-col p-4 justify-center items-center max-w-lg mx-auto`}>
+                    <h1 className={`text-xl font-bold flex p-4 justify-center ${mode === 'light' ? 'text-black' : 'text-white'}`}>No User found</h1>
+                    <img src={`${process.env.PUBLIC_URL}/images/noresultfound1.png`} alt="nosearchresultfound" className='w-full h-full' />
+                    </div>
+                </div>
                 </>
               ) :   searchUsers && Array.isArray(searchUsers) && searchUser.length > 0 ? searchUsers.map((person: any, index: number) => (
                 <div className={`flex justify-between items-center rounded-xl py-2 my-2 px-4 ${mode === 'light' ? 'bg-white' : 'bg-gray-800'} `}>
@@ -283,8 +287,12 @@ const me = getUser && getUser._doc  && getUser._doc._id;
           {
             searchPosts && searchPosts.length === 0 ? (
               <>
-              <img src={`${process.env.PUBLIC_URL}/images/noresultfound1.png`} alt="nosearchresultfound" className='w-full h-full' />
-              <h1>No Post found</h1>
+              <div className='bg-gray-800'>
+                    <div className={`h-screen ${ mode === 'light' ? 'bg-white text-black' : 'bg-black text-white'} w-full flex flex-col p-4 justify-center items-center max-w-lg mx-auto`}>
+                    <h1 className={`text-xl font-bold flex p-4 justify-center ${mode === 'light' ? 'text-black' : 'text-white'}`}>No Post found</h1>
+                    <img src={`${process.env.PUBLIC_URL}/images/noresultfound1.png`} alt="nosearchresultfound" className='w-full h-full' />
+                    </div>
+                </div>
               </>
             )
           : searchPosts && Array.isArray(searchPosts) && searchPosts.length > 0 ? searchPosts.map((post: any, index: number) => (       
