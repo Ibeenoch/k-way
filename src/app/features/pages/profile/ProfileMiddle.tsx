@@ -352,8 +352,8 @@ const ProfileMiddle = () => {
     setMobileModal(true);
 };
 
-const randomHeight = [50, 51, 49];
-const randomWidth = [1, 2, 3];
+const randomHeight = [50, 51];
+const randomWidth = [1, 2,];
 
 const generateRandomwidth = (arr: number[]) => {
   const randomIndex = Math.floor(Math.random() * arr.length);
@@ -564,14 +564,43 @@ return (
         showupload && imageUpload && imageUpload.length > 0  ?
         (
             <>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-1 md:grid-cols-3">
-                {
-                  imageUpload && imageUpload.length > 0 && imageUpload.map((post: any, index: number) => (
-                    <>
-                    <img src={post && post.url} onClick={() => showUploadedMobileModal(post && post.url)} className={`col-span-${generateRandomwidth(randomWidth)} h-[${generateRandomheight(randomHeight)}] rounded-xl`} alt="imageupload" />
-                    
-                         {/* picture modal  */}
-            <div
+            <div className="grid gap-1 grid-cols-4 sm:grid-cols-6">
+  {imageUpload &&
+    imageUpload.length > 0 &&
+    imageUpload.map((post: any, index: number) => {
+      let widthClass = "";
+      let heightClass = "";
+
+      if (index % 4 === 0) {
+        // First image in every set of four
+        widthClass = "col-span-1 sm:col-span-1";
+        heightClass = "h-full";
+      } else if (index % 4 === 1) {
+        // Second image in every set of four
+        widthClass = "col-span-2 sm:col-span-2";
+        heightClass = "h-[90%]";
+      } else if (index % 4 === 2) {
+        // Third image in every set of four
+        widthClass = "col-span-1 sm:col-span-1";
+        heightClass = "h-full";
+      } else if (index % 4 === 3) {
+        // Fourth image in every set of four
+        widthClass = "col-span-2 sm:col-span-2";
+        heightClass = "h-[90%]";
+      }
+
+      return (
+        <>
+        <img
+          key={index}
+          src={post && post.url}
+          onClick={() => showUploadedMobileModal(post && post.url)}
+          className={`rounded-xl ${widthClass} ${heightClass}`}
+          alt="imageupload"
+        />
+
+                      {/* picture modal  */}
+                      <div
             className={`${
             mobileModal ? "flex" : "hidden"
             } fixed top-0 left-0 bg-black w-full h-full justify-center items-center`}
@@ -625,12 +654,13 @@ return (
             </div>
             
             </div>
+</>
+      );
+    })}
+</div>
 
-                 </>
-                 
-                ))
-                }
-            </div>
+
+          
   
             </>
          ) :
