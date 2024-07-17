@@ -352,22 +352,11 @@ const ProfileMiddle = () => {
     setMobileModal(true);
 };
 
-const randomHeight = [50, 51];
-const randomWidth = [1, 2,];
-
-const generateRandomwidth = (arr: number[]) => {
-  const randomIndex = Math.floor(Math.random() * arr.length);
-  return arr[randomIndex];
-}
-
-const generateRandomheight = (arr: number[]) => {
-  const randomIndex = Math.floor(Math.random() * arr.length);
-  return arr[randomIndex];
-}
 
 
 return (
-    <div className={` h-min max-w-md sm:max-w-full ${mode === 'light' ? 'bg-white text-black fill-black' : 'bg-black text-white fill-white' } rounded-tl-3xl rounded-tr-3xl`}>
+  <div>
+    <div className={` h-min max-w-md sm:mt-10 sm:max-w-full ${mode === 'light' ? 'bg-white text-black fill-black' : 'bg-black text-white fill-white' } sm:rounded-tl-3xl sm:rounded-tr-3xl`}>
       
       <div className='sm:flex flex justify-between gap-2 p-2 sm:p-4 cursor-pointer'>
       <div onClick={handleGoBack} className='flex items-center py-4 pl-3 gap-3 cursor-pointer'>
@@ -675,6 +664,7 @@ return (
 
      <NavBar />
 
+  </div>
   </div>
   )
 }
