@@ -1113,10 +1113,10 @@ mobileModal ? "flex" : "hidden"
 >
 <div className={`w-full sm:px-[25%] h-full sm:max-h-sm sm:bg-gray-900`}>
 <div className="flex justify-between items-center p-2 ">
-  <MenuLogo className={`${toggleControls ? 'block': 'hidden'} w-3 h-3  z-40 fill-white mt-3 ml-3 cursor-pointer`} />
+  <MenuLogo className={`${toggleControls ? 'block': 'hidden'} w-4 h-4  z-40 fill-white mt-3 ml-3 cursor-pointer`} />
 
   {/* cancel or close  */}
-  <CancelLogo onClick={hideMobileModal}  className={`${toggleControls ? 'block': 'hidden'} w-3 h-3 fill-white z-40 mt-4 mr-4 cursor-pointer`} />
+  <CancelLogo onClick={hideMobileModal}  className={`${toggleControls ? 'block': 'hidden'} w-4 h-4 fill-white z-50 mt-4 mr-4 cursor-pointer`} />
 </div>
 
 <div className={`${toggleControls ? 'flex': 'hidden'} justify-between items-center z-14 my-2 px-4`}>
@@ -1450,7 +1450,7 @@ src={videoUrl}
             value={content}
             name="content"
             id="content"
-            className={`${mode === 'light' ? 'bg-white' : 'bg-gray-800 text-white'} resize-none flex-none w-full h-[85vh] text-sm border-none focus:ring-0`}
+            className={`${mode === 'light' ? 'bg-white' : 'bg-gray-800 text-white'} resize-none flex-none w-full h-[80vh] sm:h-[85vh] text-sm border-none focus:ring-0`}
             placeholder={`${ whichPost === 'post' ? 'share a post' : 'share a story'} `}
           ></textarea>
 

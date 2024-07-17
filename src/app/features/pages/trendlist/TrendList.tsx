@@ -788,7 +788,7 @@ const viewNextImage = () => {
             <MenuLogo className={`${toggleControls ? 'block': 'hidden'} w-3 h-3  z-40 fill-white mt-3 ml-3 cursor-pointer`} />
 
             {/* cancel or close  */}
-            <CancelLogo onClick={hideMobileModal}  className={`${toggleControls ? 'block': 'hidden'} w-3 h-3 fill-white z-40 mt-4 mr-4 cursor-pointer`} />
+            <CancelLogo onClick={hideMobileModal}  className={`${toggleControls ? 'block': 'hidden'} w-4 h-4 fill-white z-50 mt-4 mr-4 cursor-pointer`} />
           </div>
 
           <div className={`${toggleControls ? 'flex': 'hidden'} justify-between items-center z-14 my-2 px-4`}>
@@ -807,9 +807,9 @@ const viewNextImage = () => {
 
 
 
-          <div className="fixed z-5 inset-0 flex justify-center items-center">
+          <div onClick={toggleImageControls}  className="fixed z-5 inset-0 flex justify-center items-center">
             <div className="pt-1"></div>
-          <div className="z-40"  onClick={toggleImageControls} onTouchStart={handleTouchStart}  onTouchEnd={handleTouchEnd} onTouchMove={handleTouchMove} > 
+          <div className="z-40" onTouchStart={handleTouchStart}  onTouchEnd={handleTouchEnd} onTouchMove={handleTouchMove} > 
             <img
             
               className="max-w-[600px] cursor-pointer z-40"
