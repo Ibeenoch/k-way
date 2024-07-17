@@ -460,9 +460,13 @@ const viewPost = (postId: string) => {
   });
 
   const postOwner = post && post.owner && post.owner._id;
+
+  const handleClose = () => {
+    hideMobileModal()
+  }
   return (
     <div className="sticky overflow-y-auto hide-scrollbar bg-gray-800 h-min">
-       <div onClick={handleGoBack} className={`sm:mx-[25%] flex items-center py-4 pl-3 gap-3 ${ mode === 'light' ? 'text-black stroke-black' : 'text-white stroke-white'} cursor-pointer`}>
+       <div onClick={handleGoBack} className={`sm:mx-[25%] flex items-center py-4 pl-3 gap-3 ${ mode === 'light' ? 'bg-white text-black stroke-black' : 'bg-black text-white stroke-white'} cursor-pointer`}>
         <ArrowLeftIcon className='w-5 h-5 stroke-[3px] cursor-pointer' />
         <h2 className='text-sm font-semibold'>Go Back</h2>
       </div>
@@ -497,6 +501,9 @@ const viewPost = (postId: string) => {
                     menu && post._id === postClicked ? "sm:block" : "sm:hidden"
                   } absolute shadow-xl shadow-purple-80 z-10 top-0 -right-[10px] w-[150px] h-auto rounded-3xl mx-auto ${ mode === 'light' ? 'bg-white text-black fill-black stroke-black' : 'bg-gray-800 text-white fill-white stroke-white'} p-2`}
                 >
+                  <div onClick={handleClose} className="flex  cursor-pointer justify-center items-center py-4">
+                      <p className="text-sm font-semibold px-4 py-1  border border-purple-600 rounded-3xl hover:bg-purple-600 hover:text-white text-purple-600 ">Close</p>
+                    </div>
                   {
                     getUser && getUser._doc && getUser._doc._id === postOwner ? (
                       <div id="mobileMenuRef">    
@@ -540,34 +547,37 @@ const viewPost = (postId: string) => {
                   menu && post._id === postClicked ? "block" : "hidden"
                 } bottom-0 left-0 ${ mode === 'light' ? 'bg-white text-black fill-black stroke-black' : 'bg-gray-800 text-white fill-white stroke-white'} pt-10 pl-5 pr-5 pb-5 z-40 w-full h-[40%] rounded-tl-3xl rounded-tr-3xl sm:hidden`}
               >
+                <div onClick={handleClose} className="flex  cursor-pointer justify-center items-center py-4">
+                  <p className="text-sm font-semibold px-4 py-1  border border-purple-600 rounded-3xl hover:bg-purple-600 hover:text-white text-purple-600 ">Close</p>
+                </div>
                 {
                   getUser !== undefined && getUser && getUser._doc && getUser._doc._id  ===   post && post.owner && post.owner._id ? (
                               <div id="mobileMenuRef">
                             <div  onClick={() =>handleDeletePost(post._id)} className="flex gap-2 px-2 cursor-pointer items-center py-4">
-                              <TrashLogo className="w-6 h-6"/>
-                              <p className="text-lg">Delete Post</p>
+                              <TrashLogo className="stroke-purple-600 fill-purple-600 w-6 h-6"/>
+                              <p className="text-lg  text-purple-600">Delete Post</p>
                             </div>
                               </div>
                             ) : (
                               <div id="mobileMenuRef">
                               <div className="flex gap-2 px-2 cursor-pointer items-center py-4">
-                            <AddContactLogo  className="w-5 h-5"/>
-                            <p className="text-lg">Follow @{post && post.owner && post.owner.handle}</p>
+                            <AddContactLogo  className="stroke-purple-600 fill-purple-600 w-5 h-5"/>
+                            <p className="text-lg  text-purple-600">Follow @{post && post.owner && post.owner.handle}</p>
                           </div>
 
                           <div className="flex gap-2 px-2 cursor-pointer items-center py-4">
-                            <BlockContactLogo  className="w-5 h-5"/>
-                            <p className="text-lg">Block @{post && post.owner && post.owner.handle}</p>
+                            <BlockContactLogo  className="stroke-purple-600 fill-purple-600 w-5 h-5"/>
+                            <p className="text-lg  text-purple-600">Block @{post && post.owner && post.owner.handle}</p>
                           </div>
 
                           <div className="flex gap-2 px-2 cursor-pointer items-center py-4">
-                            <ReportContactLogo  className="w-5 h-5"/>
-                            <p className="text-lg">Report Post</p>
+                            <ReportContactLogo  className="stroke-purple-600 fill-purple-600 w-5 h-5"/>
+                            <p className="text-lg  text-purple-600">Report Post</p>
                           </div>
 
                           <div className="flex gap-2 px-2 cursor-pointer items-center py-4">
-                            <MuteContactLogo   className="w-5 h-5"/>
-                            <p className="text-lg">Mute @{post && post.owner && post.owner.handle}</p>
+                            <MuteContactLogo   className="stroke-purple-600 fill-purple-600 w-5 h-5"/>
+                            <p className="text-lg  text-purple-600">Mute @{post && post.owner && post.owner.handle}</p>
                           </div>
                               </div>
                             )
