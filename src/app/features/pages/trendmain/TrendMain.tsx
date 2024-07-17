@@ -14,15 +14,11 @@ const TrendMain = () => {
   const { mode } = useAppSelector(selectUser);
 
   useEffect(() => {
-    dispatch(topPostTrending()).then((res: any) => {
-      console.log('res trend post ', res)
-    });
+    dispatch(topPostTrending())
   }, [])
 
   useEffect(() => {
-    dispatch(topUserTrending()).then((res: any) => {
-      console.log('res trend user ', res)
-    });
+    dispatch(topUserTrending())
   }, [])
 
   const viewTrend = (trend: string) => {

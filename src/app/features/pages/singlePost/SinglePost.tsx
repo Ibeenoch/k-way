@@ -16,7 +16,6 @@ import { ReactComponent as CancelLogo } from '../../../../assets/cancelLogo.svg'
 import { ReactComponent as EditLogo } from '../../../../assets/editLogo.svg';
 import { ReactComponent as TrashLogo } from '../../../../assets/trashLogo.svg';
 import { ReactComponent as SendLogo } from '../../../../assets/sendLogo.svg';
-import { ReactComponent as BackArrowLogo } from '../../../../assets/arrowBack.svg';
 import { ReactComponent as ProcessingLogo } from '../../../../assets/processingLogo.svg';
 import { ReactComponent as ThreeDotVerticalLogo } from '../../../../assets/threeDotVerticalLogo.svg';
 import { formatCreatedAt } from "../../../../utils/timeformat";
@@ -33,27 +32,22 @@ import useOnClickOutside from '../../../../utils/ClickOut';
 
 
 const SinglePost = () => {
-    const desktopMenuRef = useRef<HTMLDivElement>(null);
     const getUser = JSON.parse(localStorage.getItem('user') as any);
     const [touchstart, setTouchStart] = useState<number>();
     const [desktopMenu, setDesktopMenu] = useState<boolean>(false);
     const [postClicked, setPostClicked] = useState<string>("");
     const [commentClicked, setCommentClicked] = useState<string>("");
     const [videoUrl, setVideoUrl] = useState<string>('');
-    const [content, setcontent] = useState<string>("");
     const [findReply, setFindReply] = useState<boolean>(false);
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const [toggleControls, setToggleControls] = useState<boolean>(false);
     const [touchend, setTouchEnd] = useState<number>();
     const { id } = useParams();
-    const [postModal, setPostModal] = useState<boolean>(false);
     const mobileMenuRef = useRef<HTMLDivElement>(null);
     const [displayProfileImage, setDisplayProfileImage] = useState<string>('');
-    const mobileCommentMenuRef = useRef<HTMLDivElement>(null);
     const [comment, setComment] = useState<string>("");
     const [commentErr, setCommentErr] = useState<string>("");
-    const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);
     const [commentModal, setCommentModal] = useState<boolean>(false);
     const [isCommenting, setIsCommenting] = useState<boolean>(false);
     const [currentPostId, setCurrentPostId] = useState<string>("");
@@ -63,7 +57,6 @@ const SinglePost = () => {
     const [commentmenu, setCommentMenu] = useState<boolean>(false);
     const [desktopCommentMenu, setDesktopCommentMenu] = useState<boolean>(false);
     const desktopCommentMenuRef = useRef<HTMLDivElement>(null);
-    const [postId, setPostId] = useState<string>('');
     const [personalPost, setPersonalPost] = useState<any>();
   const [displayImage, setDisplayImage] = useState<string>('');
   const [mobileModal, setMobileModal] = useState<boolean>(false);
@@ -74,10 +67,6 @@ const SinglePost = () => {
     const { post, comments, storyOwner, posts } = useAppSelector(selectPost);
     const { mode } = useAppSelector(selectUser);
 
-
-    const hideComment = () => {
-        setCommentModal(false)
-      }
   
       const showFullScreen = () => {
         setFullVideoScreen(true);
@@ -110,18 +99,11 @@ const SinglePost = () => {
           postId
         };
         dispatch(likePost(postLike)).then((res: any) => {
-          console.log('res ', res);
           if(res && res.payload !== undefined){
             setFindReply(true);
           }
         })
       };
-
-        
-        const showPostModal = () => {
-            setPostModal(true);
-        
-        };
 
         const showCommentMenuBar = (id: string) => {
             setCommentClicked(id);
@@ -147,9 +129,7 @@ const SinglePost = () => {
             if(getConfirmation){
             const token = getUser.token;
             const post = { id, token };
-            dispatch(deletePost(post)).then((res: any) => {
-              console.log('is successfully deleted ', res);
-            })
+            dispatch(deletePost(post))
           }
         
           };
@@ -167,7 +147,6 @@ const SinglePost = () => {
     
     dispatch(getAllRepliesForComment(commentId)).then((res: any) => {
         if(res && res.payload !== undefined){
-            console.log('replies comments ', res.payload)
             navigate(`/reply/comment/${commentId}`)
         }
     })
@@ -198,7 +177,6 @@ const SinglePost = () => {
     const token = getUser && getUser.token;
     const likes = { token, commentId };
     dispatch(likeComment(likes)).then((res: any) => {
-      console.log('liked the comment', res)
       if(res && res.payload !== undefined){
         setFindReply(true);
       }
@@ -217,16 +195,12 @@ const SinglePost = () => {
       userId,
       postId
     };
-    dispatch(rePost(postReshare)).then((res: any) => {
-      console.log('res ', res)
-    })
+    dispatch(rePost(postReshare))
   };
   
 
   const showComment = async(postId: string) => {
-    console.log('the postid ', postId);
     const getAllComments = await dispatch(allCommentForAPost(postId)).then((res: any) => {
-      console.log('res ', res);
       setCommentModal(true);
       setMobileCommentModal(true);
       setFindReply(false);
@@ -249,15 +223,11 @@ const handleBookmark = async (postId: string) => {
       userId,
       postId
     };
-    dispatch(bookmarkPost(postBooked)).then((res: any) => {
-      console.log('res ', res);
-      
-    })
+    dispatch(bookmarkPost(postBooked))
   };
   
   useEffect(() => {
     const handlepostComment = (data: any) => {
-      console.log('data postComment post ', data);
       dispatch(addNotification(data));
     };
   
@@ -270,7 +240,6 @@ const handleBookmark = async (postId: string) => {
 
   useEffect(() => {
     const handlecommentLiked = (data: any) => {
-      console.log('data commentLiked post ', data);
       dispatch(addNotification(data));
     };
   
@@ -310,7 +279,6 @@ const handleBookmark = async (postId: string) => {
       };    
   
     dispatch(commentOnPost(comments)).then((res: any) => {
-      console.log('comment ', res);
       if(res && res.payload !== undefined){
         setComment('');
         window.scrollTo(0, document.documentElement.scrollHeight);
@@ -423,17 +391,7 @@ const viewNextImage = () => {
 
 };
 
-  const handleEditPost = (id: string) => {
-    if(getUser === null){
-      navigate('/login');
-      return;
-    };
-    navigate('/');
-    const findPost = posts.find((p: any) => p._id === id);
-    setcontent(findPost.content);
-    navigate(`/${findPost._id}`)
-    showPostModal()
-  };
+
 
 const viewOthersProfile = ( userId: string ) => {
   dispatch(getOtherUser(userId)).then((res: any) => {
@@ -456,17 +414,14 @@ const viewPost = (postId: string) => {
             commentId, id, token
         }
         dispatch(deleteComment(comments)).then((res: any) => {
-            console.log('deleted comment ', res);
             setFindReply(true);
         })
     }
   };
 
   const getPost = (id: string) => {
-            dispatch(getAPost(id)).then((res: any) => {
-                console.log(res)
-            })
-          }
+      dispatch(getAPost(id))
+    }
 
   useEffect(() => {
     if(id){
@@ -488,9 +443,7 @@ const viewPost = (postId: string) => {
     
 
     if (targetElement) {
-      console.log('Clicked inside the specific div!', e.target);
     } else {
-      console.log('Clicked outside the button!', e.target);
       setDesktopMenu(false);
     }
   });
@@ -501,9 +454,7 @@ const viewPost = (postId: string) => {
     if (target.classList.contains('text-[10px]')
       ) 
     {
-  console.log('Clicked inside the specific div!', target);
 } else {
-  console.log('Clicked outside the button!', target.classList);
   setDesktopMenu(false);
 }
   });

@@ -17,7 +17,7 @@ const Login = () => {
     email: "",
     password: "",
   });
-  const [passcode, setPasscode] = useState<string>("");
+
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [ischecked, setIsChecked] = useState(false);
@@ -26,19 +26,11 @@ const Login = () => {
   const [isShowConfirmPassword, setIsShowConfirmPassword] = useState(false);
   const { mode } = useAppSelector(selectUser);
 
-  const handleSwitchElem = (checked: boolean) => {
-    setIsChecked(checked);
-  };
-
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
 
   };
-
-
-
-
 
   const { email, password } = formData;
 
@@ -48,7 +40,6 @@ const Login = () => {
     const data = { email, password }
   
     dispatch(loginUser(data)).then((res: any) => {
-      console.log('hiii ', res)
       if(res && res.payload && res.payload._doc && res.payload._doc._id){
         navigate('/')
       };
@@ -69,9 +60,6 @@ const Login = () => {
     setIsShowPassword(!isShowPassword);
   };
 
-  const changeConfirmVisibilty = () => {
-    setIsShowConfirmPassword(!isShowConfirmPassword);
-  };
 
 
   return (

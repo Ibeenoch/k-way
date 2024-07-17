@@ -103,7 +103,6 @@ const Middle = () => {
       if(id){
         const findPost = posts.find((p: any) => p._id === id);
         if(!findPost) return;
-        console.log('postfound ', findPost);
         setcontent(findPost.content)
         navigate(`/${id}`);
         showPostModal();
@@ -342,12 +341,8 @@ useEffect(() => {
   useOnClickOutside(desktopCommentMenuRef, (e: MouseEvent) => {
     const target = e.target as HTMLElement;
     const targetElement = target.closest('.flex.gap-2.items-center.cursor-pointer.pt-4');
-    
-
     if (targetElement) {
-      console.log('Clicked inside the specific div!', e.target);
     } else {
-      console.log('Clicked outside the button!', e.target);
       setDesktopMenu(false);
     }
   });

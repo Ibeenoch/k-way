@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../../app/hooks";
-import  toast, { Toaster } from "react-hot-toast"
+import  toast from "react-hot-toast"
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/20/solid";
 import { resetPassword, selectUser } from "./authSlice";
 import { ReactComponent as ProcessingLogo } from '../../../../assets/processingLogo.svg';
@@ -20,10 +20,8 @@ const ChangePassword: React.FC = () => {
   });
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [ischecked, setIsChecked] = useState(false);
   const [isShowPassword2, setIsShowPassword2] = useState(false);
   const [isShowPassword3, setIsShowPassword3] = useState(false);
-  const [isShowConfirmPassword, setIsShowConfirmPassword] = useState(false);
   const [isClicked, setIsClicked ] = useState(false);
   const { id } = useParams();
   const [isWeak, setIsWeak] = useState(false);
@@ -32,9 +30,7 @@ const ChangePassword: React.FC = () => {
   const [passwordCheck, setPasswordCheck] = useState<string>('');
   const { mode } = useAppSelector(selectUser);
 
-  const handleSwitchElem = (checked: boolean) => {
-    setIsChecked(checked);
-  };
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -93,7 +89,7 @@ const ChangePassword: React.FC = () => {
 console.log(checkWeak, checkGood, checkStrong);
   }, [passwordCheck])
 
-  const { newpassword1, newpassword2 } = formData;
+  const { newpassword1 } = formData;
 
   const handlePasswordRecovery = (e: FormEvent) => {
     e.preventDefault();
@@ -144,9 +140,7 @@ console.log(checkWeak, checkGood, checkStrong);
     setIsShowPassword3(!isShowPassword3);
   };
 
-  const changeConfirmVisibilty = () => {
-    setIsShowConfirmPassword(!isShowConfirmPassword);
-  };
+
 
 
 

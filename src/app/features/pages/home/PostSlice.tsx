@@ -347,7 +347,6 @@ export const postSlice = createSlice({
       .addCase(createPost.fulfilled, (state, action) => {
         if (action.payload !== undefined && action.payload._id) {
           state.status = "success";
-          console.log('created post ', action.payload)
           state.posts.unshift(action.payload)
         }
       })
@@ -372,7 +371,6 @@ export const postSlice = createSlice({
       .addCase(updatePost.fulfilled, (state, action) => {
         if (action.payload !== undefined && action.payload._id) {
           state.status = "success";
-          console.log('updated post ', action.payload)
           const findIndex = state.posts.findIndex((p: any) => p._id === action.payload._id);
           state.posts[findIndex] = action.payload;
         }
@@ -386,7 +384,6 @@ export const postSlice = createSlice({
       .addCase(likePost.fulfilled, (state, action) => {
         if (action.payload !== undefined && action.payload._id) {
           state.status = "success";
-          console.log('like post ', action.payload)
           const findIndex = state.posts.findIndex((p: any) => p._id === action.payload._id);
           state.posts[findIndex] = action.payload;
           state.post = action.payload;
@@ -401,7 +398,6 @@ export const postSlice = createSlice({
       .addCase(bookmarkPost.fulfilled, (state, action) => {
         if (action.payload !== undefined && action.payload._id) {
           state.status = "success";
-          console.log('like post ', action.payload)
           const findIndex = state.posts.findIndex((p: any) => p._id === action.payload._id);
           state.posts[findIndex] = action.payload;
           state.post = action.payload;
@@ -429,7 +425,6 @@ export const postSlice = createSlice({
       .addCase(deletePost.fulfilled, (state, action) => {
         if (action.payload !== undefined) {
           state.status = "success";
-          console.log('delete post id ', action.payload);
           const findIndex = state.posts.findIndex((p: any) => p._id === action.payload);
           state.posts.splice(findIndex, 1);
         }
@@ -505,7 +500,6 @@ export const postSlice = createSlice({
         if (action.payload !== undefined) {
           state.status = "success";
           const index = state.repliedcomments.findIndex((c: any) => c._id === action.payload);
-          console.log('index replies ', index);
           state.repliedcomments.splice(index, 1)
         }
       })

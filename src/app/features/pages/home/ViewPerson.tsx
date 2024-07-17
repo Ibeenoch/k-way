@@ -1,9 +1,7 @@
-import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../../../hooks';
 import { selectPost } from './PostSlice';
 import { useNavigate } from 'react-router-dom';
-import { getOtherUser, selectUser, setProfileType, userFollowing } from '../auth/authSlice';
-import { ReactComponent as ArrowBackLogo } from '../../../../assets/arrowBack.svg'
+import { getOtherUser, selectUser, userFollowing } from '../auth/authSlice';
 import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 
 const ViewPerson = () => {

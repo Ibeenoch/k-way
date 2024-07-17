@@ -1,4 +1,3 @@
-import { HeartIcon } from '@heroicons/react/24/outline'
 import { useAppDispatch, useAppSelector } from '../../../hooks'
 import { addChat, fetchChat, getAllUser, getOtherUser, markreadChatBtwTwoUsers, selectUser } from '../auth/authSlice';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -6,14 +5,13 @@ import { useEffect, useState } from 'react';
 import { ReactComponent as ProcessingLogo } from '../../../../assets/processingLogo.svg';
 import { ReactComponent as SendLogo } from '../../../../assets/sendLogo.svg';
 import { ReactComponent as BackArrowLogo } from '../../../../assets/arrowBack.svg';
-import { Socket, io } from 'socket.io-client';
 import { formatCreatedAt } from '../../../../utils/timeformat';
 import '../../pages/home/home.css'
+import { socket } from '../../../..';
 
 const ChatMain = () => {
 const dispatch = useAppDispatch();
 const navigate = useNavigate();
-const socket: Socket = io('https://k-way.vercel.app/');
 const getUser = JSON.parse(localStorage.getItem('user') as any);
 const [isCommenting, setIsCommenting] = useState<boolean>(false);
 const [comment, setComment] = useState<string>("");

@@ -45,7 +45,6 @@ const Home = () => {
   
   useEffect(() => {
     const handlepostBookmarked = (data: any) => {
-      console.log('data postBookmarked post ', data);
       dispatch(addNotification(data)).then((res: any) => {
         const userId = res && res.payload && res.payload.receiver;
         const postId = res && res.payload && res.payload.post;
@@ -83,10 +82,6 @@ const Home = () => {
       socket.off('postReshared', handlepostReshared);
     };
   }, [socket]);
-  
-
-
-
 
   return (
     <div className={`grid grid-cols-1 sm:grid-cols-9 md:grid-cols-9 h-min ${ mode === 'light' ? 'bg-gray-100' : 'bg-gray-900'} `}>

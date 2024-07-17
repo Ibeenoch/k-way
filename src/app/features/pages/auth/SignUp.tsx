@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/20/solid";
 import { registerUser, selectUser } from "./authSlice";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
@@ -18,8 +18,6 @@ const SignUp: React.FC = () => {
     email: "",
     password: "",
   });
-  const { id } = useParams();
-  const [passcode, setPasscode] = useState<string>("");
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [emailInvalid, setemailInvalid] = useState(false);

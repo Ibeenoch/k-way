@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../hooks';
 import { editComment, selectPost } from './PostSlice';
@@ -20,10 +20,7 @@ const EditComment = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
-    const { commentId, postId } = useParams();
-    if(comments){
-        console.log(comments, typeof commentId)
-    }
+    const { commentId } = useParams();
 
     const handleCommentSubmit = () => {
         setIsCommenting(true);
@@ -33,7 +30,6 @@ const EditComment = () => {
           setTimeout(() => { setCommentErr('');}, 5000);
           return;
         }
-          const userId = getUser && getUser._doc && getUser._doc._id;
           const token = getUser && getUser.token;
       
           const comments = {
@@ -43,7 +39,6 @@ const EditComment = () => {
           }
       
         dispatch(editComment(comments)).then((res: any) => {
-          console.log('comment ', res.payload.content);
           if(res && res.payload && res.payload.content){
             navigate(-1)
             setIsCommenting(false);
@@ -51,14 +46,8 @@ const EditComment = () => {
         })
       }
 
-      const onEmojiClick = (emojiObject: any) => {
-        console.log("events emoji ", emojiObject);
-        setcontent((prev) => prev + emojiObject.emoji);
-        setShowEmojiPicker(false);
-      };
       const populateComment = () => {
         const findComment = comments.find((c: any) => c._id.toString() === commentId );
-        console.log('findcomment ', findComment);
         setComment(findComment.content);
       }
 

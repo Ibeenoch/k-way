@@ -32,13 +32,11 @@ const NotificationMain = () => {
   useEffect(() => {
     dispatch(checkIfNoteIsLoading(false))
     const postId = notification && notification.post;
-    console.log('post id for notification ', postId);
     const userId = getUser && getUser._doc && getUser._doc._id;
     const token = getUser && getUser.token;
     const note = { userId, token, postId };
 
     dispatch(getAllNotificationForAUser(note)).then((res: any) => {
-      console.log('get notification ', res);
       if(res && res.payload !== undefined){
         dispatch(markAllNotificationForAUser(note))
       }

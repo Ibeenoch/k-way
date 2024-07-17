@@ -17,10 +17,7 @@ const Right = () => {
   const handleFollow = (auserId: string) => {
     const token = getAUser && getAUser.token;
     const follow = { token, auserId };
-    console.log('tahey ', follow);
-    dispatch(userFollowing(follow)).then((res: any) => {
-      console.log('the sujs ', res)
-    })
+    dispatch(userFollowing(follow))
   };
 
 
@@ -58,7 +55,6 @@ const viewTrend = (trend: string) => {
   dispatch(currentSearchTrend(trend));
   navigate('/trendlist')
 }
-console.log('which post ', whichPost, 'viewingStory ', viewingStory, 'isEditPost ', isEditPost, 'hideMobileNav ', hideMobileNav  );
 
 return (
     <div className={`fixed w-[33vw] hide-scrollbar ${viewingStory || isEditPost || whichPost === 'story' || whichPost === 'post' || hideMobileNav ? '-z-10' : 'z-10'}  p-4 top-2 overflow-y-auto`}>

@@ -207,7 +207,6 @@ export const fetchUserStories = async(userId: string) => {
 export const fetchAPost = async(id: string) => {
   try {
     if(!id) return;
-    console.log('postId ', id);
     const res = await axios.get(`${API}/post/single/${id}`);
     return res.data;
   } catch (error) {
@@ -305,7 +304,6 @@ export const replyComment = async(comments: any) => {
         'authorization': `Bearer ${token}`
       }
     };
-    console.log('the data ', data)
     const res = await axios.post(`${API}/post/replycomment/${commentId}`, data, option);
     return res.data;
   } catch (error) {

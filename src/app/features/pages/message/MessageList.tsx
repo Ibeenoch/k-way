@@ -13,7 +13,7 @@ const MessageList = () => {
   const dispatch = useAppDispatch();
     const getUsers = JSON.parse(localStorage.getItem('alluser') as any);
     const getAUser = JSON.parse(localStorage.getItem('user') as any);
-    const { mode } = useAppSelector(selectUser);
+    const { mode, users } = useAppSelector(selectUser);
 
     const viewProfile = (userId: string) => {
       // check if i am not logged in
@@ -45,7 +45,6 @@ const MessageList = () => {
       const findChatid = { token, userId, myId}
 
       dispatch(findChatIdForTwoUsers(findChatid)).then((res: any) => {
-        console.log('the chatId is ', res, res.payload);
         if(res && res.payload !== undefined){
           const chatId = res && res.payload
         socket.emit('joinChat', chatId);
@@ -75,12 +74,9 @@ const MessageList = () => {
     };
 
     useEffect(() => {
-      dispatch(getAllUser()).then((res: any) => {
-        if(res && res.payload !== undefined){
-          console.log('llll ', res);
-          
-        }
-      } )
+      if(users && Array.isArray(users) && users.length < 1){
+        dispatch(getAllUser())
+      }
     }, []);
 
     

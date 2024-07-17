@@ -1,15 +1,14 @@
 import { Link, useParams } from "react-router-dom";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../../app/hooks";
 import { selectUser, userVerification } from "./authSlice";
 import { ReactComponent as CompanyLogo } from '../../../../assets/companylogo.svg'
-import { ReactComponent as ProcessingLogo } from '../../../../assets/processingLogo.svg'
 
 const Verification = () => {
   const { id } = useParams();
   const dispatch = useAppDispatch();
   const user = JSON.parse(localStorage.getItem('user') as any);
-  const { email, _id } = user;
+  const { _id } = user;
   const { mode } = useAppSelector(selectUser)
 
   useEffect(() => {

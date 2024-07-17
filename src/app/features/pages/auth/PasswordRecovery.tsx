@@ -1,7 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import { FormEvent, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../../app/hooks";
-import toast, { Toaster} from "react-hot-toast"
 import { emailPasswordLink, selectUser } from "./authSlice";
 import { ReactComponent as ProcessingLogo } from '../../../../assets/processingLogo.svg';
 import { ReactComponent as CompanyLogo } from '../../../../assets/companylogo.svg';

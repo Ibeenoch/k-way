@@ -31,10 +31,6 @@ const NavBar = () => {
         setMobileIconModal(true);
       };
     
-      const hideFullMobileScreen = () => {
-        setMobileIconModal(false);
-        dispatch(shouldWeHideMobileNav(false));
-      };
 
       const goHome = () => {
         setisHome(true);
@@ -67,7 +63,6 @@ const goTrend = () => {
     dispatch(setActivePage('notification'));
     navigate('/notification');
     const postId = notification && notification.post;
-    console.log('post id for notification ', postId);
     const userId = getUser && getUser._doc && getUser._doc._id;
     const token = getUser && getUser.token;
     const note = { userId, token, postId };
@@ -75,7 +70,6 @@ const goTrend = () => {
     dispatch(markAllNotificationForAUser(note)).then((res: any) => {
       
       dispatch(getAllNotificationForAUser(note)).then((res: any) => {
-        console.log('get not ', res);
         if(res && res.payload !== undefined){
           
         }
@@ -129,7 +123,6 @@ const goTrend = () => {
     }
   }, [])
 
-  console.log(' postModal ', postModal, 'viewingStory ', viewingStory, 'viewingProfile ', viewingProfile, 'whichPost ', whichPost, 'hideMobileNav ', hideMobileNav)
   return (
     <div>
       

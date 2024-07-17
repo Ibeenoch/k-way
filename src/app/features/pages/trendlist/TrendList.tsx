@@ -5,11 +5,10 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { resetSearchPost, searchForPost, shouldWeHideMobileNav } from '../home/PostSlice';
 import React, { useEffect, useRef, useState } from "react";
 import { ArrowLeftIcon, } from "@heroicons/react/24/outline";
-import { getAllUser, getOtherUser, resetSearchUser, searchUser, selectUser, setProfileType, userFollowing } from "../auth/authSlice";
-import { allCommentForAPost, bookmarkPost, commentOnPost, deletePost, getAPost, getAllPosts, getBookmarkforaPost, getLikesforaPost, getresharedforaPost, likePost, rePost, selectPost,  } from "../home/PostSlice";
+import { getOtherUser, resetSearchUser, searchUser, selectUser, userFollowing } from "../auth/authSlice";
+import { allCommentForAPost, getAPost, getAllPosts, selectPost,  } from "../home/PostSlice";
 import { useAppContext } from "../home/homeContext";
 import { useAppDispatch, useAppSelector } from '../../../hooks';
-import Loading from '../../../Loading';
 import Post from '../../../../utils/Post';
 
 const TrendList = () => {
@@ -249,6 +248,7 @@ const me = getUser && getUser._doc  && getUser._doc._id;
           
               searchUsers && searchUsers.length === 0 ? (
                 <>
+             <img src={`${process.env.PUBLIC_URL}/images/noresultfound1.png`} alt="nosearchresultfound" className='w-full h-full' />
                 <h1 className={`text-xs flex p-4 justify-center ${mode === 'light' ? 'text-black' : 'text-white'}`}>No User found</h1>
                 </>
               ) :   searchUsers && Array.isArray(searchUsers) && searchUser.length > 0 ? searchUsers.map((person: any, index: number) => (
@@ -283,7 +283,7 @@ const me = getUser && getUser._doc  && getUser._doc._id;
           {
             searchPosts && searchPosts.length === 0 ? (
               <>
-              <img src={`${process.env.PUBLIC_URL}/images/nosearchfound.png`} alt="nosearchresultfound" className='w-full h-full' />
+              <img src={`${process.env.PUBLIC_URL}/images/noresultfound1.png`} alt="nosearchresultfound" className='w-full h-full' />
               <h1>No Post found</h1>
               </>
             )

@@ -1,9 +1,9 @@
-import React, { ChangeEvent, useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, {  useEffect, useLayoutEffect, useRef, useState } from "react";
 import { HeartIcon,  } from "@heroicons/react/24/outline";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { changeMode, getAllUser, getOtherUser, selectUser, setProfileType, userFollowing } from "../app/features/pages/auth/authSlice";
-import { allCommentForAPost, bookmarkPost, commentOnPost, createPost, createStory, deletePost, getAPost, getAllPosts, getAllUserStories, getAvailableStories, getBookmarkforaPost, getLikesforaPost, getresharedforaPost, likePost, openpostForm, rePost, resetEditCommentStatus, selectPost, setWhichPost, shouldWeEditPost, shouldWeHideMobileNav, updatePost, updateViewingStatus } from "../app/features/pages/home/PostSlice";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { getOtherUser, selectUser, setProfileType, userFollowing } from "../app/features/pages/auth/authSlice";
+import { allCommentForAPost, bookmarkPost, commentOnPost, deletePost, getAPost, getAllPosts, getAllUserStories, getAvailableStories, getBookmarkforaPost, getLikesforaPost, getresharedforaPost, likePost, openpostForm, rePost, resetEditCommentStatus, selectPost, setWhichPost, shouldWeEditPost, shouldWeHideMobileNav, updatePost, updateViewingStatus } from "../app/features/pages/home/PostSlice";
+import { useNavigate, useParams } from "react-router-dom";
 import '../app/features/pages/home/home.css';
 import { ReactComponent as LikeLogo } from '../assets/like.svg';
 import { ReactComponent as VerifyMarkLogo } from '../assets/verifyChecker.svg';
@@ -70,12 +70,9 @@ const Post: React.FC<Props> = ({ post }) => {
     const [menu, setMenu] = useState<boolean>(false);
     const [desktopMenu, setDesktopMenu] = useState<boolean>(false);
     const [mobileModal, setMobileModal] = useState<boolean>(false);
-    const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);
     const [fullvideoScreen, setFullVideoScreen] = useState<boolean>(false);
-    const [desktopmodal, setdeskTopModal] = useState<boolean>(false);
     const [postModal, setPostModal] = useState<boolean>(false);
     const [isPosting, setIsPosting] = useState<boolean>(false);
-    const [isUpdated, setIsUpdated] = useState<boolean>(false);
     const [isHome, setisHome] = useState<boolean>(false);
     const [isTrend, setIsTrend] = useState<boolean>(false);
     const [isNotify, setisnotify] = useState<boolean>(false);
@@ -97,14 +94,8 @@ const Post: React.FC<Props> = ({ post }) => {
     const [startShowingIndex, setStartShowingIndex] = useState<any>(1);
   
     const {  mode,  } = useAppSelector(selectUser);
-    const { isEditPost, stories, viewstories, storyOwner } = useAppSelector(selectPost);
+    const {  stories, viewstories, storyOwner } = useAppSelector(selectPost);
   
-    const fileRef = useRef<HTMLInputElement>(null);
-    const [fileInput, setFileInput] = useState<File[]>([]);
-    const imageRef = useRef<HTMLInputElement>(null);
-    const [imageInput, setImageInput] = useState<File[]>([]);
-    const [videoUploaded, setVideoUploaded] = useState<boolean>(false);
-    const [isvideoUploaded, setIsVideoUploaded] = useState<boolean>(false);
     const [toggleControls, setToggleControls] = useState<boolean>(false);
     const [clickedStatusIndex, setClickedStatusIndex] = useState<number>(0);
     const [statusViewerId, setStatusViewerId] = useState<string>('');

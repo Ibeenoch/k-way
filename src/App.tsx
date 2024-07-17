@@ -8,6 +8,7 @@ import { ReactComponent as LoadingLogo } from './assets/loading.svg';
 import EditReplyComment from "./app/features/pages/home/EditReplyComment";
 import { useAppDispatch, useAppSelector } from "./app/hooks";
 import { selectUser } from "./app/features/pages/auth/authSlice";
+import PageNotFound from "./app/features/pages/auth/PageNotFound";
 const Home = lazy(() => import("./app/features/pages/home/Home"));
 const Profile = lazy(() => import("./app/features/pages/profile/Profile"));
 const Notification = lazy(() => import("./app/features/pages/Notification/Notification"));
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
   {
     path: "/post/reshare/:postId",
     element: <ViewPerson />,
+  },
+  {
+    path: "*",
+    element: <PageNotFound />,
   },
   {
     path: "/profile/:id",

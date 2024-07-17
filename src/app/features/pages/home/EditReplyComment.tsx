@@ -13,7 +13,7 @@ const EditReplyComment = () => {
     const [commentErr, setCommentErr] = useState<string>("");
     const [comment, setComment] = useState<string>("");
     const getUser = JSON.parse(localStorage.getItem('user') as any);
-    const { comments, repliedcomments } = useAppSelector(selectPost);
+    const { repliedcomments } = useAppSelector(selectPost);
     const { mode } = useAppSelector(selectUser);
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
@@ -29,7 +29,6 @@ const EditReplyComment = () => {
           setTimeout(() => { setCommentErr('');}, 5000);
           return;
         }
-          const userId = getUser && getUser._doc && getUser._doc._id;
           const token = getUser && getUser.token;
       
           const comments = {
@@ -39,7 +38,6 @@ const EditReplyComment = () => {
           }
       
         dispatch(editComment(comments)).then((res: any) => {
-          console.log('comment ', res.payload.content);
           if(res && res.payload && res.payload.content){
             navigate(-1)
             setIsCommenting(false);

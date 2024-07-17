@@ -26,7 +26,7 @@ const ReplyComment = () => {
   const [comment, setComment] = useState<string>("");
   const [findReply, setFindReply] = useState<boolean>(false);
   const [commentErr, setCommentErr] = useState<string>("");
-  const { post, comments, repliedcomments } = useAppSelector(selectPost);
+  const { post, repliedcomments } = useAppSelector(selectPost);
   const { mode } = useAppSelector(selectUser);
   const getUser = JSON.parse(localStorage.getItem('user') as any);
   const [commentClicked, setCommentClicked] = useState<string>("");
@@ -55,7 +55,6 @@ const handleCommentSubmit = () => {
   dispatch(replyComment(comments)).then((res: any) => {
    
     if(res && res.payload !== undefined){
-      console.log('comment replied ', res);
       setIsCommenting(false);
       setComment('');
       setFindReply(false); 
@@ -73,7 +72,6 @@ const handleReplyComent = async (commentId: string) => {
 
 const fetchAllRepliesForTheComment = () => {
  dispatch(getAllRepliesForComment(commentId)).then((res: any) => {
-  console.log('replies  ', res);
   if(res && res.payload !== undefined){
     setFindReply(false);
   }
@@ -85,7 +83,6 @@ const handleLike = (commentId: string) => {
   const likes = { token, commentId };
 
   dispatch(likeReplyComment(likes)).then((res: any) => {
-    console.log('liked reply comment', res)
     if(res && res.payload !== undefined){
       setFindReply(true);
     }
@@ -108,7 +105,6 @@ const viewPersonProfile = (id: string) => {
 
 useEffect(() => {
   const handlecommentReplied = (data: any) => {
-    console.log('data commentReplied post ', data);
     dispatch(addNotification(data));
   };
 
@@ -155,9 +151,7 @@ const getConfirmation = (theCommentId: string) => {
       const comments = {
           commentId,  token, repliedId
       }
-      dispatch(deleteRepliedComment(comments)).then((res: any) => {
-          console.log('deleted comment ', res)
-      })
+      dispatch(deleteRepliedComment(comments))
   }
 }
 

@@ -30,16 +30,12 @@ const ProfileForm: React.FC = () => {
   const imageRef = useRef<HTMLInputElement>(null);
   const [image, setImage] = useState<any>([]);
   const [bio, setBio] = useState<string>( getUser && getUser._doc && getUser._doc.bio && typeof getUser._doc.bio === 'string' ? getUser._doc.bio : "",);
-  const [progress, setProgress] = useState<number>(0);
-  const [downloadURL, setDownloadURL] = useState<string | null>(null);
+
   
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [ischecked, setIsChecked] = useState<boolean>(false);
   const [isClicked, setIsClicked] = useState<boolean>(false);
-  const [photoURL, setPhotoURL] = useState<string>('');
   const [imageUploaded, setImageUploaded] = useState<boolean>(false);
-  const { status, user } = useAppSelector(selectUser);
   const { id } = useParams();
   const { mode } = useAppSelector(selectUser);
   
@@ -118,7 +114,6 @@ const ProfileForm: React.FC = () => {
 
     dispatch(createUserProfile(data)).then((res: any) => {
         if(res && res.payload && res.payload._doc && res.payload._doc._id ){
-          console.log('good  ', res.payload._doc._id)
           navigate(`/`)
         }else{
           setIsClicked(false);
