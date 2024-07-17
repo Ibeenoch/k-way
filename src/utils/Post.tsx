@@ -92,10 +92,8 @@ const Post: React.FC<Props> = ({ post }) => {
     const [videoUrl, setVideoUrl] = useState<string>('');
     const [toRefresh, setToRefresh] = useState<boolean>(false);
     const [startShowingIndex, setStartShowingIndex] = useState<any>(1);
-  
     const {  mode,  } = useAppSelector(selectUser);
-    const {  stories, viewstories, storyOwner } = useAppSelector(selectPost);
-  
+    const {  stories, viewstories, storyOwner, viewingStory } = useAppSelector(selectPost);
     const [toggleControls, setToggleControls] = useState<boolean>(false);
     const [clickedStatusIndex, setClickedStatusIndex] = useState<number>(0);
     const [statusViewerId, setStatusViewerId] = useState<string>('');
@@ -399,7 +397,7 @@ const Post: React.FC<Props> = ({ post }) => {
       })
     }
   
- 
+
 
     const showMobileModal = (img: any, id: any) => {
       dispatch(setWhichPost('post'));
@@ -704,7 +702,7 @@ className={`fixed sm:hidden ${ desktopMenu && post && post._id === postClicked ?
 {/* picture modal  */}
 <div
 className={`${
-mobileModal ? "flex" : "hidden"
+mobileModal  ? "flex" : "hidden"
 } fixed top-0 left-0 bg-black w-full h-full justify-center items-center`}
 >
 <div className={`w-full sm:px-[25%] h-full sm:max-h-sm sm:bg-gray-900`}>

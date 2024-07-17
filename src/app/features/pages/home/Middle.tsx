@@ -1,8 +1,8 @@
 import { ChangeEvent, useEffect, useLayoutEffect, useRef, useState } from "react";
-import { PlusIcon,  } from "@heroicons/react/24/outline";
+import { HeartIcon, PlusIcon,  } from "@heroicons/react/24/outline";
 import EmojiPicker from "emoji-picker-react";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
-import { changeMode, getAllUser, getOtherUser, selectUser, } from "../auth/authSlice";
+import { changeMode, getAllUser, getOtherUser, selectUser, userFollowing, } from "../auth/authSlice";
 import { allCommentForAPost, createPost, createStory, getAPost, getAllPosts, getAllUserStories, getAvailableStories,  openpostForm,  selectPost, setWhichPost, shouldWeEditPost, shouldWeHideMobileNav, updatePost, updateViewingStatus } from "./PostSlice";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import NavBar from "../mobilenav/NavBar";
@@ -12,7 +12,6 @@ import { ReactComponent as SignalLogo } from '../../../../assets/signal.svg';
 import { ReactComponent as PlayLogo } from '../../../../assets/play.svg';
 import { ReactComponent as DarkModeLogo } from '../../../../assets/darkmode.svg';
 import { ReactComponent as LightModeLogo } from '../../../../assets/lighmode.svg';
-import { ReactComponent as SendLogo } from '../../../../assets/sendLogo.svg';
 import { ReactComponent as VideoLogo } from '../../../../assets/videoLogo.svg';
 import { ReactComponent as ImageLogo } from '../../../../assets/imagesLogo.svg';
 import { ReactComponent as CancelLogo } from '../../../../assets/cancelLogo.svg';
@@ -20,8 +19,17 @@ import { ReactComponent as ProcessingLogo } from '../../../../assets/processingL
 import { ReactComponent as ArrowDownLogo } from '../../../../assets/arrowDownLogo.svg';
 import { ReactComponent as PlusLogo } from '../../../../assets/plusLogo.svg';
 import { ReactComponent as CompanyLogo } from '../../../../assets/companylogo.svg';
+import { ReactComponent as CommentLogo } from '../../../../assets/comment.svg';
+import { ReactComponent as RetweetLogo } from '../../../../assets/retweet.svg';
+import { ReactComponent as BookMarkLogo } from '../../../../assets/bookmark.svg';
+import { ReactComponent as ReplyLogo } from '../../../../assets/replyLogo.svg';
+import { ReactComponent as SendLogo } from '../../../../assets/sendLogo.svg';
+import { ReactComponent as ArrowPreviousLogo } from '../../../../assets/arrowPrevious.svg';
+import { ReactComponent as ArrowNextLogo } from '../../../../assets/arrowNext.svg';
+import { ReactComponent as MenuLogo } from '../../../../assets/threeDot.svg';
 import useOnClickOutside from "../../../../utils/ClickOut";
 import Post from "../../../../utils/Post";
+
 
 interface IPost {
   _id: string;
@@ -57,6 +65,7 @@ const Middle = () => {
   const [postModal, setPostModal] = useState<boolean>(false);
   const [isPosting, setIsPosting] = useState<boolean>(false);
   const [isUpdated, setIsUpdated] = useState<boolean>(false);
+  const [toggleControls, setToggleControls] = useState<boolean>(false);
   const [isHome, setisHome] = useState<boolean>(false);
   const [isTrend, setIsTrend] = useState<boolean>(false);
   const [isNotify, setisnotify] = useState<boolean>(false);
@@ -71,7 +80,7 @@ const Middle = () => {
   const [startShowingIndex, setStartShowingIndex] = useState<any>(1);
 
   const {  mode,  } = useAppSelector(selectUser);
-  const { posts,  openPostForm, whichPost, stories, viewstories, isEditPost } = useAppSelector(selectPost);
+  const { posts,  openPostForm, whichPost, stories, viewstories, isEditPost, storyOwner } = useAppSelector(selectPost);
 
   const fileRef = useRef<HTMLInputElement>(null);
   const [fileInput, setFileInput] = useState<File[]>([]);
@@ -152,6 +161,19 @@ const Middle = () => {
   setPrivacy(e.target.value)
 
  };
+
+
+ const handleFollowing = (auserId: string) => {
+  if(getUser === null){
+    navigate('/login');
+    return;
+  };
+
+  const token = getUser && getUser.token;
+  const follow = { token, auserId };
+  dispatch(userFollowing(follow))
+ };
+ 
 
 
 const handlePostSubmit = async() => {
@@ -268,6 +290,17 @@ useEffect(() => {
 }, [])
 
 
+const viewAProfile = (userId: string) => {
+  
+  dispatch(getOtherUser(userId)).then((res) => {
+    if(res && res.payload !== undefined){
+      const myId = res && res.payload && res.payload._doc && res.payload._doc._id;
+      navigate(`/profile/${myId}`);
+      window.scrollTo(0, 0);
+    }
+  })
+};
+
 
   const getPost = (currentPostId: string) => {
     dispatch(getAPost(currentPostId)).then((res: any) => {
@@ -283,6 +316,11 @@ useEffect(() => {
     getPost(currentPostId);
   }, [toRefresh]);
 
+  const toggleImageControls = () => {
+    setToggleControls((prev) => !prev);
+    }
+
+    
 
   const me = getUser && getUser._doc && getUser._doc._id;
 
@@ -370,7 +408,7 @@ useEffect(() => {
     setStatusViewerId(userId); // get the other person userId
     setStoryActive(true);
     dispatch(getAllUserStories(userId)).then((res: any) => {
-      if(res && res.payload !== undefined){
+      if(res && res.payload && res.payload.photoUrls){
         showStoriesModal();
       }
     })
@@ -729,6 +767,59 @@ posts && Array.isArray(posts) && posts.map((post: IPost, index: number) => (
         </div>
         
       </div>
+
+
+      {/* picture modal  */}
+<div
+className={`${
+mobileModal  ? "flex" : "hidden"
+} fixed top-0 left-0 bg-black w-full h-full justify-center items-center`}
+>
+<div className={`w-full sm:px-[25%] h-full sm:max-h-sm sm:bg-gray-900`}>
+<div className="flex justify-between items-center p-2 ">
+  <MenuLogo className={`${toggleControls ? 'block': 'hidden'} w-4 h-4  z-40 fill-white mt-3 ml-3 cursor-pointer`} />
+
+  {/* cancel or close  */}
+  <CancelLogo onClick={hideMobileModal}  className={`${toggleControls ? 'block': 'hidden'} w-4 h-4 fill-white z-50 mt-4 mr-4 cursor-pointer`} />
+</div>
+
+<div className={`${toggleControls ? 'flex': 'hidden'} justify-between items-center z-14 my-2 px-4`}>
+  <div className='flex gap-2'>
+    <img onClick={() => viewAProfile( storyOwner && storyOwner._id  )} className='w-9 h-9 rounded-full cursor-pointer z-40' src={storyOwner && storyOwner.profilePhoto && storyOwner.profilePhoto.url } alt="" />
+  <div className="z-40">
+    <h1 className='text-sm text-white font-semibold'>{storyOwner && storyOwner.fullname }</h1>
+    <p className='text-xs text-gray-300'>@{storyOwner && storyOwner.handle}</p>
+  </div>
+  </div>
+
+ 
+  
+</div>
+
+
+
+<div onClick={toggleImageControls} className="fixed z-5 inset-0 flex justify-center items-center">
+  <div className="pt-1"></div>
+ <div className="z-40"  > 
+  <img
+   
+    className="max-w-[600px] cursor-pointer z-40"
+    src={displayImage}
+    alt="displayimage"
+  />
+  </div>
+
+  {/* show image  */}
+{/* <div className={`hidden sm:z-[20px] sm:px-[10%] ${ toggleControls ? 'sm:fixed' : 'sm:hidden'} inset-0 sm:flex justify-between items-center`}>
+  <ArrowPreviousLogo onClick={() => viewPrevImage()} className="w-9 h-9 fill-white cursor-pointer" /> 
+  <ArrowNextLogo  onClick={() =>viewNextImage()} className="w-9 h-9 fill-white cursor-pointer" />
+</div> */}
+
+  
+</div>
+</div>
+</div>
+
 
     </div>
   );
