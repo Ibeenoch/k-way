@@ -1140,9 +1140,9 @@ mobileModal ? "flex" : "hidden"
 
 
 
-<div className="fixed z-5 inset-0 flex justify-center items-center">
+<div onClick={toggleImageControls} className="fixed z-5 inset-0 flex justify-center items-center">
   <div className="pt-1"></div>
- <div className="z-40"  onClick={toggleImageControls} onTouchStart={handleTouchStart}  onTouchEnd={handleTouchEnd} onTouchMove={handleTouchMove} > 
+ <div className="z-40"  onTouchStart={handleTouchStart}  onTouchEnd={handleTouchEnd} onTouchMove={handleTouchMove} > 
   <img
    
     className="max-w-[600px] cursor-pointer z-40"
