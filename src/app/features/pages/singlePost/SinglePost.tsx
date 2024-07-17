@@ -24,7 +24,7 @@ import { useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import {  allCommentForAPost, bookmarkPost, commentOnPost, likeComment, createPost, createStory, deletePost, getAPost, getAllPosts, getAllUserStories, getAvailableStories, getBookmarkforaPost, getLikesforaPost, getresharedforaPost, likePost, openpostForm, rePost, resetEditCommentStatus, selectPost, setWhichPost, updatePost, updateViewingStatus, deleteComment, getAllRepliesForComment, shouldWeHideMobileNav } from "../home/PostSlice";
 import { useNavigate, useParams } from "react-router-dom";
-import { HeartIcon } from "@heroicons/react/24/outline";
+import { ArrowLeftIcon, HeartIcon } from "@heroicons/react/24/outline";
 import { addNotification, getOtherUser, selectUser, userFollowing } from '../auth/authSlice'
 import { socket } from '../../../../index'
 import '../../pages/home/home.css';
@@ -511,10 +511,10 @@ const viewPost = (postId: string) => {
   const postOwner = post && post.owner && post.owner._id;
   return (
     <div className="sticky overflow-y-auto hide-scrollbar bg-gray-800 h-min">
-        <div onClick={handleGoBack} className={`flex sm:mx-[25%] gap-3 ${mode === 'light' ? `${commentmenu || menu  ? 'bg-gray-200 text-black' : 'bg-white fill-black text-black'}` : 'bg-black fill-white text-white'} p-2 cursor-pointer`} >
-          <BackArrowLogo  className='w-4 h-4 cursor-pointer' />
-        <h2 className='text-xs font-medium'>Back to Post Feeds</h2>
-        </div>
+       <div onClick={handleGoBack} className={`flex items-center py-4 pl-3 gap-3 ${ mode === 'light' ? 'text-black stroke-black' : 'text-white stroke-white'} cursor-pointer`}>
+        <ArrowLeftIcon className='w-5 h-5 stroke-[3px] cursor-pointer' />
+        <h2 className='text-sm font-semibold'>Go Back</h2>
+      </div>
 
     <div className={`sm:mx-[25%] h-screen`} >
          <div  className={`p-3 max-w-full ${ mode === 'light' ? `${commentmenu  || menu ? 'bg-gray-200' : 'bg-white'} text-black fill-black` : 'bg-black text-white fill-white'} border border-gray-400`}>

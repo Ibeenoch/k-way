@@ -1,5 +1,5 @@
 import NavBar from "../mobilenav/NavBar";
-import { HeartIcon } from "@heroicons/react/24/outline";
+import { ArrowLeftIcon, HeartIcon } from "@heroicons/react/24/outline";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import {  getAllUser, getOtherUser, setProfileType, userFollowing, getFollowers, getFollowing, addNotification, getAllNotificationForAUser, selectUser, userFollowers, setIsVewingProfile, findChatIdForTwoUsers, fetchChat, changeMode } from "../auth/authSlice";
 import { useNavigate, useParams } from "react-router-dom";
@@ -234,6 +234,7 @@ const ProfileMiddle = () => {
   
   
   const toggleImageControls = () => {
+    dispatch(shouldWeHideMobileNav(true));
   setToggleControls((prev) => !prev);
   }
   
@@ -418,9 +419,6 @@ const ProfileMiddle = () => {
       dispatch(shouldWeHideMobileNav(true))
     };
 
-    useEffect(() => {
-      dispatch(setWhichPost('none'))
-    }, [])
   
    
   const viewPrevImage = () => {
@@ -720,15 +718,15 @@ const generateRandomheight = (arr: number[]) => {
 
 
 return (
-    <div className={`sm:mt-10 h-min max-w-md sm:max-w-full ${mode === 'light' ? 'bg-white text-black fill-black' : 'bg-black text-white fill-white' } rounded-tl-3xl rounded-tr-3xl`}>
+    <div className={` h-min max-w-md sm:max-w-full ${mode === 'light' ? 'bg-white text-black fill-black' : 'bg-black text-white fill-white' } rounded-tl-3xl rounded-tr-3xl`}>
       
       <div className='sm:flex flex justify-between gap-2 p-2 sm:p-4 cursor-pointer'>
-        <div onClick={handleGoBack} className="flex gap-2 items-center">
-          <BackLogo  className={`w-4 h-4 cursor-pointer stroke-[4px] ${mode === 'light' ? 'fill-black' : 'fill-white'}`} />
-        <h2 className={`text-xs font-semibold ${mode === 'light' ? 'text-black' : 'text-white'} `}>Go Back</h2>
-        </div>
+      <div onClick={handleGoBack} className='flex items-center py-4 pl-3 gap-3 cursor-pointer'>
+        <ArrowLeftIcon className='w-5 h-5 stroke-[3px] cursor-pointer' />
+        <h2 className='text-sm font-semibold'>Go Back</h2>
+      </div>
 
-        <div className="flex">
+        <div className="flex p-4">
           {
             mode === 'light' ? (
               <>
@@ -884,7 +882,7 @@ return (
                     id="desktopmenu"
                     className={`hidden ${
                       desktopMenu && post._id === postClicked ? "sm:block" : "sm:hidden"
-                    } absolute shadow-lg shadow-purple-80 z-10 top-0 -right-[10px] w-[150px] h-auto rounded-3xl mx-auto ${ mode=== 'light' ? 'bg-white text-black fill-black stroke-black' : 'bg-gray-900 text-white fill-white stroke-white'}  p-2`}
+                    } absolute shadow-lg shadow-purple-80 z-10 top-0 -right-[10px] w-[150px] h-auto rounded-3xl mx-auto ${ mode=== 'light' ? 'bg-gray-200 text-black fill-black stroke-black' : 'bg-gray-900 text-white fill-white stroke-white'}  p-2`}
                   >
                     {
                     getUser !== undefined && getUser && getUser._doc && getUser._doc._id  === post.owner._id ? (
@@ -952,40 +950,40 @@ return (
             id="mobilemenu"
             className={`fixed ${
             menu && post._id === postClicked ? "block" : "hidden"
-            } bottom-0 left-0 bg-white pt-10 pl-5 pr-5 pb-5 z-40 w-full h-[40%] rounded-tl-3xl rounded-tr-3xl sm:hidden`}
+            } bottom-0 left-0 pt-10 pl-5 pr-5 pb-5 z-40 w-full h-[40%] rounded-tl-3xl rounded-tr-3xl sm:hidden ${ mode === 'light' ? 'bg-gray-200 text-black fill-black stroke-black' : 'bg-gray-900 text-white fill-white stroke-white'}`}
             >
             {
              getUser !== undefined && getUser && getUser._doc && getUser._doc._id  ===   post && post.owner && post.owner._id ? (
                         <>
                       <div onClick={() =>handleEditPost(post._id)} className="flex gap-2 px-2 cursor-pointer items-center py-4">
-                        <EditLogo  className="stroke-black w-4 h-4"/>
-                        <p className="text-black text-lg">Edit Post</p>
+                        <EditLogo  className="w-4 h-4"/>
+                        <p className="text-lg">Edit Post</p>
                       </div>
                       <div  onClick={() =>handleDeletePost(post._id)} className="flex gap-2 px-2 cursor-pointer items-center py-4">
-                        <TrashLogo className="fill-black stroke-black w-6 h-6"/>
-                        <p className="text-black text-lg">Delete Post</p>
+                        <TrashLogo className=" w-6 h-6"/>
+                        <p className="text-lg">Delete Post</p>
                       </div>
                         </>
                       ) : (
                         <>
                          <div className="flex gap-2 cursor-pointer items-center px-2 py-4">
-                      <AddContactLogo  className="fill-black stroke-black w-5 h-5"/>
-                      <p className="text-black text-lg">Follow @texilola😎</p>
+                      <AddContactLogo  className="w-5 h-5"/>
+                      <p className="text-lg">Follow @texilola😎</p>
                     </div>
             
                     <div className="flex gap-2 items-center px-2 py-4  cursor-pointer">
-                      <BlockContactLogo  className="fill-black stroke-black w-5 h-5"/>
-                      <p className="text-black text-lg">Block @texilola😎</p>
+                      <BlockContactLogo  className="w-5 h-5"/>
+                      <p className="text-lg">Block @texilola😎</p>
                     </div>
             
                     <div className="flex gap-2 items-center cursor-pointer px-2 py-4">
-                      <ReportContactLogo  className="fill-black stroke-black w-5 h-5"/>
-                      <p className="text-black text-lg">Report Post</p>
+                      <ReportContactLogo  className="w-5 h-5"/>
+                      <p className="text-lg">Report Post</p>
                     </div>
             
                     <div className="flex gap-2 cursor-pointer items-center px-2 py-4">
-                      <MuteContactLogo   className="fill-black stroke-black w-5 h-5"/>
-                      <p className="text-black text-lg">Mute @texilola😎</p>
+                      <MuteContactLogo   className="w-5 h-5"/>
+                      <p className="text-lg">Mute @texilola😎</p>
                     </div>
                         </>
                       )
@@ -1029,9 +1027,9 @@ return (
             
             
             
-            <div className="fixed z-5 inset-0 flex justify-center items-center">
+            <div onClick={toggleImageControls}  className="fixed z-5 inset-0 flex justify-center items-center">
               <div className="pt-1"></div>
-             <div className="z-40"  onClick={toggleImageControls} onTouchStart={handleTouchStart}  onTouchEnd={handleTouchEnd} onTouchMove={handleTouchMove} > 
+             <div className="z-40"  onTouchStart={handleTouchStart}  onTouchEnd={handleTouchEnd} onTouchMove={handleTouchMove} > 
               <img
                
                 className="max-w-[600px] cursor-pointer z-40"

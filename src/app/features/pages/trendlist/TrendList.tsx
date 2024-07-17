@@ -5,7 +5,7 @@ import './trend.css';
 import { useNavigate, useParams } from 'react-router-dom'
 import { resetSearchPost, searchForPost, shouldWeHideMobileNav } from '../home/PostSlice';
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
-import { HeartIcon,  } from "@heroicons/react/24/outline";
+import { ArrowLeftIcon, HeartIcon,  } from "@heroicons/react/24/outline";
 import { getAllUser, getOtherUser, resetSearchUser, searchUser, selectUser, setProfileType, userFollowing } from "../auth/authSlice";
 import { allCommentForAPost, bookmarkPost, commentOnPost, deletePost, getAPost, getAllPosts, getBookmarkforaPost, getLikesforaPost, getresharedforaPost, likePost, rePost, selectPost,  } from "../home/PostSlice";
 import { ReactComponent as LikeLogo } from '../../../../assets/like.svg';
@@ -543,10 +543,17 @@ const viewNextImage = () => {
     return <Loading />;
   }
 
+  const handleGoBack = () => {
+    navigate(-1);
+  }
+
   return (
    <div className={`p-2 sm:mt-10 sm:rounded-xl ${ mode === 'light' ? 'bg-white text-black fill-black' : 'bg-black text-white fill-white'} h-min `}>
       <div className='w-full rounded-3xl'>
-
+      <div onClick={handleGoBack} className='flex items-center py-4 gap-3 cursor-pointer'>
+        <ArrowLeftIcon className='w-5 h-5 stroke-[3px] cursor-pointer' />
+        <h2 className='text-sm font-semibold'>Go Back</h2>
+      </div>
   <form onSubmit={handleSearch}>
 <div className='flex my-2 w-full items-center px-4'> 
 <div className='flex relative items-center w-full sm:w-[50%]'>
@@ -561,7 +568,7 @@ const viewNextImage = () => {
 <button 
  
     type="submit" 
-    className="bg-purple-600 text-xs hover:bg-purple-800 text-white font-semibold py-[9px] px-3 rounded-r-2xl transition-colors duration-200"
+    className="bg-purple-600 text-xs hover:bg-purple-800 text-white font-semibold py-[9.3px] px-3 rounded-r-2xl transition-colors duration-200"
   >
     Search
   </button>

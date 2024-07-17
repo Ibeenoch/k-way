@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../../hooks';
 import { fetchChat, findChatIdForTwoUsers, getAllUser, getOtherUser, selectUser } from '../auth/authSlice';
 import { socket } from '../../../../index'
 import { useEffect } from 'react';
+import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 
 
 
@@ -80,12 +81,23 @@ const MessageList = () => {
           
         }
       } )
-    }, [])
+    }, []);
+
+    
+  const goBack = () => {
+    navigate(-1);
+  };
 
   return (
     <div>
+       
+      <div className={`w-full ${mode === 'light' ? 'bg-white text-black' : 'bg-black text-white'} h-screen sm:mt-4 rounded-3xl p-4`}>
+        
+      <div onClick={goBack} className='flex items-center py-4 gap-3 cursor-pointer'>
+        <ArrowLeftIcon className='w-5 h-5 stroke-[3px] cursor-pointer' />
+        <h2 className='text-sm font-semibold'>Go Back</h2>
+      </div>
       
-      <div className={`w-full ${mode === 'light' ? 'bg-white text-black' : 'bg-black text-white'} h-screen mt-4 rounded-3xl p-4`}>
           <h1 className='font-bold text-md'>Message Your Friends</h1>
           {/* people */}
         {

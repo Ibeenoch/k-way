@@ -12,7 +12,7 @@ import { ReactComponent as SendLogo } from '../../../../assets/sendLogo.svg';
 import { formatCreatedAt } from "../../../../utils/timeformat";
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../hooks';
-import { HeartIcon } from '@heroicons/react/24/outline';
+import { ArrowLeftIcon, HeartIcon } from '@heroicons/react/24/outline';
 import { addNotification, getAllUser, getOtherUser, selectUser,  } from '../auth/authSlice'
 import { socket } from '../../../..';
 
@@ -167,10 +167,11 @@ const getConfirmation = (theCommentId: string) => {
         {/* desktop comment modal  */}
        <div className={`sm:mx-[30%] ${ mode === 'light' ? 'bg-white' : 'bg-black fill-white text-white'} h-screen p-3`}>
         
-        <div onClick={handleGoBack} className='flex gap-3'>
-          <BackArrowLogo className='w-4 h-4 cursor-pointer' />
-          <h2 className='text-xs font-medium cursor-pointer'>Back</h2>
-        </div>
+       <div onClick={handleGoBack} className='flex items-center py-4 gap-3 cursor-pointer'>
+        <ArrowLeftIcon className='w-5 h-5 stroke-[3px] cursor-pointer' />
+        <h2 className='text-sm font-semibold'>Go Back</h2>
+      </div>
+      
         <h2 className='text-xs text-center font-medium cursor-pointer'>Reply Comment</h2>
         <div className={`fixed w-[94%] sm:w-[38.7vw]  ${mode === 'light' ? 'bg-white' : 'bg-gray-800'} bottom-0 pt-2 border border-gray-400 rounded-xl`} >
             <div className={`flex ${mode === 'light' ? 'bg-white' : 'bg-gray-800'} items-center max-h-[30px] p-2 mb-1 rounded-xl`}>

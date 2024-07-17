@@ -11,7 +11,7 @@ import { ReactComponent as VerifyMark } from '../../../../assets/verifyChecker.s
 import { ReactComponent as CompanyLogo } from '../../../../assets/companylogo.svg';
 import { ReactComponent as EditLogo } from '../../../../assets/editLogo.svg';
 import { ReactComponent as LoginLogo } from '../../../../assets/login.svg';
-import { getAllPosts, resetSearchPost } from './PostSlice';
+import { getAllPosts, resetSearchPost, setWhichPost } from './PostSlice';
 
 
 const Left = () => {
@@ -70,7 +70,8 @@ const Left = () => {
     if(getUser === null){
       navigate('/login');
       return;
-    }
+    };
+    dispatch(setWhichPost('none'))
     dispatch(setProfileType('local'));
     const userId = getUser && getUser._doc && getUser._doc._id;
     dispatch(getOtherUser(userId)).then((res: any) => {

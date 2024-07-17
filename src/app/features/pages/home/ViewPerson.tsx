@@ -4,6 +4,7 @@ import { selectPost } from './PostSlice';
 import { useNavigate } from 'react-router-dom';
 import { getOtherUser, selectUser, setProfileType, userFollowing } from '../auth/authSlice';
 import { ReactComponent as ArrowBackLogo } from '../../../../assets/arrowBack.svg'
+import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 
 const ViewPerson = () => {
     const getUser = JSON.parse(localStorage.getItem('user') as any);
@@ -44,10 +45,10 @@ const ViewPerson = () => {
 
     return (
     <div className='sticky overflow-y-auto'>
-         <div onClick={handleGoBack} className={`sm:mx-[25%] p-2 ${mode === 'light' ? 'bg-white text-black fill-black' : 'bg-black text-white fill-white'} flex gap-3 py-2 cursor-pointer`}>
-          <ArrowBackLogo  className='w-4 h-4 cursor-pointer' />
-        <h2 className='text-xs font-medium'>Back to Post Feeds</h2>
-        </div>
+      <div onClick={handleGoBack} className='flex items-center py-4 gap-3 cursor-pointer'>
+        <ArrowLeftIcon className='w-5 h-5 stroke-[3px] cursor-pointer' />
+        <h2 className='text-sm font-semibold'>Go Back</h2>
+      </div>
 
       <div className={`sm:mx-[25%] ${mode === 'light' ? 'bg-white text-black fill-black stroke-black' : 'bg-black text-white fill-white stroke-white'} h-screen`}>
         <h2 className='font-bold text-sm text-center p-1'>Post { view === 'likes' ? 'Liked' : view === 'bookmark' ? 'Bookmark' : view === 'reshare' ? 'Reshared' : 'none'} By</h2>

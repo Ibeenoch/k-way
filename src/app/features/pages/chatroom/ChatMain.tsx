@@ -79,11 +79,11 @@ const handleGoBack = () => {
 }
 
   return (
-    <div className='sticky overflow-y-auto hide-scrollbar'>
-      <div className={`${ mode === 'light' ? 'bg-white text-black fill-black' : 'bg-gray-800 text-white fill-white'} h-screen`}>
+    <div className='sticky sm:mt-5 sm:px-2 sm:rounded-tl-3xl sm:rounded-tr-3xl overflow-y-auto hide-scrollbar'>
+      <div className={`${ mode === 'light' ? 'bg-white text-black fill-black' : 'bg-gray-800 text-white fill-white'} ${chat && Array.isArray(chat) && chat.length > 11 ? 'h-min' : 'h-screen' }`}>
 
-  <div onClick={handleGoBack} className={`flex justify-start gap-3 p-2 cursor-pointer`} >
-            <BackArrowLogo  className='w-4 h-4 cursor-pointer' />
+  <div onClick={handleGoBack} className={`flex justify-start gap-3 py-4 pl-2 cursor-pointer`} >
+            <BackArrowLogo  className='w-4 h-4 stroke-[3px] cursor-pointer' />
           <h2 className='text-xs font-medium'>Back</h2>
           </div>
         
@@ -139,7 +139,7 @@ const handleGoBack = () => {
         }
       </div>
         
-        <div className="fixed max-w-[100%] sm:max-w-[38%] bottom-0 left-0 sm:left-auto pt-2 border border-gray-400 rounded-xl">
+        <div className="fixed w-[100%] sm:w-[42%] bottom-0 left-0 sm:left-auto pt-2 border border-gray-400 rounded-xl">
               <div className="flex items-center max-h-[38px] p-2 mb-1 rounded-xl">
               <img 
                 onClick={() => viewPersonProfile(getUser._doc._id)}
@@ -152,7 +152,7 @@ const handleGoBack = () => {
                 type="text"
                 onChange={(e) => (setComment(e.target.value))}
                 value={comment}
-                className={`block text-xs w-[700px] h-[30px] ${ mode === 'light' ? 'bg-white text-black' : 'bg-transparent text-white'} p-3 border-0 focus:ring-0 focus:ring-inset focus:ring-none`}
+                className={`block text-xs w-full h-[30px] ${ mode === 'light' ? 'bg-white text-black' : 'bg-transparent text-white'} p-3 border-0 focus:ring-0 focus:ring-inset focus:ring-none`}
                 placeholder="type a chat message"
                 name="chat"
                 id="chat"

@@ -5,7 +5,7 @@ import { ReactComponent as PlusIcon } from '../../../../assets/plusLogo.svg';
 import { ReactComponent as BellLogo } from '../../../../assets/notificationLogo.svg';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../hooks';
-import { openpostForm, selectPost, shouldWeHideMobileNav } from '../home/PostSlice';
+import { openpostForm, selectPost, setWhichPost, shouldWeHideMobileNav } from '../home/PostSlice';
 import { getAllNotificationForAUser, getOtherUser, markAllNotificationForAUser, selectUser, setActivePage } from '../auth/authSlice';
 
 
@@ -89,6 +89,7 @@ const goTrend = () => {
     setisnotify(false);
     setisProfile(true);
     setispost(false);
+    dispatch(setWhichPost('none'))
     dispatch(setActivePage('profile'));
     if(!getUser){
       navigate('/login');
@@ -113,6 +114,7 @@ const goTrend = () => {
    setisnotify(false);
    setispost(true);
    dispatch(openpostForm(true));
+   dispatch(setWhichPost('post'));
    dispatch(setActivePage('post'))
   };
 

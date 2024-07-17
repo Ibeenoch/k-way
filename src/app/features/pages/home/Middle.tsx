@@ -1436,12 +1436,12 @@ src={videoUrl}
         } fixed top-0 left-0 bg-black sm:px-[30%]  w-full h-full justify-center items-center`}
       >
         <div className={`w-full h-full  ${mode === 'light' ? 'bg-white text-black fill-black' : 'bg-gray-800 text-white fill-white'}`}>
-          <div className="flex justify-between items-center p-2">
-          <img className='rounded-full w-8 h-8 cursor-pointer' src={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url} alt="" />
+          <div className="flex justify-between items-center p-4">
+          <img className='rounded-full w-10 h-10 cursor-pointer' src={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url} alt="" />
 
             {/* cancel or close  */}
             <CancelLogo  onClick={hidePostModal}
-              className={`w-4 h-4 ${ mode === 'light' ? 'fill-black' : 'fill-white'} z-40 mr-2 cursor-pointer`}/>
+              className={`w-6 h-6 ${ mode === 'light' ? 'fill-black' : 'fill-white'} z-40 mr-2 cursor-pointer`}/>
             
           </div>
 
@@ -1450,7 +1450,7 @@ src={videoUrl}
             value={content}
             name="content"
             id="content"
-            className={`${mode === 'light' ? 'bg-white' : 'bg-gray-800 text-white'} resize-none flex-none w-full h-[85vh] text-xs border-none focus:ring-0`}
+            className={`${mode === 'light' ? 'bg-white' : 'bg-gray-800 text-white'} resize-none flex-none w-full h-[85vh] text-sm border-none focus:ring-0`}
             placeholder={`${ whichPost === 'post' ? 'share a post' : 'share a story'} `}
           ></textarea>
 
@@ -1458,16 +1458,16 @@ src={videoUrl}
             <div className="flex gap-4 sm:max-w-xs sm:gap-0 sm:flex-wrap">
               <div onClick={handleFileClick} className="flex cursor-pointer items-center">
                 {/* file  */}
-               <VideoLogo className="w-4 h-4" />
-                <p className="text-xs dark-text-white font-semibold">
+               <VideoLogo className="w-5 h-5" />
+                <p className="text-sm dark-text-white font-semibold">
                   Video
                 </p>
                 <input hidden ref={fileRef} onChange={handleFileChange} type="file" accept="video/*" name="video" id="video" />
               </div>
 
               <div onClick={handleImageClick} className="flex cursor-pointer pl-2 items-center">
-                <ImageLogo  className="w-4 h-4"/>
-                <p className="text-xs font-semibold">
+                <ImageLogo  className="w-5 h-5"/>
+                <p className="text-sm font-semibold">
                   image
                 </p>
                 <input hidden ref={imageRef} onChange={handleImageChange} type="file" multiple accept="image/*" name="image" id="image" />
@@ -1477,9 +1477,9 @@ src={videoUrl}
             
 
               <div className="flex cursor-pointer pl-2 items-center">
-                <GlobalTrendLogo className="w-4 h-4" />
+                <GlobalTrendLogo className="w-5 h-5" />
                
-                <select onChange={getPrivacy} value={privacy} className={`text-xs ${ mode === 'light' ?  'bg-white text-black':'bg-gray-800 text-white' } text-black dark-text-white p-2 appearance-none font-semibold border border-0`} name="public" id="public">
+                <select onChange={getPrivacy} value={privacy} className={`text-sm ${ mode === 'light' ?  'bg-white text-black':'bg-gray-800 text-white' } text-black dark-text-white p-2 appearance-none font-semibold border border-0`} name="public" id="public">
                   <option className="text-xs font-semibold border border-0" value="public">Public</option>
                   <option className="text-xs font-semibold border border-0" value="private">Private</option>
                 </select>
@@ -1493,7 +1493,7 @@ src={videoUrl}
               isPosting ? (
                 <div className="flex items-center"><ProcessingLogo className="w-5 h-5 fill-white stroke-[5px] stroke-white" /> <p>Posting...</p></div>
               ) : (
-                <SendLogo className="w-5 h-5 fill-white"/>
+                <SendLogo className="w-6 h-6 fill-white"/>
               )
              } 
             </button>
