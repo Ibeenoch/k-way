@@ -33,36 +33,15 @@ const ProfileMiddle = () => {
     const [showupload, setShowupload] = useState<boolean>(false);
     const [showfollowers, setShowFollowers] = useState<boolean>(false);
     const [showfollowing, setShowFollowing] = useState<boolean>(false);
-    const [inputStr, setInputStr] = useState<string>("");
     const { user, followers, following, otherperson, mode } = useAppSelector(selectUser);
-    const { refresh, toggleRefresh } = useAppContext();
-    const [isTrend, setIsTrend] = useState<boolean>(false);
-    const [isNotify, setisnotify] = useState<boolean>(false);
-    const [ispost, setispost] = useState<boolean>(false);
-    const [isCommenting, setIsCommenting] = useState<boolean>(false);
-    const [postClicked, setPostClicked] = useState<string>("");
-    const [content, setcontent] = useState<string>("");
-    const [comment, setComment] = useState<string>("");
-    const [isHome, setisHome] = useState<boolean>(false);
-    const [commentErr, setCommentErr] = useState<string>("");
     const [currentPostId, setCurrentPostId] = useState<string>("");
     const [displayImage, setDisplayImage] = useState<string>('');
-    const [touchstart, setTouchStart] = useState<number>();
-    const [touchend, setTouchEnd] = useState<number>();
-    const [isPosting, setIsPosting] = useState<boolean>(false);
-    const [displayProfileImage, setDisplayProfileImage] = useState<string>('');
     const [videoUrl, setVideoUrl] = useState<string>('');
     const [toRefresh, setToRefresh] = useState<boolean>(false);
     const { posts, imageUpload, usersPosts } = useAppSelector(selectPost);
     const { viewingProfile } = useAppSelector(selectUser);
+
   
-    useEffect(() => {
-      getAllPosts()
-    }, [dispatch])
-  
-  
-    const [toggleControls, setToggleControls] = useState<boolean>(false);
-    const [personalPost, setPersonalPost] = useState<any>();
     const getUser = JSON.parse(localStorage.getItem('user') as any);
 
 
@@ -135,26 +114,13 @@ const ProfileMiddle = () => {
     }, [hideDeskTopMenu]);
   
   
-  
-  const showPostModal = () => {
-    setPostModal(true);
-   setisHome(false);
-   setIsTrend(false);
-   setisnotify(false);
-   setispost(true);
-  };
-
-
-  
-  
+ 
       const userStored = JSON.parse(localStorage.getItem('user') as any);
    
     const me = userStored && userStored._doc && userStored._doc._id;
     const fetchFeeds = () => {
       if(id){
-          dispatch(getAllUserPosts(id)).then((res: any) => {
-          console.log('all posts fetched ', res);
-        });
+          dispatch(getAllUserPosts(id))
       }
       
     };

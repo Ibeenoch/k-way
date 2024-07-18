@@ -124,9 +124,8 @@ const goTrend = () => {
     }
   }, [])
 
-  console.log('postModal  ', postModal, 'menuactive ', menuActive, 'viewingStory ', viewingStory, 'viewingProfile ', viewingProfile, 'whichPost ', whichPost, 'hideMobileNav ', hideMobileNav)
   return (
-    <div>
+    <div >
       
       {mobileIconModal ? (
         <div className={`fixed ${postModal || viewingStory || menuActive || viewingProfile || whichPost === 'post' || whichPost === 'story' || hideMobileNav === true  ? '-z-10' : 'z-40'} left-0 bottom-0 ${mode === 'light' ? 'fill-white bg-black' : 'bg-gray-900'} pr-3 pl-3 py-2 w-full rounded-full sm:hidden`} >
