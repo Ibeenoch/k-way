@@ -659,8 +659,8 @@ className={`fixed sm:hidden ${ desktopMenu && post && post._id === postClicked ?
 {
  getUser !== undefined && getUser && getUser._doc && getUser._doc._id  === postOwner ? (
             <>
-          <div onClick={() =>handleEditPost(post && post._id)} className="flex gap-2 items-center cursor-pointer pt-2">
-            <EditLogo  className="w-4 h-4"/>
+          <div onClick={() =>handleEditPost(post && post._id)} className="flex gap-3 pl-1 items-center cursor-pointer pt-2">
+            <EditLogo  className="w-5 h-5"/>
             <p className="text-lg">Edit Post</p>
           </div>
           <div  onClick={() =>handleDeletePost(post && post._id)} className="flex gap-2 items-center cursor-pointer pt-4">
