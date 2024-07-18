@@ -590,7 +590,7 @@ post && post.reShared &&  (
         } absolute shadow-xl shadow-purple-80 z-10 top-0 -right-[10px] w-[150px] ${mode === 'light' ? 'bg-gray-50 fill-black stroke-black text-black' : 'bg-gray-900 fill-white stroke-white text-white' } h-auto rounded-3xl mx-auto  p-2`}
       >
         <div onClick={(e) =>  handleClose(e)} className="flex z-50 cursor-pointer justify-center items-center py-2">
-          <p className={`text-xs font-semibold px-4 py-2 ${mode === 'light' ? 'border-black  text-black' : 'text-white border-white'} border  rounded-3xl  hover:text-white hover:bg-purple-600 hover:border-purple-600 `}>Close</p>
+          <p className={`text-xs font-semibold px-4 py-2 ${mode === 'light' ? 'border-gray-400  text-gray-500 ' : 'text-white border-white'} border  rounded-3xl  hover:text-white hover:bg-purple-600 hover:border-purple-600 `}>Close</p>
         </div>
         {
         getUser !== undefined && getUser && getUser._doc && getUser._doc._id  === postOwner ? (
@@ -659,7 +659,7 @@ id="desktopmenu"
 className={`fixed sm:hidden ${ desktopMenu && post && post._id === postClicked ? "block" : "hidden"} bottom-0 left-0  ${mode === 'light' ? 'bg-gray-50 fill-black stroke-black text-black' : 'bg-gray-900 fill-white stroke-white text-white' } pt-10 pl-5 pr-5 pb-5 z-40 w-full h-[40%] rounded-tl-3xl rounded-tr-3xl sm:hidden`}
 >
 <div onClick={(e) =>handleClose(e)} className="flex z-50 cursor-pointer justify-center items-center ">
-  <p className={`text-sm font-semibold px-4 py-1 ${mode === 'light' ? 'border-black  text-black' : 'text-white border-white'} border  rounded-3xl  hover:text-white hover:bg-purple-600 hover:border-purple-600 `}>Close</p>
+  <p className={`text-sm font-semibold px-4 py-1 ${mode === 'light' ? 'border-gray-900  text-black' : 'text-white border-white'} border  rounded-3xl  hover:text-white hover:bg-purple-600 hover:border-purple-600 `}>Close</p>
 </div>
 {
  getUser !== undefined && getUser && getUser._doc && getUser._doc._id  === postOwner ? (

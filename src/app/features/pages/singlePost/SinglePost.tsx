@@ -472,7 +472,7 @@ const viewPost = (postId: string) => {
       </div>
 
     <div className={`sm:mx-[25%] h-screen`} >
-         <div  className={`p-3 max-w-full ${ mode === 'light' ? `${commentmenu  || menu ? 'bg-gray-200' : 'bg-white'} text-black fill-black` : 'bg-black text-white fill-white'} border border-gray-400`}>
+         <div  className={`p-3 max-w-full ${ mode === 'light' ? `${commentmenu  || menu ? 'bg-white' : 'bg-white'} text-black fill-black` : 'bg-black text-white fill-white'} border border-gray-400`}>
          
         <div className="flex items-center gap-2 w-full">
           <img onClick={() => viewOthersProfile(post && post.owner && post.owner._id)} className="w-8 h-8 rounded-full cursor-pointer" src={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.url} alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
@@ -499,10 +499,10 @@ const viewPost = (postId: string) => {
                   id="mobileMenuRef"
                   className={`hidden ${
                     menu && post._id === postClicked ? "sm:block" : "sm:hidden"
-                  } absolute shadow-xl shadow-purple-80 z-10 top-0 -right-[10px] w-[150px] h-auto rounded-3xl mx-auto ${ mode === 'light' ? 'bg-white text-black fill-black stroke-black' : 'bg-gray-800 text-white fill-white stroke-white'} p-2`}
+                  } absolute shadow-xl shadow-purple-80 z-10 top-0 -right-[10px] w-[180px] h-auto rounded-3xl mx-auto ${ mode === 'light' ? 'bg-white text-black fill-black stroke-black' : 'bg-gray-800 text-white fill-white stroke-white'} p-2`}
                 >
                   <div onClick={handleClose} className="flex  cursor-pointer justify-center items-center py-2">
-                    <p className={`text-xs font-semibold px-4 py-1 ${mode === 'light' ? 'border-black  text-black' : 'text-white border-white'} border  rounded-3xl  hover:text-white hover:bg-purple-600 hover:border-purple-600 `}>Close</p>
+                    <p className={`text-xs font-semibold px-4 py-1 ${mode === 'light' ? 'border-gray-400  text-gray-800' : 'text-white border-white'} border  rounded-3xl  hover:text-white hover:bg-purple-600 hover:border-purple-600 `}>Close</p>
                   </div>
                   {
                     getUser && getUser._doc && getUser._doc._id === postOwner ? (
@@ -786,19 +786,19 @@ const viewPost = (postId: string) => {
           { post && post.photos && post.photos.length === 1 ? (
             <div className="rounded-3xl overflow-hidden">
           <img onClick={() => showMobileModal(post && post.photos[0] && post.photos[0].url, post && post._id)}
-                className="w-[520px] h-[310px] bg-white rounded-3xl object-cover cursor-pointer"
+                className="w-full h-[310px] bg-white rounded-3xl object-cover cursor-pointer"
                 src={post && post.photos[0] && post.photos[0].url}
                alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
             </div>
           ) : post && post.photos && post.photos.length === 2 ? (
             <div className="flex rounded-3xl overflow-hidden">
                <img onClick={() => showMobileModal(post && post.photos[0] && post.photos[0].url, post && post._id)}
-                className="fixed-size w-1/2 rounded-l-3xl h-[293px] border-r border-white cursor-pointer object-cover"
+                className="fixed-size w-1/2 rounded-l-3xl h-full border-r border-white cursor-pointer object-cover"
                 src={post && post.photos[0] && post.photos[0].url}
                alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
                
                <img onClick={() => showMobileModal(post && post.photos[1] && post.photos[1].url, post && post._id)}
-                 className="fixed-size w-1/2 h-[293px] border-l rounded-r-3xl border-white object-cover cursor-pointer"
+                 className="fixed-size w-1/2 h-full border-l rounded-r-3xl border-white object-cover cursor-pointer"
                  src={post && post.photos[1] && post.photos[1].url}
                alt={post && post.owner && post.owner.profilePhoto && post.owner.profilePhoto.public_id} />
             </div>
@@ -918,7 +918,7 @@ const viewPost = (postId: string) => {
       
 
             {/* view other people comments  */}
-            <div className={` ${mode === 'light' ? `${commentmenu || menu ? 'bg-gray-200' : 'bg-white'} text-black fill-black` : 'bg-black text-white fill-white'} h-screen`} >
+            <div className={` ${mode === 'light' ? `${commentmenu || menu ? 'bg-white' : 'bg-white'} text-black fill-black` : 'bg-black text-white fill-white'} h-screen`} >
             {
               comments && comments.length > 0 && Array.isArray(comments) ? (
                 comments.map((comment) => (
@@ -970,10 +970,10 @@ const viewPost = (postId: string) => {
                 id="desktopCommentMenu"
                 className={`hidden ${
                   desktopCommentMenu && comment._id === commentClicked ? "sm:block" : "sm:hidden"
-                } absolute shadow-xl w-[150px] top-0 shadow-purple-80 z-10 -right-3 rounded-lg mx-auto ${mode === 'light' ? 'bg-white text-black fill-black stroke-black' : 'bg-gray-800 text-white fill-white stroke-white'}  h-auto pb-3 pl-3 pr-3 pt-2`}
+                } absolute shadow-xl w-[150px] top-0 shadow-purple-80 z-10 -right-3 rounded-lg mx-auto ${mode === 'light' ? 'bg-gray-50 text-black fill-black stroke-black' : 'bg-gray-800 text-white fill-white stroke-white'}  h-auto pb-3 pl-3 pr-3 pt-2`}
               >
                 <div onClick={closeCommentMenu} className="flex  cursor-pointer justify-center items-center py-2">
-                  <p className={`text-xs font-semibold px-4 py-1 ${mode === 'light' ? 'border-black  text-black' : 'text-white border-white'} border  rounded-3xl  hover:text-white hover:bg-purple-600 hover:border-purple-600 `}>Close</p>
+                  <p className={`text-xs font-semibold px-4 py-1 ${mode === 'light' ? 'border-gray-400  text-gray-800' : 'text-white border-white'} border  rounded-3xl  hover:text-white hover:bg-purple-600 hover:border-purple-600 `}>Close</p>
                 </div>
                 {
                   comment && comment.owner && comment.owner._id === getUser._doc._id ? (
@@ -1012,7 +1012,7 @@ const viewPost = (postId: string) => {
                 id="mobilecommentmenu"
                 className={`fixed ${
                   desktopCommentMenu && comment._id === commentClicked ? "block" : "hidden"
-                } bottom-0 left-0 ${ mode === 'light' ? 'bg-white text-black fill-black' : 'bg-gray-800 text-white stroke-white fill-white'} pt-5 pl-5 pr-5 pb-3 z-40 w-full h-[40%] rounded-tl-3xl rounded-tr-3xl sm:hidden`}
+                } bottom-0 left-0 ${ mode === 'light' ? 'bg-gray-50 text-black fill-black' : 'bg-gray-800 text-white stroke-white fill-white'} pt-5 pl-5 pr-5 pb-3 z-40 w-full h-[40%] rounded-tl-3xl rounded-tr-3xl sm:hidden`}
               >
                  <div onClick={closeCommentMenu} className="flex  cursor-pointer justify-center items-center py-2">
                     <p className={`text-sm font-semibold px-4 py-1 ${mode === 'light' ? 'border-black  text-black' : 'text-white border-white'} border  rounded-3xl  hover:text-white hover:bg-purple-600 hover:border-purple-600 `}>Close</p>
