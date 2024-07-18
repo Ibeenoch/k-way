@@ -6,3 +6,39 @@
     -ms-overflow-style: none !important;  /* Hide scrollbar for IE and Edge */
     scrollbar-width: none !important;  /* Hide scrollbar for Firefox */
   }
+
+  /* Hide the default arrow */
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: none;
+  padding-right: 20px; /* Add some padding to accommodate the custom arrow */
+  background-image: url(''); /* You can add a custom arrow image if you like */
+}
+
+/* Optional: Custom styling for select wrapper */
+.select-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.select-wrapper::after {
+  content: ''; /* Add custom arrow content if needed */
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #000; /* Change color to match your design */
+  transform: translateY(-50%);
+}
+
+select:focus {
+  outline: none;
+  border: none;
+  box-shadow: none;
+}

@@ -745,7 +745,7 @@ posts && Array.isArray(posts) && posts.map((post: IPost, index: number) => (
               <div className="flex cursor-pointer pl-2 items-center">
                 <GlobalTrendLogo className="w-5 h-5" />
                
-                <select onChange={getPrivacy} value={privacy} className={`text-sm ${ mode === 'light' ?  'bg-white text-black':'bg-gray-800 text-white' } text-black dark-text-white p-2 appearance-none font-semibold border border-0`} name="public" id="public">
+                <select onChange={getPrivacy} value={privacy} className={`text-sm select-wrapper ${ mode === 'light' ?  'bg-white text-black':'bg-gray-800 text-white' } text-black dark-text-white p-2 appearance-none font-semibold border border-0`} name="public" id="public">
                   <option className="text-xs font-semibold border border-0" value="public">Public</option>
                   <option className="text-xs font-semibold border border-0" value="private">Private</option>
                 </select>
@@ -769,7 +769,7 @@ posts && Array.isArray(posts) && posts.map((post: IPost, index: number) => (
       </div>
 
 
-      {/* picture modal  */}
+      {/* stories modal  */}
 <div
 className={`${
 mobileModal  ? "flex" : "hidden"
