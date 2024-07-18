@@ -511,7 +511,7 @@ const viewAProfile = (userId: string) => {
         {
             mode === 'light' ? (
               <>
-              <LightModeLogo  onClick={changeToDarkMode} className={`cursor-pointer w-6 h-6 ${ mode === 'light' ? 'fill-purple-600' : 'fill-white'}`} />
+              <LightModeLogo  onClick={changeToDarkMode} className={`cursor-pointer w-6 h-6 ${ mode === 'light' ? 'fill-black' : 'fill-white'}`} />
               </>
             ) : (
               <>
