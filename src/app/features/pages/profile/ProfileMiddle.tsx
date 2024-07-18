@@ -507,7 +507,7 @@ return (
          </div>
          </div>
          
-         <button className='text-xs px-4 py-1 bg-black dark:bg-white rounded-full text-white dark:text-black transform-transition duration-100 hover:scale-110'>{
+         <button className='text-xs px-4 py-1 bg-black rounded-full text-white transform-transition duration-100 hover:scale-110'>{
         follower && follower.following && follower.following.includes(me) ? 'Unfollow' : 'Follow'
         }</button>
        </div>
@@ -530,7 +530,7 @@ return (
          </div>
          </div>
          
-         <button className='text-xs px-4 py-1 bg-black dark:bg-white rounded-full text-white dark:text-black transform-transition duration-100 hover:scale-110'>{
+         <button className='text-xs px-4 py-1 bg-black  rounded-full text-white transform-transition duration-100 hover:scale-110'>{
         follow && follow.followers && follow.followers.includes(me) ? 'Unfollow' : 'Follow'
         }</button>
        </div>
