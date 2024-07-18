@@ -257,8 +257,8 @@ const me = getUser && getUser._doc  && getUser._doc._id;
 </form>
 
 <div className='flex items-center justify-around gap-3'>
-      <p onClick={thesearchPost} className={` px-12 font-semibold cursor-pointer tracking-widest text-md ${searchuser ? '' : 'border-b-[3px] border-purple-600 text-purple-600'} `} >Post</p>
-      <p onClick={thesearchUser} className={`px-12 font-semibold cursor-pointer tracking-widest text-md ${searchuser ? 'border-b-[3px] border-purple-600 text-purple-600' : ''} `} >User</p>
+      <p onClick={thesearchPost} className={` px-12 font-semibold cursor-pointer hover:text-purple-600 tracking-widest text-md ${searchuser ? '' : 'border-b-[3px] border-purple-600 text-purple-600'} `} >Post</p>
+      <p onClick={thesearchUser} className={`px-12 font-semibold cursor-pointer hover:text-purple-600 tracking-widest text-md ${searchuser ? 'border-b-[3px] border-purple-600 text-purple-600' : ''} `} >User</p>
 </div>
 
 
