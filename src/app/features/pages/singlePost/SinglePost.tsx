@@ -978,7 +978,7 @@ const viewPost = (postId: string) => {
                 {
                   comment && comment.owner && comment.owner._id === getUser._doc._id ? (
                     <>
-                     <div onClick={() =>handleEditIcon(comment._id, post._id)} className="flex gap-2 items-center cursor-pointer pt-4">
+                     <div onClick={() =>handleEditIcon(comment._id, post._id)} className="flex gap-3 items-center cursor-pointer pt-4">
                   <EditLogo className="w-4 h-4 group-hover:stroke-purple-600"/>
                   <p className="text-[10px] group-hover:text-purple-600">Edit Comment</p>
                 </div>
@@ -988,8 +988,8 @@ const viewPost = (postId: string) => {
                   <p className="text-[10px] group-hover:text-red-600">Delete Comment</p>
                 </div>
 
-                <div onClick={() => handleReplyComent(comment._id)} className="flex gap-2 items-center cursor-pointer pt-4">
-                  <ReplyLogo className="w-5 h-5  group-hover:stroke-purple-600" />
+                <div onClick={() => handleReplyComent(comment._id)} className="flex gap-3 items-center cursor-pointer pt-4">
+                  <ReplyLogo className="w-4 h-4  group-hover:stroke-purple-600" />
                   <p className="text-[10px] group-hover:text-purple-600">Reply Comment</p>
                 </div>
 
