@@ -653,13 +653,13 @@ ref={desktopMenuRef}
 id="desktopmenu"
 className={`fixed sm:hidden ${ desktopMenu && post && post._id === postClicked ? "block" : "hidden"} bottom-0 left-0  ${mode === 'light' ? 'bg-white fill-black stroke-black text-black' : 'bg-gray-900 fill-white stroke-white text-white' } pt-10 pl-5 pr-5 pb-5 z-40 w-full h-[40%] rounded-tl-3xl rounded-tr-3xl sm:hidden`}
 >
-<div onClick={handleClose} className="flex  cursor-pointer justify-center items-center py-4">
+<div onClick={handleClose} className="flex  cursor-pointer justify-center items-center ">
   <p className={`text-sm font-semibold px-4 py-1 ${mode === 'light' ? 'border-black  text-black' : 'text-white border-white'} border  rounded-3xl  hover:text-white hover:bg-purple-600 hover:border-purple-600 `}>Close</p>
 </div>
 {
  getUser !== undefined && getUser && getUser._doc && getUser._doc._id  === postOwner ? (
             <>
-          <div onClick={() =>handleEditPost(post && post._id)} className="flex gap-2 items-center cursor-pointer pt-4">
+          <div onClick={() =>handleEditPost(post && post._id)} className="flex gap-2 items-center cursor-pointer pt-2">
             <EditLogo  className="w-4 h-4"/>
             <p className="text-lg">Edit Post</p>
           </div>
