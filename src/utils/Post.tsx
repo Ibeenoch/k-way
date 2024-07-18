@@ -383,20 +383,8 @@ const Post: React.FC<Props> = ({ post }) => {
     const viewUserProfile = (userId: string) => {
       dispatch(getOtherUser(userId)).then((res: any) => {
         if(res && res.payload !== undefined){
-          if(getUser === null){
-            dispatch(setProfileType('foreign'));
             navigate(`/profile/${userId}`);
             window.scrollTo(0, 0);
-          } else{ 
-            const userId = getUser && getUser._doc && getUser._doc._id;
-            if(res && res.payload && res.payload._doc && res.payload._doc._id === userId){
-            dispatch(setProfileType('local'))
-            navigate(`/profile/${userId}`);
-          }else{
-            dispatch(setProfileType('foreign'))
-            navigate(`/profile/${userId}`);
-          }
-          }
         }
       })
     }
@@ -556,7 +544,7 @@ const Post: React.FC<Props> = ({ post }) => {
 post && post.reShared &&  (
 <div className={`flex justify-between px-2 items-center border-b border-b-gray-300 border-opacity-40`}>
 <div className="flex items-center pb-4">
- <img onClick={() => viewAProfile(post && post.reShare && post.reShare[0] && post.reShare[0].user && post.reShare[0].user._id)} className="w-8 h-8 rounded-full cursor-pointer" src={post && post.reShare && post.reShare[0] && post.reShare[0].user  && post.reShare[0].user.profilePhoto && post.reShare[0].user.profilePhoto.url} alt=""/>
+ <img onClick={() => viewUserProfile(post && post.reShare && post.reShare[0] && post.reShare[0].user && post.reShare[0].user._id)} className="w-8 h-8 rounded-full cursor-pointer" src={post && post.reShare && post.reShare[0] && post.reShare[0].user  && post.reShare[0].user.profilePhoto && post.reShare[0].user.profilePhoto.url} alt=""/>
   <p className="text-xs font-medium px-1">{post && post.reShare && post.reShare[0]  && post.reShare[0].user  && post.reShare[0].user.fullname}</p>
   <p className="text-gray-500 text-xs font-semibold px-3">Reshared this post</p>
 </div>
@@ -720,12 +708,12 @@ mobileModal  ? "flex" : "hidden"
   <MenuLogo className={`${toggleControls ? 'block': 'hidden'} w-4 h-4  z-40 fill-white mt-3 ml-3 cursor-pointer`} />
 
   {/* cancel or close  */}
-  <CancelLogo onClick={hideMobileModal}  className={`${toggleControls ? 'block': 'hidden'} w-4 h-4 fill-white z-50 mt-4 mr-4 cursor-pointer`} />
+  <CancelLogo onClick={hideMobileModal}  className={`${toggleControls ? 'block': 'hidden'} w-5 h-5 stroke-[2px] fill-white z-50 mt-4 mr-4 cursor-pointer`} />
 </div>
 
 <div className={`${toggleControls ? 'flex': 'hidden'} justify-between items-center z-14 my-2 px-4`}>
   <div className='flex gap-2'>
-    <img onClick={() => viewAProfile(storyActive ? storyOwner && storyOwner._id : personalPost && personalPost.owner && personalPost.owner._id )} className='w-9 h-9 rounded-full cursor-pointer z-40' src={storyActive ? storyOwner && storyOwner.profilePhoto && storyOwner.profilePhoto.url : displayProfileImage} alt="" />
+    <img onClick={() => viewUserProfile(storyActive ? storyOwner && storyOwner._id : personalPost && personalPost.owner && personalPost.owner._id )} className='w-9 h-9 rounded-full cursor-pointer z-40' src={storyActive ? storyOwner && storyOwner.profilePhoto && storyOwner.profilePhoto.url : displayProfileImage} alt="" />
   <div className="z-40">
     <h1 className='text-sm text-white font-semibold'>{storyActive ? storyOwner && storyOwner.fullname : personalPost && personalPost.owner && personalPost.owner.fullname}</h1>
     <p className='text-xs text-gray-300'>@{storyActive ? storyOwner && storyOwner.handle : personalPost && personalPost.owner && personalPost.owner.handle}</p>
