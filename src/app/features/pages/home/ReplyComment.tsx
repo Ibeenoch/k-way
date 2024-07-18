@@ -167,7 +167,7 @@ const getConfirmation = (theCommentId: string) => {
       </div>
       
         <h2 className='text-xs text-center font-medium cursor-pointer'>Reply Comment</h2>
-        <div className={`fixed w-[94%] sm:w-[38.7vw]  ${mode === 'light' ? 'bg-white' : 'bg-gray-800'} bottom-0 pt-2 border border-gray-400 rounded-xl`} >
+        <div className={`fixed left-0 w-[100%] sm:w-[38.7vw]  ${mode === 'light' ? 'bg-white  border border-gray-400' : 'bg-gray-800'} bottom-0 pt-2 rounded-xl`} >
             <div className={`flex ${mode === 'light' ? 'bg-white' : 'bg-gray-800'} items-center max-h-[30px] p-2 mb-1 rounded-xl`}>
             <div onClick={() => viewPersonProfile(getUser._doc._id)}>
             <img

@@ -672,7 +672,7 @@ const viewPost = (postId: string) => {
         </div>
             </div>
             
-            <div className={`fixed bottom-0 ${toggleControls ? 'flex' : 'hidden' } z-40 border border-white rounded-xl`}>
+            <div className={`fixed bottom-0 ${toggleControls ? 'flex' : 'hidden' } z-40 rounded-xl`}>
              <input
                   type="text"
                   className="rounded-md border-0 border-none focus:ring-0 focus:ring-inset focus:ring-none bg-transparent w-[70vw] sm:left-[25%] sm:w-[42vw] mx-auto left-0 py-2 text-white shadow-sm placeholder:text-white  sm:text-xs"
@@ -756,7 +756,7 @@ const viewPost = (postId: string) => {
 
         {/* add your comment  */}
 
-        <div className={`${ mobileModal ? 'hidden' : 'block'} fixed bottom-0 flex border border-white rounded-xl`}>
+        <div className={`${ mobileModal ? 'hidden' : 'block'} fixed bottom-0 flex rounded-xl`}>
              <input
              onClick={() =>viewPost(post && post._id)}
                   type="text"
@@ -1058,7 +1058,7 @@ const viewPost = (postId: string) => {
           </div>
 
         <div className={`${ mobileModal ? 'hidden' : 'block'} fixed w-[100%] sm:w-[50%] pt-2 bottom-0 rounded-xl`}>
-            <div className={`flex ${ mode === 'light' ? 'bg-white fill-black text-black' : 'bg-gray-800 fill-white text-white'} border border-gray-300 items-center max-h-[30px] py-6 px-2 rounded-xl`}>
+            <div className={`flex ${ mode === 'light' ? 'bg-white fill-black text-black border border-gray-300' : 'bg-gray-800 fill-white text-white'}  items-center max-h-[30px] py-6 px-2 rounded-xl`}>
             <img onClick={() => navigateToProfile(getUser && getUser._doc && getUser._doc._id)}
               src={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url }
               className="block w-7 h-7 rounded-full cursor-pointer"
