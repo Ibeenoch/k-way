@@ -495,14 +495,14 @@ return (
           <>
           {/* followers  */}
 
-     <div key={index} className={`w-full ${ mode === 'light' ? 'bg-white text-black' : 'bg-gray-800 text-white'} mt-[0.9px] rounded-3xl p-4`} >
+     <div key={index} className={`w-full ${ mode === 'light' ? 'bg-white border border-gray-200 text-black' : 'bg-gray-800 text-white'} mt-[0.9px] rounded-3xl p-4`} >
        {/* people */}
 
        <div className='flex justify-between items-center my-2 px-4'>
          <div className='flex gap-2'>
            <img className='w-9 h-9 rounded-full' src={follower && follower.profilePhoto && follower.profilePhoto.url} alt="followers" />
          <div>
-           <h1 className='text-sm dark:text-white font-semibold'>{follower && follower.fullname}</h1>
+           <h1 className='text-sm  font-semibold'>{follower && follower.fullname}</h1>
            <p className='text-xs text-gray-600'>@{follower && follower.handle}</p>
          </div>
          </div>
@@ -518,14 +518,14 @@ return (
           <>
           {/* followers  */}
 
-     <div key={index} className={`w-full ${ mode === 'light' ? 'bg-white text-black' : 'bg-gray-800 text-white'} mt-[0.9px] rounded-3xl p-4`}>
+     <div key={index} className={`w-full ${ mode === 'light' ? 'bg-white border border-gray-200 text-black' : 'bg-gray-800 text-white'} mt-[0.9px] rounded-3xl p-4`}>
        {/* people */}
 
        <div className='flex justify-between items-center my-2 px-4'>
          <div className='flex gap-2'>
            <img className='w-9 h-9 rounded-full' src={follow && follow.profilePhoto && follow.profilePhoto.url} alt="following" />
          <div>
-           <h1 className='text-sm  dark:text-white font-semibold'>{follow && follow.fullname}</h1>
+           <h1 className='text-sm font-semibold'>{follow && follow.fullname}</h1>
            <p className='text-xs text-gray-600'>@{follow && follow.handle}</p>
          </div>
          </div>
