@@ -716,7 +716,7 @@ posts && Array.isArray(posts) && posts.map((post: IPost, index: number) => (
             value={content}
             name="content"
             id="content"
-            className={`${mode === 'light' ? 'bg-white' : 'bg-gray-800 text-white'} resize-none flex-none w-full h-[75%] sm:h-[85vh] text-sm border-none focus:ring-0`}
+            className={`${mode === 'light' ? 'bg-white' : 'bg-gray-800 text-white'} resize-none flex-none w-full h-[78%] sm:h-[85vh] text-sm border-none focus:ring-0`}
             placeholder={`${ whichPost === 'post' ? 'share a post' : 'share a story'} `}
           ></textarea>
 
