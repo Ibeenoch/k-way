@@ -124,7 +124,7 @@ const goTrend = () => {
     }
   }, [])
 
- // console.log('postModal  ', postModal, 'menuactive ', menuActive, 'viewingStory ', viewingStory, 'viewingProfile ', viewingProfile, 'whichPost ', whichPost, 'hideMobileNav ', hideMobileNav)
+ console.log('postModal  ', postModal, 'menuactive ', menuActive, 'viewingStory ', viewingStory, 'viewingProfile ', viewingProfile, 'whichPost ', whichPost, 'hideMobileNav ', hideMobileNav)
   return (
     <div >
       
