@@ -5,7 +5,7 @@ import {  getAllUser, getOtherUser, setProfileType, userFollowing, getFollowers,
 import { useNavigate, useParams } from "react-router-dom";
 import { socket } from '../../../../index'
 import { ReactComponent as LogoutLogo } from '../../../../assets/logout.svg';
-import { allImagesUserAPost, getAllUserPosts,  shouldWeHideMobileNav } from '../home/PostSlice';
+import { allImagesUserAPost, getAllUserPosts,  setWhichPost,  shouldWeHideMobileNav } from '../home/PostSlice';
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import { allCommentForAPost, bookmarkPost, commentOnPost, deletePost, getAPost, getAllPosts, getBookmarkforaPost, getLikesforaPost, getresharedforaPost, likePost, rePost, selectPost,  } from "../home/PostSlice";
 import { ReactComponent as VerifyMarkLogo } from '../../../../assets/verifyChecker.svg';
@@ -120,6 +120,7 @@ const ProfileMiddle = () => {
     const me = userStored && userStored._doc && userStored._doc._id;
     const fetchFeeds = () => {
       if(id){
+          dispatch(setWhichPost('none'));
           dispatch(getAllUserPosts(id))
       }
       
@@ -140,9 +141,7 @@ const ProfileMiddle = () => {
         setShowFollowing(false);
         const userId = id;
         const data = { userId };
-        dispatch(allImagesUserAPost(data)).then((res: any) => {
-          console.log('res all images   ', res);
-        })
+        dispatch(allImagesUserAPost(data));
     }
     const getFollower = (id: string) => {
       dispatch(getFollowers(id))
