@@ -501,37 +501,37 @@ const viewPost = (postId: string) => {
                     menu && post._id === postClicked ? "sm:block" : "sm:hidden"
                   } absolute shadow-xl shadow-purple-80 z-10 top-0 -right-[10px] w-[150px] h-auto rounded-3xl mx-auto ${ mode === 'light' ? 'bg-white text-black fill-black stroke-black' : 'bg-gray-800 text-white fill-white stroke-white'} p-2`}
                 >
-                  <div onClick={handleClose} className="flex  cursor-pointer justify-center items-center py-4">
-                    <p className={`text-sm font-semibold px-4 py-1 ${mode === 'light' ? 'border-black  text-black' : 'text-white border-white'} border  rounded-3xl  hover:text-white hover:bg-purple-600 hover:border-purple-600 `}>Close</p>
+                  <div onClick={handleClose} className="flex  cursor-pointer justify-center items-center py-2">
+                    <p className={`text-xs font-semibold px-4 py-1 ${mode === 'light' ? 'border-black  text-black' : 'text-white border-white'} border  rounded-3xl  hover:text-white hover:bg-purple-600 hover:border-purple-600 `}>Close</p>
                   </div>
                   {
                     getUser && getUser._doc && getUser._doc._id === postOwner ? (
                       <div id="mobileMenuRef">    
-                    <div onClick={() =>handleDeletePost(post._id)} className="flex gap-2 px-2 cursor-pointer items-center py-4">
+                    <div onClick={() =>handleDeletePost(post._id)} className="flex gap-2 px-2 cursor-pointer items-center py-1">
                       <TrashLogo className="w-5 h-5"/>
-                      <p className="text-[10px]">Delete Post</p>
+                      <p className="text-xs">Delete Post</p>
                     </div>
                       </div>
                     ) : (
                       <div id="mobileMenuRef">
-                       <div className="flex gap-2 px-2 cursor-pointer items-center py-4">
+                       <div className="flex gap-2 px-2 cursor-pointer items-center py-1">
                     <AddContactLogo  className="w-3 h-3"/>
-                    <p className="text-[10px]">Follow @{post && post.owner && post.owner.handle}</p>
+                    <p className="text-xs">Follow @{post && post.owner && post.owner.handle}</p>
                   </div>
 
                   <div className="flex gap-2 px-2 cursor-pointer items-center py-4">
                     <BlockContactLogo  className="w-3 h-3"/>
-                    <p className="text-[10px]">Block @{post && post.owner && post.owner.handle}</p>
+                    <p className="text-xs">Block @{post && post.owner && post.owner.handle}</p>
                   </div>
 
                   <div className="flex gap-2 px-2 cursor-pointer items-center py-4">
                     <ReportContactLogo  className="w-3 h-3"/>
-                    <p className="text-[10px]">Report Post</p>
+                    <p className="text-xs">Report Post</p>
                   </div>
 
                   <div className="flex gap-2 px-2 cursor-pointer items-center py-4">
                     <MuteContactLogo   className="w-3 h-3"/>
-                    <p className="text-[10px]">Mute @{post && post.owner && post.owner.handle}</p>
+                    <p className="text-xs">Mute @{post && post.owner && post.owner.handle}</p>
                   </div>
                       </div>
                     )
@@ -972,25 +972,25 @@ const viewPost = (postId: string) => {
                   desktopCommentMenu && comment._id === commentClicked ? "sm:block" : "sm:hidden"
                 } absolute shadow-xl w-[150px] top-0 shadow-purple-80 z-10 -right-3 rounded-lg mx-auto ${mode === 'light' ? 'bg-white text-black fill-black stroke-black' : 'bg-gray-800 text-white fill-white stroke-white'}  h-auto pb-3 pl-3 pr-3 pt-2`}
               >
-                <div className="flex justify-end">
-                  <CancelLogo onClick={closeCommentMenu} className="w-3 h-3 cursor-pointer"/>
+                <div onClick={closeCommentMenu} className="flex  cursor-pointer justify-center items-center py-2">
+                  <p className={`text-xs font-semibold px-4 py-1 ${mode === 'light' ? 'border-black  text-black' : 'text-white border-white'} border  rounded-3xl  hover:text-white hover:bg-purple-600 hover:border-purple-600 `}>Close</p>
                 </div>
                 {
                   comment && comment.owner && comment.owner._id === getUser._doc._id ? (
                     <>
-                     <div onClick={() =>handleEditIcon(comment._id, post._id)} className="flex gap-3 items-center cursor-pointer pt-4">
+                     <div onClick={() =>handleEditIcon(comment._id, post._id)} className="flex gap-3 items-center cursor-pointer pt-2">
                   <EditLogo className="w-4 h-4 group-hover:stroke-purple-600"/>
-                  <p className="text-[10px] group-hover:text-purple-600">Edit Comment</p>
+                  <p className="text-xs group-hover:text-purple-600">Edit Comment</p>
                 </div>
 
                 <div onClick={() =>getConfirmation(comment._id)} className="flex gap-2 items-center cursor-pointer pt-4">
                  <TrashLogo className="w-5 h-5 group-hover:stroke-red-600 group-hover:fill-red-600"/>
-                  <p className="text-[10px] group-hover:text-red-600">Delete Comment</p>
+                  <p className="text-xs group-hover:text-red-600">Delete Comment</p>
                 </div>
 
                 <div onClick={() => handleReplyComent(comment._id)} className="flex gap-3 items-center cursor-pointer pt-4">
                   <ReplyLogo className="w-4 h-4  group-hover:stroke-purple-600" />
-                  <p className="text-[10px] group-hover:text-purple-600">Reply Comment</p>
+                  <p className="text-xs group-hover:text-purple-600">Reply Comment</p>
                 </div>
 
                     </>
@@ -998,7 +998,7 @@ const viewPost = (postId: string) => {
                     <>
                      <div onClick={() => handleReplyComent(comment._id)} className="flex gap-2 items-center cursor-pointer pt-4">
                   <ReplyLogo  className="w-5 h-5  group-hover:stroke-purple-600" />
-                  <p className="text-[10px] group-hover:text-purple-600">Reply Comment</p>
+                  <p className="text-xs group-hover:text-purple-600">Reply Comment</p>
                 </div>
                     </>
                   )
@@ -1012,12 +1012,15 @@ const viewPost = (postId: string) => {
                 id="mobilecommentmenu"
                 className={`fixed ${
                   desktopCommentMenu && comment._id === commentClicked ? "block" : "hidden"
-                } bottom-0 left-0 ${ mode === 'light' ? 'bg-white text-black fill-black' : 'bg-gray-800 text-white stroke-white fill-white'} pt-10 pl-5 pr-5 pb-5 z-40 w-full h-[40%] rounded-tl-3xl rounded-tr-3xl sm:hidden`}
+                } bottom-0 left-0 ${ mode === 'light' ? 'bg-white text-black fill-black' : 'bg-gray-800 text-white stroke-white fill-white'} pt-5 pl-5 pr-5 pb-3 z-40 w-full h-[40%] rounded-tl-3xl rounded-tr-3xl sm:hidden`}
               >
+                 <div onClick={closeCommentMenu} className="flex  cursor-pointer justify-center items-center py-2">
+                    <p className={`text-sm font-semibold px-4 py-1 ${mode === 'light' ? 'border-black  text-black' : 'text-white border-white'} border  rounded-3xl  hover:text-white hover:bg-purple-600 hover:border-purple-600 `}>Close</p>
+                  </div>
                 {
                   comment && comment.owner && comment.owner._id === getUser._doc._id ? (
                     <>
-                     <div onClick={() =>handleEditIcon(comment._id, post._id)} className="flex gap-3 items-center  pl-2 cursor-pointer pt-4">
+                     <div onClick={() =>handleEditIcon(comment._id, post._id)} className="flex gap-3 items-center  pl-2 cursor-pointer pt-2">
                   <EditLogo className="w-5 h-5 group-hover:stroke-purple-600"/>
                   <p className="text-[17px] group-hover:text-purple-600 pt-1">Edit Comment</p>
                 </div>
