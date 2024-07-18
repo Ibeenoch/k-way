@@ -11,6 +11,29 @@ import { useAppContext } from "../home/homeContext";
 import { useAppDispatch, useAppSelector } from '../../../hooks';
 import Post from '../../../../utils/Post';
 
+interface IPost {
+  _id: string;
+  reShared?: boolean;
+  reShare?: Array<any>;
+  allReshare?: Array<any>;
+  owner: {
+    _id: string;
+    profilePhoto?: {
+      url: string;
+    };
+    fullname: string;
+    handle: string;
+  };
+  bookmark: Array<string>;
+  likes: Array<string>;
+  comments: Array<string>;
+  createdAt: string;
+  content: string;
+  photos?: Array<{ url: string }>;
+  video?: { url: string };
+}
+
+
 const TrendList = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -295,9 +318,9 @@ const me = getUser && getUser._doc  && getUser._doc._id;
                 </div>
               </>
             )
-          : searchPosts && Array.isArray(searchPosts) && searchPosts.length > 0 ? searchPosts.map((post: any, index: number) => (       
+          : searchPosts && Array.isArray(searchPosts) && searchPosts.length > 0 ? searchPosts.map((post: IPost, index: number) => (       
          
-          <Post post={post} />
+          <Post post={post} key={post._id} />
           )) : (
             <>
             </>

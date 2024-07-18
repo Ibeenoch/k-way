@@ -688,7 +688,7 @@ const viewAProfile = (userId: string) => {
       {
 
 posts && Array.isArray(posts) && posts.map((post: IPost, index: number) => (       
- <Post post={post}  />
+ <Post post={post} key={post._id}  />
 ))
 
 }

@@ -17,6 +17,28 @@ import { ReactComponent as EditLogo } from '../../../../assets/editLogo.svg';
 import { useAppContext } from "../home/homeContext";
 import Post from "../../../../utils/Post";
 
+interface IPost {
+  _id: string;
+  reShared?: boolean;
+  reShare?: Array<any>;
+  allReshare?: Array<any>;
+  owner: {
+    _id: string;
+    profilePhoto?: {
+      url: string;
+    };
+    fullname: string;
+    handle: string;
+  };
+  bookmark: Array<string>;
+  likes: Array<string>;
+  comments: Array<string>;
+  createdAt: string;
+  content: string;
+  photos?: Array<{ url: string }>;
+  video?: { url: string };
+}
+
 
 const ProfileMiddle = () => {
   const navigate = useNavigate();
@@ -462,8 +484,8 @@ return (
           <>
            {
 
-            usersPosts && Array.isArray(usersPosts) && usersPosts.map((post: any, index: number) => (       
-            <Post post={post} />
+            usersPosts && Array.isArray(usersPosts) && usersPosts.map((post: IPost, index: number) => (       
+            <Post post={post} key={post._id} />
             ))
             
             }
