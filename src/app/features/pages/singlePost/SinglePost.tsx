@@ -1012,12 +1012,12 @@ const viewPost = (postId: string) => {
                 id="mobilecommentmenu"
                 className={`fixed ${
                   desktopCommentMenu && comment._id === commentClicked ? "block" : "hidden"
-                } bottom-0 left-0 ${ mode === 'light' ? 'bg-white text-black fill-black stroke-black' : 'bg-gray-800 text-white fill-white stroke-white'} pt-10 pl-5 pr-5 pb-5 z-40 w-full h-[40%] rounded-tl-3xl rounded-tr-3xl sm:hidden`}
+                } bottom-0 left-0 ${ mode === 'light' ? 'bg-white text-black fill-black' : 'bg-gray-800 text-white stroke-white fill-white'} pt-10 pl-5 pr-5 pb-5 z-40 w-full h-[40%] rounded-tl-3xl rounded-tr-3xl sm:hidden`}
               >
                 {
                   comment && comment.owner && comment.owner._id === getUser._doc._id ? (
                     <>
-                     <div onClick={() =>handleEditIcon(comment._id, post._id)} className="flex gap-2 items-center cursor-pointer pt-4">
+                     <div onClick={() =>handleEditIcon(comment._id, post._id)} className="flex gap-3 items-center  pl-2 cursor-pointer pt-4">
                   <EditLogo className="w-5 h-5 group-hover:stroke-purple-600"/>
                   <p className="text-[17px] group-hover:text-purple-600 pt-1">Edit Comment</p>
                 </div>
@@ -1027,8 +1027,8 @@ const viewPost = (postId: string) => {
                   <p className="text-[17px] group-hover:text-red-600">Delete Comment</p>
                 </div>
 
-                <div onClick={() => handleReplyComent(comment._id)} className="flex gap-2 items-center cursor-pointer pt-4">
-                  <ReplyLogo className="w-8 h-8  group-hover:stroke-purple-600" />
+                <div onClick={() => handleReplyComent(comment._id)} className="flex gap-3 items-center cursor-pointer pt-4">
+                  <ReplyLogo className="w-7 h-7  group-hover:stroke-purple-600" />
                   <p className="text-[17px] group-hover:text-purple-600">Reply Comment</p>
                 </div>
 
