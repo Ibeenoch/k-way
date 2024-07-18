@@ -190,7 +190,7 @@ const getConfirmation = (theCommentId: string) => {
             {
               isCommenting ? (
                 <>
-               <div className='flex items-center'><ProcessingLogo className="w-5 h-5 fill-white" /> <p className='text-[9px] text-white'> Posting...</p></div> 
+               <div className='flex items-center'><ProcessingLogo className="w-5 h-5 fill-white" /> <p className='text-sm text-white'> Posting...</p></div> 
                </>
               ) : (
                 <SendLogo className="w-6 h-6 fill-white" />

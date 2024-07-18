@@ -76,7 +76,7 @@ const EditComment = () => {
                 type="text"
                 onChange={(e) => (setComment(e.target.value))}
                 value={comment}
-                className={`block text-xs w-[700px] h-[30px] ${ mode === 'light' ? 'bg-gray-100' : 'bg-gray-600'} border-0`}
+                className={`block text-xs w-[700px] h-[30px] ${ mode === 'light' ? 'bg-gray-100' : 'bg-gray-700'} border-0`}
                 placeholder="Comment on this"
                 name=""
                 id=""
@@ -93,14 +93,14 @@ const EditComment = () => {
 
             
 
-                <button onClick={() => handleCommentSubmit()} className={`text-[9px] ${ mode === 'light' ? 'bg-black' : 'bg-gray-900'} text-white font-semibold rounded-2xl px-3 py-1 mt-2 transform-transition duration-100 hover:scale-110`}>
+                <button onClick={() => handleCommentSubmit()} className={`text-sm ${ mode === 'light' ? 'bg-black' : 'bg-gray-900'} text-white font-semibold rounded-2xl px-3 py-1 mt-2 transform-transition duration-100 hover:scale-110`}>
                 {
                 isCommenting ? (
                     <>
-               <div className='flex items-center'><ProcessingLogo className="w-5 h-5 fill-white" /> <p className='text-[9px]'> Editing...</p></div> 
+               <div className='flex items-center'><ProcessingLogo className="w-5 h-5 fill-white" /> <p className='text-sm'> Editing...</p></div> 
                </>
                 ) : (
-                    'Edit Comment'
+                    'Edit'
                 )
                 }  
                 </button>

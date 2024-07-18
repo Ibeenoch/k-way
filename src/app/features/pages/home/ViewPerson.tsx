@@ -43,7 +43,7 @@ const ViewPerson = () => {
 
     return (
     <div className='sticky overflow-y-auto'>
-      <div onClick={handleGoBack} className={`flex items-center py-4 gap-3 cursor-pointer ${mode === 'light' ? 'stroke-black text-black bg-white' : 'stroke-white text-white bg-black' } `}>
+      <div onClick={handleGoBack} className={`flex items-center py-4 pl-3 gap-3 cursor-pointer ${mode === 'light' ? 'stroke-black text-black bg-white' : 'stroke-white text-white bg-black' } `}>
         <ArrowLeftIcon className='w-5 h-5 stroke-[3px] cursor-pointer' />
         <h2 className='text-sm font-semibold'>Go Back</h2>
       </div>

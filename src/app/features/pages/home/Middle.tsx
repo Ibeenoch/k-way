@@ -754,7 +754,7 @@ posts && Array.isArray(posts) && posts.map((post: IPost, index: number) => (
             </div>
 
 
-            <button onClick={handlePostSubmit} className={`text-[9px] ${ mode === 'light' ? 'bg-black text-white' : 'border border-gray-900 bg-gray-900'} font-semibold rounded-2xl px-3 py-1 transform-transition duration-100 hover:scale-110`}>
+            <button onClick={handlePostSubmit} className={`text-sm ${ mode === 'light' ? 'bg-black text-white' : 'border border-gray-900 bg-gray-900'} font-semibold rounded-2xl px-3 py-1 transform-transition duration-100 hover:scale-110`}>
              {
               isPosting ? (
                 <div className="flex items-center"><ProcessingLogo className="w-5 h-5 fill-white stroke-[5px] stroke-white" /> <p>Posting...</p></div>
