@@ -184,6 +184,7 @@ const Post: React.FC<Props> = ({ post }) => {
         const myId = res && res.payload && res.payload._doc && res.payload._doc._id;
         navigate(`/profile/${myId}`);
         window.scrollTo(0, 0);
+        dispatch(setWhichPost('none'));
       }
     })
   };
