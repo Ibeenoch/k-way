@@ -21,12 +21,12 @@ const PostSkeleton = () => {
                 </SkeletonBox>
                 </div>
 
-                <div className='flex justify-between pl-6 pr-6 mb-1'>
+                <div className='flex justify-between mb-1'>
                     <Skeleton width={80} height={15} style={{ borderRadius: '9px'}}/>
                     <Skeleton width={80} height={15} style={{ borderRadius: '9px'}}/>
                 </div>
 
-                <div className='flex justify-between pl-6 pr-6 mb-1'>
+                <div className='flex justify-between  mb-1'>
                     <Skeleton width={150} height={20} style={{ borderRadius: '9px'}}  />
                     <Skeleton width={40} height={15} style={{ borderRadius: '9px'}} />
                 </div>
