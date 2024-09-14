@@ -174,7 +174,7 @@ const me = getUser && getUser._doc && getUser._doc._id;
       
       </div>
        {/* nav icons desktop  */}
-      <div className={`flex flex-col pt-4 ${ mode === 'light'? 'bg-white text-black fill-black' : 'bg-black text-white fill-white' } dark:bg-dark pt-2 pl-2 pr-2 pb-[150px]`} >
+      <div className={`flex flex-col  h-svh pt-4 ${ mode === 'light'? 'bg-white text-black fill-black' : 'bg-black text-white fill-white' } dark:bg-dark pt-2 pl-2 pr-2 pb-[150px]`} >
         
         <div onClick={newsFeedActive} className={`group flex cursor-pointer justify-between p-2  ${ active === 'home' ? 'border-r-[3px] border-l-[3px] border-purple-600': 'border-0' } group-hover:text-purple`}>
           <div className='flex gap-1 items-center'>
