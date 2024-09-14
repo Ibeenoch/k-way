@@ -24,7 +24,7 @@ const Right = () => {
 
 
 useEffect(() => {
-  dispatch(getAllUser())
+  dispatch(getAllUser()).then((res) => console.log("all users fetched ", res ))
 }, [dispatch]);
 
 
@@ -110,11 +110,11 @@ return (
             <SkeletonTrends />
            ) : (
         
-          users  && users && users.length > 0 && users.map((person: any) => (  
+          users  && Array.isArray(users) && users.length > 0 && users.map((person: any) => (  
                  
           <div className={`flex justify-between items-center my-2 px-4 `}>
             {
-              users && users._doc && users._doc._id !== person._id && (
+              getAUser && getAUser._doc && getAUser._doc._id !== person._id && (
                 <>
             <div onClick={() =>viewProfile(person && person._id)} className='flex gap-2 cursor-pointer'>
               {
