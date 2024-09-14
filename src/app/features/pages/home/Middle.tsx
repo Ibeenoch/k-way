@@ -502,12 +502,12 @@ const viewAProfile = (userId: string) => {
  
   return (
     <div className={`sm:mt-2 overflow-hidden sm:rounded-tl-3xl ${ mode === 'light' ? 'bg-white' : 'bg-black' } sm:rounded-tr-3xl max-w-md sm:max-w-full`} >
-      <div className="pt-4 pl-4 pr-4 flex justify-between">
+      <div className={`pt-4 pl-4 pr-4 flex ${ mode === 'light' ? `${desktopMenu || menu ? 'bg-gray-200' : 'bg-gray-200'}` : 'bg-black' }  justify-between`}>
         <Link to='/'>
           <CompanyLogo className='w-16 h-16' />
         </Link>
 
-        <h1 className={`text-lg font-bold ${ mode === 'light' ? 'text-black' : 'text-white'} pt-3 pl-4`}>
+        <h1 className={`text-lg font-bold ${ mode === 'light' ? 'text-black' : 'text-white'} px-3 pl-4`}>
           Stories
         </h1>
         <div className="flex p-3">
@@ -524,14 +524,12 @@ const viewAProfile = (userId: string) => {
           }
         </div>
       </div>
-      {/* <div className={`p-2 flex sm:rounded-t-3xl justify-between ${ mode === 'light' ? `${desktopMenu || menu ? 'bg-gray-200' : ''}` : 'bg-black' }  `}>
-       
-      </div> */}
+     
       {/* stories */}
 
       {
             storiesStatus === 'loading' ?  (
-              <div className="p-4 flex gap-2  overflow-x-auto hide-scrollbar">
+              <div className={`p-4 flex gap-2 ${ mode === 'light' ? `${desktopMenu || menu ? 'bg-gray-200' : 'bg-gray-200'}` : 'bg-black' }  overflow-x-auto hide-scrollbar`}>
              { Array(4).fill(0).map((_, index) => (
                 <div key={index} className="flex  gap-2">
                   <StorySkeleton />
@@ -541,7 +539,7 @@ const viewAProfile = (userId: string) => {
               </div>
             ) : (
 
-      <div className={`p-4 ${ mode === 'light' ? `${desktopMenu || menu ? 'bg-gray-200' : ''}` : 'bg-black' }   `}>
+      <div className={`p-4 ${ mode === 'light' ? `${desktopMenu || menu ? 'bg-gray-200' : 'bg-gray-200'}` : 'bg-black' }   `}>
         <div className="flex max-w-full overflow-x-auto hide-scrollbar">
           {/* add a story  */}
           <div  onClick={handleStory} className="relative inline-block mx-1 flex-none">
@@ -617,7 +615,7 @@ const viewAProfile = (userId: string) => {
        )
             }
 
-      <h1 className={`text-lg font-bold ${ mode === 'light' ?  `${desktopMenu || menu ? 'bg-gray-200 text-black' : 'bg-white text-black'}` : 'text-white' } pl-4`} >
+      <h1 className={`text-lg py-2 font-bold ${ mode === 'light' ?  `${desktopMenu || menu ? 'bg-gray-200 text-black' : 'bg-white text-black'}` : 'text-white' } pl-4`} >
         Feeds
       </h1>
       {/* desktop post  */}
