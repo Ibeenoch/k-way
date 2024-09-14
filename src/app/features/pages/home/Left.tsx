@@ -12,6 +12,7 @@ import { ReactComponent as CompanyLogo } from '../../../../assets/companylogo.sv
 import { ReactComponent as EditLogo } from '../../../../assets/editLogo.svg';
 import { ReactComponent as LoginLogo } from '../../../../assets/login.svg';
 import { getAllPosts, resetSearchPost, setWhichPost } from './PostSlice';
+import SkeletonMenu from '../../skeleton/SkeletonMenu';
 
 
 const Left = () => {
@@ -20,8 +21,8 @@ const Left = () => {
   const { active, mode } = useAppSelector(selectUser);
   const getUser = JSON.parse(localStorage.getItem('user') as any);
   const { refresh } = useAppContext();
-  const { unViewednotificationCount, unreadChatCount, whoToNotify, notificationCountHistory } = useAppSelector(selectUser);
-
+  const { unViewednotificationCount, unreadChatCount, whoToNotify, notificationCountHistory, allUserStatus } = useAppSelector(selectUser);
+  
   const newsFeedActive = () => {
     dispatch(setActivePage('home'));
     navigate('/');
@@ -90,12 +91,24 @@ const me = getUser && getUser._doc && getUser._doc._id;
 
   return (
     <div className={`p-2 fixed w-[22vw] top-4 ${ mode === 'light' ? 'bg-gray-100' : 'bg-gray-900'}`}>
-      <div className={`flex ${ mode === 'light' ? 'bg-white' : 'bg-black'} flex-col rounded-tl-3xl  rounded-tr-3xl justify-center p-6`}>
+      <div className={`flex ${ mode === 'light' ? 'bg-white' : 'bg-black'} flex-col rounded-tl-3xl   rounded-tr-3xl justify-center p-6`}>
+      {
+        allUserStatus === 'loading' ? (
+          <div className={` ${ mode === 'light' ? 'bg-white' : 'bg-black'} h-svh`}>
+
+          <SkeletonMenu />
+          </div>
+        ) : (
+
+     <>
+      <div >
         <div  className='mx-auto pb-4'>
           <Link to='/'>
             <CompanyLogo className='w-12 h-12' />
           </Link>
         </div>
+     
+        
         <div className='flex gap-2 items-center justify-center'>
         <div className='rounded-full bg-sky-500 cursor-pointer w-18 h-18'></div>
         {
@@ -157,9 +170,11 @@ const me = getUser && getUser._doc && getUser._doc._id;
           </div>
           )
         }
+            
+      
       </div>
        {/* nav icons desktop  */}
-      <div className={`flex h-screen flex-col pt-4 ${ mode === 'light'? 'bg-white text-black fill-black' : 'bg-black text-white fill-white' } dark:bg-dark pt-2 pl-2 pr-2 pb-[150px]`} >
+      <div className={`flex flex-col pt-4 ${ mode === 'light'? 'bg-white text-black fill-black' : 'bg-black text-white fill-white' } dark:bg-dark pt-2 pl-2 pr-2 pb-[150px]`} >
         
         <div onClick={newsFeedActive} className={`group flex cursor-pointer justify-between p-2  ${ active === 'home' ? 'border-r-[3px] border-l-[3px] border-purple-600': 'border-0' } group-hover:text-purple`}>
           <div className='flex gap-1 items-center'>
@@ -209,6 +224,10 @@ const me = getUser && getUser._doc && getUser._doc._id;
         <div></div>
         </div>
    
+      </div>
+      </>
+       )
+      }
       </div>
     </div>
   )

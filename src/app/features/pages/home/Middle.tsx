@@ -7,6 +7,8 @@ import { allCommentForAPost, createPost, createStory, getAPost, getAllPosts, get
 import { Link, useNavigate, useParams } from "react-router-dom";
 import NavBar from "../mobilenav/NavBar";
 import './home.css';
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css"
 import { ReactComponent as GlobalTrendLogo } from '../../../../assets/globeTrend.svg';
 import { ReactComponent as SignalLogo } from '../../../../assets/signal.svg';
 import { ReactComponent as PlayLogo } from '../../../../assets/play.svg';
@@ -29,6 +31,8 @@ import { ReactComponent as ArrowNextLogo } from '../../../../assets/arrowNext.sv
 import { ReactComponent as MenuLogo } from '../../../../assets/threeDot.svg';
 import useOnClickOutside from "../../../../utils/ClickOut";
 import Post from "../../../../utils/Post";
+import PostSkeleton from "../../skeleton/PostSkeleton";
+import StorySkeleton from "../../skeleton/StorySkeleton";
 
 
 interface IPost {
@@ -80,7 +84,7 @@ const Middle = () => {
   const [startShowingIndex, setStartShowingIndex] = useState<any>(1);
 
   const {  mode,  } = useAppSelector(selectUser);
-  const { posts,  openPostForm, whichPost, stories, viewstories, isEditPost, storyOwner } = useAppSelector(selectPost);
+  const { posts,  openPostForm, whichPost, stories, storiesStatus, viewstories, isEditPost, storyOwner, postStatus } = useAppSelector(selectPost);
 
   const fileRef = useRef<HTMLInputElement>(null);
   const [fileInput, setFileInput] = useState<File[]>([]);
@@ -497,14 +501,13 @@ const viewAProfile = (userId: string) => {
 
  
   return (
-    <div className={`sm:mt-10 sm:rounded-tl-3xl ${ mode === 'light' ? 'bg-white' : 'bg-black' } sm:rounded-tr-3xl max-w-md sm:max-w-full`} >
-      <div className="pt-4 pl-4 pr-4">
-      <Link to='/'>
-            <CompanyLogo className='w-16 h-16' />
-          </Link>
-      </div>
-      <div className={`p-2 flex sm:rounded-t-3xl justify-between ${ mode === 'light' ? `${desktopMenu || menu ? 'bg-gray-200' : ''}` : 'bg-black' }  `}>
-        <h1 className={`text-md font-bold ${ mode === 'light' ? 'text-black' : 'text-white'} pt-3 pl-4`}>
+    <div className={`sm:mt-2 overflow-hidden sm:rounded-tl-3xl ${ mode === 'light' ? 'bg-white' : 'bg-black' } sm:rounded-tr-3xl max-w-md sm:max-w-full`} >
+      <div className="pt-4 pl-4 pr-4 flex justify-between">
+        <Link to='/'>
+          <CompanyLogo className='w-16 h-16' />
+        </Link>
+
+        <h1 className={`text-lg font-bold ${ mode === 'light' ? 'text-black' : 'text-white'} pt-3 pl-4`}>
           Stories
         </h1>
         <div className="flex p-3">
@@ -521,8 +524,24 @@ const viewAProfile = (userId: string) => {
           }
         </div>
       </div>
+      {/* <div className={`p-2 flex sm:rounded-t-3xl justify-between ${ mode === 'light' ? `${desktopMenu || menu ? 'bg-gray-200' : ''}` : 'bg-black' }  `}>
+       
+      </div> */}
       {/* stories */}
-      <div className={`py-4 ${ mode === 'light' ? `${desktopMenu || menu ? 'bg-gray-200' : ''}` : 'bg-black' }   `}>
+
+      {
+            storiesStatus === 'loading' ?  (
+              <div className="p-4 flex gap-2  overflow-x-auto hide-scrollbar">
+             { Array(4).fill(0).map((_, index) => (
+                <div key={index} className="flex  gap-2">
+                  <StorySkeleton />
+                </div>
+              ))
+              }
+              </div>
+            ) : (
+
+      <div className={`p-4 ${ mode === 'light' ? `${desktopMenu || menu ? 'bg-gray-200' : ''}` : 'bg-black' }   `}>
         <div className="flex max-w-full overflow-x-auto hide-scrollbar">
           {/* add a story  */}
           <div  onClick={handleStory} className="relative inline-block mx-1 flex-none">
@@ -548,6 +567,9 @@ const viewAProfile = (userId: string) => {
             { getUser && getUser._doc && getUser._doc.fullname && 'Your story' }  
             </p>
           </div>
+          
+
+
           <div className="flex gap-2 ">
             {/* view stories  */}
             {
@@ -592,6 +614,8 @@ const viewAProfile = (userId: string) => {
           </div>
         </div>
       </div>
+       )
+            }
 
       <h1 className={`text-lg font-bold ${ mode === 'light' ?  `${desktopMenu || menu ? 'bg-gray-200 text-black' : 'bg-white text-black'}` : 'text-white' } pl-4`} >
         Feeds
@@ -687,10 +711,18 @@ const viewAProfile = (userId: string) => {
 
       {
 
-posts && Array.isArray(posts) && posts.map((post: IPost, index: number) => (       
- <Post post={post} key={post._id}  />
-))
-
+postStatus === "loading" ? ( 
+        Array(8).fill(0).map((_, i) => (
+      <div key={i} className="">     
+        <PostSkeleton />
+      </div>
+      ))
+) :
+  (
+  posts && Array.isArray(posts) && posts.map((post: IPost, index: number) => (       
+  <Post post={post} key={post._id}  />
+  ))
+  )
 }
       
       </div>

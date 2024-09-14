@@ -63,7 +63,7 @@ const TrendList = () => {
   const [videoUrl, setVideoUrl] = useState<string>('');
   const [toRefresh, setToRefresh] = useState<boolean>(false);
   const [searchuser, setSearchuser] = useState<boolean>(false);
-  const { posts, searchPosts, currentSearch, status } = useAppSelector(selectPost);
+  const { posts, searchPosts, currentSearch, status, trendStatus } = useAppSelector(selectPost);
   const { users, searchUsers, mode } = useAppSelector(selectUser);
   const [searchWord, setSearchWord] = useState(currentSearch ? currentSearch : '');
 
@@ -235,101 +235,101 @@ const me = getUser && getUser._doc  && getUser._doc._id;
         <ArrowLeftIcon className='w-5 h-5 stroke-[3px] cursor-pointer' />
         <h2 className='text-sm font-semibold'>Go Back</h2>
       </div>
-  <form onSubmit={handleSearch}>
-<div className='flex my-2 w-full items-center px-4'> 
-<div className='flex relative items-center w-full sm:w-[50%]'>
-  <input value={searchWord} required onChange={(e) => (setSearchWord(e.target.value))} type="search" name="search" id="search" className={`w-full ${ mode === 'light' ? 'bg-white border-gray-200 focus:border-gray-200' : 'bg-gray-600 border-purple-600 focus:border-purple-200'} rounded-bl-2xl rounded-tl-2xl px-3 py-1 text-[12px]  focus:ring-0`} placeholder='search for a trend' />
-  <div className='absolute right-2'>
-  <button>
-  <SearchLogo  className='w-[14px] h-[14px] stroke-[4px]' />
-  </button>
-  </div>
-</div>
+      <form onSubmit={handleSearch}>
+    <div className='flex my-2 w-full items-center px-4'> 
+    <div className='flex relative items-center w-full sm:w-[50%]'>
+      <input value={searchWord} required onChange={(e) => (setSearchWord(e.target.value))} type="search" name="search" id="search" className={`w-full ${ mode === 'light' ? 'bg-white border-gray-200 focus:border-gray-200' : 'bg-gray-600 border-purple-600 focus:border-purple-200'} rounded-bl-2xl rounded-tl-2xl px-3 py-1 text-[12px]  focus:ring-0`} placeholder='search for a trend' />
+      <div className='absolute right-2'>
+      <button>
+      <SearchLogo  className='w-[14px] h-[14px] stroke-[4px]' />
+      </button>
+      </div>
+    </div>
 
-<button 
- 
-    type="submit" 
-    className="bg-purple-600 text-xs hover:bg-purple-800 text-white font-semibold py-[9.3px] px-3 rounded-r-2xl transition-colors duration-200"
-  >
-    Search
-  </button>
-</div>
-</form>
+    <button 
+    
+        type="submit" 
+        className="bg-purple-600 text-xs hover:bg-purple-800 text-white font-semibold py-[9.3px] px-3 rounded-r-2xl transition-colors duration-200"
+      >
+        Search
+      </button>
+    </div>
+    </form>
 
-<div className='flex items-center justify-around gap-3'>
-      <p onClick={thesearchPost} className={` px-12 font-semibold cursor-pointer hover:text-purple-600 tracking-widest text-md ${searchuser ? '' : 'border-b-[3px] border-purple-600 text-purple-600'} `} >Post</p>
-      <p onClick={thesearchUser} className={`px-12 font-semibold cursor-pointer hover:text-purple-600 tracking-widest text-md ${searchuser ? 'border-b-[3px] border-purple-600 text-purple-600' : ''} `} >User</p>
-</div>
+    <div className='flex items-center justify-around gap-3'>
+          <p onClick={thesearchPost} className={` px-12 font-semibold cursor-pointer hover:text-purple-600 tracking-widest text-md ${searchuser ? '' : 'border-b-[3px] border-purple-600 text-purple-600'} `} >Post</p>
+          <p onClick={thesearchUser} className={`px-12 font-semibold cursor-pointer hover:text-purple-600 tracking-widest text-md ${searchuser ? 'border-b-[3px] border-purple-600 text-purple-600' : ''} `} >User</p>
+    </div>
 
 
 {/* search user result  */}
-  <div className={`pb-[61px] h-screen ${mode === 'light' ? 'bg-white' : 'bg-black'} `}>
-    {
-      searchuser ? (
-        <>
-        {
-          
-              searchUsers && searchUsers.length === 0 ? (
+    <div className={`pb-[61px] h-screen ${mode === 'light' ? 'bg-white' : 'bg-black'} `}>
+      {
+        searchuser ? (
+          <>
+          {
+            
+                searchUsers && searchUsers.length === 0 ? (
+                  <>
+                  <div className='bg-gray-800'>
+                      <div className={`h-screen ${ mode === 'light' ? 'bg-white text-black' : 'bg-black text-white'} w-full flex flex-col p-4 justify-center items-center max-w-lg mx-auto`}>
+                      <h1 className={`text-xl font-bold flex p-4 justify-center ${mode === 'light' ? 'text-black' : 'text-white'}`}>No User found</h1>
+                      <img src={`${process.env.PUBLIC_URL}/images/noresultfound1.png`} alt="nosearchresultfound" className='w-full h-full' />
+                      </div>
+                  </div>
+                  </>
+                ) :   searchUsers && Array.isArray(searchUsers) && searchUser.length > 0 ? searchUsers.map((person: any, index: number) => (
+                  <div className={`flex justify-between items-center rounded-xl py-2 my-2 px-4 ${mode === 'light' ? 'bg-white' : 'bg-gray-800'} `}>
+                    <div onClick={() =>viewProfile(person._id)} className='flex gap-2 cursor-pointer'>
+                      {
+                        person && person.profilePhoto && person.profilePhoto.url ? (
+                          <img className='w-9 h-9 rounded-full' src={person && person.profilePhoto && person.profilePhoto.url} alt="" />
+                        ) : (
+                          <img className='w-9 h-9 rounded-full' src={`${process.env.PUBLIC_URL}/images/user.png`} alt="" />
+                        )
+                      }
+                    <div>
+                      <h1 className='text-sm font-semibold'>{person && person.fullname ?  person.fullname : 'anonymous'}</h1>
+                      <p className='text-xs text-gray-500'>@{person && person.handle ?  person.handle : 'anonymous'}</p>
+                    </div>
+                    </div>
+                    
+                    <button onClick={() => handleFollow(person && person._id)} className={`text-xs px-4 py-1 rounded-full hover:bg-purple-600 ${mode === 'light' ? 'bg-black text-white' : 'bg-gray-900 text-white'} transform-transition duration-100 hover:scale-110`}>
+                  {getUser && getUser._doc && getUser._doc.following && getUser._doc.following.includes(person._id) ? 'Following' : 'Follow'} 
+                    </button>
+                  </div>
+                )) : (
+                  <></>
+                )
+            
+          }
+          </>
+        ) : (
+          // post result 
+          <>
+            {
+              searchPosts && searchPosts.length === 0 ? (
                 <>
                 <div className='bg-gray-800'>
-                    <div className={`h-screen ${ mode === 'light' ? 'bg-white text-black' : 'bg-black text-white'} w-full flex flex-col p-4 justify-center items-center max-w-lg mx-auto`}>
-                    <h1 className={`text-xl font-bold flex p-4 justify-center ${mode === 'light' ? 'text-black' : 'text-white'}`}>No User found</h1>
-                    <img src={`${process.env.PUBLIC_URL}/images/noresultfound1.png`} alt="nosearchresultfound" className='w-full h-full' />
-                    </div>
-                </div>
+                      <div className={`h-screen ${ mode === 'light' ? 'bg-white text-black' : 'bg-black text-white'} w-full flex flex-col p-4 justify-center items-center max-w-lg mx-auto`}>
+                      <h1 className={`text-xl font-bold flex p-4 justify-center ${mode === 'light' ? 'text-black' : 'text-white'}`}>No Post found</h1>
+                      <img src={`${process.env.PUBLIC_URL}/images/noresultfound1.png`} alt="nosearchresultfound" className='w-full h-full' />
+                      </div>
+                  </div>
                 </>
-              ) :   searchUsers && Array.isArray(searchUsers) && searchUser.length > 0 ? searchUsers.map((person: any, index: number) => (
-                <div className={`flex justify-between items-center rounded-xl py-2 my-2 px-4 ${mode === 'light' ? 'bg-white' : 'bg-gray-800'} `}>
-                  <div onClick={() =>viewProfile(person._id)} className='flex gap-2 cursor-pointer'>
-                    {
-                      person && person.profilePhoto && person.profilePhoto.url ? (
-                        <img className='w-9 h-9 rounded-full' src={person && person.profilePhoto && person.profilePhoto.url} alt="" />
-                      ) : (
-                        <img className='w-9 h-9 rounded-full' src={`${process.env.PUBLIC_URL}/images/user.png`} alt="" />
-                      )
-                    }
-                  <div>
-                    <h1 className='text-sm font-semibold'>{person && person.fullname ?  person.fullname : 'anonymous'}</h1>
-                    <p className='text-xs text-gray-500'>@{person && person.handle ?  person.handle : 'anonymous'}</p>
-                  </div>
-                  </div>
-                  
-                  <button onClick={() => handleFollow(person && person._id)} className={`text-xs px-4 py-1 rounded-full hover:bg-purple-600 ${mode === 'light' ? 'bg-black text-white' : 'bg-gray-900 text-white'} transform-transition duration-100 hover:scale-110`}>
-                {getUser && getUser._doc && getUser._doc.following && getUser._doc.following.includes(person._id) ? 'Following' : 'Follow'} 
-                  </button>
-                </div>
-              )) : (
-                <></>
               )
+            : searchPosts && Array.isArray(searchPosts) && searchPosts.length > 0 ? searchPosts.map((post: IPost, index: number) => (       
           
-        }
-        </>
-      ) : (
-        // post result 
-        <>
-          {
-            searchPosts && searchPosts.length === 0 ? (
+            <Post post={post} key={post._id} />
+            )) : (
               <>
-              <div className='bg-gray-800'>
-                    <div className={`h-screen ${ mode === 'light' ? 'bg-white text-black' : 'bg-black text-white'} w-full flex flex-col p-4 justify-center items-center max-w-lg mx-auto`}>
-                    <h1 className={`text-xl font-bold flex p-4 justify-center ${mode === 'light' ? 'text-black' : 'text-white'}`}>No Post found</h1>
-                    <img src={`${process.env.PUBLIC_URL}/images/noresultfound1.png`} alt="nosearchresultfound" className='w-full h-full' />
-                    </div>
-                </div>
               </>
             )
-          : searchPosts && Array.isArray(searchPosts) && searchPosts.length > 0 ? searchPosts.map((post: IPost, index: number) => (       
-         
-          <Post post={post} key={post._id} />
-          )) : (
-            <>
-            </>
-          )
-          }
-  </>
-      )
-    }
-  </div>
+            }
+    </>
+        )
+      }
+    </div>
 </div>
 <NavBar />
    </div>

@@ -6,11 +6,12 @@ import { useNavigate } from 'react-router-dom'
 import { ArrowLeftIcon } from '@heroicons/react/24/outline'
 import { ReactComponent as Settings } from '../../../../assets/setting.svg'
 import NavBar from '../mobilenav/NavBar'
+import SkeletonTrends from '../../skeleton/SkeletonTrends'
 
 const TrendMain = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { trendingPost } = useAppSelector(selectPost);
+  const { trendingPost, trendStatus } = useAppSelector(selectPost);
   const { mode } = useAppSelector(selectUser);
 
   useEffect(() => {
@@ -31,7 +32,14 @@ const TrendMain = () => {
   };
 
   return (
-    <div className={`sm:mt-10 sm:rounded-xl ${mode === 'light' ? 'bg-white' : 'bg-black' } h-min `}  >
+    <div className={`sm:mt-2 sm:rounded-xl ${mode === 'light' ? 'bg-white' : 'bg-black' } h-svh `}  >
+      {
+        trendStatus === "loading" ? (
+          <div className='pt-6'>
+            <SkeletonTrends />
+          </div>
+        ) : (
+        
        <div className={`w-full ${ mode === 'light' ? 'bg-white text-black fill-black' : 'bg-black text-white fill-white' } h-screen rounded-3xl p-4`}>
        <div onClick={goBack} className='flex items-center py-4 gap-3 cursor-pointer'>
         <ArrowLeftIcon className='w-5 h-5 stroke-[3px] cursor-pointer' />
@@ -67,8 +75,10 @@ const TrendMain = () => {
   }
   
 
-</div>
-<NavBar />
+      </div>  
+        )
+      }
+    <NavBar />
     </div>
   )
 }

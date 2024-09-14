@@ -2,16 +2,17 @@ import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { getAllUser, getOtherUser, selectUser, userFollowing } from "../auth/authSlice";
 import { useNavigate } from "react-router-dom";
-import { currentSearchTrend, selectPost } from "./PostSlice";
+import { currentSearchTrend, selectPost, topPostTrending } from "./PostSlice";
 import { ReactComponent as Settings } from '../../../../assets/setting.svg'
 import './home.css';
+import SkeletonTrends from "../../skeleton/SkeletonTrends";
 
 const Right = () => {
   const getUsers = JSON.parse(localStorage.getItem('alluser') as any);
   const getAUser = JSON.parse(localStorage.getItem('user') as any);
   const dispatch = useAppDispatch();
-  const { trendingPost, viewingStory, whichPost, hideMobileNav, isEditPost } = useAppSelector(selectPost);
-  const { mode } = useAppSelector(selectUser);
+  const { trendingPost, trendStatus, viewingStory, whichPost, hideMobileNav, isEditPost } = useAppSelector(selectPost);
+  const { mode, users, allUserStatus } = useAppSelector(selectUser);
   const navigate = useNavigate();
 
   const handleFollow = (auserId: string) => {
@@ -24,6 +25,11 @@ const Right = () => {
 
 useEffect(() => {
   dispatch(getAllUser())
+}, [dispatch]);
+
+
+useEffect(() => {
+  dispatch(topPostTrending())
 }, [dispatch]);
 
 const viewProfile = (userId: string) => {
@@ -58,46 +64,57 @@ const viewTrend = (trend: string) => {
 
 return (
     <div className={`fixed w-[33vw] hide-scrollbar ${viewingStory || isEditPost || whichPost === 'story' || whichPost === 'post' || hideMobileNav ? '-z-10' : 'z-10'}  p-4 top-2 overflow-y-auto`}>
+      
       <div className={`w-full ${mode === 'light' ? 'bg-white fill-black text-black' : 'bg-black fill-white text-white' } rounded-tr-3xl rounded-tl-3xl p-4 border-b border-gray-200`}>
+    {
+      trendStatus === 'loading' ? (<SkeletonTrends />) : (      
+      <>
+        <div className='flex justify-between my-2 items-center px-4'>
+          <div>
+            <h1 className='text-sm font-semibold'>Currently Trending</h1>
+          </div>
 
-      <div className='flex justify-between my-2 items-center px-4'>
-        <div>
-          <h1 className='text-sm font-semibold'>Currently Trending</h1>
+          <div>
+            <Settings className='w-[12px] h-[12px]'/>
+          </div>
         </div>
 
-        <div>
-          <Settings className='w-[12px] h-[12px]'/>
-        </div>
-      </div>
+          <h1 className='text-gray-400 pl-4 text-xs'>Trending in Nigeria</h1>
+          {/* trends  */}
+          
+          {
+      trendingPost && Array.isArray(trendingPost) && trendingPost.map((trend: any) => (
+  <div onClick={() =>viewTrend(trend._id)} className='flex cursor-pointer justify-between my-2 items-center px-4'>
+    <div>
+      <h1 className='text-sm font-semibold'>#{trend._id}</h1>
+      <p className='text-gray-400 text-xs'>{trend.count} posts</p>
+    </div>
 
-        <h1 className='text-gray-400 pl-4 text-xs'>Trending in Nigeria</h1>
-        {/* trends  */}
-        
-        {
-    trendingPost && Array.isArray(trendingPost) && trendingPost.map((trend: any) => (
-<div onClick={() =>viewTrend(trend._id)} className='flex cursor-pointer justify-between my-2 items-center px-4'>
-  <div>
-    <h1 className='text-sm font-semibold'>#{trend._id}</h1>
-    <p className='text-gray-400 text-xs'>{trend.count} posts</p>
+    <div onClick={() =>viewTrend(trend._id)}>
+      <button className={`text-[11px] text-purple-600 border border-purple-600 hover:border-purple-600 font-bold hover:bg-purple-600 hover:text-white px-4 py-1 rounded-2xl ${ mode === 'light' ? 'bg-white' : 'bg-black'}`}> View </button>
+    </div>
   </div>
-
-  <div onClick={() =>viewTrend(trend._id)}>
-    <button className={`text-[11px] text-purple-600 border border-purple-600 hover:border-purple-600 font-bold hover:bg-purple-600 hover:text-white px-4 py-1 rounded-2xl ${ mode === 'light' ? 'bg-white' : 'bg-black'}`}> View </button>
-  </div>
-</div>
-    ))
-  }
-      </div>
+      ))
+    } 
+      </>
+      )
+      }  
+    </div>
 
       <div className={`w-full h-screen p-4 ${mode === 'light' ? 'bg-white text-black' : 'bg-black text-white'} `}>
           <h1 className={`font-bold text-md`}>Suggestions</h1>
           {/* people */}
-        {
-          getUsers  && getUsers && getUsers.length > 0 && getUsers.map((person: any) => (  
+
+         {
+           allUserStatus === 'loading' ? (
+            <SkeletonTrends />
+           ) : (
+        
+          users  && users && users.length > 0 && users.map((person: any) => (  
                  
           <div className={`flex justify-between items-center my-2 px-4 `}>
             {
-              getAUser && getAUser._doc && getAUser._doc._id !== person._id && (
+              users && users._doc && users._doc._id !== person._id && (
                 <>
             <div onClick={() =>viewProfile(person && person._id)} className='flex gap-2 cursor-pointer'>
               {
@@ -121,8 +138,9 @@ return (
               )
             }
           </div>
-          ))
-          }
+          ))  
+           )
+         } 
       </div>
     </div>
   )

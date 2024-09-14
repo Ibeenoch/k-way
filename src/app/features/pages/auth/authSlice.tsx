@@ -30,13 +30,14 @@ export interface userState {
   isNotificationLoading: boolean;
   profileType: 'local' | 'foreign';
   status: "success" | "loading" | "failed" | "idle";
+  allUserStatus: "success" | "loading" | "failed" | "idle";
   notificationStatus: "success" | "loading" | "failed" | "idle";
 }
 
 const initialState: userState = {
   user: authUser ? authUser : {},
   otherperson: otherUser ? otherUser : {},
-  users: allUser ? allUser : [],
+  users: [],
   searchUsers: [],
   trendingUser: [],
   notification: [],
@@ -53,6 +54,7 @@ const initialState: userState = {
   unViewednotificationCount: 0,
   active: 'home',
   status: "idle",
+  allUserStatus: "idle",
   notificationStatus: "idle",
   profileType: 'local',
   isNotificationLoading: false
@@ -533,17 +535,17 @@ export const authSlice = createSlice({
         state.status = "failed";
       })
       .addCase(getAllUser.pending, (state, action) => {
-        state.status = "loading";
+        state.allUserStatus = "loading";
       })
       .addCase(getAllUser.fulfilled, (state, action) => {
         if(action.payload !== undefined){
-          state.status = "success";
+          state.allUserStatus = "success";
           state.users = action.payload.users;
           localStorage.setItem('alluser', JSON.stringify(action.payload.users));
          };
       })
       .addCase(getAllUser.rejected, (state, action) => {
-        state.status = "failed";
+        state.allUserStatus = "failed";
       })
       .addCase(searchUser.pending, (state, action) => {
         state.status = "loading";

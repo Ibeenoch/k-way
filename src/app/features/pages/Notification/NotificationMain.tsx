@@ -51,7 +51,7 @@ const NotificationMain = () => {
 
   return (
   <div>
-    <div className={`p-4 ${ notifications && Array.isArray(notifications) && notifications.length > 6 ? 'h-min' :  'h-screen' } sm:mt-10 sm:rounded-tl-xl sm:rounded-tr-xl ${mode === 'light' ? 'bg-white text-black fill=black' : 'bg-black text-white fill-white'} sm:rounded-tl-3xl sm:rounded-tr-3xl`}>
+    <div className={`p-4 ${ notifications && Array.isArray(notifications) && notifications.length > 6 ? 'h-min' :  'h-screen' } sm:mt-2 sm:rounded-tl-xl sm:rounded-tr-xl ${mode === 'light' ? 'bg-white text-black fill=black' : 'bg-black text-white fill-white'} sm:rounded-tl-3xl sm:rounded-tr-3xl`}>
     <div onClick={goBack} className='flex items-center py-4 gap-3 cursor-pointer'>
         <ArrowLeftIcon className='w-5 h-5 stroke-[3px] cursor-pointer' />
         <h2 className='text-sm font-semibold'>Go Back</h2>

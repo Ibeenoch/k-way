@@ -30,6 +30,9 @@ export interface PostInterface {
   whichPost: 'story' | 'post' | 'none';
   view: 'likes' | 'bookmark' | 'reshare' | 'none'
   status: "success" | "loading" | "failed" | "idle";
+  storiesStatus: "success" | "loading" | "failed" | "idle";
+  postStatus: "success" | "loading" | "failed" | "idle";
+  trendStatus: "success" | "loading" | "failed" | "idle";
   editCommentStatus: "success" | "loading" | "failed" | "idle";
   hideMobileNav: boolean
 }
@@ -48,6 +51,9 @@ const initialState: PostInterface = {
   storyNumberOfViews: 0,
   comments: [],
   status: "idle",
+  storiesStatus: "idle",
+  postStatus: "idle",
+  trendStatus: "idle",
   repliedcomments: [],
   viewingStory: false,
   menuActive: false,
@@ -438,16 +444,16 @@ export const postSlice = createSlice({
         state.status = "failed";
       })
       .addCase(getAllPosts.pending, (state, action) => {
-        state.status = "loading";
+        state.postStatus = "loading";
       })
       .addCase(getAllPosts.fulfilled, (state, action) => {
         if (action.payload !== undefined) {
-          state.status = "success";
+          state.postStatus = "success";
           state.posts = action.payload;
         }
       })
       .addCase(getAllPosts.rejected, (state, action) => {
-        state.status = "failed";
+        state.postStatus = "failed";
       })
       .addCase(searchForPost.pending, (state, action) => {
         state.status = "loading";
@@ -462,16 +468,16 @@ export const postSlice = createSlice({
         state.status = "failed";
       })
       .addCase(getAvailableStories.pending, (state, action) => {
-        state.status = "loading";
+        state.storiesStatus = "loading";
       })
       .addCase(getAvailableStories.fulfilled, (state, action) => {
         if (action.payload !== undefined) {
-          state.status = "success";
+          state.storiesStatus = "success";
           state.stories = action.payload;
         }
       })
       .addCase(getAvailableStories.rejected, (state, action) => {
-        state.status = "failed";
+        state.storiesStatus = "failed";
       })
       .addCase(getAllUserStories.pending, (state, action) => {
         state.status = "loading";
@@ -676,15 +682,16 @@ export const postSlice = createSlice({
         state.status = "failed";
       })
       .addCase(topPostTrending.pending, (state, action) => {
-        state.status = "loading";
+        state.trendStatus = "loading";
       })
       .addCase(topPostTrending.fulfilled, (state, action) => {
         if (action.payload !== undefined) {
            state.trendingPost = action.payload;
+           state.trendStatus = "success"
         }
       })
       .addCase(topPostTrending.rejected, (state, action) => {
-        state.status = "failed";
+        state.trendStatus = "failed";
       })
       
   },

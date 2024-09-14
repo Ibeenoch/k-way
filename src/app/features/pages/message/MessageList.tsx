@@ -5,6 +5,7 @@ import { fetchChat, findChatIdForTwoUsers, getAllUser, getOtherUser, selectUser 
 import { socket } from '../../../../index'
 import { useEffect } from 'react';
 import { ArrowLeftIcon } from '@heroicons/react/24/outline';
+import SkeletonMessage from '../../skeleton/SkeletonMessage';
 
 
 
@@ -13,7 +14,7 @@ const MessageList = () => {
   const dispatch = useAppDispatch();
     const getUsers = JSON.parse(localStorage.getItem('alluser') as any);
     const getAUser = JSON.parse(localStorage.getItem('user') as any);
-    const { mode, users } = useAppSelector(selectUser);
+    const { mode, users, allUserStatus } = useAppSelector(selectUser);
 
     const viewProfile = (userId: string) => {
       // check if i am not logged in
@@ -87,8 +88,12 @@ const MessageList = () => {
   return (
     <div>
        
-      <div className={`w-full ${mode === 'light' ? 'bg-white text-black' : 'bg-black text-white'} h-screen sm:mt-4 rounded-3xl p-4`}>
-        
+      <div className={`w-full ${mode === 'light' ? 'bg-white text-black' : 'bg-black text-white'} h-screen sm:mt-2 rounded-3xl p-4`}>
+     {
+        allUserStatus === 'loading' ? (
+          <SkeletonMessage />
+        ) : (
+       <>   
       <div onClick={goBack} className='flex items-center py-4 gap-3 cursor-pointer'>
         <ArrowLeftIcon className='w-5 h-5 stroke-[3px] cursor-pointer' />
         <h2 className='text-sm font-semibold'>Go Back</h2>
@@ -127,6 +132,10 @@ const MessageList = () => {
           </>
           ))
           }
+      </>
+
+        )
+     }
       </div>
     </div>
   )

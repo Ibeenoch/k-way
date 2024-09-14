@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useEffect } from "react";
+import React, { lazy, Suspense, useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -9,6 +9,8 @@ import EditReplyComment from "./app/features/pages/home/EditReplyComment";
 import { useAppDispatch, useAppSelector } from "./app/hooks";
 import { selectUser } from "./app/features/pages/auth/authSlice";
 import PageNotFound from "./app/features/pages/auth/PageNotFound";
+import FullPageSkeleton from "./FullPageSkeleton";
+import { SkeletonTheme } from "react-loading-skeleton";
 const Home = lazy(() => import("./app/features/pages/home/Home"));
 const Profile = lazy(() => import("./app/features/pages/profile/Profile"));
 const Notification = lazy(() => import("./app/features/pages/Notification/Notification"));
@@ -130,13 +132,16 @@ function App() {
   const { mode } = useAppSelector(selectUser);
 
 
-
+  
   return (
     
       <div className={`App `} >
-        <Suspense fallback={<div className="flex items-center justify-center h-screen w-full"> <LoadingLogo className="w-14 h-14" /> </div>}>
-        <RouterProvider router={router} />
-        </Suspense>
+        {/* <SkeletonTheme baseColor={`#313131`} highlightColor="#525252" */}
+        <SkeletonTheme baseColor={`${mode === 'dark' ? "#313131": '#d4d4d4' } `} highlightColor={`${mode === 'dark' ? "#525252": '#f2f3f4'} `}>
+          <Suspense fallback={<div className={` ${ mode === 'light' ? 'bg-gray-100' : 'bg-gray-900'}`}></div> }>
+          <RouterProvider router={router} />
+          </Suspense>
+        </SkeletonTheme>
         <Toaster toastOptions={{
           error: {
             style: {
