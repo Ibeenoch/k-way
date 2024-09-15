@@ -502,7 +502,7 @@ const viewAProfile = (userId: string) => {
  
   return (
     <div className={`sm:mt-2 overflow-hidden sm:rounded-tl-3xl ${ mode === 'light' ? 'bg-white' : 'bg-black' } sm:rounded-tr-3xl max-w-md sm:max-w-full`} >
-      <div className={`pt-4 pl-4 pr-4 flex ${ mode === 'light' ? `${desktopMenu || menu ? 'bg-gray-200' : 'bg-gray-200'}` : 'bg-black' }  justify-between`}>
+      <div className={`pt-4 pl-4 pr-4 flex ${ mode === 'light' ? `${desktopMenu || menu ? 'bg-gray-200' : 'bg-gray-200'}` : 'bg-black' }  justify-between items-center`}>
         <Link to='/'>
           <CompanyLogo className='w-16 h-16' />
         </Link>
