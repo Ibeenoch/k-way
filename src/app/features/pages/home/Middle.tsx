@@ -502,7 +502,7 @@ const viewAProfile = (userId: string) => {
  
   return (
     <div className={`sm:mt-2 overflow-hidden sm:rounded-tl-3xl ${ mode === 'light' ? 'bg-white' : 'bg-black' } sm:rounded-tr-3xl max-w-md sm:max-w-full`} >
-      <div className={`pt-4 pl-4 pr-4 flex ${ mode === 'light' ? `${desktopMenu || menu ? 'bg-gray-200' : 'bg-gray-200'}` : 'bg-black' }  justify-between items-center`}>
+      <div className={`pt-4 pl-4 pr-4 flex ${ mode === 'light' ? `${desktopMenu || menu ? 'bg-white' : 'bg-white'}` : 'bg-black' }  justify-between items-center`}>
         <Link to='/'>
           <CompanyLogo className='w-16 h-16' />
         </Link>
@@ -529,7 +529,7 @@ const viewAProfile = (userId: string) => {
 
       {
             storiesStatus === 'loading' ?  (
-              <div className={`p-4 flex gap-2 ${ mode === 'light' ? `${desktopMenu || menu ? 'bg-gray-200' : 'bg-gray-200'}` : 'bg-black' }  overflow-x-auto hide-scrollbar`}>
+              <div className={`p-4 flex gap-2 ${ mode === 'light' ? `${desktopMenu || menu ? 'bg-white' : 'bg-white'}` : 'bg-black' }  overflow-x-auto hide-scrollbar`}>
              { Array(4).fill(0).map((_, index) => (
                 <div key={index} className="flex  gap-2">
                   <StorySkeleton />
@@ -539,13 +539,13 @@ const viewAProfile = (userId: string) => {
               </div>
             ) : (
 
-      <div className={`p-4 ${ mode === 'light' ? `${desktopMenu || menu ? 'bg-gray-200' : 'bg-gray-200'}` : 'bg-black' }   `}>
+      <div className={`p-4 ${ mode === 'light' ? `${desktopMenu || menu ? 'bg-white' : 'bg-white'}` : 'bg-black' }   `}>
         <div className="flex max-w-full overflow-x-auto hide-scrollbar">
           {/* add a story  */}
           <div  onClick={handleStory} className="relative inline-block mx-1 flex-none">
           {
          getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url && (
-            <img className="w-[180px] h-[220px] rounded-3xl border-2 opacity-60 border-purple-500 cursor-pointer" src={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url} alt="" />
+            <img className="w-[150px] h-[180px] sm:w-[180px] sm:h-[220px] rounded-3xl border-2 opacity-60 border-purple-500 cursor-pointer" src={getUser && getUser._doc && getUser._doc.profilePhoto && getUser._doc.profilePhoto.url} alt="" />
 
           ) 
         }
@@ -574,7 +574,7 @@ const viewAProfile = (userId: string) => {
               stories && stories.length > 0 && stories.map((story: any, index: number) => (
                 <div onClick={() =>viewStories(story && story._id, index)} className="flex-none  relative text-center">
                 <img
-                  className="w-[180px] h-[220px] rounded-3xl border-2 border-purple-500 cursor-pointer"
+                  className="w-[150px] h-[180px] sm:w-[180px] sm:h-[220px] rounded-3xl border-2 border-purple-500 cursor-pointer"
                   src={stories && stories[index] && stories[index].stories && stories[index].stories[0] && stories[index].stories[0].photos && stories[index].stories[0].photos[0]  && stories[index].stories[0].photos[0].url }
                   alt=''
                 />
